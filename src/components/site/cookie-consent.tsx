@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useId, useState, useSyncExternalStore } from "react";
+import { useEffect, useId, useLayoutEffect, useState, useSyncExternalStore } from "react";
 
 import { consentKey, updateConsent } from "@/lib/analytics";
 
@@ -28,6 +28,24 @@ export function CookieConsent() {
   const titleId = useId();
   const choice = useSyncExternalStore(subscribe, readConsent, () => null);
   const [open, setOpen] = useState(false);
+
+  useLayoutEffect(() => {
+    const root = document.documentElement;
+    if (choice != null) {
+      root.style.removeProperty("--consent-banner");
+      return;
+    }
+    const banner = document.getElementById("cookie-banner");
+    if (!banner) return;
+    const apply = () => root.style.setProperty("--consent-banner", `${banner.offsetHeight}px`);
+    apply();
+    const observer = new ResizeObserver(apply);
+    observer.observe(banner);
+    return () => {
+      observer.disconnect();
+      root.style.removeProperty("--consent-banner");
+    };
+  }, [choice]);
 
   useEffect(() => {
     function onOpen(event: MouseEvent) {
@@ -76,9 +94,15 @@ export function CookieConsent() {
   return (
     <>
       {choice == null ? (
-        <div className="fixed inset-x-0 bottom-0 z-40 border-t border-line bg-bg px-5 py-5 md:px-8">
-          <div className="mx-auto max-w-6xl">{panel}</div>
-        </div>
+        <>
+          <div aria-hidden="true" className="h-[var(--consent-banner,16rem)]" />
+          <div
+            id="cookie-banner"
+            className="fixed inset-x-0 bottom-0 z-40 border-t border-line bg-bg px-5 py-5 md:px-8"
+          >
+            <div className="mx-auto max-w-6xl">{panel}</div>
+          </div>
+        </>
       ) : null}
       {open && choice != null ? (
         <div className="fixed inset-0 z-50 grid place-items-end bg-black/50 p-4 md:place-items-center" role="presentation">
