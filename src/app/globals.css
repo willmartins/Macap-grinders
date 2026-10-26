@@ -1,0 +1,101 @@
+@import "tailwindcss";
+
+:root,
+[data-theme="home"],
+[data-theme="neutral"] {
+  --bg: #ffffff;
+  --fg: #000000;
+  --muted: #4d4d4d;
+  --line: #e6e6e6;
+  --accent: #ffc600;
+  --accent-fg: #000000;
+  --surface: #f2f2f2;
+}
+
+[data-theme="professional"] {
+  --bg: #000000;
+  --fg: #ffffff;
+  --muted: #b3b3b3;
+  --line: #333333;
+  --accent: #ffffff;
+  --accent-fg: #000000;
+  --surface: #141414;
+}
+
+@theme inline {
+  --font-sans: var(--font-macap), "Helvetica Neue", Helvetica, Arial, sans-serif;
+  --color-bg: var(--bg);
+  --color-fg: var(--fg);
+  --color-muted: var(--muted);
+  --color-line: var(--line);
+  --color-accent: var(--accent);
+  --color-accent-fg: var(--accent-fg);
+  --color-surface: var(--surface);
+}
+
+body {
+  background: #ffffff;
+  color: #000000;
+}
+
+[data-theme="professional"] .logo-on-light {
+  display: none;
+}
+
+[data-theme="professional"] .logo-on-dark {
+  display: inline-flex;
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 2.75rem;
+  padding: 0.65rem 1.1rem;
+  background: var(--accent);
+  color: var(--accent-fg);
+  font-weight: 500;
+  text-decoration: none;
+}
+
+.btn:hover {
+  background: var(--fg);
+  color: var(--bg);
+}
+
+.btn-secondary {
+  background: transparent;
+  color: var(--fg);
+  border: 1px solid currentColor;
+}
+
+.btn-secondary:hover {
+  background: var(--fg);
+  color: var(--bg);
+}
+
+.field {
+  width: 100%;
+  min-height: 2.75rem;
+  border: 1px solid var(--line);
+  background: var(--bg);
+  color: var(--fg);
+  padding: 0.65rem 0.75rem;
+}
+
+.field:focus-visible,
+.btn:focus-visible,
+a:focus-visible,
+summary:focus-visible,
+button:focus-visible {
+  outline: 2px solid var(--fg);
+  outline-offset: 3px;
+}
+
+summary {
+  list-style: none;
+}
+
+summary::-webkit-details-marker {
+  display: none;
+}
