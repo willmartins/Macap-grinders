@@ -66,28 +66,14 @@ export function CookieConsent() {
     setOpen(false);
   }
 
-  const panel = (
-    <div className="grid gap-4">
-      <p id={titleId} className="text-base font-medium">
-        Cookies
-      </p>
-      <p className="max-w-xl text-sm leading-relaxed">
-        Google Analytics stays off until you accept. Vercel analytics does not use cookies and runs either way.
-        Advertising storage stays off.
-      </p>
-      <p className="text-sm">
-        <TextLink href="/legal/cookie-policy" className="underline underline-offset-4">
-          Cookie policy
-        </TextLink>
-      </p>
-      <div className="flex flex-wrap gap-3">
-        <button type="button" className="btn" onClick={() => choose("granted")}>
-          Accept analytics
-        </button>
-        <button type="button" className="btn btn-secondary" onClick={() => choose("denied")}>
-          Reject
-        </button>
-      </div>
+  const choices = (
+    <div className="cookie-actions">
+      <button type="button" className="btn" onClick={() => choose("granted")}>
+        Accept
+      </button>
+      <button type="button" className="btn" onClick={() => choose("denied")}>
+        Reject
+      </button>
     </div>
   );
 
@@ -95,12 +81,15 @@ export function CookieConsent() {
     <>
       {choice == null ? (
         <>
-          <div aria-hidden="true" className="h-[var(--consent-banner,16rem)]" />
-          <div
-            id="cookie-banner"
-            className="fixed inset-x-0 bottom-0 z-40 border-t-2 border-accent bg-bg px-5 py-5 md:px-8"
-          >
-            <div className="mx-auto max-w-6xl">{panel}</div>
+          <div aria-hidden="true" className="h-[var(--consent-banner,10rem)]" />
+          <div id="cookie-banner" className="cookie-banner" role="region" aria-label="Cookies">
+            <div className="cookie-bar frame">
+              <p className="cookie-line">
+                Analytics cookies stay off until you accept.{" "}
+                <TextLink href="/legal/cookie-policy">Cookie policy</TextLink>
+              </p>
+              {choices}
+            </div>
           </div>
         </>
       ) : null}
@@ -110,9 +99,19 @@ export function CookieConsent() {
             role="dialog"
             aria-modal="true"
             aria-labelledby={titleId}
-            className="w-full max-w-lg border border-line bg-bg p-6 text-fg"
+            className="grid w-full max-w-lg gap-4 border border-line bg-bg p-6 text-fg"
           >
-            {panel}
+            <p id={titleId} className="text-base font-medium">
+              Cookies
+            </p>
+            <p className="max-w-xl text-sm leading-relaxed">
+              Google Analytics stays off until you accept. Vercel analytics does not use cookies and runs either way.
+              Advertising storage stays off.
+            </p>
+            <p className="text-sm">
+              <TextLink href="/legal/cookie-policy">Cookie policy</TextLink>
+            </p>
+            {choices}
           </div>
         </div>
       ) : null}

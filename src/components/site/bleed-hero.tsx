@@ -53,11 +53,7 @@ export function BleedHero({
         <h1 className={`${short ? "display-sm" : "display"} mt-4 max-w-6xl text-white`}>{title}</h1>
         {text ? <p className="hero-lead">{text}</p> : null}
         {figures && figures.length ? (
-          <ul
-            className={product ? "hero-figures snap-row" : "hero-figures"}
-            aria-label={product ? "Key figures" : undefined}
-            tabIndex={product ? 0 : undefined}
-          >
+          <ul className="hero-figures" aria-label={product ? "Key figures" : undefined}>
             {figures.map((figure) => (
               <li key={figure.label}>
                 <p className="label text-white/75">{figure.label}</p>
