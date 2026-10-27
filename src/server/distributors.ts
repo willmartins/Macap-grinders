@@ -5,27 +5,26 @@ export type DistributorRecord = {
   name: string;
   countries: string[];
   email: string;
-  primary: boolean;
+  isPrimary: boolean;
 };
 
 /**
  * Development only. Macap adds real partners in Studio.
- * The production dataset stays empty until they do. This example is never written there,
- * and it is not used when NODE_ENV is production.
- * United Kingdom is covered so the enquiry notice can be reviewed before real partners exist.
+ * This example is never written to the dataset, and it is not used when NODE_ENV is production.
+ * United Kingdom is covered so the enquiry notice can be reviewed before a published partner exists.
  */
 const developmentDistributors: DistributorRecord[] = [
   {
     name: "Example partner (development only)",
     countries: ["GB"],
     email: "partner@example.test",
-    primary: true,
+    isPrimary: true,
   },
 ];
 
 const query = `*[_type == "distributor" && active == true]{
   name,
-  primary,
+  isPrimary,
   countries,
   "email": enquiryEmail
 }`;
@@ -35,7 +34,7 @@ export function pickDistributor(records: DistributorRecord[], country: string): 
     (record) => record.name && record.email && record.countries.includes(country),
   );
   matches.sort(
-    (a, b) => Number(b.primary) - Number(a.primary) || a.name.localeCompare(b.name, "en-GB"),
+    (a, b) => Number(Boolean(b.isPrimary)) - Number(Boolean(a.isPrimary)) || a.name.localeCompare(b.name, "en-GB"),
   );
   return matches[0] ?? null;
 }

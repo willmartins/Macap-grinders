@@ -802,7 +802,7 @@ export const distributor = defineType({
   type: "document",
   icon: PinIcon,
   description:
-    "A partner who can receive enquiries for the countries they cover. Macap adds these. Leave the list empty until then. Do not publish example partners.",
+    "A partner who can receive enquiries for the countries they cover. Macap adds these in Studio. The enquiry email and the note stay off the website.",
   fields: [
     defineField({
       name: "name",
@@ -814,7 +814,7 @@ export const distributor = defineType({
       name: "countries",
       title: "Countries",
       type: "array",
-      description: "Countries this partner covers. Stored as ISO codes. The site shows the partner name only.",
+      description: "Countries this partner covers. Each value is an ISO code, such as GB. The site shows the partner name only.",
       of: [defineArrayMember({ type: "string" })],
       options: {
         list: countries.map((country) => ({ title: country.name, value: country.code })),
@@ -839,7 +839,7 @@ export const distributor = defineType({
       type: "url",
     }),
     defineField({
-      name: "primary",
+      name: "isPrimary",
       title: "Primary",
       type: "boolean",
       description: "Used when more than one active partner covers the same country.",
@@ -849,16 +849,23 @@ export const distributor = defineType({
       name: "active",
       title: "Active",
       type: "boolean",
-      description: "Inactive partners are ignored by the enquiry form.",
+      description: "Inactive partners are ignored by the enquiry form. A partner must be active to receive enquiries.",
       initialValue: true,
+    }),
+    defineField({
+      name: "note",
+      title: "Note",
+      type: "text",
+      rows: 3,
+      description: "Internal. Not shown on the website and not included in enquiry emails.",
     }),
   ],
   preview: {
-    select: { title: "name", countries: "countries", active: "active", primary: "primary" },
-    prepare({ title, countries: covered, active, primary }) {
+    select: { title: "name", countries: "countries", active: "active", isPrimary: "isPrimary" },
+    prepare({ title, countries: covered, active, isPrimary }) {
       const count = Array.isArray(covered) ? covered.length : 0;
       const detail = [
-        primary ? "Primary" : "",
+        isPrimary ? "Primary" : "",
         active === false ? "Inactive" : "Active",
         count ? `${count} ${count === 1 ? "country" : "countries"}` : "No countries",
       ]

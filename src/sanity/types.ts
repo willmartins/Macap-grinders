@@ -31,8 +31,9 @@ export type Distributor = {
   countries: Array<string>;
   enquiryEmail: string;
   website?: string;
-  primary?: boolean;
+  isPrimary?: boolean;
   active?: boolean;
+  note?: string;
 };
 
 export type Redirect = {
