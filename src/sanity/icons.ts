@@ -13,6 +13,7 @@ export { ImageIcon } from "@sanity/icons/Image";
 export { InlineIcon } from "@sanity/icons/Inline";
 export { LinkIcon } from "@sanity/icons/Link";
 export { OlistIcon } from "@sanity/icons/Olist";
+export { PinIcon } from "@sanity/icons/Pin";
 export { PlayIcon } from "@sanity/icons/Play";
 export { SearchIcon } from "@sanity/icons/Search";
 export { StackCompactIcon } from "@sanity/icons/StackCompact";

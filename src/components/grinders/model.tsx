@@ -1,5 +1,6 @@
 import Image from "next/image";
 
+import { Enquire } from "@/components/contact/enquire";
 import { GrinderGrid } from "@/components/grinders/grinder-card";
 import { SpecTable } from "@/components/grinders/spec-table";
 import { BleedHero } from "@/components/site/bleed-hero";
@@ -91,7 +92,15 @@ export function GrinderModel({
           figures={figures}
           crumbs={crumbs}
         >
-          <a href={relatedCompare} className="btn btn-on-photo">
+          <Enquire
+            grinder={{
+              slug: grinder.slug,
+              name: grinder.name,
+              imageUrl: grinder.imageUrl,
+              imageAlt: grinder.imageAlt,
+            }}
+          />
+          <a href={relatedCompare} className="btn btn-secondary btn-on-photo">
             Compare
           </a>
         </BleedHero>
@@ -110,6 +119,20 @@ export function GrinderModel({
             </p>
             <h1 className="display mt-4">{grinder.name}</h1>
             <p className="mt-6 max-w-xl text-lg leading-relaxed">{positionLine(grinder.answerFirst)}</p>
+            <div className="mt-8 flex flex-wrap gap-3">
+              <Enquire
+                variant="plain"
+                grinder={{
+                  slug: grinder.slug,
+                  name: grinder.name,
+                  imageUrl: grinder.imageUrl,
+                  imageAlt: grinder.imageAlt,
+                }}
+              />
+              <a href={relatedCompare} className="btn btn-secondary">
+                Compare
+              </a>
+            </div>
           </header>
         </>
       )}

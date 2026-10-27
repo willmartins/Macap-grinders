@@ -1158,10 +1158,10 @@ export const sampleAbout: PageDocument = {
 export const sampleContact: PageDocument = {
   sample: true,
   title: "Contact us",
-  introduction: "Write about a grinder, a part or a brochure. The form sends one message to Macap.",
+  introduction: "Ask about a grinder, a part, or the range. The form sends one message to Macap.",
   seo: {
     title: "Contact Macap",
-    description: "Contact Macap about coffee grinders, parts and brochures.",
+    description: "Contact Macap about coffee grinders and parts.",
   },
   sections: [
     {

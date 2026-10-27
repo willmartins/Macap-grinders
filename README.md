@@ -37,11 +37,13 @@ See `.env.example`.
 | `SANITY_API_READ_TOKEN` | Server-only read token. Required for drafts and for a private dataset. Not sent to the browser. |
 | `SANITY_API_WRITE_TOKEN` | Server-only. Used by `pnpm import:content` only. |
 | `SANITY_REVALIDATE_SECRET` | Shared secret for the Sanity webhook. |
-| `RESEND_API_KEY`, `CONTACT_FROM_EMAIL`, `CONTACT_TO_EMAIL` | Contact form. If any is missing, the visitor is told to email info@macap.it. The missing name is not shown. |
+| `RESEND_API_KEY`, `CONTACT_FROM_EMAIL`, `CONTACT_TO_EMAIL` | Enquiry form. If any is missing, the visitor is told to email info@macap.it. The missing name is not shown. |
 | `NEXT_PUBLIC_GA_MEASUREMENT_ID` | GA4 measurement id. Do not hard-code it. |
 | `NEXT_PUBLIC_GTM_ID` | Optional GTM container. |
 | `UPSTASH_REDIS_REST_URL`, `UPSTASH_REDIS_REST_TOKEN` | Optional shared rate limit. |
 | `NEXT_PUBLIC_TURNSTILE_SITE_KEY`, `TURNSTILE_SECRET_KEY` | Optional bot check. Set both or neither. |
+| `CONTACT_DISTRIBUTOR_COPY` | `cc` or `bcc`. When an enquiry is shared with a distributor, Macap's inbox is copied this way. Defaults to `cc`. |
+| `RESEND_AUDIENCE_ID` | Optional. When set, a mailing-list opt-in is added to this Resend Audience. When unset, the opt-in is only recorded in the Macap email. |
 
 ## Vercel
 
@@ -135,7 +137,8 @@ Events are sent to Vercel custom events always. They are sent to GA4 only after 
 
 | Event | When | Properties |
 | --- | --- | --- |
-| `contact_form_submit` | Contact form result | `status`: `success` or `error` |
+| `generate_lead` | Enquiry sent | `role`, `country` (ISO code), `grinder` (slug, or `none`) |
+| `contact_form_submit` | Enquiry failed after it reached the server | `status`: `error` |
 | `compare_tool_used` | Compare page with at least two models | `models` (comma-separated slugs), `count` |
 | `grinder_viewed` | Grinder page | `slug`, `name`, `audience` |
 | `journey_step_click` | A link on the Home or Professional journey | `journey`, `step`, `href` |
@@ -162,7 +165,7 @@ If both `NEXT_PUBLIC_GA_MEASUREMENT_ID` and `NEXT_PUBLIC_GTM_ID` are set, use on
 
 ## Security
 
-- Contact form: Zod validation, a honeypot field, five messages in ten minutes, optional Turnstile. A filled honeypot returns the success message and sends nothing.
+- Enquiry form: Zod validation, a honeypot field, five messages in ten minutes, optional Turnstile. A filled honeypot returns the success message and sends nothing. The distributor's email address is read on the server and is not sent to the browser.
 - Security headers include `nosniff`, a referrer policy, a permissions policy, HSTS and a Content-Security-Policy. The policy allows Studio, Analytics, Turnstile and YouTube. Tighten the host list once production is fixed.
 - Redirect targets must be a single-slash path or an `http`/`https` URL.
 - Do not commit `.env`, `.env.local` or tokens.
@@ -171,7 +174,7 @@ If both `NEXT_PUBLIC_GA_MEASUREMENT_ID` and `NEXT_PUBLIC_GTM_ID` are set, use on
 
 - Vercel project and the environment variables above.
 - Sanity read token, write token and revalidate secret. CORS origins.
-- Resend domain and the contact inbox.
+- Resend domain, the contact inbox, and the distributor list in Sanity.
 - GA4 measurement id, if Macap still wants Google Analytics.
 - Master logo files and the licensed typefaces from V12.
 - Real catalogue copy, photography and legal text. The pages marked placeholder are not ready to publish.

@@ -17,9 +17,19 @@ Page sections share one name in code and in Sanity Studio. They are rendered by 
 | videoEmbed | src/components/modules/page-builder.tsx | videoEmbed | Any page section | A YouTube film. Other addresses are shown as links. |
 | kbPostGrid | src/components/modules/page-builder.tsx | kbPostGrid | Journeys, knowledge | A short list of knowledge articles. |
 | quote | src/components/modules/page-builder.tsx | quote | Home | A short quotation with an attribution. |
-| contactBlock | src/components/modules/page-builder.tsx | contactBlock | Contact, professional journey | The contact form. |
+| contactBlock | src/components/modules/page-builder.tsx | contactBlock | Contact, professional journey | The enquiry form, inline. |
 
-Document types that are not page sections: `siteSettings`, `homePage`, `aboutPage`, `contactPage`, `knowledgeHubPage`, `grindersIndexPage`, `journeyPage`, `grinderGroup`, `grinder`, `grinderCollection`, `author`, `kbTopic`, `kbPost`, `legalPage`, `redirect`. Shared objects: `seo`, `link`, `faq`, `blockContent`, `grinderSpecs`.
+Document types that are not page sections: `siteSettings`, `homePage`, `aboutPage`, `contactPage`, `knowledgeHubPage`, `grindersIndexPage`, `journeyPage`, `grinderGroup`, `grinder`, `grinderCollection`, `author`, `kbTopic`, `kbPost`, `legalPage`, `redirect`, `distributor`. Shared objects: `seo`, `link`, `faq`, `blockContent`, `grinderSpecs`.
+
+## Enquiries
+
+The form lives in `src/components/contact/contact-form.tsx`. The contact page shows it inline and has no product field. A grinder page uses `Enquire` (`src/components/contact/enquire.tsx`): Enquire is the primary action, Compare stays secondary. Enquire opens the same form in a native dialog. Escape closes it, focus stays inside while it is open, and focus returns to Enquire. On a phone the dialog is a full-screen sheet. Without JavaScript, Enquire is a link to `/contact?grinder=<slug>`. That page shows the grinder and submits its slug. There is no product picker.
+
+Fields, in order: what you do, country, a distributor note when one applies, message, email, phone, mailing list, then Send. The country control is a combobox. United Kingdom is listed first. Typing filters the list.
+
+A distributor is a Sanity document (`distributor`), edited under Distributors. It has a name, countries (ISO codes), a private enquiry email, an optional website, a primary flag and an active toggle. The browser only receives the partner's name, and only when the role is Cafe, Roastery / coffee supplier or Home barista and the country matches an active partner. If several match, the primary one is used. The note says the message will be shared, with an unchecked box "Only send my message to Macap". Equipment supplier / distributor and Other never see the note. The enquiry email is read on the server when the form is sent. No distributors are imported. A clearly labelled example partner for the United Kingdom exists only in the development fixture (`src/server/distributors.ts`). It is not written to the dataset.
+
+Mail goes to `CONTACT_TO_EMAIL` with the role, country, grinder, and whether the sender kept the message with Macap. When a partner matches and the box is unchecked, a separate email goes to that partner, with the enquirer as reply-to and Macap copied by `CONTACT_DISTRIBUTOR_COPY` (`cc` or `bcc`). The enquirer gets a short confirmation. A mailing-list opt-in records the time and the page in the Macap email. If `RESEND_AUDIENCE_ID` is set, the address is added to that Resend Audience. Enquiries are not stored in Sanity. A sent enquiry fires `generate_lead` (role, country, grinder) through Vercel Analytics, and through GA4 only after analytics consent.
 
 ## Text links
 

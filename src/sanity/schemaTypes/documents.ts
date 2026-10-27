@@ -8,11 +8,13 @@ import {
   HomeIcon,
   LinkIcon,
   OlistIcon,
+  PinIcon,
   TagIcon,
   UserIcon,
 } from "@/sanity/icons";
 import { defineArrayMember, defineField, defineType } from "sanity";
 
+import { countries, isCountryCode } from "@/lib/countries";
 import { languageField, seoField } from "@/sanity/schemaTypes/objects";
 import { sectionsField } from "@/sanity/schemaTypes/blocks";
 
@@ -794,6 +796,79 @@ export const redirect = defineType({
   },
 });
 
+export const distributor = defineType({
+  name: "distributor",
+  title: "Distributor",
+  type: "document",
+  icon: PinIcon,
+  description:
+    "A partner who can receive enquiries for the countries they cover. Leave this empty until the real list is confirmed. Do not publish example partners.",
+  fields: [
+    defineField({
+      name: "name",
+      title: "Name",
+      type: "string",
+      validation: (rule) => rule.required(),
+    }),
+    defineField({
+      name: "countries",
+      title: "Countries",
+      type: "array",
+      description: "Countries this partner covers. Stored as ISO codes. The site shows the partner name only.",
+      of: [defineArrayMember({ type: "string" })],
+      options: {
+        list: countries.map((country) => ({ title: country.name, value: country.code })),
+      },
+      validation: (rule) =>
+        rule.required().min(1).custom((value) => {
+          if (!Array.isArray(value)) return true;
+          const unknown = value.filter((code) => typeof code !== "string" || !isCountryCode(code));
+          return unknown.length ? "Choose each country from the list." : true;
+        }),
+    }),
+    defineField({
+      name: "enquiryEmail",
+      title: "Enquiry email",
+      type: "string",
+      description: "Private. Used only to deliver an enquiry. It is never shown on the website.",
+      validation: (rule) => rule.required().email(),
+    }),
+    defineField({
+      name: "website",
+      title: "Website",
+      type: "url",
+    }),
+    defineField({
+      name: "primary",
+      title: "Primary",
+      type: "boolean",
+      description: "Used when more than one active partner covers the same country.",
+      initialValue: false,
+    }),
+    defineField({
+      name: "active",
+      title: "Active",
+      type: "boolean",
+      description: "Inactive partners are ignored by the enquiry form.",
+      initialValue: true,
+    }),
+  ],
+  preview: {
+    select: { title: "name", countries: "countries", active: "active", primary: "primary" },
+    prepare({ title, countries: covered, active, primary }) {
+      const count = Array.isArray(covered) ? covered.length : 0;
+      const detail = [
+        primary ? "Primary" : "",
+        active === false ? "Inactive" : "Active",
+        count ? `${count} ${count === 1 ? "country" : "countries"}` : "No countries",
+      ]
+        .filter(Boolean)
+        .join(" / ");
+      return { title, subtitle: detail };
+    },
+  },
+});
+
 export const documentTypes = [
   siteSettings,
   homePage,
@@ -810,4 +885,5 @@ export const documentTypes = [
   kbPost,
   legalPage,
   redirect,
+  distributor,
 ];

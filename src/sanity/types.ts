@@ -21,6 +21,20 @@ export type Dimensions = {
   heightMm?: number;
 };
 
+export type Distributor = {
+  _id: string;
+  _type: "distributor";
+  _createdAt: string;
+  _updatedAt: string;
+  _rev: string;
+  name: string;
+  countries: Array<string>;
+  enquiryEmail: string;
+  website?: string;
+  primary?: boolean;
+  active?: boolean;
+};
+
 export type Redirect = {
   _id: string;
   _type: "redirect";
@@ -1035,6 +1049,7 @@ export type Geopoint = {
 
 export type AllSanitySchemaTypes =
   | Dimensions
+  | Distributor
   | Redirect
   | LegalPage
   | SanityImageAssetReference

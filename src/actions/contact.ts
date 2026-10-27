@@ -2,28 +2,21 @@
 
 import { headers } from "next/headers";
 import { Resend } from "resend";
-import { z } from "zod";
 
+import { countryName } from "@/lib/countries";
+import { enquiryFieldErrors, readEnquiry, roleLabel, roleSharesWithPartner } from "@/lib/enquiry";
 import { allowContact } from "@/lib/rate-limit";
+import { lookupDistributor } from "@/server/distributors";
+import { loadGrinder } from "@/sanity/lib/load";
 
 export type ContactState = {
   ok: boolean;
   message: string;
+  fieldErrors?: Record<string, string>;
 };
 
-const schema = z.object({
-  name: z.string().trim().min(2, "Enter your name.").max(80),
-  email: z.string().trim().email("Enter a valid email address.").max(120),
-  phone: z.string().trim().max(40).optional(),
-  topic: z.enum(["Grinder", "Spare part", "Brochure", "Other"], {
-    message: "Choose a topic.",
-  }),
-  message: z.string().trim().min(10, "Write a short message.").max(4000),
-  companyWebsite: z.string().max(200).optional(),
-  turnstileToken: z.string().optional(),
-});
-
 const unavailable = "The form is not available yet. Email info@macap.it.";
+const sent = "Message sent. Macap will reply by email.";
 
 async function turnstileOk(token: string | undefined, ip: string): Promise<boolean> {
   const secret = process.env.TURNSTILE_SECRET_KEY;
@@ -39,23 +32,29 @@ async function turnstileOk(token: string | undefined, ip: string): Promise<boole
   return body.success === true;
 }
 
-export async function submitContact(_previous: ContactState, formData: FormData): Promise<ContactState> {
-  const parsed = schema.safeParse({
-    name: formData.get("name"),
-    email: formData.get("email"),
-    phone: formData.get("phone") || undefined,
-    topic: formData.get("topic"),
-    message: formData.get("message"),
-    companyWebsite: formData.get("companyWebsite") || undefined,
-    turnstileToken: formData.get("cf-turnstile-response") || undefined,
-  });
+function pageSource(value: string): string {
+  if (!value.startsWith("/") || value.startsWith("//") || value.includes("://")) return "unknown";
+  return value;
+}
 
+export async function findPartner(country: string): Promise<string | null> {
+  if (!country || country.length > 2) return null;
+  const partner = await lookupDistributor(country);
+  return partner?.name ?? null;
+}
+
+export async function submitContact(_previous: ContactState, formData: FormData): Promise<ContactState> {
+  const parsed = readEnquiry(formData);
   if (!parsed.success) {
-    return { ok: false, message: parsed.error.issues[0]?.message || "Check the form and try again." };
+    return {
+      ok: false,
+      message: "Check the form and try again.",
+      fieldErrors: enquiryFieldErrors(parsed.error),
+    };
   }
 
   if (parsed.data.companyWebsite) {
-    return { ok: true, message: "Message sent. Macap will reply by email." };
+    return { ok: true, message: sent };
   }
 
   const headerList = await headers();
@@ -79,39 +78,108 @@ export async function submitContact(_previous: ContactState, formData: FormData)
     return { ok: false, message: unavailable };
   }
 
-  const { name, email, phone, topic, message } = parsed.data;
-  const text = [
-    `Name: ${name}`,
-    `Email: ${email}`,
-    `Phone: ${phone || "Not given"}`,
-    `Topic: ${topic}`,
+  const data = parsed.data;
+  const source = pageSource(data.source);
+  const partner = roleSharesWithPartner(data.role) ? await lookupDistributor(data.country) : null;
+  const share = Boolean(partner) && !data.macapOnly;
+  const loaded = data.grinder ? await loadGrinder(data.grinder, "published") : null;
+  const grinderName = loaded?.grinder.name || "";
+  const grinderLine = data.grinder ? `${grinderName || "Unknown model"} (${data.grinder})` : "Not named";
+  const consentedAt = new Date().toISOString();
+  const mailing = data.mailingList
+    ? `Yes. Consented at ${consentedAt} from ${source}.`
+    : "No";
+
+  const macapText = [
+    `Role: ${roleLabel(data.role)}`,
+    `Country: ${countryName(data.country)} (${data.country})`,
+    `Grinder: ${grinderLine}`,
+    `Email: ${data.email}`,
+    `Phone: ${data.phone || "Not given"}`,
+    `Mailing list: ${mailing}`,
+    partner
+      ? `Distributor: ${partner.name}. ${share ? "The message is shared with them." : "The sender asked us to keep this with Macap."}`
+      : "Distributor: None matched.",
     "",
-    message,
+    data.message,
   ].join("\n");
 
+  const resend = new Resend(apiKey);
   try {
-    const resend = new Resend(apiKey);
-    await resend.emails.send({
+    const macapMail = await resend.emails.send({
       from,
       to,
-      replyTo: email,
-      subject: `Macap website: ${topic}`,
-      text,
+      replyTo: data.email,
+      subject: grinderName ? `Macap website: ${grinderName}` : "Macap website enquiry",
+      text: macapText,
     });
-    try {
-      await resend.emails.send({
-        from,
-        to: email,
-        subject: "Macap has your message",
-        text: "Macap has your message and will reply by email.\n\nMacap SRL\ninfo@macap.it",
-      });
-    } catch (error) {
-      console.error("Contact auto-reply failed.", error);
+    if (macapMail.error) {
+      console.error("Contact email failed.");
+      return { ok: false, message: "The message was not sent. Try again, or email info@macap.it." };
     }
-  } catch (error) {
-    console.error("Contact email failed.", error);
+  } catch {
+    console.error("Contact email failed.");
     return { ok: false, message: "The message was not sent. Try again, or email info@macap.it." };
   }
 
-  return { ok: true, message: "Message sent. Macap will reply by email." };
+  if (share && partner) {
+    const copy = process.env.CONTACT_DISTRIBUTOR_COPY === "bcc" ? "bcc" : "cc";
+    const partnerText = [
+      "A Macap website enquiry has been shared with you.",
+      "",
+      `Role: ${roleLabel(data.role)}`,
+      `Country: ${countryName(data.country)} (${data.country})`,
+      `Grinder: ${grinderLine}`,
+      `Email: ${data.email}`,
+      `Phone: ${data.phone || "Not given"}`,
+      "",
+      data.message,
+    ].join("\n");
+    try {
+      const partnerMail = await resend.emails.send({
+        from,
+        to: partner.email,
+        replyTo: data.email,
+        [copy]: to,
+        subject: grinderName ? `Macap enquiry: ${grinderName}` : "Macap enquiry",
+        text: partnerText,
+      });
+      if (partnerMail.error) console.error("Distributor email failed.");
+    } catch {
+      console.error("Distributor email failed.");
+    }
+  }
+
+  if (data.mailingList) {
+    const audience = process.env.RESEND_AUDIENCE_ID;
+    if (audience) {
+      try {
+        const added = await resend.contacts.create({
+          email: data.email,
+          audienceId: audience,
+          unsubscribed: false,
+        });
+        if (added.error) console.error("Mailing list was not updated.");
+      } catch {
+        console.error("Mailing list was not updated.");
+      }
+    }
+  }
+
+  try {
+    const confirmation = share
+      ? "Macap has your message. We have also shared it with our partner in your country. We will reply by email.\n\nMacap SRL\ninfo@macap.it"
+      : "Macap has your message and will reply by email.\n\nMacap SRL\ninfo@macap.it";
+    const reply = await resend.emails.send({
+      from,
+      to: data.email,
+      subject: "Macap has your message",
+      text: confirmation,
+    });
+    if (reply.error) console.error("Contact confirmation failed.");
+  } catch {
+    console.error("Contact confirmation failed.");
+  }
+
+  return { ok: true, message: sent };
 }

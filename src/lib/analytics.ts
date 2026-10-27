@@ -5,7 +5,8 @@ import { track } from "@vercel/analytics";
 export const consentKey = "macap-cookie-consent";
 
 export type AnalyticsEvent =
-  | { name: "contact_form_submit"; props: { status: "success" | "error" } }
+  | { name: "contact_form_submit"; props: { status: "error" } }
+  | { name: "generate_lead"; props: { role: string; country: string; grinder: string } }
   | { name: "compare_tool_used"; props: { models: string; count: number } }
   | { name: "grinder_viewed"; props: { slug: string; name: string; audience: string } }
   | { name: "journey_step_click"; props: { journey: string; step: string; href: string } }

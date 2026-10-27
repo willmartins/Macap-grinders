@@ -7,6 +7,7 @@ import {
   HomeIcon,
   LinkIcon,
   OlistIcon,
+  PinIcon,
   TransferIcon,
 } from "@/sanity/icons";
 import type { StructureResolver } from "sanity/structure";
@@ -55,6 +56,7 @@ export const structure: StructureResolver = (S) =>
         .title("Contact")
         .icon(EnvelopeIcon)
         .child(S.document().schemaType("contactPage").documentId("contactPage").title("Contact")),
+      S.documentTypeListItem("distributor").title("Distributors").icon(PinIcon),
       S.divider(),
       S.listItem()
         .title("Grinders")
@@ -104,6 +106,6 @@ export const structure: StructureResolver = (S) =>
       S.divider(),
       ...S.documentTypeListItems().filter((item) => {
         const id = item.getId();
-        return id ? !singletonIds.has(id) && id !== "journeyPage" : false;
+        return id ? !singletonIds.has(id) && id !== "journeyPage" && id !== "distributor" : false;
       }),
     ]);
