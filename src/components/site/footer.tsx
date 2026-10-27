@@ -36,7 +36,7 @@ export function Footer({ shell }: { shell: Shell }) {
         </div>
         <nav aria-label="Footer">
           <p className="index-title">On this site</p>
-          <ul className="mt-3 grid gap-2 text-sm">
+          <ul className="mt-3 grid text-sm">
             {settings.footerNavigation.map((link) => (
               <li key={link._key}>
                 <TextLink href={link.href} className="hover:shadow-[inset_0_-1px_0_var(--accent)]">
@@ -48,7 +48,7 @@ export function Footer({ shell }: { shell: Shell }) {
         </nav>
         <nav aria-label="Collections">
           <p className="index-title">Collections</p>
-          <ul className="mt-3 grid gap-2 text-sm">
+          <ul className="mt-3 grid text-sm">
             {collections.map((collection) => (
               <li key={collection.slug}>
                 <TextLink
@@ -64,7 +64,7 @@ export function Footer({ shell }: { shell: Shell }) {
         <div>
           <nav aria-label="Legal">
             <p className="index-title">Legal</p>
-            <ul className="mt-3 grid gap-2 text-sm">
+            <ul className="mt-3 grid text-sm">
               {legal.map((page) => (
                 <li key={page.slug}>
                   <TextLink href={`/legal/${page.slug}`} className="hover:shadow-[inset_0_-1px_0_var(--accent)]">
@@ -80,7 +80,7 @@ export function Footer({ shell }: { shell: Shell }) {
             </ul>
           </nav>
           {settings.socials.length ? (
-            <ul className="mt-6 grid gap-2 text-sm">
+            <ul className="mt-6 grid text-sm">
               {settings.socials.map((link) => (
                 <li key={link._key}>
                   <TextLink href={link.href} className="hover:shadow-[inset_0_-1px_0_var(--accent)]">

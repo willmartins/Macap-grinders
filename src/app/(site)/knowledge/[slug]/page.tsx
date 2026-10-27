@@ -6,6 +6,7 @@ import { Breadcrumbs } from "@/components/site/breadcrumbs";
 import { JsonLd } from "@/components/site/json-ld";
 import { BleedHero } from "@/components/site/bleed-hero";
 import { RichTextBody } from "@/components/site/rich-text";
+import { TextLink } from "@/components/site/text-link";
 import { SampleBanner } from "@/components/site/sample-banner";
 import { formatDate } from "@/lib/format";
 import { articleJsonLd, faqJsonLd } from "@/lib/jsonld";
@@ -94,7 +95,7 @@ async function PostContent({ params }: { params: Promise<{ slug: string }> }) {
           <h2 className="text-3xl font-medium tracking-tight">Questions</h2>
           <div className="mt-6 max-w-3xl divide-y divide-line border-y border-line">
             {post.faqs.map((faq) => (
-              <details key={faq._key} className="py-4">
+              <details key={faq._key} className="py-2">
                 <summary className="cursor-pointer font-medium">{faq.question}</summary>
                 <p className="mt-3 text-sm leading-relaxed text-muted">{faq.answer}</p>
               </details>
@@ -108,6 +109,11 @@ async function PostContent({ params }: { params: Promise<{ slug: string }> }) {
           <GrinderGrid grinders={post.relatedGrinders} />
         </section>
       ) : null}
+      <p className="frame pb-[var(--space-standard)]">
+        <TextLink href="/knowledge" className="tap">
+          All articles
+        </TextLink>
+      </p>
       <JsonLd
         data={articleJsonLd({
           title: post.title,

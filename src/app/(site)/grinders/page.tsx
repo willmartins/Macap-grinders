@@ -3,6 +3,8 @@ import { Suspense } from "react";
 import { FilterBar } from "@/components/grinders/filters";
 import { GrinderGrid } from "@/components/grinders/grinder-card";
 import { SampleBanner } from "@/components/site/sample-banner";
+import { TextLink } from "@/components/site/text-link";
+import { compareHref } from "@/lib/compare";
 import { applyFilters, readFilters } from "@/lib/filters";
 import { buildMetadata } from "@/lib/metadata";
 import { draftPerspective } from "@/sanity/lib/draft";
@@ -54,6 +56,13 @@ async function GrindersContent({
         <div className="mt-6">
           <GrinderGrid grinders={grinders} />
         </div>
+        {grinders.length > 1 ? (
+          <p className="mt-10">
+            <TextLink href={compareHref(grinders.slice(0, 3).map((grinder) => grinder.slug))} className="tap">
+              Compare these grinders
+            </TextLink>
+          </p>
+        ) : null}
       </div>
     </article>
   );

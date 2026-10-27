@@ -112,10 +112,41 @@ section[id],
 }
 
 .nav-link {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
   font-size: 0.9375rem;
   font-weight: 500;
   letter-spacing: 0;
   line-height: 1.2;
+}
+
+.site-menu > summary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  min-width: 44px;
+  min-height: 44px;
+  padding-inline: 0.85rem;
+}
+
+.menu-panel .nav-link {
+  display: flex;
+  width: 100%;
+}
+
+.site-footer a,
+.site-footer button {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+}
+
+.tap {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
 }
 
 .step-index {
@@ -630,7 +661,16 @@ button:focus-visible {
 }
 
 summary {
+  display: flex;
+  align-items: center;
+  min-height: 44px;
   list-style: none;
+}
+
+[aria-label="Breadcrumb"] a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
 }
 
 summary::-webkit-details-marker {

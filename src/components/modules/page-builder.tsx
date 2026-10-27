@@ -262,7 +262,7 @@ export function PageBuilder({ sections, journey }: { sections: Section[]; journe
                 <h2 className="display-sm">{section.heading}</h2>
                 <div className="mt-8 max-w-3xl divide-y divide-line border-y border-line">
                   {section.faqs.map((faq) => (
-                    <details key={faq._key} className="py-5">
+                    <details key={faq._key} className="py-2">
                       <summary className="cursor-pointer text-lg font-medium">{faq.question}</summary>
                       <p className="mt-3 max-w-2xl leading-relaxed text-muted">{faq.answer}</p>
                     </details>

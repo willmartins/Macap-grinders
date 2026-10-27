@@ -265,7 +265,7 @@ export function GrinderModel({
           </h2>
           <div className="mt-8 max-w-3xl divide-y divide-line border-y border-line">
             {faqs.map((faq) => (
-              <details key={faq._key} className="group py-5">
+              <details key={faq._key} className="group py-2">
                 <summary className="cursor-pointer text-lg font-medium">{faq.question}</summary>
                 <p className="mt-3 max-w-2xl leading-relaxed text-muted">{faq.answer}</p>
               </details>

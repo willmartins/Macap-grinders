@@ -64,7 +64,7 @@ async function CompareContent({
                   />
                   <p className="label mt-4 text-muted">{grinder.groupName || "Macap"}</p>
                   <h2 className="mt-2 text-3xl font-medium tracking-tight">
-                    <TextLink href={`/grinders/${grinder.slug}`} className="underline-offset-4 hover:underline">
+                    <TextLink href={`/grinders/${grinder.slug}`} className="tap underline-offset-4 hover:underline">
                       {grinder.name}
                     </TextLink>
                   </h2>
@@ -88,7 +88,7 @@ async function CompareContent({
               <li key={grinder.id}>
                 <TextLink
                   href={compareHref(grinders.map((item) => item.slug).filter((slug) => slug !== grinder.slug))}
-                  className="underline underline-offset-4"
+                  className="tap underline underline-offset-4"
                 >
                   Remove {grinder.name}
                 </TextLink>
@@ -104,7 +104,7 @@ async function CompareContent({
                 <li key={grinder.id}>
                   <TextLink
                     href={compareHref([...grinders.map((item) => item.slug), grinder.slug])}
-                    className="underline underline-offset-4"
+                    className="tap underline underline-offset-4"
                   >
                     {grinder.name}
                   </TextLink>

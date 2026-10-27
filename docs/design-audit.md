@@ -99,4 +99,16 @@ Inline links inside a paragraph stay inline. Stretching them to 44px would break
 
 ## What changed
 
-Filled in after the second pass.
+**H1.** Navigation links, the menu control, footer links and Cookie settings now have a 44px target. The header stays one logo-height. The drawn logo is unchanged.
+
+**H2.** Question summaries are 44px tall. The padding sits on the summary, not only on the disclosure.
+
+**H3.** Compare choices and Remove links use the same 44px target. They stay text links with arrows.
+
+**M1.** Breadcrumb links, including those on a photograph, are 44px tall.
+
+**M2.** A collection and a group end with Compare these grinders, opening compare with up to three models from that page.
+
+**M3.** About links to Home grinders and Professional. A legal page links to Contact us. A post links to All articles.
+
+**M4.** No change. The quote still closes the home page. The chapters above it name the journeys.
