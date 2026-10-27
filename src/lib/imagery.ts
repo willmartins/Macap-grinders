@@ -10,12 +10,14 @@ export type Shot = {
   alt: string;
   width: number;
   height: number;
+  /** CSS object-position, so the machine stays in frame. */
+  focus: string;
 };
 
 const cdn = "https://cdn.sanity.io/images/xb4mqxnu/production";
 
-function shot(file: string, alt: string, width: number, height: number): Shot {
-  return { src: `${cdn}/${file}`, alt, width, height };
+function shot(file: string, alt: string, width: number, height: number, focus = "center"): Shot {
+  return { src: `${cdn}/${file}`, alt, width, height, focus };
 }
 
 export const pageShots = {
@@ -24,30 +26,49 @@ export const pageShots = {
     "Macap coffee grinder on a stone counter, seen from above.",
     1400,
     1050,
+    "center 42%",
   ),
   homeSplit: shot(
     "bc13d606a47248e2925f0631d01f3da0e1358af3-1920x1080.webp",
     "Macap M2M Domus grinder on a wooden kitchen counter.",
     1920,
     1080,
+    "center 62%",
   ),
   professionalSplit: shot(
     "a257bb9ccf284481a23741303e466408eab8ee11-2400x1600.jpg",
     "Macap grinder on a cafe counter with cups and a glass of water.",
     2400,
     1600,
+    "center 45%",
   ),
   homeJourney: shot(
     "1aab3f6692d4081c9afa4018ae8d2c17d3ec89aa-1920x1080.webp",
     "Macap M2E Domus grinder on a kitchen counter beside a cup.",
     1920,
     1080,
+    "center 58%",
   ),
   professionalJourney: shot(
     "5377a00cd68e1c49e83dba59066f00c125505062-1800x1200.jpg",
     "Macap grinder in use on a bar counter.",
     1800,
     1200,
+    "center 40%",
+  ),
+  dose: shot(
+    "2b983db56e3ef8f5d15b6889d331377565c3d354-1334x890.jpg",
+    "Macap Supra 68 G grinder on a bar.",
+    1334,
+    890,
+    "center 50%",
+  ),
+  supraWide: shot(
+    "bd4298250073711feb9f32eaa056dae7bb3f9db6-1200x801.jpg",
+    "Macap Supra 68 grinder on a counter, wide view.",
+    1200,
+    801,
+    "center 48%",
   ),
   aboutHero: shot(
     "d508e46901997608172f5a61d754b3a821b2c55e-1920x1080.webp",
@@ -130,6 +151,7 @@ export const grinderMedia: Record<string, { hero: Shot; gallery: Shot[] }> = {
       "Macap Supra 68 grinder on a counter, wide view.",
       1200,
       801,
+      "center 46%",
     ),
     gallery: [
       shot(
@@ -300,4 +322,16 @@ export function articleShot(slug: string): Shot | null {
 
 export function collectionShot(slug: string): Shot | null {
   return collectionShots[slug] ?? null;
+}
+
+const catalogue: Shot[] = [
+  ...Object.values(pageShots),
+  ...Object.values(articleShots),
+  ...Object.values(collectionShots),
+  ...Object.values(grinderMedia).flatMap((item) => [item.hero, ...item.gallery]),
+];
+
+export function focusFor(src: string | null | undefined): string {
+  if (!src) return "center";
+  return catalogue.find((item) => item.src === src)?.focus ?? "center";
 }

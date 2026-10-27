@@ -9,20 +9,16 @@ export function ContentPage({
   page: PageDocument;
   journey?: string;
 }) {
-  const hero = page.sections[0]?._type === "heroBanner" ? page.sections[0] : null;
-  const showIntro = page.introduction && page.introduction !== hero?.text;
+  const hero = page.sections[0]?._type === "heroBanner";
   return (
     <article>
       {page.sample ? <SampleBanner /> : null}
       {hero ? null : (
-        <header className="frame pt-16 md:pt-24">
+        <header className="frame pt-10 md:pt-16">
           <h1 className="display max-w-5xl">{page.title}</h1>
-          {showIntro ? <p className="mt-6 max-w-2xl text-lg leading-relaxed">{page.introduction}</p> : null}
+          {page.introduction ? <p className="mt-6 max-w-2xl text-lg leading-relaxed">{page.introduction}</p> : null}
         </header>
       )}
-      {hero && showIntro ? (
-        <p className="frame border-b border-line py-12 text-lg leading-relaxed md:py-16">{page.introduction}</p>
-      ) : null}
       <PageBuilder sections={page.sections} journey={journey} />
     </article>
   );

@@ -15,7 +15,14 @@ export function performanceFigures(grinder: Pick<Grinder, "specs">): Figure[] {
   if (specs.motorPowerW != null) {
     figures.push({ label: "Motor", value: formatNumber(specs.motorPowerW), unit: "W" });
   }
-  if (specs.outputGPerS != null) {
+  const rate = specs.extra.find((item) => /g\/s/i.test(item.value));
+  if (rate) {
+    figures.push({
+      label: "Output",
+      value: rate.value.replace(/\s*g\/s\s*$/i, ""),
+      unit: "g/s",
+    });
+  } else if (specs.outputGPerS != null) {
     figures.push({ label: "Output", value: formatNumber(specs.outputGPerS), unit: "g/s" });
   }
   if (specs.hopperCapacityG != null) {

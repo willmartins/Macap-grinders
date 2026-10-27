@@ -33,9 +33,7 @@ export function PhotoSlot({
           sizes={sizes}
           className={fit === "contain" ? "object-contain media-img" : "object-cover media-img"}
         />
-      ) : (
-        <p className="label absolute inset-x-0 bottom-0 p-4 text-muted">Photography to follow</p>
-      )}
+      ) : null}
     </div>
   );
 }

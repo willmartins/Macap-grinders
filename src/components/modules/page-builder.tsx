@@ -3,12 +3,12 @@ import Image from "next/image";
 import { ContactForm } from "@/components/contact/contact-form";
 import { GrinderGrid } from "@/components/grinders/grinder-card";
 import { CompareTable, SpecTable } from "@/components/grinders/spec-table";
-import { BleedHero } from "@/components/site/bleed-hero";
+import { BleedHero, SplitHero } from "@/components/site/bleed-hero";
 import { PhotoSlot } from "@/components/site/photo-slot";
 import { RichTextBody } from "@/components/site/rich-text";
 import { explainDifferences } from "@/lib/compare";
 import type { Section } from "@/lib/content/types";
-import { collectionShot } from "@/lib/imagery";
+import { collectionShot, focusFor, pageShots } from "@/lib/imagery";
 import { safeHref } from "@/lib/security";
 
 function youtubeId(url: string): string | null {
@@ -55,8 +55,15 @@ function TextLink({
 
 function SectionIntro({ heading, intro }: { heading?: string; intro?: string }) {
   if (!heading && !intro) return null;
+  const step = heading === "Find your grinder" ? "03" : null;
   return (
-    <div className="mb-10 max-w-3xl">
+    <div className="mb-12 max-w-3xl">
+      {step ? (
+        <p className="label mb-5">
+          <span className="trim" />
+          {step}
+        </p>
+      ) : null}
       {heading ? <h2 className="display-sm">{heading}</h2> : null}
       {intro ? <p className="mt-4 max-w-xl text-lg text-muted">{intro}</p> : null}
     </div>
@@ -66,8 +73,22 @@ function SectionIntro({ heading, intro }: { heading?: string; intro?: string }) 
 export function PageBuilder({ sections, journey }: { sections: Section[]; journey?: string }) {
   return (
     <div>
-      {sections.map((section) => {
+      {sections.map((section, sectionIndex) => {
         if (section._type === "heroBanner") {
+          const hrefs = section.links.map((link) => link.href);
+          if (hrefs.includes("/home-grinders") && hrefs.includes("/professional")) {
+            return (
+              <SplitHero
+                key={section._key}
+                homeImage={pageShots.homeSplit.src}
+                homeAlt={pageShots.homeSplit.alt}
+                homeFocus={pageShots.homeSplit.focus}
+                proImage={pageShots.professionalSplit.src}
+                proAlt={pageShots.professionalSplit.alt}
+                proFocus={pageShots.professionalSplit.focus}
+              />
+            );
+          }
           const links = section.links.map((link, index) => (
             <TextLink
               key={link._key}
@@ -87,13 +108,14 @@ export function PageBuilder({ sections, journey }: { sections: Section[]; journe
                 eyebrow={section.eyebrow}
                 title={section.heading}
                 text={section.text}
+                focus={focusFor(section.imageUrl)}
               >
                 {section.links.length ? links : null}
               </BleedHero>
             );
           }
           return (
-            <header key={section._key} id={section._key} className="frame pb-6 pt-16 md:pt-24">
+            <header key={section._key} id={section._key} className="frame pb-6 pt-8 md:pt-12">
               {section.eyebrow ? (
                 <p className="label">
                   <span className="trim" />
@@ -121,26 +143,29 @@ export function PageBuilder({ sections, journey }: { sections: Section[]; journe
         }
 
         if (section._type === "imageText") {
-          const media = (
-            <div className={`relative min-h-[70vw] overflow-hidden md:min-h-[80svh] ${section.imagePosition === "right" ? "md:order-2" : ""}`}>
-              {section.imageUrl ? (
-                <Image
-                  src={section.imageUrl}
-                  alt={section.imageAlt}
-                  fill
-                  sizes="(min-width: 768px) 50vw, 100vw"
-                  className="object-cover media-img media-drift"
-                />
-              ) : (
-                <p className="label absolute bottom-6 left-6 text-muted">Photography to follow</p>
-              )}
-            </div>
-          );
+          const step = String(
+            sections.slice(0, sectionIndex).filter((item) => item._type === "imageText").length + 1,
+          ).padStart(2, "0");
           return (
-            <section key={section._key} id={section._key} className="reveal grid border-t border-line md:grid-cols-2">
-              {media}
-              <div className="flex flex-col justify-end px-5 py-14 md:px-16 md:py-20">
-                <h2 className="display-sm max-w-xl">{section.heading}</h2>
+            <section key={section._key} id={section._key} className={`editorial reveal border-t border-line ${section.imagePosition === "right" ? "is-flip" : ""}`}>
+              {section.imageUrl ? (
+                <div className="editorial-media">
+                  <Image
+                    src={section.imageUrl}
+                    alt={section.imageAlt}
+                    fill
+                    sizes="(min-width: 768px) 58vw, 100vw"
+                    className="object-cover media-img media-drift"
+                    style={{ objectPosition: focusFor(section.imageUrl) }}
+                  />
+                </div>
+              ) : null}
+              <div className="editorial-copy">
+                <p className="label">
+                  <span className="trim" />
+                  {step}
+                </p>
+                <h2 className="display-sm mt-5 max-w-xl">{section.heading}</h2>
                 <p className="mt-5 max-w-md text-lg leading-relaxed">{section.text}</p>
                 {section.link ? (
                   <p className="mt-8">

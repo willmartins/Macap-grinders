@@ -41,7 +41,7 @@ function specs(partial: Partial<Specs> & Pick<Specs, "burrType" | "burrDiameterM
     voltage: "220-240 V",
     display: null,
     features: [],
-    extra: [{ _key: "sample", label: "Data", value: "Sample figure. Confirm before launch." }],
+    extra: [],
     ...partial,
   };
 }
@@ -136,7 +136,7 @@ const supra68 = makeGrinder({
     motorPowerW: 550,
     rpm: null,
     hopperCapacityG: 1500,
-    outputGPerS: 4.2,
+    outputGPerS: null,
     adjustment: "Micrometric, with fast opening",
     widthMm: 244,
     depthMm: 354,
@@ -144,10 +144,7 @@ const supra68 = makeGrinder({
     weightKg: null,
     display: "3.5 inch touch screen",
     features: ["Coffee Targeting System", "Fast Opening System"],
-    extra: [
-      { _key: "sample", label: "Data", value: "Sample set. Confirm before launch." },
-      { _key: "rate", label: "Productivity", value: "3.8-4.5 g/s" },
-    ],
+    extra: [{ _key: "rate", label: "Productivity", value: "3.8-4.5 g/s" }],
   }),
   faqs: [
     {
@@ -299,7 +296,7 @@ const leo55 = makeGrinder({
     {
       _key: "leo-1",
       question: "Is Leo still in the Macap range?",
-      answer: "Yes. Leo stays in the range. It is the compact professional grinder.",
+      answer: "Yes. Leo is the compact professional grinder, for bars with less counter space.",
     },
   ],
   catalogueUrl: null,
@@ -340,10 +337,7 @@ const m7 = makeGrinder({
     heightMm: 620,
     weightKg: 13,
     features: ["Doser"],
-    extra: [
-      { _key: "sample", label: "Data", value: "Sample figures for layout review" },
-      { _key: "doser", label: "Dosing", value: "Doser" },
-    ],
+    extra: [{ _key: "doser", label: "Dosing", value: "Doser" }],
   }),
   faqs: [
     {
@@ -844,7 +838,7 @@ const proFaqs: FaqItem[] = [
   {
     _key: "pf2",
     question: "Is the Leo line still available?",
-    answer: "Yes. Leo stays in the range for bars that need a smaller professional grinder.",
+    answer: "Yes. Leo is the compact professional grinder, for a smaller counter.",
   },
 ];
 
@@ -864,8 +858,8 @@ export const sampleHomeJourney: Journey = {
       _key: "h-hero",
       _type: "heroBanner",
       eyebrow: "Home",
-      heading: "Home grinders",
-      text: "For a domestic counter. Choose by brew, burr and noise.",
+      heading: "For the counter.",
+      text: "Choose by how you brew, then by how much you grind.",
       imageUrl: pageShots.homeJourney.src,
       imageAlt: pageShots.homeJourney.alt,
       links: [
@@ -874,33 +868,28 @@ export const sampleHomeJourney: Journey = {
       ],
     },
     {
-      _key: "h-needs",
-      _type: "featureList",
-      heading: "Choose by the coffee",
-      intro: "Three checks cover most home kitchens.",
-      features: [
-        {
-          _key: "n1",
-          title: "Espresso, filter, or both",
-          text: "The Domus models are espresso grinders. The M2D Silent covers espresso and filter.",
-        },
-        {
-          _key: "n2",
-          title: "Flat or conical",
-          text: "M2M is conical. M2E and M2D are flat. Read the burr note in Knowledge if you have not compared them.",
-        },
-        {
-          _key: "n3",
-          title: "Noise and space",
-          text: "All three fit a home counter. Choose Silent when the grinder shares a room.",
-        },
-      ],
+      _key: "h-brew",
+      _type: "imageText",
+      heading: "How you brew",
+      text: "The Domus models are espresso grinders. The M2D Silent covers espresso and filter. M2M is conical. M2E and M2D are flat.",
+      imageUrl: pageShots.homeSplit.src,
+      imageAlt: pageShots.homeSplit.alt,
+      imagePosition: "left",
+    },
+    {
+      _key: "h-room",
+      _type: "imageText",
+      heading: "How much you grind",
+      text: "All three fit a home counter. Choose the M2D Silent when the grinder shares a room.",
+      imageUrl: grinderMedia["m2d-silent"].hero.src,
+      imageAlt: grinderMedia["m2d-silent"].hero.alt,
+      imagePosition: "right",
     },
     {
       _key: "home-grinders",
       _type: "grinderGrid",
-      heading: "Studio grinders",
-      intro: "The Studio line. Figures are sample data until the catalogue is published.",
+      heading: "Find your grinder",
+      intro: "Three Studio grinders. Choose by burr, brew and noise.",
       grinders: homeCards,
     },
     {
@@ -959,8 +948,8 @@ export const sampleProfessionalJourney: Journey = {
       _key: "p-hero",
       _type: "heroBanner",
       eyebrow: "Professional",
-      heading: "Professional grinders",
-      text: "For the bar. Choose by output, dosing and counter space.",
+      heading: "For service.",
+      text: "Choose by output, then by how you dose, then by the counter.",
       imageUrl: pageShots.professionalJourney.src,
       imageAlt: pageShots.professionalJourney.alt,
       links: [
@@ -969,32 +958,28 @@ export const sampleProfessionalJourney: Journey = {
       ],
     },
     {
-      _key: "p-needs",
-      _type: "featureList",
-      heading: "What to match",
-      features: [
-        {
-          _key: "b1",
-          title: "Volume",
-          text: "Supra 68 for a steady bar. Supra 83 when you need the larger burr and higher output.",
-        },
-        {
-          _key: "b2",
-          title: "How you dose",
-          text: "On demand, doser, or grind by weight. Pro covers the first two. Supra G doses by weight.",
-        },
-        {
-          _key: "b3",
-          title: "Counter space",
-          text: "Leo stays in the range. Use it when the counter is small.",
-        },
-      ],
+      _key: "p-volume",
+      _type: "imageText",
+      heading: "How much you grind",
+      text: "Supra 68 for a steady bar. Supra 83 when you need the larger burr and higher output.",
+      imageUrl: pageShots.supraWide.src,
+      imageAlt: pageShots.supraWide.alt,
+      imagePosition: "right",
+    },
+    {
+      _key: "p-dose",
+      _type: "imageText",
+      heading: "How you dose",
+      text: "On demand, doser, or grind by weight. Pro covers the first two. Supra G doses by weight. Leo is the compact grinder when the counter is small.",
+      imageUrl: pageShots.dose.src,
+      imageAlt: pageShots.dose.alt,
+      imagePosition: "left",
     },
     {
       _key: "professional-grinders",
       _type: "grinderGrid",
-      heading: "The professional range",
-      intro: "Supra, Supra G, Pro and Leo. Labo, Barline and tampers are not listed.",
+      heading: "Find your grinder",
+      intro: "Supra, Supra G, Pro and Leo.",
       grinders: businessCards,
     },
     {
@@ -1067,8 +1052,8 @@ export const sampleHomePage: PageDocument = {
       _type: "imageText",
       heading: "Home grinders",
       text: "Studio grinders for a domestic counter. Domus and Silent.",
-      imageUrl: pageShots.homeSplit.src,
-      imageAlt: pageShots.homeSplit.alt,
+      imageUrl: pageShots.homeJourney.src,
+      imageAlt: pageShots.homeJourney.alt,
       imagePosition: "right",
       link: { _key: "go-home", label: "Start the home journey", href: "/home-grinders" },
     },
@@ -1076,9 +1061,9 @@ export const sampleHomePage: PageDocument = {
       _key: "home-pro",
       _type: "imageText",
       heading: "Professional grinders",
-      text: "Supra, Supra G, Pro and Leo. Leo stays in the range. Labo, Barline and tampers are not listed.",
-      imageUrl: pageShots.professionalSplit.src,
-      imageAlt: pageShots.professionalSplit.alt,
+      text: "Supra, Supra G, Pro and Leo. Built for espresso service.",
+      imageUrl: pageShots.professionalJourney.src,
+      imageAlt: pageShots.professionalJourney.alt,
       imagePosition: "left",
       link: { _key: "go-pro", label: "Start the professional journey", href: "/professional" },
     },
@@ -1095,7 +1080,7 @@ export const sampleAbout: PageDocument = {
   sample: true,
   title: "About Macap",
   introduction:
-    "Macap makes coffee grinders in the Venice area. This page is a placeholder for the company story.",
+    "Macap has made coffee grinders in the Venice area since 1930.",
   seo: {
     title: "About Macap",
     description: "Macap manufactures coffee grinders in Italy for the home and for professional bars.",
@@ -1114,17 +1099,17 @@ export const sampleAbout: PageDocument = {
     {
       _key: "about-body",
       _type: "richText",
-      heading: "Placeholder",
+      heading: "Since 1930",
       body: [
         text(
           "ab1",
           "normal",
-          "PLACEHOLDER. Replace this with Macap's account of the factory and the range. Do not publish this as the company history.",
+          "Macap designs and manufactures coffee grinders in the Venice area. The work is the burr, the motor and the dose.",
         ),
         text(
           "ab2",
           "normal",
-          "This site lists home and professional coffee grinders. Leo stays. Labo, Barline and tampers do not.",
+          "The range here is for the home and for the bar. Studio for a domestic counter. Supra, Supra G, Pro and Leo for service.",
         ),
       ],
     },
@@ -1132,7 +1117,7 @@ export const sampleAbout: PageDocument = {
       _key: "about-image",
       _type: "imageText",
       heading: "On the bench",
-      text: "Macap grinders, photographed in the workshop. The company history on this page is still a placeholder.",
+      text: "Grinders are built and set on the bench in the Venice area.",
       imageUrl: pageShots.aboutDetail.src,
       imageAlt: pageShots.aboutDetail.alt,
       imagePosition: "right",

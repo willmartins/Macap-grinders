@@ -11,15 +11,13 @@ export function SpecTable({
   const rows = specEntries(grinder);
   return (
     <div className="overflow-x-auto">
-      <table className="w-full min-w-[20rem] border-collapse text-left">
+      <table className="datasheet min-w-[20rem]">
         {caption ? <caption className="label mb-4 text-left text-muted">{caption}</caption> : null}
         <tbody>
           {rows.map((row) => (
-            <tr key={row.label} className="border-b border-line">
-              <th scope="row" className="label w-40 py-4 pr-4 font-medium text-muted">
-                {row.label}
-              </th>
-              <td className="py-4 text-base tabular-nums">{row.value}</td>
+            <tr key={row.label}>
+              <th scope="row">{row.label}</th>
+              <td>{row.value}</td>
             </tr>
           ))}
         </tbody>
