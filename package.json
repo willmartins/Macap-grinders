@@ -1,0 +1,48 @@
+{
+  "name": "macap-website",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "pnpm typegen && next build",
+    "start": "next start",
+    "lint": "eslint .",
+    "typecheck": "tsc --noEmit",
+    "check:overlap": "node scripts/check-overlap.mjs",
+    "brand:icons": "node scripts/brand-icons.mjs",
+    "typegen": "sanity schema extract --enforce-required-fields --force && sanity typegen generate",
+    "import:content": "node --experimental-strip-types scripts/import/index.ts"
+  },
+  "dependencies": {
+    "@next/third-parties": "^16.4.3",
+    "@portabletext/react": "^8.0.1",
+    "@sanity/icons": "^5.2.3",
+    "@sanity/image-url": "^2.1.1",
+    "@sanity/vision": "^6.20.0",
+    "@upstash/ratelimit": "^2.2.0",
+    "@upstash/redis": "^1.40.0",
+    "@vercel/analytics": "^2.0.1",
+    "@vercel/speed-insights": "^2.0.0",
+    "next": "16.4.3",
+    "next-sanity": "^13.4.0",
+    "react": "19.3.0",
+    "react-dom": "19.3.0",
+    "resend": "^6.34.1",
+    "sanity": "^6.20.0",
+    "schema-dts": "^2.1.0",
+    "zod": "^4.6.7"
+  },
+  "devDependencies": {
+    "@tailwindcss/turbopack": "^4",
+    "@types/node": "^20",
+    "@types/react": "^19",
+    "@types/react-dom": "^19",
+    "eslint": "^9",
+    "eslint-config-next": "16.4.3",
+    "playwright-core": "^1.64.1",
+    "tailwindcss": "^4",
+    "tsx": "^4.23.15",
+    "typescript": "^5"
+  },
+  "packageManager": "pnpm@10.33.4"
+}

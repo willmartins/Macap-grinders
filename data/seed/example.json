@@ -1,0 +1,86 @@
+{
+  "documents": [
+    {
+      "_id": "group-supra",
+      "_type": "grinderGroup",
+      "language": "en-GB",
+      "name": "Supra",
+      "slug": { "_type": "slug", "current": "supra" },
+      "summary": "Commercial flat-burr grinders for espresso service.",
+      "audience": "business"
+    },
+    {
+      "_id": "grinder-supra-68",
+      "_type": "grinder",
+      "language": "en-GB",
+      "name": "Supra 68",
+      "slug": { "_type": "slug", "current": "supra-68" },
+      "group": { "_type": "reference", "_ref": "group-supra" },
+      "audience": "business",
+      "status": "current",
+      "shortDescription": "A 68 mm flat-burr grinder for bars that pull espresso all day.",
+      "answerFirst": "The Supra 68 is a commercial espresso grinder. Flat burrs, 68 mm. Motor 550 W.",
+      "specs": {
+        "burrType": "flat",
+        "burrDiameterMm": 68,
+        "grindType": "espresso",
+        "motorPowerW": 550,
+        "hopperCapacityG": 1500,
+        "outputGPerS": 4.2,
+        "adjustment": "Micrometric, with fast opening",
+        "dimensions": { "widthMm": 244, "depthMm": 354, "heightMm": 638 },
+        "voltage": "220-240 V",
+        "display": "3.5 inch touch screen",
+        "features": ["Coffee Targeting System", "Fast Opening System"]
+      },
+      "extraSpecs": [
+        { "_key": "rate", "label": "Productivity", "value": "3.8-4.5 g/s" },
+        { "_key": "note", "label": "Data", "value": "Published figures from the Macap product page. Confirm before launch." }
+      ]
+    },
+    {
+      "_id": "author-macap",
+      "_type": "author",
+      "name": "Macap",
+      "slug": { "_type": "slug", "current": "macap" },
+      "role": "Macap",
+      "bio": "Notes from Macap on choosing, using and looking after a coffee grinder."
+    },
+    {
+      "_id": "topic-choosing-a-grinder",
+      "_type": "kbTopic",
+      "language": "en-GB",
+      "title": "Choosing a grinder",
+      "slug": { "_type": "slug", "current": "choosing-a-grinder" },
+      "description": "How to match a Macap grinder to the counter and the coffee."
+    },
+    {
+      "_id": "post-flat-burrs",
+      "_type": "kbPost",
+      "language": "en-GB",
+      "title": "Flat burrs and conical burrs",
+      "slug": { "_type": "slug", "current": "flat-burrs-and-conical-burrs" },
+      "topic": { "_type": "reference", "_ref": "topic-choosing-a-grinder" },
+      "author": { "_type": "reference", "_ref": "author-macap" },
+      "publishedAt": "2026-06-01T00:00:00.000Z",
+      "excerpt": "Flat and conical burrs both make espresso. The choice is about the counter, the noise and the volume.",
+      "answerFirst": "Flat burrs and conical burrs both make good espresso. Choose by volume, noise and how you dial in.",
+      "body": [
+        {
+          "_key": "b1",
+          "_type": "block",
+          "style": "normal",
+          "markDefs": [],
+          "children": [
+            {
+              "_key": "s1",
+              "_type": "span",
+              "text": "Start with the coffee you already like. If you cannot taste a difference, the burr shape should not spend the budget.",
+              "marks": []
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
