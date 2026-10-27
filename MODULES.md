@@ -56,3 +56,15 @@ Cards stretch to one height in a grid and in a mobile swipe row. A missing figur
 `grinder.faqs` is an array of `faq` (question and answer), edited on the grinder document. Maximum six. The product page renders them in an accordion and adds FAQPage JSON-LD for the questions that are shown.
 
 If the array is empty, the page builds up to three questions from that grinder's own fields: burr type and diameter, grind adjustment, and home or professional use with output or hopper when those figures exist. A question is left out when the figure is missing. Nothing is invented.
+
+## Spacing and alignment
+
+Check every template at 375, 768, 1280 and 1440.
+
+- Section padding uses `--space-tight`, `--space-standard` or `--space-hero`. Inner gaps use `--gap-inner`. Blocks use `--gap-block`.
+- `.frame` and `--frame-inset` are the same inset: 1.25rem below 768, and 2rem from 768 until the 90rem cap, then half the leftover. Header, footer and page text share that left edge.
+- A split chapter uses the same inset. Text on the left lines up with the header. Text on the right ends on the header's right edge. The photograph can run to the edge of its half.
+- Body copy stays under 80 characters. Headlines can be larger and shorter.
+- Grinder cards use `--gap-inner`. Collection rows use `--gap-block`.
+- A phone swipe row is inset by `--frame-inset`, with a gap, and the next card peeks. The text inside that row does not add a second inset.
+- The logo clear space in the header stays as set. Arrows sit on the same line as the last word, and nudge only on hover or focus. Reduced motion keeps them still.

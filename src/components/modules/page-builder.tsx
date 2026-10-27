@@ -196,7 +196,7 @@ export function PageBuilder({ sections, journey }: { sections: Section[]; journe
             {section._type === "collectionCarousel" ? (
               <>
                 <SectionIntro heading={section.heading} intro={section.intro} />
-                <ul className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
+                <ul className="grid gap-[var(--gap-block)] sm:grid-cols-2 lg:grid-cols-3">
                   {section.collections.map((collection) => {
                     const shot = collectionShot(collection.slug);
                     return (
