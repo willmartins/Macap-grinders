@@ -7,6 +7,7 @@ import { countryName } from "@/lib/countries";
 import { enquiryFieldErrors, readEnquiry, roleLabel, roleSharesWithPartner } from "@/lib/enquiry";
 import { allowContact } from "@/lib/rate-limit";
 import { lookupDistributor } from "@/server/distributors";
+import { mailingListNote, type MailingConsent } from "@/server/mailing-list";
 import { loadGrinder } from "@/sanity/lib/load";
 
 export type ContactState = {
@@ -85,18 +86,19 @@ export async function submitContact(_previous: ContactState, formData: FormData)
   const loaded = data.grinder ? await loadGrinder(data.grinder, "published") : null;
   const grinderName = loaded?.grinder.name || "";
   const grinderLine = data.grinder ? `${grinderName || "Unknown model"} (${data.grinder})` : "Not named";
-  const consentedAt = new Date().toISOString();
-  const mailing = data.mailingList
-    ? `Yes. Consented at ${consentedAt} from ${source}.`
-    : "No";
+  const consent: MailingConsent | null = data.mailingList
+    ? { email: data.email, consentedAt: new Date().toISOString(), source }
+    : null;
+  const mailing = await mailingListNote(consent);
 
   const macapText = [
+    mailing,
+    "",
     `Role: ${roleLabel(data.role)}`,
     `Country: ${countryName(data.country)} (${data.country})`,
     `Grinder: ${grinderLine}`,
     `Email: ${data.email}`,
     `Phone: ${data.phone || "Not given"}`,
-    `Mailing list: ${mailing}`,
     partner
       ? `Distributor: ${partner.name}. ${share ? "The message is shared with them." : "The sender asked us to keep this with Macap."}`
       : "Distributor: None matched.",
@@ -110,7 +112,12 @@ export async function submitContact(_previous: ContactState, formData: FormData)
       from,
       to,
       replyTo: data.email,
-      subject: grinderName ? `Macap website: ${grinderName}` : "Macap website enquiry",
+      subject: [
+        grinderName ? `Macap website: ${grinderName}` : "Macap website enquiry",
+        consent ? "Mailing list sign-up" : "",
+      ]
+        .filter(Boolean)
+        .join(". "),
       text: macapText,
     });
     if (macapMail.error) {
@@ -147,22 +154,6 @@ export async function submitContact(_previous: ContactState, formData: FormData)
       if (partnerMail.error) console.error("Distributor email failed.");
     } catch {
       console.error("Distributor email failed.");
-    }
-  }
-
-  if (data.mailingList) {
-    const audience = process.env.RESEND_AUDIENCE_ID;
-    if (audience) {
-      try {
-        const added = await resend.contacts.create({
-          email: data.email,
-          audienceId: audience,
-          unsubscribed: false,
-        });
-        if (added.error) console.error("Mailing list was not updated.");
-      } catch {
-        console.error("Mailing list was not updated.");
-      }
     }
   }
 

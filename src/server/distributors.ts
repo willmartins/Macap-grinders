@@ -9,7 +9,9 @@ export type DistributorRecord = {
 };
 
 /**
- * Development only. Not written to the Sanity dataset.
+ * Development only. Macap adds real partners in Studio.
+ * The production dataset stays empty until they do. This example is never written there,
+ * and it is not used when NODE_ENV is production.
  * United Kingdom is covered so the enquiry notice can be reviewed before real partners exist.
  */
 const developmentDistributors: DistributorRecord[] = [
@@ -55,7 +57,8 @@ export async function lookupDistributor(country: string): Promise<DistributorRec
     if (process.env.NODE_ENV !== "development") return null;
   }
 
-  if ((!records || records.length === 0) && process.env.NODE_ENV === "development") {
+  const listIsEmpty = !records || records.length === 0;
+  if (listIsEmpty && process.env.NODE_ENV === "development") {
     records = developmentDistributors;
   }
   if (!records) return null;

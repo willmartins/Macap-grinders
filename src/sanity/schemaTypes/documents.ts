@@ -802,7 +802,7 @@ export const distributor = defineType({
   type: "document",
   icon: PinIcon,
   description:
-    "A partner who can receive enquiries for the countries they cover. Leave this empty until the real list is confirmed. Do not publish example partners.",
+    "A partner who can receive enquiries for the countries they cover. Macap adds these. Leave the list empty until then. Do not publish example partners.",
   fields: [
     defineField({
       name: "name",

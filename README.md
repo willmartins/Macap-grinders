@@ -43,7 +43,6 @@ See `.env.example`.
 | `UPSTASH_REDIS_REST_URL`, `UPSTASH_REDIS_REST_TOKEN` | Optional shared rate limit. |
 | `NEXT_PUBLIC_TURNSTILE_SITE_KEY`, `TURNSTILE_SECRET_KEY` | Optional bot check. Set both or neither. |
 | `CONTACT_DISTRIBUTOR_COPY` | `cc` or `bcc`. When an enquiry is shared with a distributor, Macap's inbox is copied this way. Defaults to `cc`. |
-| `RESEND_AUDIENCE_ID` | Optional. When set, a mailing-list opt-in is added to this Resend Audience. When unset, the opt-in is only recorded in the Macap email. |
 
 ## Vercel
 
@@ -174,7 +173,7 @@ If both `NEXT_PUBLIC_GA_MEASUREMENT_ID` and `NEXT_PUBLIC_GTM_ID` are set, use on
 
 - Vercel project and the environment variables above.
 - Sanity read token, write token and revalidate secret. CORS origins.
-- Resend domain, the contact inbox, and the distributor list in Sanity.
+- Resend domain and the contact inbox. Macap adds distributors in Sanity when the list is ready. There is no mailing-list provider yet. A sign-up is flagged on the Macap enquiry email.
 - GA4 measurement id, if Macap still wants Google Analytics.
 - Master logo files and the licensed typefaces from V12.
 - Real catalogue copy, photography and legal text. The pages marked placeholder are not ready to publish.
