@@ -51,8 +51,8 @@ export function GrinderCardView({ grinder }: { grinder: GrinderCard }) {
       </div>
       <div className="machine-foot">
         <p className="label text-muted">
-          {line}
-          {status ? `  /  ${status}` : ""}
+          <span>{line}</span>
+          {status ? <span className="ml-3">{status}</span> : null}
         </p>
         <h3 className="machine-name">{grinder.name}</h3>
         <div className="machine-end">

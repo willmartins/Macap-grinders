@@ -18,10 +18,7 @@ export function Footer({ shell }: { shell: Shell }) {
             <MacapLogo className="brand-logo" />
           </Link>
           <address className="not-italic text-sm leading-6">
-            <p className="label">
-              <span className="trim" />
-              Est. 1930
-            </p>
+            <p>Since 1930</p>
             <p className="mt-4 font-medium">{settings.siteName}</p>
             <p className="mt-3 whitespace-pre-line">{settings.address}</p>
             <p className="mt-3">
@@ -38,7 +35,7 @@ export function Footer({ shell }: { shell: Shell }) {
           </address>
         </div>
         <nav aria-label="Footer">
-          <p className="label">On this site</p>
+          <p className="index-title">On this site</p>
           <ul className="mt-3 grid gap-2 text-sm">
             {settings.footerNavigation.map((link) => (
               <li key={link._key}>
@@ -50,7 +47,7 @@ export function Footer({ shell }: { shell: Shell }) {
           </ul>
         </nav>
         <nav aria-label="Collections">
-          <p className="label">Collections</p>
+          <p className="index-title">Collections</p>
           <ul className="mt-3 grid gap-2 text-sm">
             {collections.map((collection) => (
               <li key={collection.slug}>
@@ -66,7 +63,7 @@ export function Footer({ shell }: { shell: Shell }) {
         </nav>
         <div>
           <nav aria-label="Legal">
-            <p className="label">Legal</p>
+            <p className="index-title">Legal</p>
             <ul className="mt-3 grid gap-2 text-sm">
               {legal.map((page) => (
                 <li key={page.slug}>

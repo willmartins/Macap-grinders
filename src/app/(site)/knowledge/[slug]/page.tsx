@@ -80,10 +80,10 @@ async function PostContent({ params }: { params: Promise<{ slug: string }> }) {
       )}
       <div className="frame section-tight">
         <p className="max-w-2xl text-xl leading-snug">{post.answerFirst}</p>
-        <p className="label mt-6 text-muted">
-          {post.author.name}
-          {post.publishedAt ? ` / ${formatDate(post.publishedAt)}` : ""}
-          {post.updatedAt ? ` / Updated ${formatDate(post.updatedAt)}` : ""}
+        <p className="mt-6 max-w-xs text-sm text-muted">
+          <span className="block">{post.author.name}</span>
+          {post.publishedAt ? <span className="block">{formatDate(post.publishedAt)}</span> : null}
+          {post.updatedAt ? <span className="block">Updated {formatDate(post.updatedAt)}</span> : null}
         </p>
       </div>
       <div className="frame section-tight">

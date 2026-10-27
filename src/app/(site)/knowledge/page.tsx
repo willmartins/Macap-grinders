@@ -69,9 +69,9 @@ async function KnowledgeContent() {
                   </h3>
                   <p className="mt-2 max-w-xl text-muted">{post.excerpt}</p>
                 </div>
-                <p className="label text-muted md:col-span-2 md:text-right">
-                  {post.topicTitle ? `${post.topicTitle} / ` : ""}
-                  {formatDate(post.publishedAt)}
+                <p className="text-sm text-muted md:col-span-2 md:text-right">
+                  {post.topicTitle ? <span className="block">{post.topicTitle}</span> : null}
+                  <span className="block">{formatDate(post.publishedAt)}</span>
                 </p>
               </li>
             );

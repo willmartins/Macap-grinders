@@ -158,10 +158,10 @@ If both `NEXT_PUBLIC_GA_MEASUREMENT_ID` and `NEXT_PUBLIC_GTM_ID` are set, use on
 
 ## Design
 
-- Colours: warm paper `#F4F1EB` on Home, black `#070707` on Professional, yellow `#FFC600` as a thin trim. Yellow is not a fill for body text.
-- Type: Schibsted Grotesk for headlines, on `--font-macap`. IBM Plex Mono for labels and indexes, on `--font-macap-mono`. Replace the Grotesk token when the Graphik or Neue Haas Grotesk licence is available. The wordmark is drawn in the logo SVG, not set in type.
+- Colours: White `#FFFFFF` on Home, Black `#000000` on Professional, Signal `#FFC600` (Pantone 7548 C) as trim only. The named neutrals are Steel `#5C5C5C`, Alloy `#E4E4E4` and Ash `#A3A3A3`. See `docs/design-plan.md`.
+- Type: Schibsted Grotesk on `--font-macap` stands in for Aristotelica (display), Graphik (interface) and Neue Haas Grotesk (reading) until those licences arrive. Labels are sentence case in that face. The wordmark is drawn in the logo SVG, not set in type.
 - Model pages lead with a full-bleed photograph and the burr, motor, output and hopper figures, then engineering, burrs, motor, control and the specification table.
-- Motion is a short rise and a slight image scale, only when the browser allows scroll-driven animation and the visitor has not asked for reduced motion.
+- Motion is one load moment on the home split: the two lines settle and the yellow seam appears. It is off when the visitor asks for reduced motion. A grinder card still answers the pointer.
 - Logos in `public/brand/` are the official V12 artwork. `macap-logo.svg` is the wordmark and mark. `macap-icon.svg` is the mark alone. White files use the same geometry with `fill="#fff"`. Inline the artwork with `currentColor`. Favicons, the Apple touch icon and the manifest icons are the mark on a black tile.
 
 ## Security

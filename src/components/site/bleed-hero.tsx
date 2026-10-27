@@ -100,8 +100,7 @@ export function SplitHero({
         />
         <div className="hero-scrim" aria-hidden="true" />
         <div className="hero-copy frame">
-          <p className="label text-white/80">01  /  Home</p>
-          <h1 className="display mt-4 text-white">For the home.</h1>
+          <h1 className="display text-white">For the home.</h1>
           <p className="hero-lead">Studio grinders for a domestic counter.</p>
           <p className="btn btn-on-photo mt-8 w-fit">Home grinders</p>
         </div>
@@ -118,8 +117,7 @@ export function SplitHero({
         />
         <div className="hero-scrim" aria-hidden="true" />
         <div className="hero-copy frame">
-          <p className="label text-white/80">02  /  Professional</p>
-          <p className="display mt-4 text-white">For the bar.</p>
+          <p className="display text-white">For the bar.</p>
           <p className="hero-lead">Supra, Supra G, Pro and Leo.</p>
           <p className="btn btn-on-photo btn-secondary mt-8 w-fit">Professional</p>
         </div>
