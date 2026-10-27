@@ -45,7 +45,6 @@ async function CollectionContent({ params }: { params: Promise<{ slug: string }>
     <article>
       <ThemeLock theme={theme} />
       {sample ? <SampleBanner /> : null}
-      <Breadcrumbs items={[{ name: collection.name, path: `/collections/${collection.slug}` }]} />
       {shot ? (
         <BleedHero
           imageUrl={shot.src}
@@ -54,12 +53,18 @@ async function CollectionContent({ params }: { params: Promise<{ slug: string }>
           title={collection.name}
           text={collection.answerFirst || collection.summary}
           short
+          crumbs={
+            <Breadcrumbs overlay items={[{ name: collection.name, path: `/collections/${collection.slug}` }]} />
+          }
         />
       ) : (
-        <header className="frame py-16 md:py-24">
-          <h1 className="display">{collection.name}</h1>
-          <p className="mt-6 max-w-2xl text-lg leading-relaxed">{collection.answerFirst || collection.summary}</p>
-        </header>
+        <>
+          <Breadcrumbs items={[{ name: collection.name, path: `/collections/${collection.slug}` }]} />
+          <header className="frame py-16 md:py-24">
+            <h1 className="display">{collection.name}</h1>
+            <p className="mt-6 max-w-2xl text-lg leading-relaxed">{collection.answerFirst || collection.summary}</p>
+          </header>
+        </>
       )}
       <div className="frame py-16">
         <GrinderGrid grinders={collection.grinders} />

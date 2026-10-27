@@ -42,15 +42,6 @@ async function PostContent({ params }: { params: Promise<{ slug: string }> }) {
   return (
     <article>
       {sample ? <SampleBanner /> : null}
-      <Breadcrumbs
-        items={[
-          { name: "Knowledge", path: "/knowledge" },
-          ...(post.topicSlug && post.topicTitle
-            ? [{ name: post.topicTitle, path: `/knowledge/topic/${post.topicSlug}` }]
-            : []),
-          { name: post.title, path: `/knowledge/${post.slug}` },
-        ]}
-      />
       {post.imageUrl ? (
         <BleedHero
           imageUrl={post.imageUrl}
@@ -58,11 +49,34 @@ async function PostContent({ params }: { params: Promise<{ slug: string }> }) {
           eyebrow={post.topicTitle || "Knowledge"}
           title={post.title}
           short
+          crumbs={
+            <Breadcrumbs
+              overlay
+              items={[
+                { name: "Knowledge", path: "/knowledge" },
+                ...(post.topicSlug && post.topicTitle
+                  ? [{ name: post.topicTitle, path: `/knowledge/topic/${post.topicSlug}` }]
+                  : []),
+                { name: post.title, path: `/knowledge/${post.slug}` },
+              ]}
+            />
+          }
         />
       ) : (
-        <header className="frame pt-16 md:pt-24">
-          <h1 className="display-sm max-w-4xl">{post.title}</h1>
-        </header>
+        <>
+          <Breadcrumbs
+            items={[
+              { name: "Knowledge", path: "/knowledge" },
+              ...(post.topicSlug && post.topicTitle
+                ? [{ name: post.topicTitle, path: `/knowledge/topic/${post.topicSlug}` }]
+                : []),
+              { name: post.title, path: `/knowledge/${post.slug}` },
+            ]}
+          />
+          <header className="frame pt-10 md:pt-16">
+            <h1 className="display-sm max-w-4xl">{post.title}</h1>
+          </header>
+        </>
       )}
       <div className="frame py-12">
         <p className="max-w-2xl text-xl leading-snug">{post.answerFirst}</p>

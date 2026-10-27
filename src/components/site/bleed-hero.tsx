@@ -14,6 +14,8 @@ export function BleedHero({
   short = false,
   focus = "center",
   figures,
+  crumbs,
+  product = false,
 }: {
   imageUrl: string;
   alt: string;
@@ -25,9 +27,15 @@ export function BleedHero({
   short?: boolean;
   focus?: string;
   figures?: Figure[];
+  crumbs?: ReactNode;
+  product?: boolean;
 }) {
+  const heroClass = [short ? "hero-bleed hero-bleed-short" : "hero-bleed", product ? "product-hero" : ""]
+    .filter(Boolean)
+    .join(" ");
   return (
-    <header data-hero="" className={short ? "hero-bleed hero-bleed-short" : "hero-bleed"}>
+    <header data-hero="" className={heroClass}>
+      {crumbs}
       <div className="hero-media">
         <Image
           src={imageUrl}
@@ -45,7 +53,11 @@ export function BleedHero({
         <h1 className={`${short ? "display-sm" : "display"} mt-4 max-w-6xl text-white`}>{title}</h1>
         {text ? <p className="hero-lead">{text}</p> : null}
         {figures && figures.length ? (
-          <ul className="hero-figures">
+          <ul
+            className={product ? "hero-figures snap-row" : "hero-figures"}
+            aria-label={product ? "Key figures" : undefined}
+            tabIndex={product ? 0 : undefined}
+          >
             {figures.map((figure) => (
               <li key={figure.label}>
                 <p className="label text-white/75">{figure.label}</p>
@@ -57,7 +69,7 @@ export function BleedHero({
             ))}
           </ul>
         ) : null}
-        {children ? <div className="mt-8 flex flex-wrap gap-3">{children}</div> : null}
+        {children ? <div className="hero-actions flex flex-wrap gap-3">{children}</div> : null}
       </div>
     </header>
   );

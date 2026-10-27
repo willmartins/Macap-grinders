@@ -458,8 +458,11 @@ export const grinder = defineType({
     defineField({
       name: "faqs",
       title: "Questions",
+      description:
+        "Questions visitors ask about this model. Add up to six. If you leave this empty, the page writes up to three short answers from the burrs, the adjustment, and whether the grinder is for home or the bar. It only uses figures you have entered.",
       type: "array",
       of: [defineArrayMember({ type: "faq" })],
+      validation: (rule) => rule.max(6),
     }),
     defineField({
       name: "relatedGrinders",

@@ -20,3 +20,9 @@ Page sections share one name in code and in Sanity Studio. They are rendered by 
 | contactBlock | src/components/modules/page-builder.tsx | contactBlock | Contact, professional journey | The contact form. |
 
 Document types that are not page sections: `siteSettings`, `homePage`, `aboutPage`, `contactPage`, `knowledgeHubPage`, `grindersIndexPage`, `journeyPage`, `grinderGroup`, `grinder`, `grinderCollection`, `author`, `kbTopic`, `kbPost`, `legalPage`, `redirect`. Shared objects: `seo`, `link`, `faq`, `blockContent`, `grinderSpecs`.
+
+## Grinder questions
+
+`grinder.faqs` is an array of `faq` (question and answer), edited on the grinder document. Maximum six. The product page renders them in an accordion and adds FAQPage JSON-LD for the questions that are shown.
+
+If the array is empty, the page builds up to three questions from that grinder's own fields: burr type and diameter, grind adjustment, and home or professional use with output or hopper when those figures exist. A question is left out when the figure is missing. Nothing is invented.

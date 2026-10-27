@@ -47,7 +47,7 @@ export function GrinderCardView({ grinder }: { grinder: GrinderCard }) {
   );
 }
 
-export function GrinderGrid({ grinders }: { grinders: GrinderCard[] }) {
+export function GrinderGrid({ grinders, snap = false }: { grinders: GrinderCard[]; snap?: boolean }) {
   if (!grinders.length) {
     return (
       <p className="text-sm">
@@ -56,6 +56,17 @@ export function GrinderGrid({ grinders }: { grinders: GrinderCard[] }) {
           Clear filters
         </Link>
       </p>
+    );
+  }
+  if (snap) {
+    return (
+      <ul className="snap-row model-snap" tabIndex={0} aria-label="Related models">
+        {grinders.map((grinder) => (
+          <li key={grinder.id}>
+            <GrinderCardView grinder={grinder} />
+          </li>
+        ))}
+      </ul>
     );
   }
   return (

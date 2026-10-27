@@ -2,11 +2,11 @@ import { notFound } from "next/navigation";
 import { Suspense } from "react";
 
 import { GrinderModel } from "@/components/grinders/model";
-import { Breadcrumbs } from "@/components/site/breadcrumbs";
 import { JsonLd } from "@/components/site/json-ld";
 import { SampleBanner } from "@/components/site/sample-banner";
 import { ThemeLock } from "@/components/site/theme-frame";
 import { TrackGrinderView } from "@/components/site/trackers";
+import { grinderFaqs } from "@/lib/faqs";
 import { faqJsonLd, productJsonLd } from "@/lib/jsonld";
 import { buildMetadata } from "@/lib/metadata";
 import { draftPerspective } from "@/sanity/lib/draft";
@@ -34,23 +34,23 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
 
 async function GrinderContent({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
-  const loaded = await loadGrinder(slug, await draftPerspective());
+  const perspective = await draftPerspective();
+  const [loaded, catalogue] = await Promise.all([loadGrinder(slug, perspective), loadGrinderCards(perspective)]);
   if (!loaded) notFound();
   const { grinder, sample } = loaded;
+  const siblings = catalogue.grinders.filter(
+    (item) => item.groupSlug && item.groupSlug === grinder.groupSlug && item.slug !== grinder.slug,
+  );
+  const related = siblings.length ? siblings : grinder.relatedGrinders;
+  const faqs = grinderFaqs(grinder);
   return (
     <article>
       <ThemeLock theme={grinder.audience === "business" ? "professional" : "home"} />
       <TrackGrinderView slug={grinder.slug} name={grinder.name} audience={grinder.audience} />
       {sample ? <SampleBanner /> : null}
-      <Breadcrumbs
-        items={[
-          { name: "Grinders", path: "/grinders" },
-          { name: grinder.name, path: `/grinders/${grinder.slug}` },
-        ]}
-      />
-      <GrinderModel grinder={grinder} sample={sample} />
+      <GrinderModel grinder={grinder} sample={sample} faqs={faqs} siblings={related} />
       <JsonLd data={productJsonLd(grinder)} />
-      <JsonLd data={faqJsonLd(grinder.faqs)} />
+      <JsonLd data={faqJsonLd(faqs)} />
     </article>
   );
 }

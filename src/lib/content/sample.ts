@@ -556,6 +556,7 @@ export const sampleGrinders: Grinder[] = [
 ];
 
 for (const grinder of sampleGrinders) {
+  grinder.faqs = [];
   const media = grinderMedia[grinder.slug];
   if (!media) continue;
   grinder.imageUrl = media.hero.src;
