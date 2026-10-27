@@ -330,7 +330,7 @@ main:has([data-hero]) {
 .split-panel {
   position: relative;
   display: grid;
-  min-height: 78svh;
+  min-height: 70svh;
   align-items: end;
   overflow: hidden;
   color: #ffffff;
@@ -354,19 +354,27 @@ main:has([data-hero]) {
 .editorial-media {
   position: relative;
   min-height: 72svh;
+  overflow: hidden;
   background: #111111;
 }
 
 .editorial-copy {
   display: flex;
   flex-direction: column;
-  justify-content: flex-end;
-  padding: 3rem 1.25rem 3.5rem;
+  justify-content: center;
+  padding: 3.5rem 1.25rem;
 }
 
 .gallery-strip {
+  display: grid;
   background: #070707;
   color: #ffffff;
+}
+
+.gallery-strip li {
+  position: relative;
+  min-height: 46vh;
+  overflow: hidden;
 }
 
 .datasheet {
@@ -401,6 +409,10 @@ main:has([data-hero]) {
 
   .split-panel {
     min-height: 100svh;
+  }
+
+  .gallery-strip {
+    grid-template-columns: 1fr 1fr;
   }
 
   .editorial {

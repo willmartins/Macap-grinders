@@ -169,7 +169,7 @@ export function GrinderModel({ grinder }: { grinder: Grinder; sample: boolean })
         <ul className="gallery-strip grid md:grid-cols-2">
           {gallery.map((image) =>
             image.url ? (
-              <li key={image._key} className="relative min-h-[70vw] md:min-h-[78vh]">
+              <li key={image._key}>
                 <Image
                   src={image.url}
                   alt={image.alt}
