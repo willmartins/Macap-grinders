@@ -9,7 +9,7 @@ export function Footer({ shell }: { shell: Shell }) {
   const { settings, collections, legal } = shell;
   return (
     <footer className="mt-auto border-t border-line">
-      <div className="frame section grid gap-[var(--gap-block)] md:grid-cols-4">
+      <div className="frame section-hero grid gap-[var(--gap-block)] md:grid-cols-4">
         <address className="not-italic text-sm leading-6">
           <p className="label">
             <span className="trim" />
