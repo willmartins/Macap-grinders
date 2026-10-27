@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { IBM_Plex_Mono, Schibsted_Grotesk } from "next/font/google";
+import { Schibsted_Grotesk } from "next/font/google";
 import { Suspense } from "react";
 import Script from "next/script";
 
@@ -15,13 +15,6 @@ const macap = Schibsted_Grotesk({
   display: "swap",
 });
 
-const macapMono = IBM_Plex_Mono({
-  subsets: ["latin"],
-  weight: ["400", "500"],
-  variable: "--font-macap-mono",
-  display: "swap",
-});
-
 export const metadata: Metadata = {
   metadataBase: new URL(getSiteUrl()),
   title: { default: `${siteName} coffee grinders`, template: "%s | Macap" },
@@ -31,7 +24,7 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en-GB" className={`${macap.variable} ${macapMono.variable} h-full`}>
+    <html lang="en-GB" className={`${macap.variable} h-full`}>
       <body className="flex min-h-full flex-col bg-white font-sans text-black antialiased">
         <Script id="consent-mode" strategy="beforeInteractive">
           {consentBootstrap}

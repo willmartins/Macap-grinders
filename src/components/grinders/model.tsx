@@ -62,7 +62,7 @@ export function GrinderModel({
   const figures = performanceFigures(grinder);
   const relatedCompare = compareHref([grinder.slug, ...siblings.map((item) => item.slug)]);
   const status = grinder.status === "new" ? "New" : grinder.status === "discontinued" ? "Discontinued" : "";
-  const eyebrow = [grinder.groupName || "Macap", status].filter(Boolean).join("  /  ");
+  const eyebrow = [grinder.groupName, status].filter(Boolean).join(" ");
   const specs = grinder.specs;
   const [burrShot, motorShot, ...rest] = grinder.gallery;
   const gallery = rest.length ? rest : grinder.gallery;
@@ -113,10 +113,7 @@ export function GrinderModel({
             ]}
           />
           <header className="frame section-tight">
-            <p className="label">
-              <span className="trim" />
-              {eyebrow}
-            </p>
+            {eyebrow ? <p className="label text-muted">{eyebrow}</p> : null}
             <h1 className="display mt-4">{grinder.name}</h1>
             <p className="mt-6 max-w-xl text-lg leading-relaxed">{positionLine(grinder.answerFirst)}</p>
             <div className="mt-8 flex flex-wrap gap-3">
@@ -247,7 +244,7 @@ export function GrinderModel({
         </ul>
       ) : null}
 
-      <section className="frame reveal section">
+      <section className="frame section">
         <SectionTitle title="Specifications" />
         <div className="mt-12 max-w-4xl">
           <SpecTable grinder={grinder} />
@@ -262,13 +259,13 @@ export function GrinderModel({
       </section>
 
       {faqs.length ? (
-        <section className="frame reveal section" aria-labelledby="faq-heading">
+        <section className="frame section" aria-labelledby="faq-heading">
           <h2 id="faq-heading" className="text-4xl font-medium tracking-tight">
             Questions
           </h2>
           <div className="mt-8 max-w-3xl divide-y divide-line border-y border-line">
             {faqs.map((faq) => (
-              <details key={faq._key} className="group py-5">
+              <details key={faq._key} className="group py-2">
                 <summary className="cursor-pointer text-lg font-medium">{faq.question}</summary>
                 <p className="mt-3 max-w-2xl leading-relaxed text-muted">{faq.answer}</p>
               </details>
@@ -278,7 +275,7 @@ export function GrinderModel({
       ) : null}
 
       {siblings.length ? (
-        <section className="reveal section" aria-labelledby="siblings-heading">
+        <section className="section" aria-labelledby="siblings-heading">
           <div className="frame">
             <h2 id="siblings-heading" className="text-4xl font-medium tracking-tight">
               {sameLine && grinder.groupName ? `The ${grinder.groupName} line` : "Related models"}
@@ -291,7 +288,7 @@ export function GrinderModel({
       ) : null}
 
       {grinder.relatedArticles.length ? (
-        <section className="frame reveal section">
+        <section className="frame section">
           <h2 className="stack-block text-4xl font-medium tracking-tight">Related reading</h2>
           <ul className="divide-y divide-line border-y border-line">
             {grinder.relatedArticles.map((post) => (

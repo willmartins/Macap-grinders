@@ -8,7 +8,9 @@ import { GrinderGrid } from "@/components/grinders/grinder-card";
 import { Breadcrumbs } from "@/components/site/breadcrumbs";
 import { JsonLd } from "@/components/site/json-ld";
 import { SampleBanner } from "@/components/site/sample-banner";
+import { TextLink } from "@/components/site/text-link";
 import { ThemeLock } from "@/components/site/theme-frame";
+import { compareHref } from "@/lib/compare";
 import { collectionJsonLd } from "@/lib/jsonld";
 import { buildMetadata } from "@/lib/metadata";
 import { draftPerspective } from "@/sanity/lib/draft";
@@ -67,6 +69,13 @@ async function CollectionContent({ params }: { params: Promise<{ slug: string }>
       )}
       <div className="frame section">
         <GrinderGrid grinders={collection.grinders} />
+        {collection.grinders.length > 1 ? (
+          <p className="mt-10">
+            <TextLink href={compareHref(collection.grinders.slice(0, 3).map((grinder) => grinder.slug))} className="tap">
+              Compare these grinders
+            </TextLink>
+          </p>
+        ) : null}
       </div>
       <PageBuilder sections={collection.sections} />
       <JsonLd

@@ -18,10 +18,7 @@ export function Footer({ shell }: { shell: Shell }) {
             <MacapLogo className="brand-logo" />
           </Link>
           <address className="not-italic text-sm leading-6">
-            <p className="label">
-              <span className="trim" />
-              Est. 1930
-            </p>
+            <p>Since 1930</p>
             <p className="mt-4 font-medium">{settings.siteName}</p>
             <p className="mt-3 whitespace-pre-line">{settings.address}</p>
             <p className="mt-3">
@@ -38,8 +35,8 @@ export function Footer({ shell }: { shell: Shell }) {
           </address>
         </div>
         <nav aria-label="Footer">
-          <p className="label">On this site</p>
-          <ul className="mt-3 grid gap-2 text-sm">
+          <p className="index-title">On this site</p>
+          <ul className="mt-3 grid text-sm">
             {settings.footerNavigation.map((link) => (
               <li key={link._key}>
                 <TextLink href={link.href} className="hover:shadow-[inset_0_-1px_0_var(--accent)]">
@@ -50,8 +47,8 @@ export function Footer({ shell }: { shell: Shell }) {
           </ul>
         </nav>
         <nav aria-label="Collections">
-          <p className="label">Collections</p>
-          <ul className="mt-3 grid gap-2 text-sm">
+          <p className="index-title">Collections</p>
+          <ul className="mt-3 grid text-sm">
             {collections.map((collection) => (
               <li key={collection.slug}>
                 <TextLink
@@ -66,8 +63,8 @@ export function Footer({ shell }: { shell: Shell }) {
         </nav>
         <div>
           <nav aria-label="Legal">
-            <p className="label">Legal</p>
-            <ul className="mt-3 grid gap-2 text-sm">
+            <p className="index-title">Legal</p>
+            <ul className="mt-3 grid text-sm">
               {legal.map((page) => (
                 <li key={page.slug}>
                   <TextLink href={`/legal/${page.slug}`} className="hover:shadow-[inset_0_-1px_0_var(--accent)]">
@@ -83,7 +80,7 @@ export function Footer({ shell }: { shell: Shell }) {
             </ul>
           </nav>
           {settings.socials.length ? (
-            <ul className="mt-6 grid gap-2 text-sm">
+            <ul className="mt-6 grid text-sm">
               {settings.socials.map((link) => (
                 <li key={link._key}>
                   <TextLink href={link.href} className="hover:shadow-[inset_0_-1px_0_var(--accent)]">

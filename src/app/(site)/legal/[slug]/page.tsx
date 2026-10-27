@@ -2,6 +2,7 @@ import { notFound } from "next/navigation";
 import { Suspense } from "react";
 
 import { Breadcrumbs } from "@/components/site/breadcrumbs";
+import { TextLink } from "@/components/site/text-link";
 import { RichTextBody } from "@/components/site/rich-text";
 import { formatDate } from "@/lib/format";
 import { buildMetadata } from "@/lib/metadata";
@@ -53,6 +54,11 @@ async function LegalContent({ params }: { params: Promise<{ slug: string }> }) {
       </header>
       <div className="frame section-tight">
         <RichTextBody value={page.body} />
+        <p className="mt-10">
+          <TextLink href="/contact" className="tap">
+            Contact us
+          </TextLink>
+        </p>
       </div>
     </article>
   );

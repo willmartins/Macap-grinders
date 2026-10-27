@@ -54,7 +54,7 @@ export function Header({ links }: { links: LinkItem[] }) {
           <MacapLogo className="brand-logo" />
         </Link>
         <details className="site-menu md:hidden">
-          <summary className="label cursor-pointer border border-current px-3 py-2">Menu</summary>
+          <summary className="nav-link cursor-pointer border border-current px-3 py-2">Menu</summary>
           <nav aria-label="Primary" className="menu-panel">
             <ul className="grid gap-1">
               {links.map((link) => (
@@ -62,7 +62,7 @@ export function Header({ links }: { links: LinkItem[] }) {
                   <a
                     href={link.href}
                     aria-current={pathname === link.href ? "page" : undefined}
-                    className="label block py-3 aria-[current=page]:shadow-[inset_0_-1px_0_var(--accent)]"
+                    className="nav-link block py-3 aria-[current=page]:shadow-[inset_0_-1px_0_var(--accent)]"
                   >
                     {link.label}
                   </a>
@@ -78,7 +78,7 @@ export function Header({ links }: { links: LinkItem[] }) {
                 <a
                   href={link.href}
                   aria-current={pathname === link.href ? "page" : undefined}
-                  className="label aria-[current=page]:shadow-[inset_0_-1px_0_var(--accent)] hover:shadow-[inset_0_-1px_0_var(--accent)]"
+                  className="nav-link aria-[current=page]:shadow-[inset_0_-1px_0_var(--accent)] hover:shadow-[inset_0_-1px_0_var(--accent)]"
                 >
                   {link.label}
                 </a>

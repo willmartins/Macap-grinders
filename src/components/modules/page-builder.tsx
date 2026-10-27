@@ -54,17 +54,11 @@ function ButtonLink({
   );
 }
 
-function SectionIntro({ heading, intro }: { heading?: string; intro?: string }) {
+function SectionIntro({ heading, intro, step }: { heading?: string; intro?: string; step?: string | null }) {
   if (!heading && !intro) return null;
-  const step = heading === "Find your grinder" ? "03" : null;
   return (
     <div className="stack-block max-w-3xl">
-      {step ? (
-        <p className="label mb-5">
-          <span className="trim" />
-          {step}
-        </p>
-      ) : null}
+      {step ? <p className="step-index mb-4">{step}</p> : null}
       {heading ? <h2 className="display-sm">{heading}</h2> : null}
       {intro ? <p className="mt-4 max-w-xl text-lg text-muted">{intro}</p> : null}
     </div>
@@ -117,12 +111,7 @@ export function PageBuilder({ sections, journey }: { sections: Section[]; journe
           }
           return (
             <header key={section._key} id={section._key} className="frame section-tight">
-              {section.eyebrow ? (
-                <p className="label">
-                  <span className="trim" />
-                  {section.eyebrow}
-                </p>
-              ) : null}
+              {section.eyebrow ? <p className="label text-muted">{section.eyebrow}</p> : null}
               <h1 className="display mt-5 max-w-5xl">{section.heading}</h1>
               {section.text ? <p className="mt-6 max-w-xl text-lg leading-relaxed">{section.text}</p> : null}
               {section.links.length ? (
@@ -144,11 +133,16 @@ export function PageBuilder({ sections, journey }: { sections: Section[]; journe
         }
 
         if (section._type === "imageText") {
-          const step = String(
-            sections.slice(0, sectionIndex).filter((item) => item._type === "imageText").length + 1,
-          ).padStart(2, "0");
+          const step = journey
+            ? String(sections.slice(0, sectionIndex).filter((item) => item._type === "imageText").length + 1).padStart(2, "0")
+            : null;
+          const next = journey
+            ? sections
+                .slice(sectionIndex + 1)
+                .find((item) => item._type === "imageText" || item._type === "grinderGrid")
+            : undefined;
           return (
-            <section key={section._key} id={section._key} className={`editorial reveal border-t border-line ${section.imagePosition === "right" ? "is-flip" : ""}`}>
+            <section key={section._key} id={section._key} className={`editorial ${section.imagePosition === "right" ? "is-flip" : ""}`}>
               {section.imageUrl ? (
                 <div className="editorial-media">
                   <Image
@@ -156,21 +150,22 @@ export function PageBuilder({ sections, journey }: { sections: Section[]; journe
                     alt={section.imageAlt}
                     fill
                     sizes="(min-width: 768px) 58vw, 100vw"
-                    className="object-cover media-img media-drift"
+                    className="object-cover"
                     style={{ objectPosition: focusFor(section.imageUrl) }}
                   />
                 </div>
               ) : null}
               <div className="editorial-copy">
-                <p className="label">
-                  <span className="trim" />
-                  {step}
-                </p>
-                <h2 className="display-sm mt-5 max-w-xl">{section.heading}</h2>
+                {step ? <p className="step-index">{step}</p> : null}
+                <h2 className="display-sm mt-4 max-w-xl">{section.heading}</h2>
                 <p className="mt-5 max-w-md text-lg leading-relaxed">{section.text}</p>
                 {section.link ? (
                   <p className="mt-8">
                     <ButtonLink href={section.link.href} label={section.link.label} journey={journey} />
+                  </p>
+                ) : next ? (
+                  <p className="mt-8">
+                    <TextLink href={`#${next._key}`}>{next.heading}</TextLink>
                   </p>
                 ) : null}
               </div>
@@ -179,7 +174,7 @@ export function PageBuilder({ sections, journey }: { sections: Section[]; journe
         }
 
         return (
-          <section key={section._key} id={section._key} className="frame reveal section">
+          <section key={section._key} id={section._key} className="frame section">
             {section._type === "richText" ? (
               <>
                 {section.heading ? <h2 className="display-sm">{section.heading}</h2> : null}
@@ -189,7 +184,11 @@ export function PageBuilder({ sections, journey }: { sections: Section[]; journe
 
             {section._type === "grinderGrid" ? (
               <>
-                <SectionIntro heading={section.heading} intro={section.intro} />
+                <SectionIntro
+                  heading={section.heading}
+                  intro={section.intro}
+                  step={journey && section.heading === "Find your grinder" ? "03" : null}
+                />
                 <GrinderGrid grinders={section.grinders} />
               </>
             ) : null}
@@ -197,7 +196,7 @@ export function PageBuilder({ sections, journey }: { sections: Section[]; journe
             {section._type === "collectionCarousel" ? (
               <>
                 <SectionIntro heading={section.heading} intro={section.intro} />
-                <ul className="grid gap-px bg-line sm:grid-cols-2 lg:grid-cols-3">
+                <ul className="grid gap-[var(--gap-block)] sm:grid-cols-2 lg:grid-cols-3">
                   {section.collections.map((collection) => {
                     const shot = collectionShot(collection.slug);
                     return (
@@ -252,9 +251,7 @@ export function PageBuilder({ sections, journey }: { sections: Section[]; journe
                 <CompareTable grinders={section.grinders} />
                 <ul className="mt-10 grid max-w-3xl gap-4 text-sm leading-relaxed">
                   {explainDifferences(section.grinders).map((note) => (
-                    <li key={note} className="border-t border-line pt-4">
-                      {note}
-                    </li>
+                    <li key={note}>{note}</li>
                   ))}
                 </ul>
               </>
@@ -265,7 +262,7 @@ export function PageBuilder({ sections, journey }: { sections: Section[]; journe
                 <h2 className="display-sm">{section.heading}</h2>
                 <div className="mt-8 max-w-3xl divide-y divide-line border-y border-line">
                   {section.faqs.map((faq) => (
-                    <details key={faq._key} className="py-5">
+                    <details key={faq._key} className="py-2">
                       <summary className="cursor-pointer text-lg font-medium">{faq.question}</summary>
                       <p className="mt-3 max-w-2xl leading-relaxed text-muted">{faq.answer}</p>
                     </details>
@@ -275,7 +272,7 @@ export function PageBuilder({ sections, journey }: { sections: Section[]; journe
             ) : null}
 
             {section._type === "ctaBanner" ? (
-              <div className="border-t-2 border-accent pt-10">
+              <div>
                 <h2 className="display-sm max-w-3xl">{section.heading}</h2>
                 {section.text ? <p className="mt-5 max-w-xl text-lg">{section.text}</p> : null}
                 <p className="mt-8">
@@ -309,11 +306,11 @@ export function PageBuilder({ sections, journey }: { sections: Section[]; journe
             ) : null}
 
             {section._type === "quote" ? (
-              <figure className="border-t-2 border-accent pt-8">
+              <figure>
                 <blockquote className="display-sm max-w-4xl">{section.quote}</blockquote>
-                <figcaption className="label mt-8 text-muted">
-                  {section.attribution}
-                  {section.role ? ` / ${section.role}` : ""}
+                <figcaption className="mt-6 text-muted">
+                  <span className="block">{section.attribution}</span>
+                  {section.role ? <span className="block">{section.role}</span> : null}
                 </figcaption>
               </figure>
             ) : null}

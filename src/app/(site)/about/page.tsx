@@ -1,6 +1,7 @@
 import { Suspense } from "react";
 
 import { ContentPage } from "@/components/site/content-page";
+import { TextLink } from "@/components/site/text-link";
 import { buildMetadata } from "@/lib/metadata";
 import { draftPerspective } from "@/sanity/lib/draft";
 import { loadAbout } from "@/sanity/lib/load";
@@ -18,7 +19,21 @@ export async function generateMetadata() {
 
 async function AboutContent() {
   const page = await loadAbout(await draftPerspective());
-  return <ContentPage page={page} />;
+  return (
+    <>
+      <ContentPage page={page} />
+      <nav className="frame pb-[var(--space-standard)]" aria-label="Ranges">
+        <p className="flex flex-wrap gap-x-8">
+          <TextLink href="/home-grinders" className="tap">
+            Home grinders
+          </TextLink>
+          <TextLink href="/professional" className="tap">
+            Professional
+          </TextLink>
+        </p>
+      </nav>
+    </>
+  );
 }
 
 export default function AboutPage() {
