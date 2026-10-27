@@ -24,7 +24,7 @@ async function ContactContent() {
     <>
       <ContentPage page={page} />
       {hasForm ? null : (
-        <div className="mx-auto max-w-6xl px-5 pb-20 md:px-8">
+        <div className="frame pb-20">
           <ContactForm />
         </div>
       )}

@@ -9,8 +9,8 @@ import type { LinkItem } from "@/lib/content/types";
 export function Header({ links }: { links: LinkItem[] }) {
   const pathname = usePathname();
   return (
-    <header className="border-b border-line">
-      <div className="mx-auto flex max-w-6xl items-center justify-between gap-6 px-5 py-4 md:px-8">
+    <header className="sticky top-0 z-30 border-b border-line bg-bg/90 backdrop-blur-md">
+      <div className="frame flex items-center justify-between gap-6 py-4">
         <Link href="/" className="shrink-0" aria-label="Macap, home">
           <span className="logo-on-light inline-flex">
             <Image src="/brand/macap-logo-black.svg" alt="" width={168} height={27} priority />
@@ -20,7 +20,7 @@ export function Header({ links }: { links: LinkItem[] }) {
           </span>
         </Link>
         <details className="relative md:hidden">
-          <summary className="cursor-pointer list-none border border-fg px-3 py-2 text-sm">Menu</summary>
+          <summary className="label cursor-pointer border border-fg px-3 py-2">Menu</summary>
           <nav
             aria-label="Primary"
             className="absolute right-0 z-20 mt-2 min-w-52 border border-line bg-bg p-3"
@@ -31,7 +31,7 @@ export function Header({ links }: { links: LinkItem[] }) {
                   <a
                     href={link.href}
                     aria-current={pathname === link.href ? "page" : undefined}
-                    className="block px-2 py-2 aria-[current=page]:underline"
+                    className="label block px-2 py-3 aria-[current=page]:shadow-[inset_0_-2px_0_var(--accent)]"
                   >
                     {link.label}
                   </a>
@@ -41,13 +41,13 @@ export function Header({ links }: { links: LinkItem[] }) {
           </nav>
         </details>
         <nav aria-label="Primary" className="hidden md:block">
-          <ul className="flex items-center gap-8 text-sm">
+          <ul className="flex items-center gap-8">
             {links.map((link) => (
               <li key={link._key}>
                 <a
                   href={link.href}
                   aria-current={pathname === link.href ? "page" : undefined}
-                  className="underline-offset-4 hover:underline aria-[current=page]:underline"
+                  className="label hover:underline hover:underline-offset-4 aria-[current=page]:shadow-[inset_0_-2px_0_var(--accent)]"
                 >
                   {link.label}
                 </a>

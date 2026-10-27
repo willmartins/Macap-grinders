@@ -1,6 +1,7 @@
 import { Suspense } from "react";
 
 import { CompareTable } from "@/components/grinders/spec-table";
+import { PhotoSlot } from "@/components/site/photo-slot";
 import { SampleBanner } from "@/components/site/sample-banner";
 import { TrackCompare } from "@/components/site/trackers";
 import { compareHref, explainDifferences } from "@/lib/compare";
@@ -42,17 +43,39 @@ async function CompareContent({
     <article>
       <TrackCompare models={grinders.map((grinder) => grinder.slug).join(",")} />
       {sample ? <SampleBanner /> : null}
-      <header className="mx-auto max-w-6xl px-5 pt-16 md:px-8">
-        <h1 className="text-4xl font-medium tracking-tight md:text-6xl">Compare</h1>
+      <header className="frame pt-16 md:pt-24">
+        <p className="label">
+          <span className="trim" />
+          Two or three models
+        </p>
+        <h1 className="display mt-5">Compare</h1>
         <p className="mt-6 max-w-2xl text-lg">
           Choose two or three grinders. The table is the specification. The notes describe the difference.
         </p>
       </header>
-      <div className="mx-auto max-w-6xl px-5 py-12 md:px-8">
+      <div className="frame py-12">
         {grinders.length >= 2 ? (
           <>
+            <ul className="mb-12 grid gap-8 md:grid-cols-3">
+              {grinders.map((grinder) => (
+                <li key={grinder.id}>
+                  <PhotoSlot
+                    imageUrl={grinder.imageUrl}
+                    alt={grinder.imageAlt || grinder.name}
+                    ratio="16/9"
+                    sizes="(min-width: 768px) 30rem, 100vw"
+                  />
+                  <p className="label mt-4 text-muted">{grinder.groupName || "Macap"}</p>
+                  <h2 className="mt-2 text-3xl font-medium tracking-tight">
+                    <a href={`/grinders/${grinder.slug}`} className="underline-offset-4 hover:underline">
+                      {grinder.name}
+                    </a>
+                  </h2>
+                </li>
+              ))}
+            </ul>
             <CompareTable grinders={grinders} />
-            <h2 className="mt-12 text-2xl font-medium">What is different</h2>
+            <h2 className="display-sm mt-16">What is different</h2>
             <ul className="mt-4 grid max-w-3xl gap-3 text-sm leading-relaxed">
               {explainDifferences(grinders).map((note) => (
                 <li key={note}>{note}</li>
@@ -78,7 +101,7 @@ async function CompareContent({
         ) : null}
         {grinders.length < 3 ? (
           <div className="mt-12">
-            <h2 className="text-2xl font-medium">{grinders.length ? "Add a grinder" : "Start with a grinder"}</h2>
+            <h2 className="text-3xl font-medium tracking-tight">{grinders.length ? "Add a grinder" : "Start with a grinder"}</h2>
             <ul className="mt-4 grid gap-2 text-sm sm:grid-cols-2 lg:grid-cols-3">
               {choices.map((grinder) => (
                 <li key={grinder.id}>

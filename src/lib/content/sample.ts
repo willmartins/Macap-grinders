@@ -1,4 +1,4 @@
-import { unsplash } from "@/lib/site";
+import { articleShots, grinderMedia, pageShots } from "@/lib/imagery";
 import type {
   ArticleCard,
   Author,
@@ -16,8 +16,6 @@ import type {
   Specs,
   Topic,
 } from "@/lib/content/types";
-
-const placeholderAlt = "Placeholder photograph from Unsplash, to be replaced with Macap photography.";
 
 function text(key: string, style: "normal" | "h2" | "h3", value: string): RichText[number] {
   return {
@@ -563,6 +561,18 @@ export const sampleGrinders: Grinder[] = [
   m2d,
 ];
 
+for (const grinder of sampleGrinders) {
+  const media = grinderMedia[grinder.slug];
+  if (!media) continue;
+  grinder.imageUrl = media.hero.src;
+  grinder.imageAlt = media.hero.alt;
+  grinder.gallery = media.gallery.map((item, index) => ({
+    _key: `${grinder.slug}-photo-${index}`,
+    url: item.src,
+    alt: item.alt,
+  }));
+}
+
 const bySlug = Object.fromEntries(sampleGrinders.map((grinder) => [grinder.slug, grinder]));
 
 function relate(slug: string, related: string[], articles: ArticleCard[]) {
@@ -652,8 +662,8 @@ export const samplePosts: Post[] = [
     answerFirst:
       "Flat burrs and conical burrs both make good espresso. Flat burrs are often chosen for a narrower particle spread at higher volumes. Conical burrs are often quieter and kinder to a small motor. Taste matters more than the label.",
     author,
-    imageUrl: unsplash.espresso,
-    imageAlt: placeholderAlt,
+    imageUrl: articleShots["flat-burrs-and-conical-burrs"].src,
+    imageAlt: articleShots["flat-burrs-and-conical-burrs"].alt,
     body: [
       text("p1", "normal", "Start with the coffee you already like. If you cannot taste a difference in the cup, the burr shape is not the decision that should spend the budget."),
       text("p2", "h2", "What changes"),
@@ -680,8 +690,8 @@ export const samplePosts: Post[] = [
     answerFirst:
       "Dial in by changing one thing at a time, and taste before you throw coffee away. Lock the dose, move the grind, then adjust the yield.",
     author,
-    imageUrl: unsplash.cup,
-    imageAlt: placeholderAlt,
+    imageUrl: articleShots["dialling-in-with-less-waste"].src,
+    imageAlt: articleShots["dialling-in-with-less-waste"].alt,
     body: [
       text("d1", "normal", "Weigh the dose. Pull the shot. Taste it. If it is sour and fast, grind a little finer. If it is bitter and slow, grind a little coarser. Change nothing else until the taste moves."),
       text("d2", "h2", "Waste less"),
@@ -706,8 +716,8 @@ export const samplePosts: Post[] = [
     answerFirst:
       "Choose the Supra 68 when the bar is steady and the counter is tight. Choose the Supra 83 when you need the larger burr and higher output.",
     author,
-    imageUrl: null,
-    imageAlt: "",
+    imageUrl: articleShots["supra-68-and-supra-83"].src,
+    imageAlt: articleShots["supra-68-and-supra-83"].alt,
     body: [
       text("c1", "normal", "Both grinders are professional flat-burr espresso grinders in the Supra line. The useful difference is burr diameter, output and the space the machine takes."),
       text("c2", "normal", "If you want each dose weighed, look at the Supra G series rather than choosing between 68 and 83 on size alone."),
@@ -856,6 +866,8 @@ export const sampleHomeJourney: Journey = {
       eyebrow: "Home",
       heading: "Home grinders",
       text: "For a domestic counter. Choose by brew, burr and noise.",
+      imageUrl: pageShots.homeJourney.src,
+      imageAlt: pageShots.homeJourney.alt,
       links: [
         { _key: "h1", label: "See home grinders", href: "#home-grinders" },
         { _key: "h2", label: "Compare two models", href: "/compare?m=m2m-domus,m2e-domus" },
@@ -949,6 +961,8 @@ export const sampleProfessionalJourney: Journey = {
       eyebrow: "Professional",
       heading: "Professional grinders",
       text: "For the bar. Choose by output, dosing and counter space.",
+      imageUrl: pageShots.professionalJourney.src,
+      imageAlt: pageShots.professionalJourney.alt,
       links: [
         { _key: "p1", label: "See professional grinders", href: "#professional-grinders" },
         { _key: "p2", label: "Compare Supra 68 and 83", href: "/compare?m=supra-68,supra-83" },
@@ -1041,6 +1055,8 @@ export const sampleHomePage: PageDocument = {
       eyebrow: "Coffee grinders, made in Italy",
       heading: "For the home. For the bar.",
       text: "Macap has made coffee grinders in the Venice area since 1930.",
+      imageUrl: pageShots.homeHero.src,
+      imageAlt: pageShots.homeHero.alt,
       links: [
         { _key: "a", label: "Home grinders", href: "/home-grinders" },
         { _key: "b", label: "Professional", href: "/professional" },
@@ -1051,8 +1067,8 @@ export const sampleHomePage: PageDocument = {
       _type: "imageText",
       heading: "Home grinders",
       text: "Studio grinders for a domestic counter. Domus and Silent.",
-      imageUrl: unsplash.cup,
-      imageAlt: placeholderAlt,
+      imageUrl: pageShots.homeSplit.src,
+      imageAlt: pageShots.homeSplit.alt,
       imagePosition: "right",
       link: { _key: "go-home", label: "Start the home journey", href: "/home-grinders" },
     },
@@ -1061,8 +1077,8 @@ export const sampleHomePage: PageDocument = {
       _type: "imageText",
       heading: "Professional grinders",
       text: "Supra, Supra G, Pro and Leo. Leo stays in the range. Labo, Barline and tampers are not listed.",
-      imageUrl: unsplash.espresso,
-      imageAlt: placeholderAlt,
+      imageUrl: pageShots.professionalSplit.src,
+      imageAlt: pageShots.professionalSplit.alt,
       imagePosition: "left",
       link: { _key: "go-pro", label: "Start the professional journey", href: "/professional" },
     },
@@ -1091,6 +1107,8 @@ export const sampleAbout: PageDocument = {
       eyebrow: "About",
       heading: "Macap",
       text: "Coffee grinders, made in the Venice area since 1930.",
+      imageUrl: pageShots.aboutHero.src,
+      imageAlt: pageShots.aboutHero.alt,
       links: [],
     },
     {
@@ -1113,10 +1131,10 @@ export const sampleAbout: PageDocument = {
     {
       _key: "about-image",
       _type: "imageText",
-      heading: "Photography",
-      text: "Placeholder photograph from Unsplash. Replace it with Macap photography.",
-      imageUrl: unsplash.beans,
-      imageAlt: placeholderAlt,
+      heading: "On the bench",
+      text: "Macap grinders, photographed in the workshop. The company history on this page is still a placeholder.",
+      imageUrl: pageShots.aboutDetail.src,
+      imageAlt: pageShots.aboutDetail.alt,
       imagePosition: "right",
     },
   ],
@@ -1157,8 +1175,8 @@ export const sampleKnowledgeHub: PageDocument = {
       heading: "Knowledge",
       text: "Sample articles, so the hub can be reviewed before Macap publishes the final pieces.",
       links: [],
-      imageUrl: unsplash.beans,
-      imageAlt: placeholderAlt,
+      imageUrl: pageShots.knowledgeHero.src,
+      imageAlt: pageShots.knowledgeHero.alt,
     },
   ],
 };

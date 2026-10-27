@@ -1,7 +1,9 @@
 import { notFound } from "next/navigation";
 import { Suspense } from "react";
 
+import { BleedHero } from "@/components/site/bleed-hero";
 import { PageBuilder } from "@/components/modules/page-builder";
+import { collectionShot } from "@/lib/imagery";
 import { GrinderGrid } from "@/components/grinders/grinder-card";
 import { Breadcrumbs } from "@/components/site/breadcrumbs";
 import { JsonLd } from "@/components/site/json-ld";
@@ -38,16 +40,28 @@ async function CollectionContent({ params }: { params: Promise<{ slug: string }>
   const { collection, sample } = loaded;
   const theme =
     collection.audience === "business" ? "professional" : collection.audience === "home" ? "home" : "neutral";
+  const shot = collectionShot(collection.slug);
   return (
     <article>
       <ThemeLock theme={theme} />
       {sample ? <SampleBanner /> : null}
       <Breadcrumbs items={[{ name: collection.name, path: `/collections/${collection.slug}` }]} />
-      <header className="mx-auto max-w-6xl px-5 py-12 md:px-8">
-        <h1 className="text-4xl font-medium tracking-tight md:text-6xl">{collection.name}</h1>
-        <p className="mt-6 max-w-2xl text-lg leading-relaxed">{collection.answerFirst || collection.summary}</p>
-      </header>
-      <div className="mx-auto max-w-6xl px-5 pb-16 md:px-8">
+      {shot ? (
+        <BleedHero
+          imageUrl={shot.src}
+          alt={shot.alt}
+          eyebrow="Collection"
+          title={collection.name}
+          text={collection.answerFirst || collection.summary}
+          short
+        />
+      ) : (
+        <header className="frame py-16 md:py-24">
+          <h1 className="display">{collection.name}</h1>
+          <p className="mt-6 max-w-2xl text-lg leading-relaxed">{collection.answerFirst || collection.summary}</p>
+        </header>
+      )}
+      <div className="frame py-16">
         <GrinderGrid grinders={collection.grinders} />
       </div>
       <PageBuilder sections={collection.sections} />

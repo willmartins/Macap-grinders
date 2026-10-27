@@ -98,7 +98,7 @@ export function CookieConsent() {
           <div aria-hidden="true" className="h-[var(--consent-banner,16rem)]" />
           <div
             id="cookie-banner"
-            className="fixed inset-x-0 bottom-0 z-40 border-t border-line bg-bg px-5 py-5 md:px-8"
+            className="fixed inset-x-0 bottom-0 z-40 border-t-2 border-accent bg-bg px-5 py-5 md:px-8"
           >
             <div className="mx-auto max-w-6xl">{panel}</div>
           </div>

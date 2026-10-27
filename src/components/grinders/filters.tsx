@@ -43,16 +43,16 @@ export function FilterBar({
 
   return (
     <form action="/grinders" method="get" onSubmit={onSubmit} className="grid gap-4 md:grid-cols-5">
-      <label className="grid gap-2 text-sm">
-        Use
+      <label className="grid gap-2">
+        <span className="label">Use</span>
         <select name="audience" className="field" defaultValue={filters.audience}>
           <option value="">All</option>
           <option value="home">Home</option>
           <option value="business">Professional</option>
         </select>
       </label>
-      <label className="grid gap-2 text-sm">
-        Line
+      <label className="grid gap-2">
+        <span className="label">Line</span>
         <select name="group" className="field" defaultValue={filters.group}>
           <option value="">All</option>
           {groups.map((group) => (
@@ -62,8 +62,8 @@ export function FilterBar({
           ))}
         </select>
       </label>
-      <label className="grid gap-2 text-sm">
-        Burr size
+      <label className="grid gap-2">
+        <span className="label">Burr size</span>
         <select name="burr" className="field" defaultValue={filters.burr}>
           <option value="">All</option>
           {burrs.map((size) => (
@@ -73,8 +73,8 @@ export function FilterBar({
           ))}
         </select>
       </label>
-      <label className="grid gap-2 text-sm">
-        Grind
+      <label className="grid gap-2">
+        <span className="label">Grind</span>
         <select name="grind" className="field" defaultValue={filters.grind}>
           <option value="">All</option>
           <option value="espresso">Espresso</option>
@@ -82,8 +82,8 @@ export function FilterBar({
           <option value="both">Espresso and filter</option>
         </select>
       </label>
-      <label className="grid gap-2 text-sm">
-        Status
+      <label className="grid gap-2">
+        <span className="label">Status</span>
         <select name="status" className="field" defaultValue={filters.status}>
           <option value="">Current and new</option>
           <option value="all">All</option>

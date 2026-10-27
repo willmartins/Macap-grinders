@@ -4,7 +4,7 @@ import { Suspense } from "react";
 import { GrinderGrid } from "@/components/grinders/grinder-card";
 import { Breadcrumbs } from "@/components/site/breadcrumbs";
 import { JsonLd } from "@/components/site/json-ld";
-import { PhotoSlot } from "@/components/site/photo-slot";
+import { BleedHero } from "@/components/site/bleed-hero";
 import { RichTextBody } from "@/components/site/rich-text";
 import { SampleBanner } from "@/components/site/sample-banner";
 import { formatDate } from "@/lib/format";
@@ -51,25 +51,32 @@ async function PostContent({ params }: { params: Promise<{ slug: string }> }) {
           { name: post.title, path: `/knowledge/${post.slug}` },
         ]}
       />
-      <header className="mx-auto max-w-6xl px-5 py-12 md:px-8">
-        <h1 className="max-w-3xl text-4xl font-medium tracking-tight md:text-5xl">{post.title}</h1>
-        <p className="mt-6 max-w-2xl text-lg leading-relaxed">{post.answerFirst}</p>
-        <p className="mt-4 text-sm text-muted">
-          {post.author.name}
-          {post.publishedAt ? ` · ${formatDate(post.publishedAt)}` : ""}
-          {post.updatedAt ? ` · Updated ${formatDate(post.updatedAt)}` : ""}
-        </p>
-      </header>
       {post.imageUrl ? (
-        <div className="mx-auto max-w-6xl px-5 md:px-8">
-          <PhotoSlot imageUrl={post.imageUrl} alt={post.imageAlt} sizes="(min-width: 768px) 72rem, 100vw" priority />
-        </div>
-      ) : null}
-      <div className="mx-auto max-w-6xl px-5 py-10 md:px-8">
+        <BleedHero
+          imageUrl={post.imageUrl}
+          alt={post.imageAlt}
+          eyebrow={post.topicTitle || "Knowledge"}
+          title={post.title}
+          short
+        />
+      ) : (
+        <header className="frame pt-16 md:pt-24">
+          <h1 className="display-sm max-w-4xl">{post.title}</h1>
+        </header>
+      )}
+      <div className="frame py-12">
+        <p className="max-w-2xl text-xl leading-snug">{post.answerFirst}</p>
+        <p className="label mt-6 text-muted">
+          {post.author.name}
+          {post.publishedAt ? ` / ${formatDate(post.publishedAt)}` : ""}
+          {post.updatedAt ? ` / Updated ${formatDate(post.updatedAt)}` : ""}
+        </p>
+      </div>
+      <div className="frame pb-10">
         <RichTextBody value={post.body} />
       </div>
       {post.faqs.length ? (
-        <section className="mx-auto max-w-6xl px-5 pb-12 md:px-8">
+        <section className="frame pb-12">
           <h2 className="text-3xl font-medium tracking-tight">Questions</h2>
           <div className="mt-6 max-w-3xl divide-y divide-line border-y border-line">
             {post.faqs.map((faq) => (
@@ -82,7 +89,7 @@ async function PostContent({ params }: { params: Promise<{ slug: string }> }) {
         </section>
       ) : null}
       {post.relatedGrinders.length ? (
-        <section className="mx-auto max-w-6xl px-5 pb-20 md:px-8">
+        <section className="frame pb-24">
           <h2 className="mb-6 text-3xl font-medium tracking-tight">Grinders in this note</h2>
           <GrinderGrid grinders={post.relatedGrinders} />
         </section>

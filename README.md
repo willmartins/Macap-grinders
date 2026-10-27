@@ -87,7 +87,7 @@ The script replaces documents with the same `_id`. It does not fetch the old sit
 
 If a document or list is missing, empty, or the API is unreachable, the page renders the sample in `src/lib/content/sample.ts` and shows: "Sample content. This is not the final Macap catalogue."
 
-Supra 68 uses figures published on macap.it. Other models are sample figures. Confirm them before launch. Product photographs are empty frames labelled "Photography to follow." Three Unsplash photographs are used as layout placeholders only, on the home, about and knowledge pages.
+Supra 68 uses figures published on macap.it. Other models are sample figures. Confirm them before launch. Sample photographs are real Macap pictures from the previous site, listed in `src/lib/imagery.ts`, and served from `cdn.sanity.io` until they are copied into project `u5o31ts3`.
 
 ## Routes
 
@@ -136,8 +136,10 @@ If both `NEXT_PUBLIC_GA_MEASUREMENT_ID` and `NEXT_PUBLIC_GTM_ID` are set, use on
 
 ## Design
 
-- Colours: black `#000000`, white `#FFFFFF`, yellow `#FFC600`. Yellow is a button and rule colour with black text.
-- Type: Schibsted Grotesk, via `next/font`, on the token `--font-macap`. Replace that one token when the Graphik or Neue Haas Grotesk licence is available. The wordmark is drawn in the logo SVG, not set in type.
+- Colours: warm paper `#F4F1EB` on Home, black `#070707` on Professional, yellow `#FFC600` as a thin trim. Yellow is not a fill for body text.
+- Type: Schibsted Grotesk for headlines, on `--font-macap`. IBM Plex Mono for labels and indexes, on `--font-macap-mono`. Replace the Grotesk token when the Graphik or Neue Haas Grotesk licence is available. The wordmark is drawn in the logo SVG, not set in type.
+- Model pages lead with a full-bleed photograph and the burr, motor, output and hopper figures, then engineering, burrs, motor, control and the specification table.
+- Motion is a short rise and a slight image scale, only when the browser allows scroll-driven animation and the visitor has not asked for reduced motion.
 - Logos in `public/brand/` were traced from the V12 page render. They are not the master artwork. Use only these files until V12 delivers the masters. Do not use the old logo.
 
 ## Security

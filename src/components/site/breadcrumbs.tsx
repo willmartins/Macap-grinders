@@ -5,8 +5,8 @@ export function Breadcrumbs({ items }: { items: Array<{ name: string; path: stri
   const trail = [{ name: "Macap", path: "/" }, ...items];
   return (
     <>
-      <nav aria-label="Breadcrumb" className="mx-auto max-w-6xl px-5 pt-8 md:px-8">
-        <ol className="flex flex-wrap gap-x-2 gap-y-1 text-sm text-muted">
+      <nav aria-label="Breadcrumb" className="frame pt-6">
+        <ol className="label flex flex-wrap gap-x-2 gap-y-1 text-muted">
           {trail.map((item, index) => {
             const last = index === trail.length - 1;
             return (

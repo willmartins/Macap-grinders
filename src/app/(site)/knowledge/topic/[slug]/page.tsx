@@ -43,11 +43,11 @@ async function TopicContent({ params }: { params: Promise<{ slug: string }> }) {
           { name: topic.title, path: `/knowledge/topic/${topic.slug}` },
         ]}
       />
-      <header className="mx-auto max-w-6xl px-5 py-12 md:px-8">
-        <h1 className="text-4xl font-medium tracking-tight md:text-6xl">{topic.title}</h1>
+      <header className="frame py-16 md:py-24">
+        <h1 className="display">{topic.title}</h1>
         <p className="mt-6 max-w-2xl text-lg">{topic.description}</p>
       </header>
-      <ul className="mx-auto grid max-w-6xl gap-4 px-5 pb-20 md:px-8">
+      <ul className="frame grid gap-4 pb-20">
         {related.length ? (
           related.map((post) => (
             <li key={post.slug} className="border-b border-line py-5">

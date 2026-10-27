@@ -26,11 +26,3 @@ export const publicOffice = {
 
 /** Open Graph locale uses an underscore. */
 export const openGraphLocale = "en_GB";
-
-export const unsplash = {
-  beans:
-    "https://images.unsplash.com/photo-1447933601403-0c6688de566e?auto=format&fit=crop&w=2000&q=80",
-  cup: "https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?auto=format&fit=crop&w=2000&q=80",
-  espresso:
-    "https://images.unsplash.com/photo-1511920170033-f8396924c348?auto=format&fit=crop&w=2000&q=80",
-} as const;

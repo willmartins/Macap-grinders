@@ -3,6 +3,27 @@ import { formatNumber } from "@/lib/format";
 
 export type SpecRow = { label: string; value: string };
 
+export type Figure = { label: string; value: string; unit: string };
+
+/** The four numbers that lead a model page. Empty fields are left out. */
+export function performanceFigures(grinder: Pick<Grinder, "specs">): Figure[] {
+  const specs = grinder.specs;
+  const figures: Figure[] = [];
+  if (specs.burrDiameterMm != null) {
+    figures.push({ label: "Burr", value: formatNumber(specs.burrDiameterMm), unit: "mm" });
+  }
+  if (specs.motorPowerW != null) {
+    figures.push({ label: "Motor", value: formatNumber(specs.motorPowerW), unit: "W" });
+  }
+  if (specs.outputGPerS != null) {
+    figures.push({ label: "Output", value: formatNumber(specs.outputGPerS), unit: "g/s" });
+  }
+  if (specs.hopperCapacityG != null) {
+    figures.push({ label: "Hopper", value: formatNumber(specs.hopperCapacityG), unit: "g" });
+  }
+  return figures;
+}
+
 const burrLabel: Record<string, string> = { flat: "Flat", conical: "Conical" };
 const grindLabel: Record<string, string> = {
   espresso: "Espresso",

@@ -50,7 +50,9 @@ Plain titles and descriptions. Validate required fields. Singletons stay pinned.
 
 ## Images
 
-`next/image` and the Sanity image URL builder. Alt text is required when an image is set. No AI-generated images. At most three Unsplash placeholders, and the alt text must say they are placeholders. Product shots are empty frames ("Photography to follow.") until Macap supplies photography. Use only the new logo.
+`next/image` and the Sanity image URL builder. Alt text is required when an image is set. No AI-generated images. Use only the new logo.
+
+Sample photography is real Macap photography from the previous site, listed in `src/lib/imagery.ts`. Swap the URLs there when the files move into the new Sanity project. Do not use a portrait or a frame with Italian words set in the picture. An empty frame ("Photography to follow") is only for a grinder that has no chosen photograph.
 
 ## Security
 

@@ -4,9 +4,9 @@ Page sections share one name in code and in Sanity Studio. They are rendered by 
 
 | Name | Component file | Sanity schema type | Where used | Description |
 | --- | --- | --- | --- | --- |
-| heroBanner | src/components/modules/page-builder.tsx | heroBanner | Home, journeys, about, knowledge | Opening statement, up to two links, and a photograph. |
+| heroBanner | src/components/modules/page-builder.tsx | heroBanner | Home, journeys, about, knowledge | Full-bleed photograph, large headline, short line, up to two links. |
 | richText | src/components/modules/page-builder.tsx | richText | About, legal, any page | Heading plus portable text. |
-| imageText | src/components/modules/page-builder.tsx | imageText | Home, about | Photograph beside a short explanation and an optional link. |
+| imageText | src/components/modules/page-builder.tsx | imageText | Home, about | Full-width photograph beside a short explanation and an optional link. |
 | grinderGrid | src/components/modules/page-builder.tsx | grinderGrid | Journeys, collections | A grid of grinders chosen in Studio. |
 | collectionCarousel | src/components/modules/page-builder.tsx | collectionCarousel | Journeys | A sideways list of collections. |
 | featureList | src/components/modules/page-builder.tsx | featureList | Journeys | Three or more short points, such as brew, burr and noise. |
