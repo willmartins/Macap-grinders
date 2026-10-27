@@ -1,5 +1,5 @@
 import { HelpCircleIcon, LinkIcon, SearchIcon } from "@/sanity/icons";
-import { defineField, defineType } from "sanity";
+import { defineArrayMember, defineField, defineType } from "sanity";
 
 import { defaultLocale } from "@/i18n/locales";
 
@@ -164,7 +164,7 @@ export const blockContent = defineType({
   title: "Rich text",
   type: "array",
   of: [
-    {
+    defineArrayMember({
       type: "block",
       styles: [
         { title: "Normal", value: "normal" },
@@ -192,12 +192,12 @@ export const blockContent = defineType({
           },
         ],
       },
-    },
-    {
+    }),
+    defineArrayMember({
       type: "image",
       options: { hotspot: true },
       fields: [altField],
-    },
+    }),
   ],
 });
 

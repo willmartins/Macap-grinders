@@ -85,14 +85,15 @@ function grind(value: unknown): GrindType | null {
   return null;
 }
 
-function mapSeo(value: unknown, image?: string | null): SeoFields {
+function mapSeo(value: unknown): SeoFields {
   const record = isRecord(value) ? value : {};
+  const sharing = picture(record.seoImage, 1200);
   return {
     title: display(record.seoTitle),
     description: display(record.seoDescription),
     noIndex: record.noIndex === true,
     canonical: logic(record.canonical) || null,
-    imageUrl: image || null,
+    imageUrl: sharing.url,
   };
 }
 
@@ -170,11 +171,13 @@ export function mapSpecs(value: unknown, extra: unknown): Specs {
   };
 }
 
-function picture(value: unknown, width: number): { url: string | null; alt: string } {
-  if (!isRecord(value)) return { url: null, alt: "" };
+function picture(value: unknown, width: number): { url: string | null; alt: string; lqip: string | null } {
+  if (!isRecord(value)) return { url: null, alt: "", lqip: null };
+  const lqip = typeof value.lqip === "string" && value.lqip.startsWith("data:") ? value.lqip : null;
   return {
     url: imageUrl(value, width),
     alt: display(value.alt || value.imageAlt),
+    lqip,
   };
 }
 
@@ -201,6 +204,7 @@ export function mapCard(value: unknown): GrinderCard | null {
       (isRecord(value.specs) ? numberValue(value.specs.motorPowerW) : null),
     imageUrl: image.url,
     imageAlt: image.alt || display(value.imageAlt),
+    imageLqip: image.lqip,
   };
 }
 
@@ -219,6 +223,7 @@ function mapDetail(value: unknown): Grinder | null {
     ...card,
     imageUrl: image.url || card.imageUrl,
     imageAlt: image.alt || card.imageAlt,
+    imageLqip: image.lqip || card.imageLqip,
     answerFirst: display(value.answerFirst),
     gallery: mapGallery(value.gallery),
     specs: mapSpecs(value.specs, value.extraSpecs),
@@ -227,7 +232,7 @@ function mapDetail(value: unknown): Grinder | null {
     relatedArticles: mapArticleCards(value.relatedArticles),
     catalogueUrl: safeHref(logic(value.catalogueUrl)),
     catalogueLabel: display(value.catalogueLabel).trim() || null,
-    seo: mapSeo(value, image.url),
+    seo: mapSeo(value),
   };
 }
 
@@ -235,7 +240,7 @@ function mapGallery(value: unknown): GalleryImage[] {
   return list(value).flatMap((item) => {
     if (!isRecord(item)) return [];
     const image = picture(item, 1600);
-    return [{ _key: logic(item._key) || image.alt || "image", url: image.url, alt: image.alt }];
+    return [{ _key: logic(item._key) || image.alt || "image", url: image.url, alt: image.alt, lqip: image.lqip }];
   });
 }
 
@@ -300,6 +305,7 @@ function mapSection(value: unknown): Section | null {
       links: mapLinks(value.links),
       imageUrl: image.url,
       imageAlt: image.alt,
+      imageLqip: image.lqip,
     };
   }
   if (type === "richText") {
@@ -314,6 +320,7 @@ function mapSection(value: unknown): Section | null {
       text: display(value.text),
       imageUrl: image.url,
       imageAlt: image.alt,
+      imageLqip: image.lqip,
       imagePosition: position,
       link: mapLink(value.link) || undefined,
     };
@@ -515,13 +522,15 @@ export function mapPost(value: unknown): Post | null {
       slug: logic(value.authorSlug) || "macap",
       role: display(value.authorRole),
       bio: display(value.authorBio),
+      sameAs: mapStrings(value.authorSameAs).filter((item) => item.startsWith("https://")),
     },
     body: richText(value.body),
     faqs: mapFaqs(value.faqs),
     relatedGrinders: mapCards(value.relatedGrinders),
     imageUrl: image.url,
     imageAlt: image.alt,
-    seo: mapSeo(value, image.url),
+    imageLqip: image.lqip,
+    seo: mapSeo(value),
   };
 }
 
@@ -552,25 +561,35 @@ export function mapLegal(value: unknown): LegalPage | null {
   };
 }
 
-export type SitemapEntry = { slug: string; updatedAt: string };
+export type SitemapEntry = { slug: string; updatedAt: string; image?: string | null };
+export type SitemapPage = { path: string; updatedAt: string };
 
 export function mapSitemap(value: unknown): {
+  pages: SitemapPage[];
   grinders: SitemapEntry[];
   collections: SitemapEntry[];
   posts: SitemapEntry[];
   topics: SitemapEntry[];
   legal: SitemapEntry[];
 } {
-  const empty = { grinders: [], collections: [], posts: [], topics: [], legal: [] };
+  const empty = { pages: [], grinders: [], collections: [], posts: [], topics: [], legal: [] };
   if (!isRecord(value)) return empty;
   const read = (key: string): SitemapEntry[] =>
     list(value[key]).flatMap((item) => {
       if (!isRecord(item)) return [];
       const slug = logic(item.slug);
       if (!slug) return [];
-      return [{ slug, updatedAt: logic(item._updatedAt) }];
+      const image = logic(item.image);
+      return [{ slug, updatedAt: logic(item._updatedAt), image: image.startsWith("https://") ? image : null }];
     });
+  const pages = list(value.pages).flatMap((item) => {
+    if (!isRecord(item)) return [];
+    const path = logic(item.path);
+    if (!path.startsWith("/")) return [];
+    return [{ path, updatedAt: logic(item._updatedAt) }];
+  });
   return {
+    pages,
     grinders: read("grinders"),
     collections: read("collections"),
     posts: read("posts"),

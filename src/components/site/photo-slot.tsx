@@ -14,6 +14,7 @@ export function PhotoSlot({
   priority = false,
   ratio = "4/3",
   fit = "cover",
+  blur = null,
 }: {
   imageUrl?: string | null;
   alt: string;
@@ -21,6 +22,7 @@ export function PhotoSlot({
   priority?: boolean;
   ratio?: keyof typeof ratioClass;
   fit?: "cover" | "contain";
+  blur?: string | null;
 }) {
   return (
     <div className={`relative overflow-hidden bg-surface ${ratioClass[ratio]}`}>
@@ -31,6 +33,8 @@ export function PhotoSlot({
           fill
           priority={priority}
           sizes={sizes}
+          placeholder={blur ? "blur" : "empty"}
+          blurDataURL={blur || undefined}
           className={fit === "contain" ? "object-contain media-img" : "object-cover media-img"}
         />
       ) : null}

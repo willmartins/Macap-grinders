@@ -84,6 +84,7 @@ export function productJsonLd(grinder: Grinder): JsonLdNode {
     category: grinder.groupName || "Coffee grinder",
     image: grinder.imageUrl || undefined,
     url: new URL(`/grinders/${grinder.slug}`, getSiteUrl()).toString(),
+    model: grinder.name,
     additionalProperty: specEntries(grinder).map((row) => ({
       "@type": "PropertyValue",
       name: row.label,
@@ -99,8 +100,20 @@ export function articleJsonLd(input: {
   publishedAt: string;
   updatedAt: string | null;
   authorName: string;
+  authorRole?: string;
+  authorBio?: string;
+  authorSameAs?: string[];
   imageUrl?: string | null;
 }): JsonLdNode {
+  const author = input.authorName
+    ? defined({
+        "@type": "Person",
+        name: input.authorName,
+        jobTitle: input.authorRole || undefined,
+        description: input.authorBio || undefined,
+        sameAs: input.authorSameAs?.length ? input.authorSameAs : undefined,
+      })
+    : { "@type": "Organization", name: siteName };
   return defined({
     "@context": "https://schema.org",
     "@type": "Article",
@@ -109,7 +122,7 @@ export function articleJsonLd(input: {
     datePublished: input.publishedAt,
     dateModified: input.updatedAt || input.publishedAt,
     inLanguage: "en-GB",
-    author: { "@type": "Organization", name: input.authorName || siteName },
+    author,
     publisher: { "@type": "Organization", name: siteName, logo: organisationLogo() },
     image: input.imageUrl || undefined,
     mainEntityOfPage: new URL(`/knowledge/${input.slug}`, getSiteUrl()).toString(),
@@ -139,6 +152,17 @@ export function collectionJsonLd(input: {
       })),
     },
   };
+}
+
+export function jsonLdGraph(nodes: Array<JsonLdNode | null | undefined>): JsonLdNode | null {
+  const graph = nodes.flatMap((node) => {
+    if (!node) return [];
+    const rest = { ...node };
+    delete rest["@context"];
+    return [rest];
+  });
+  if (!graph.length) return null;
+  return { "@context": "https://schema.org", "@graph": graph };
 }
 
 export function articleCardsJsonLd(posts: ArticleCard[], path: string): JsonLdNode {

@@ -1,5 +1,7 @@
 import { defineQuery } from "next-sanity";
 
+const sanityImage = `{ alt, asset, crop, hotspot, "lqip": asset->metadata.lqip }`;
+
 const card = `{
   _id,
   name,
@@ -14,7 +16,7 @@ const card = `{
   "grindType": specs.grindType,
   "motorPowerW": specs.motorPowerW,
   "imageAlt": heroImage.alt,
-  heroImage
+  "heroImage": heroImage${sanityImage}
 }`;
 
 const articleCard = `{
@@ -46,6 +48,14 @@ const specs = `{
 
 const link = `{ _key, label, href }`;
 
+const seoFields = `
+  "seoTitle": seo.title,
+  "seoDescription": seo.description,
+  "noIndex": seo.noIndex == true,
+  "canonical": seo.canonical,
+  "seoImage": seo.image${sanityImage}
+`;
+
 export const SHELL_QUERY = defineQuery(`{
   "settings": *[_id == "siteSettings"][0]{
     siteName,
@@ -76,7 +86,7 @@ export const HOME_QUERY = defineQuery(`*[_id == "homePage"][0]{
     eyebrow, heading, text, intro, quote, attribution, role, caption, url, step,
     "imageAlt": image.alt,
     "imagePosition": imagePosition,
-    image,
+    "image": image${sanityImage},
     links[]${link},
     link${link},
     body,
@@ -87,7 +97,7 @@ export const HOME_QUERY = defineQuery(`*[_id == "homePage"][0]{
       _id, name, "slug": slug.current, audience, status, shortDescription,
       "groupName": group->name, "groupSlug": group->slug.current,
       "burrDiameterMm": specs.burrDiameterMm, "burrType": specs.burrType, "grindType": specs.grindType,
-      "imageAlt": heroImage.alt, heroImage,
+      "imageAlt": heroImage.alt, "heroImage": heroImage${sanityImage},
       answerFirst,
       specs${specs},
       extraSpecs[]{ _key, label, value },
@@ -97,7 +107,7 @@ export const HOME_QUERY = defineQuery(`*[_id == "homePage"][0]{
       _id, name, "slug": slug.current, audience, status, shortDescription,
       "groupName": group->name, "groupSlug": group->slug.current,
       "burrDiameterMm": specs.burrDiameterMm, "burrType": specs.burrType, "grindType": specs.grindType,
-      "imageAlt": heroImage.alt, heroImage,
+      "imageAlt": heroImage.alt, "heroImage": heroImage${sanityImage},
       answerFirst,
       specs${specs},
       extraSpecs[]{ _key, label, value }
@@ -105,10 +115,7 @@ export const HOME_QUERY = defineQuery(`*[_id == "homePage"][0]{
     collections[]->{ name, "slug": slug.current, summary, audience },
     posts[]->${articleCard}
   },
-  "seoTitle": seo.title,
-  "seoDescription": seo.description,
-  "noIndex": seo.noIndex == true,
-  "canonical": seo.canonical
+  ${seoFields}
 }`);
 
 export const JOURNEY_QUERY = defineQuery(`*[_type == "journeyPage" && slug.current == $slug && language == "en-GB"][0]{
@@ -122,7 +129,7 @@ export const JOURNEY_QUERY = defineQuery(`*[_type == "journeyPage" && slug.curre
     eyebrow, heading, text, intro, quote, attribution, role, caption, url, step,
     "imageAlt": image.alt,
     imagePosition,
-    image,
+    "image": image${sanityImage},
     links[]${link},
     link${link},
     body,
@@ -133,7 +140,7 @@ export const JOURNEY_QUERY = defineQuery(`*[_type == "journeyPage" && slug.curre
       _id, name, "slug": slug.current, audience, status, shortDescription,
       "groupName": group->name, "groupSlug": group->slug.current,
       "burrDiameterMm": specs.burrDiameterMm, "burrType": specs.burrType, "grindType": specs.grindType,
-      "imageAlt": heroImage.alt, heroImage,
+      "imageAlt": heroImage.alt, "heroImage": heroImage${sanityImage},
       answerFirst,
       specs${specs},
       extraSpecs[]{ _key, label, value },
@@ -143,7 +150,7 @@ export const JOURNEY_QUERY = defineQuery(`*[_type == "journeyPage" && slug.curre
       _id, name, "slug": slug.current, audience, status, shortDescription,
       "groupName": group->name, "groupSlug": group->slug.current,
       "burrDiameterMm": specs.burrDiameterMm, "burrType": specs.burrType, "grindType": specs.grindType,
-      "imageAlt": heroImage.alt, heroImage,
+      "imageAlt": heroImage.alt, "heroImage": heroImage${sanityImage},
       answerFirst,
       specs${specs},
       extraSpecs[]{ _key, label, value }
@@ -151,10 +158,7 @@ export const JOURNEY_QUERY = defineQuery(`*[_type == "journeyPage" && slug.curre
     collections[]->{ name, "slug": slug.current, summary, audience },
     posts[]->${articleCard}
   },
-  "seoTitle": seo.title,
-  "seoDescription": seo.description,
-  "noIndex": seo.noIndex == true,
-  "canonical": seo.canonical
+  ${seoFields}
 }`);
 
 export const SIMPLE_PAGE_QUERY = defineQuery(`*[_id == $id][0]{
@@ -162,7 +166,7 @@ export const SIMPLE_PAGE_QUERY = defineQuery(`*[_id == $id][0]{
   introduction,
   sections[]{
     _key, _type, eyebrow, heading, text, intro, quote, attribution, role, caption, url, step,
-    "imageAlt": image.alt, imagePosition, image,
+    "imageAlt": image.alt, imagePosition, "image": image${sanityImage},
     links[]${link}, link${link}, body,
     features[]{ _key, title, text },
     faqs[]{ _key, question, answer },
@@ -171,7 +175,7 @@ export const SIMPLE_PAGE_QUERY = defineQuery(`*[_id == $id][0]{
       _id, name, "slug": slug.current, audience, status, shortDescription, answerFirst,
       "groupName": group->name, "groupSlug": group->slug.current,
       "burrDiameterMm": specs.burrDiameterMm, "burrType": specs.burrType, "grindType": specs.grindType,
-      "imageAlt": heroImage.alt, heroImage,
+      "imageAlt": heroImage.alt, "heroImage": heroImage${sanityImage},
       specs${specs},
       extraSpecs[]{ _key, label, value },
       faqs[]{ _key, question, answer }
@@ -180,7 +184,7 @@ export const SIMPLE_PAGE_QUERY = defineQuery(`*[_id == $id][0]{
       _id, name, "slug": slug.current, audience, status, shortDescription, answerFirst,
       "groupName": group->name, "groupSlug": group->slug.current,
       "burrDiameterMm": specs.burrDiameterMm, "burrType": specs.burrType, "grindType": specs.grindType,
-      "imageAlt": heroImage.alt, heroImage,
+      "imageAlt": heroImage.alt, "heroImage": heroImage${sanityImage},
       specs${specs},
       extraSpecs[]{ _key, label, value },
       faqs[]{ _key, question, answer }
@@ -188,10 +192,7 @@ export const SIMPLE_PAGE_QUERY = defineQuery(`*[_id == $id][0]{
     collections[]->{ name, "slug": slug.current, summary, audience },
     posts[]->${articleCard}
   },
-  "seoTitle": seo.title,
-  "seoDescription": seo.description,
-  "noIndex": seo.noIndex == true,
-  "canonical": seo.canonical
+  ${seoFields}
 }`);
 
 export const GRINDERS_QUERY = defineQuery(`*[_type == "grinder" && language == "en-GB"]|order(name asc)${card}`);
@@ -200,8 +201,8 @@ export const GRINDER_QUERY = defineQuery(`*[_type == "grinder" && slug.current =
   _id, name, "slug": slug.current, audience, status, shortDescription, answerFirst,
   "groupName": group->name, "groupSlug": group->slug.current,
   "burrDiameterMm": specs.burrDiameterMm, "burrType": specs.burrType, "grindType": specs.grindType,
-  "imageAlt": heroImage.alt, heroImage,
-  gallery[]{ _key, alt, asset, crop, hotspot },
+  "imageAlt": heroImage.alt, "heroImage": heroImage${sanityImage},
+  gallery[]{ _key, alt, asset, crop, hotspot, "lqip": asset->metadata.lqip },
   specs${specs},
   extraSpecs[]{ _key, label, value },
   faqs[]{ _key, question, answer },
@@ -209,11 +210,7 @@ export const GRINDER_QUERY = defineQuery(`*[_type == "grinder" && slug.current =
   relatedArticles[]->${articleCard},
   "catalogueUrl": catalogue.asset->url,
   "catalogueLabel": catalogue.label,
-  "seoTitle": seo.title,
-  "seoDescription": seo.description,
-  "noIndex": seo.noIndex == true,
-  "canonical": seo.canonical,
-  seoImage
+  ${seoFields}
 }`);
 
 export const COLLECTION_QUERY = defineQuery(`*[_type == "grinderCollection" && slug.current == $slug && language == "en-GB"][0]{
@@ -221,7 +218,7 @@ export const COLLECTION_QUERY = defineQuery(`*[_type == "grinderCollection" && s
   grinders[]->${card},
   sections[]{
     _key, _type, eyebrow, heading, text, intro, quote, attribution, role, caption, url, step,
-    "imageAlt": image.alt, imagePosition, image,
+    "imageAlt": image.alt, imagePosition, "image": image${sanityImage},
     links[]${link}, link${link}, body,
     features[]{ _key, title, text },
     faqs[]{ _key, question, answer },
@@ -230,7 +227,7 @@ export const COLLECTION_QUERY = defineQuery(`*[_type == "grinderCollection" && s
       _id, name, "slug": slug.current, audience, status, shortDescription, answerFirst,
       "groupName": group->name, "groupSlug": group->slug.current,
       "burrDiameterMm": specs.burrDiameterMm, "burrType": specs.burrType, "grindType": specs.grindType,
-      "imageAlt": heroImage.alt, heroImage,
+      "imageAlt": heroImage.alt, "heroImage": heroImage${sanityImage},
       specs${specs},
       extraSpecs[]{ _key, label, value },
       faqs[]{ _key, question, answer }
@@ -239,7 +236,7 @@ export const COLLECTION_QUERY = defineQuery(`*[_type == "grinderCollection" && s
       _id, name, "slug": slug.current, audience, status, shortDescription, answerFirst,
       "groupName": group->name, "groupSlug": group->slug.current,
       "burrDiameterMm": specs.burrDiameterMm, "burrType": specs.burrType, "grindType": specs.grindType,
-      "imageAlt": heroImage.alt, heroImage,
+      "imageAlt": heroImage.alt, "heroImage": heroImage${sanityImage},
       specs${specs},
       extraSpecs[]{ _key, label, value },
       faqs[]{ _key, question, answer }
@@ -247,10 +244,7 @@ export const COLLECTION_QUERY = defineQuery(`*[_type == "grinderCollection" && s
     collections[]->{ name, "slug": slug.current, summary, audience },
     posts[]->${articleCard}
   },
-  "seoTitle": seo.title,
-  "seoDescription": seo.description,
-  "noIndex": seo.noIndex == true,
-  "canonical": seo.canonical
+  ${seoFields}
 }`);
 
 export const POSTS_QUERY = defineQuery(`*[_type == "kbPost" && language == "en-GB"]|order(publishedAt desc)${articleCard}`);
@@ -259,34 +253,50 @@ export const POST_QUERY = defineQuery(`*[_type == "kbPost" && slug.current == $s
   title, "slug": slug.current, excerpt, publishedAt, updatedAt, answerFirst, body,
   "topicTitle": topic->title, "topicSlug": topic->slug.current,
   "authorName": author->name, "authorSlug": author->slug.current, "authorRole": author->role, "authorBio": author->bio,
-  "imageAlt": image.alt, image,
+  "authorSameAs": author->sameAs,
+  "imageAlt": image.alt, "image": image${sanityImage},
   faqs[]{ _key, question, answer },
   relatedGrinders[]->${card},
-  "seoTitle": seo.title,
-  "seoDescription": seo.description,
-  "noIndex": seo.noIndex == true,
-  "canonical": seo.canonical
+  ${seoFields}
 }`);
 
 export const TOPICS_QUERY = defineQuery(`*[_type == "kbTopic" && language == "en-GB"]|order(title asc){
   title, "slug": slug.current, description,
-  "seoTitle": seo.title, "seoDescription": seo.description
+  ${seoFields}
 }`);
 
 export const LEGAL_QUERY = defineQuery(`*[_type == "legalPage" && slug.current == $slug && language == "en-GB"][0]{
   title, "slug": slug.current, effectiveDate, body,
-  "seoTitle": seo.title, "seoDescription": seo.description, "noIndex": seo.noIndex == true
+  ${seoFields}
 }`);
 
 export const SITEMAP_QUERY = defineQuery(`{
+  "pages": *[
+    _id in ["homePage", "aboutPage", "contactPage", "knowledgeHubPage", "grindersIndexPage"]
+    || (_type == "journeyPage" && slug.current in ["home-grinders", "professional"] && language == "en-GB")
+  ]{
+    "path": select(
+      _id == "homePage" => "/",
+      _id == "aboutPage" => "/about",
+      _id == "contactPage" => "/contact",
+      _id == "knowledgeHubPage" => "/knowledge",
+      _id == "grindersIndexPage" => "/grinders",
+      _type == "journeyPage" => "/" + slug.current
+    ),
+    _updatedAt
+  },
   "grinders": *[_type == "grinder" && language == "en-GB" && status != "discontinued" && seo.noIndex != true]{
-    "slug": slug.current, _updatedAt
+    "slug": slug.current,
+    _updatedAt,
+    "image": coalesce(seo.image.asset->url, heroImage.asset->url)
   },
   "collections": *[_type == "grinderCollection" && language == "en-GB" && seo.noIndex != true]{
     "slug": slug.current, _updatedAt
   },
   "posts": *[_type == "kbPost" && language == "en-GB" && seo.noIndex != true]{
-    "slug": slug.current, _updatedAt
+    "slug": slug.current,
+    _updatedAt,
+    "image": coalesce(seo.image.asset->url, image.asset->url)
   },
   "topics": *[_type == "kbTopic" && language == "en-GB" && seo.noIndex != true]{
     "slug": slug.current, _updatedAt

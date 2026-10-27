@@ -24,6 +24,28 @@ Nizatto policy for this repository. Version 1.1, October 2026. British English i
 - Sample content is allowed so pages render without Sanity. Label it. Do not present sample specifications as final.
 - After a change, run `pnpm typecheck` and `pnpm lint`.
 
+## Sanity Agent Toolkit
+
+Before any Sanity, schema, GROQ, SEO, content-model or experimentation work, read the matching skill in `.agents/skills` and the reference it points to:
+
+- `.agents/skills/sanity-best-practices` for schema, GROQ, TypeGen, Visual Editing, images, Portable Text, Studio and Next.js.
+- `.agents/skills/content-modeling-best-practices` for references, embedding, taxonomies and separation of concerns.
+- `.agents/skills/seo-aeo-best-practices` for metadata, sitemaps, JSON-LD, hreflang and answer-engine content.
+- `.agents/skills/content-experimentation-best-practices` before any test. There is no live experiment. Do not assign visitors to a variant.
+
+The skills are pinned to `sanity-io/agent-toolkit` commit `571a2d077554bd1272f31c345ecb7719889e7957` (`skills-lock.json` field `ref`). Cursor reads them from `.agents/skills`. The Sanity MCP server is `.cursor/mcp.json` (`https://mcp.sanity.io`, OAuth, no token in the repo).
+
+To update the skills:
+
+```bash
+npx skills add sanity-io/agent-toolkit --skill sanity-best-practices --skill content-modeling-best-practices --skill seo-aeo-best-practices --skill content-experimentation-best-practices --agent cursor --copy -y
+git ls-remote https://github.com/sanity-io/agent-toolkit.git HEAD
+```
+
+Write the new commit into `skills-lock.json` `ref` and into this section. Do not float on `main`.
+
+If the Sanity MCP server is connected, use `list_sanity_rules` and `get_sanity_rules` as well as the local files. Do not query or write to the old project `xb4mqxnu`. After a schema change, say that `sanity schema deploy` is still required. Do not delete a schema or existing content without flagging it first.
+
 ## Tone of voice
 
 Match the current Macap English site: confident and simple.

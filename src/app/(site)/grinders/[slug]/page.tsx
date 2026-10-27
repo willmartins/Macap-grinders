@@ -7,7 +7,7 @@ import { SampleBanner } from "@/components/site/sample-banner";
 import { ThemeLock } from "@/components/site/theme-frame";
 import { TrackGrinderView } from "@/components/site/trackers";
 import { grinderFaqs } from "@/lib/faqs";
-import { faqJsonLd, productJsonLd } from "@/lib/jsonld";
+import { faqJsonLd, jsonLdGraph, productJsonLd } from "@/lib/jsonld";
 import { buildMetadata } from "@/lib/metadata";
 import { draftPerspective } from "@/sanity/lib/draft";
 import { loadGrinder, loadGrinderCards } from "@/sanity/lib/load";
@@ -28,7 +28,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
     path: `/grinders/${grinder.slug}`,
     noIndex: grinder.seo.noIndex || grinder.status === "discontinued",
     canonical: grinder.seo.canonical,
-    image: grinder.seo.imageUrl || grinder.imageUrl,
+    image: grinder.seo.imageUrl,
   });
 }
 
@@ -49,8 +49,7 @@ async function GrinderContent({ params }: { params: Promise<{ slug: string }> })
       <TrackGrinderView slug={grinder.slug} name={grinder.name} audience={grinder.audience} />
       {sample ? <SampleBanner /> : null}
       <GrinderModel grinder={grinder} sample={sample} faqs={faqs} siblings={related} />
-      <JsonLd data={productJsonLd(grinder)} />
-      <JsonLd data={faqJsonLd(faqs)} />
+      <JsonLd data={jsonLdGraph([productJsonLd(grinder), faqJsonLd(faqs)])} />
     </article>
   );
 }

@@ -100,6 +100,7 @@ export function PageBuilder({ sections, journey }: { sections: Section[]; journe
                 key={section._key}
                 imageUrl={section.imageUrl}
                 alt={section.imageAlt || ""}
+                blur={section.imageLqip}
                 eyebrow={section.eyebrow}
                 title={section.heading}
                 text={section.text}
@@ -150,6 +151,8 @@ export function PageBuilder({ sections, journey }: { sections: Section[]; journe
                     alt={section.imageAlt}
                     fill
                     sizes="(min-width: 768px) 58vw, 100vw"
+                    placeholder={section.imageLqip ? "blur" : "empty"}
+                    blurDataURL={section.imageLqip || undefined}
                     className="object-cover"
                     style={{ objectPosition: focusFor(section.imageUrl) }}
                   />

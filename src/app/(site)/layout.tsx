@@ -10,7 +10,7 @@ import { Header } from "@/components/site/header";
 import { JsonLd } from "@/components/site/json-ld";
 import { ClickTracker } from "@/components/site/trackers";
 import { ThemeFrame } from "@/components/site/theme-frame";
-import { organisationJsonLd, websiteJsonLd } from "@/lib/jsonld";
+import { jsonLdGraph, organisationJsonLd, websiteJsonLd } from "@/lib/jsonld";
 import { loadShell } from "@/sanity/lib/load";
 
 async function IndexingMarker() {
@@ -40,8 +40,7 @@ export default async function SiteLayout({ children }: { children: React.ReactNo
       </main>
       <Footer shell={shell} />
       <CookieConsent />
-      <JsonLd data={organisationJsonLd(shell)} />
-      <JsonLd data={websiteJsonLd()} />
+      <JsonLd data={jsonLdGraph([organisationJsonLd(shell), websiteJsonLd()])} />
       <AnalyticsScripts />
       <ClickTracker />
       <Suspense fallback={null}>
