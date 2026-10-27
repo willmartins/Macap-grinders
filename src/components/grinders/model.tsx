@@ -4,6 +4,7 @@ import { GrinderGrid } from "@/components/grinders/grinder-card";
 import { SpecTable } from "@/components/grinders/spec-table";
 import { BleedHero } from "@/components/site/bleed-hero";
 import { Breadcrumbs } from "@/components/site/breadcrumbs";
+import { TextLink } from "@/components/site/text-link";
 import { compareHref } from "@/lib/compare";
 import type { FaqItem, GalleryImage, Grinder, GrinderCard } from "@/lib/content/types";
 import { formatDate, formatNumber } from "@/lib/format";
@@ -276,9 +277,9 @@ export function GrinderModel({
                 <p className="label text-muted md:col-span-2">{String(index + 1).padStart(2, "0")}</p>
                 <div className="md:col-span-7">
                   <h3 className="text-2xl font-medium tracking-tight">
-                    <a href={`/knowledge/${post.slug}`} className="underline-offset-4 hover:underline">
+                    <TextLink href={`/knowledge/${post.slug}`} className="underline-offset-4 hover:underline">
                       {post.title}
-                    </a>
+                    </TextLink>
                   </h3>
                   <p className="mt-2 max-w-xl text-muted">{post.excerpt}</p>
                 </div>

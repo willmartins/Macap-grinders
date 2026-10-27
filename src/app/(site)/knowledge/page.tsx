@@ -1,6 +1,7 @@
 import { Suspense } from "react";
 
 import { PhotoSlot } from "@/components/site/photo-slot";
+import { TextLink } from "@/components/site/text-link";
 import { ContentPage } from "@/components/site/content-page";
 import { articleShot } from "@/lib/imagery";
 import { JsonLd } from "@/components/site/json-ld";
@@ -40,9 +41,9 @@ async function KnowledgeContent() {
             <li key={topic.slug}>
               <p className="label text-muted">{String(index + 1).padStart(2, "0")}</p>
               <h3 className="mt-3 text-2xl font-medium tracking-tight">
-                <a href={`/knowledge/topic/${topic.slug}`} className="underline-offset-4 hover:underline">
+                <TextLink href={`/knowledge/topic/${topic.slug}`} className="underline-offset-4 hover:underline">
                   {topic.title}
-                </a>
+                </TextLink>
               </h3>
               <p className="mt-3 text-sm leading-relaxed text-muted">{topic.description}</p>
             </li>
@@ -64,9 +65,9 @@ async function KnowledgeContent() {
                 ) : null}
                 <div className={shot ? "md:col-span-6" : "md:col-span-9"}>
                   <h3 className="text-2xl font-medium tracking-tight">
-                    <a href={`/knowledge/${post.slug}`} className="underline-offset-4 hover:underline">
+                    <TextLink href={`/knowledge/${post.slug}`} className="underline-offset-4 hover:underline">
                       {post.title}
-                    </a>
+                    </TextLink>
                   </h3>
                   <p className="mt-2 max-w-xl text-muted">{post.excerpt}</p>
                 </div>

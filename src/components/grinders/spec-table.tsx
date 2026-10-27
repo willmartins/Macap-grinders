@@ -1,3 +1,4 @@
+import { TextLink } from "@/components/site/text-link";
 import type { Grinder } from "@/lib/content/types";
 import { compareRows, specEntries } from "@/lib/specs";
 
@@ -39,9 +40,12 @@ export function CompareTable({ grinders }: { grinders: Grinder[] }) {
             </th>
             {grinders.map((grinder) => (
               <th key={grinder.id} scope="col" className="py-4 pr-6 text-left align-bottom">
-                <a href={`/grinders/${grinder.slug}`} className="text-xl font-medium tracking-tight underline-offset-4 hover:underline">
+                <TextLink
+                  href={`/grinders/${grinder.slug}`}
+                  className="text-xl font-medium tracking-tight underline-offset-4 hover:underline"
+                >
                   {grinder.name}
-                </a>
+                </TextLink>
               </th>
             ))}
           </tr>

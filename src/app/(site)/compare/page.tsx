@@ -2,6 +2,7 @@ import { Suspense } from "react";
 
 import { CompareTable } from "@/components/grinders/spec-table";
 import { PhotoSlot } from "@/components/site/photo-slot";
+import { TextLink } from "@/components/site/text-link";
 import { SampleBanner } from "@/components/site/sample-banner";
 import { TrackCompare } from "@/components/site/trackers";
 import { compareHref, explainDifferences } from "@/lib/compare";
@@ -67,9 +68,9 @@ async function CompareContent({
                   />
                   <p className="label mt-4 text-muted">{grinder.groupName || "Macap"}</p>
                   <h2 className="mt-2 text-3xl font-medium tracking-tight">
-                    <a href={`/grinders/${grinder.slug}`} className="underline-offset-4 hover:underline">
+                    <TextLink href={`/grinders/${grinder.slug}`} className="underline-offset-4 hover:underline">
                       {grinder.name}
-                    </a>
+                    </TextLink>
                   </h2>
                 </li>
               ))}
@@ -89,12 +90,12 @@ async function CompareContent({
           <ul className="mt-8 flex flex-wrap gap-4 text-sm">
             {grinders.map((grinder) => (
               <li key={grinder.id}>
-                <a
+                <TextLink
                   href={compareHref(grinders.map((item) => item.slug).filter((slug) => slug !== grinder.slug))}
                   className="underline underline-offset-4"
                 >
                   Remove {grinder.name}
-                </a>
+                </TextLink>
               </li>
             ))}
           </ul>
@@ -105,12 +106,12 @@ async function CompareContent({
             <ul className="mt-4 grid gap-2 text-sm sm:grid-cols-2 lg:grid-cols-3">
               {choices.map((grinder) => (
                 <li key={grinder.id}>
-                  <a
+                  <TextLink
                     href={compareHref([...grinders.map((item) => item.slug), grinder.slug])}
                     className="underline underline-offset-4"
                   >
                     {grinder.name}
-                  </a>
+                  </TextLink>
                 </li>
               ))}
             </ul>

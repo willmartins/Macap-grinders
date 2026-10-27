@@ -1,6 +1,7 @@
 import { PortableText, type PortableTextBlock, type PortableTextComponents } from "@portabletext/react";
 import Image from "next/image";
 
+import { TextLink } from "@/components/site/text-link";
 import type { RichText } from "@/lib/content/types";
 import { safeHref } from "@/lib/security";
 import { imageUrl } from "@/sanity/lib/image";
@@ -15,15 +16,10 @@ const components: PortableTextComponents = {
     link: ({ children, value }) => {
       const href = safeHref(typeof value?.href === "string" ? value.href : "");
       if (!href) return <>{children}</>;
-      const external = href.startsWith("http");
       return (
-        <a
-          href={href}
-          className="underline decoration-line underline-offset-4"
-          {...(external ? { target: "_blank", rel: "noreferrer" } : {})}
-        >
+        <TextLink href={href} className="underline decoration-line underline-offset-4">
           {children}
-        </a>
+        </TextLink>
       );
     },
   },

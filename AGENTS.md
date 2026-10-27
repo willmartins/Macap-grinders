@@ -40,6 +40,12 @@ Mark unfinished legal and company history as PLACEHOLDER. Mark unpublished speci
 
 This applies to sample content, microcopy, journey pages, Studio descriptions and anything an editor will copy.
 
+## Links
+
+A link that is not a button ends with an arrow. Use `TextLink` in `src/components/site/text-link.tsx`. The glyph matches `.btn` (`→`), is `aria-hidden`, stays on the same line as the last word, and nudges on hover. The nudge is off when the visitor prefers reduced motion. An `http` or `https` address uses `↗` and opens in a new tab. Email and phone keep `→`.
+
+Do not add that arrow to a button (`.btn` already draws one), the header navigation, the logo, breadcrumbs, the skip link, or a link that wraps a whole image card which already shows an arrow. A photograph-only link has no text arrow. The title beside it does.
+
 ## Studio
 
 Plain titles and descriptions. Validate required fields. Singletons stay pinned. Do not offer duplicate or delete on a singleton.

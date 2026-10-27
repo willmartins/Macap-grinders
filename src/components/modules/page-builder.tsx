@@ -6,6 +6,7 @@ import { CompareTable, SpecTable } from "@/components/grinders/spec-table";
 import { BleedHero, SplitHero } from "@/components/site/bleed-hero";
 import { PhotoSlot } from "@/components/site/photo-slot";
 import { RichTextBody } from "@/components/site/rich-text";
+import { TextLink } from "@/components/site/text-link";
 import { explainDifferences } from "@/lib/compare";
 import type { Section } from "@/lib/content/types";
 import { collectionShot, focusFor, pageShots } from "@/lib/imagery";
@@ -25,7 +26,7 @@ function youtubeId(url: string): string | null {
   return null;
 }
 
-function TextLink({
+function ButtonLink({
   href,
   label,
   journey,
@@ -90,7 +91,7 @@ export function PageBuilder({ sections, journey }: { sections: Section[]; journe
             );
           }
           const links = section.links.map((link, index) => (
-            <TextLink
+            <ButtonLink
               key={link._key}
               href={link.href}
               label={link.label}
@@ -127,7 +128,7 @@ export function PageBuilder({ sections, journey }: { sections: Section[]; journe
               {section.links.length ? (
                 <div className="mt-8 flex flex-wrap gap-3">
                   {section.links.map((link, index) => (
-                    <TextLink
+                    <ButtonLink
                       key={link._key}
                       href={link.href}
                       label={link.label}
@@ -169,7 +170,7 @@ export function PageBuilder({ sections, journey }: { sections: Section[]; journe
                 <p className="mt-5 max-w-md text-lg leading-relaxed">{section.text}</p>
                 {section.link ? (
                   <p className="mt-8">
-                    <TextLink href={section.link.href} label={section.link.label} journey={journey} />
+                    <ButtonLink href={section.link.href} label={section.link.label} journey={journey} />
                   </p>
                 ) : null}
               </div>
@@ -209,9 +210,12 @@ export function PageBuilder({ sections, journey }: { sections: Section[]; journe
                         <div className="p-5">
                           <p className="label text-muted">{String(index + 1).padStart(2, "0")}</p>
                           <h3 className="mt-3 text-2xl font-medium tracking-tight">
-                            <a href={`/collections/${collection.slug}`} className="underline-offset-4 hover:underline">
+                            <TextLink
+                              href={`/collections/${collection.slug}`}
+                              className="underline-offset-4 hover:underline"
+                            >
                               {collection.name}
-                            </a>
+                            </TextLink>
                           </h3>
                           <p className="mt-3 text-sm leading-relaxed text-muted">{collection.summary}</p>
                         </div>
@@ -281,7 +285,7 @@ export function PageBuilder({ sections, journey }: { sections: Section[]; journe
                 <h2 className="display-sm max-w-3xl">{section.heading}</h2>
                 {section.text ? <p className="mt-5 max-w-xl text-lg">{section.text}</p> : null}
                 <p className="mt-8">
-                  <TextLink href={section.link.href} label={section.link.label} journey={journey} step={section.step} />
+                  <ButtonLink href={section.link.href} label={section.link.label} journey={journey} step={section.step} />
                 </p>
               </div>
             ) : null}
@@ -299,9 +303,9 @@ export function PageBuilder({ sections, journey }: { sections: Section[]; journe
                       <p className="label text-muted md:col-span-2">{String(index + 1).padStart(2, "0")}</p>
                       <div className="md:col-span-10">
                         <h3 className="text-2xl font-medium tracking-tight">
-                          <a href={`/knowledge/${post.slug}`} className="underline-offset-4 hover:underline">
+                          <TextLink href={`/knowledge/${post.slug}`} className="underline-offset-4 hover:underline">
                             {post.title}
-                          </a>
+                          </TextLink>
                         </h3>
                         <p className="mt-2 max-w-2xl text-muted">{post.excerpt}</p>
                       </div>
@@ -355,9 +359,9 @@ function VideoBlock({ url, heading, caption }: { url: string; heading?: string; 
         </div>
       ) : safe ? (
         <p>
-          <a href={safe} className="underline underline-offset-4" rel="noreferrer">
+          <TextLink href={safe} className="underline underline-offset-4">
             Watch the video
-          </a>
+          </TextLink>
         </p>
       ) : null}
       {caption ? <p className="mt-3 text-sm text-muted">{caption}</p> : null}

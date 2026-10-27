@@ -1,6 +1,5 @@
-import Link from "next/link";
-
 import { PhotoSlot } from "@/components/site/photo-slot";
+import { TextLink } from "@/components/site/text-link";
 import type { GrinderCard } from "@/lib/content/types";
 import { formatNumber } from "@/lib/format";
 
@@ -25,9 +24,9 @@ export function GrinderCardView({ grinder }: { grinder: GrinderCard }) {
         </p>
         <div className="flex items-end justify-between gap-4">
           <h3 className="text-2xl font-medium tracking-tight">
-            <a href={`/grinders/${grinder.slug}`} className="underline-offset-4 hover:underline">
+            <TextLink href={`/grinders/${grinder.slug}`} className="underline-offset-4 hover:underline">
               {grinder.name}
-            </a>
+            </TextLink>
           </h3>
           {grinder.burrDiameterMm != null ? (
             <p className="stat text-[2rem]">
@@ -38,9 +37,9 @@ export function GrinderCardView({ grinder }: { grinder: GrinderCard }) {
         </div>
         <p className="text-sm leading-relaxed text-muted">{grinder.shortDescription}</p>
         <p className="mt-auto pt-4">
-          <a href={`/compare?m=${grinder.slug}`} className="label underline-offset-4 hover:underline">
+          <TextLink href={`/compare?m=${grinder.slug}`} className="label underline-offset-4 hover:underline">
             Compare
-          </a>
+          </TextLink>
         </p>
       </div>
     </article>
@@ -52,9 +51,9 @@ export function GrinderGrid({ grinders, snap = false }: { grinders: GrinderCard[
     return (
       <p className="text-sm">
         No grinders match these filters.{" "}
-        <Link href="/grinders" className="underline underline-offset-4">
+        <TextLink href="/grinders" className="underline underline-offset-4">
           Clear filters
-        </Link>
+        </TextLink>
       </p>
     );
   }

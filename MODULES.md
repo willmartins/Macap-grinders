@@ -21,6 +21,16 @@ Page sections share one name in code and in Sanity Studio. They are rendered by 
 
 Document types that are not page sections: `siteSettings`, `homePage`, `aboutPage`, `contactPage`, `knowledgeHubPage`, `grindersIndexPage`, `journeyPage`, `grinderGroup`, `grinder`, `grinderCollection`, `author`, `kbTopic`, `kbPost`, `legalPage`, `redirect`. Shared objects: `seo`, `link`, `faq`, `blockContent`, `grinderSpecs`.
 
+## Text links
+
+Standalone text links use `TextLink` from `src/components/site/text-link.tsx`. The same rule is in `AGENTS.md`.
+
+The arrow is the button glyph (`→`), hidden from assistive technology, kept on the same line as the last word, and nudged slightly on hover and keyboard focus. Reduced motion turns the nudge off. An `http` or `https` address uses a north-east arrow (`↗`) and opens in a new tab. `mailto` and `tel` keep the horizontal arrow.
+
+Use it for card titles, view-all and read-more lines, collection, group and model links, knowledge links, compare links, footer links, legal links, contact links, and links inside portable text.
+
+Leave these without `TextLink`: buttons (`.btn` already has an arrow), the header navigation, the logo, breadcrumbs, the skip link, and any link that wraps a whole image card which already shows an arrow. A link that only wraps a photograph does not take an arrow.
+
 ## Grinder questions
 
 `grinder.faqs` is an array of `faq` (question and answer), edited on the grinder document. Maximum six. The product page renders them in an accordion and adds FAQPage JSON-LD for the questions that are shown.

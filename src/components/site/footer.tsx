@@ -1,5 +1,6 @@
 "use client";
 
+import { TextLink } from "@/components/site/text-link";
 import type { Shell } from "@/lib/content/types";
 import { telHref } from "@/lib/security";
 import { publicOffice } from "@/lib/site";
@@ -17,15 +18,15 @@ export function Footer({ shell }: { shell: Shell }) {
           <p className="mt-4 font-medium">{settings.siteName}</p>
           <p className="mt-3 whitespace-pre-line">{settings.address}</p>
           <p className="mt-3">
-            <a href={telHref(settings.phone)} className="hover:shadow-[inset_0_-1px_0_var(--accent)]">
+            <TextLink href={telHref(settings.phone)} className="hover:shadow-[inset_0_-1px_0_var(--accent)]">
               {settings.phone}
-            </a>
+            </TextLink>
           </p>
           <p>Fax {publicOffice.fax}</p>
           <p>
-            <a href={`mailto:${settings.email}`} className="hover:shadow-[inset_0_-1px_0_var(--accent)]">
+            <TextLink href={`mailto:${settings.email}`} className="hover:shadow-[inset_0_-1px_0_var(--accent)]">
               {settings.email}
-            </a>
+            </TextLink>
           </p>
         </address>
         <nav aria-label="Footer">
@@ -33,9 +34,9 @@ export function Footer({ shell }: { shell: Shell }) {
           <ul className="mt-3 grid gap-2 text-sm">
             {settings.footerNavigation.map((link) => (
               <li key={link._key}>
-                <a href={link.href} className="hover:shadow-[inset_0_-1px_0_var(--accent)]">
+                <TextLink href={link.href} className="hover:shadow-[inset_0_-1px_0_var(--accent)]">
                   {link.label}
-                </a>
+                </TextLink>
               </li>
             ))}
           </ul>
@@ -45,9 +46,12 @@ export function Footer({ shell }: { shell: Shell }) {
           <ul className="mt-3 grid gap-2 text-sm">
             {collections.map((collection) => (
               <li key={collection.slug}>
-                <a href={`/collections/${collection.slug}`} className="hover:shadow-[inset_0_-1px_0_var(--accent)]">
+                <TextLink
+                  href={`/collections/${collection.slug}`}
+                  className="hover:shadow-[inset_0_-1px_0_var(--accent)]"
+                >
                   {collection.name}
-                </a>
+                </TextLink>
               </li>
             ))}
           </ul>
@@ -58,9 +62,9 @@ export function Footer({ shell }: { shell: Shell }) {
             <ul className="mt-3 grid gap-2 text-sm">
               {legal.map((page) => (
                 <li key={page.slug}>
-                  <a href={`/legal/${page.slug}`} className="hover:shadow-[inset_0_-1px_0_var(--accent)]">
+                  <TextLink href={`/legal/${page.slug}`} className="hover:shadow-[inset_0_-1px_0_var(--accent)]">
                     {page.title}
-                  </a>
+                  </TextLink>
                 </li>
               ))}
               <li>
@@ -74,9 +78,9 @@ export function Footer({ shell }: { shell: Shell }) {
             <ul className="mt-6 grid gap-2 text-sm">
               {settings.socials.map((link) => (
                 <li key={link._key}>
-                  <a href={link.href} className="hover:shadow-[inset_0_-1px_0_var(--accent)]" rel="noreferrer">
+                  <TextLink href={link.href} className="hover:shadow-[inset_0_-1px_0_var(--accent)]">
                     {link.label}
-                  </a>
+                  </TextLink>
                 </li>
               ))}
             </ul>

@@ -715,7 +715,27 @@ export const samplePosts: Post[] = [
     imageAlt: articleShots["supra-68-and-supra-83"].alt,
     body: [
       text("c1", "normal", "Both grinders are professional flat-burr espresso grinders in the Supra line. The useful difference is burr diameter, output and the space the machine takes."),
-      text("c2", "normal", "If you want each dose weighed, look at the Supra G series rather than choosing between 68 and 83 on size alone."),
+      {
+        _type: "block",
+        _key: "c2",
+        style: "normal",
+        markDefs: [{ _key: "g", _type: "link", href: "/grinders/supra-68-g-series" }],
+        children: [
+          {
+            _type: "span",
+            _key: "c2a",
+            text: "If you want each dose weighed, look at the ",
+            marks: [],
+          },
+          { _type: "span", _key: "c2b", text: "Supra G series", marks: ["g"] },
+          {
+            _type: "span",
+            _key: "c2c",
+            text: " rather than choosing between 68 and 83 on size alone.",
+            marks: [],
+          },
+        ],
+      },
     ],
     faqs: [
       {

@@ -172,6 +172,30 @@ section[id] {
   color: #111111;
 }
 
+.link-tail {
+  white-space: nowrap;
+}
+
+.link-arrow {
+  display: inline-block;
+  margin-inline-start: 0.35em;
+  letter-spacing: 0;
+  line-height: 1;
+  text-transform: none;
+  vertical-align: baseline;
+  transition: transform 180ms ease;
+}
+
+.text-link:hover .link-arrow,
+.text-link:focus-visible .link-arrow {
+  transform: translateX(0.22em);
+}
+
+.text-link:hover .link-arrow.is-external,
+.text-link:focus-visible .link-arrow.is-external {
+  transform: translate(0.16em, -0.16em);
+}
+
 .field {
   width: 100%;
   min-height: 2.75rem;
@@ -669,5 +693,16 @@ main:has([data-hero]) {
 @media (prefers-reduced-motion: reduce) {
   .snap-row {
     scroll-snap-type: none;
+  }
+
+  .link-arrow {
+    transition: none;
+  }
+
+  .text-link:hover .link-arrow,
+  .text-link:focus-visible .link-arrow,
+  .text-link:hover .link-arrow.is-external,
+  .text-link:focus-visible .link-arrow.is-external {
+    transform: none;
   }
 }

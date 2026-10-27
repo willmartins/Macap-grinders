@@ -1,8 +1,8 @@
 "use client";
 
-import Link from "next/link";
 import { useEffect, useId, useLayoutEffect, useState, useSyncExternalStore } from "react";
 
+import { TextLink } from "@/components/site/text-link";
 import { consentKey, updateConsent } from "@/lib/analytics";
 
 const consentEvent = "macap-consent";
@@ -76,9 +76,9 @@ export function CookieConsent() {
         Advertising storage stays off.
       </p>
       <p className="text-sm">
-        <Link href="/legal/cookie-policy" className="underline underline-offset-4">
+        <TextLink href="/legal/cookie-policy" className="underline underline-offset-4">
           Cookie policy
-        </Link>
+        </TextLink>
       </p>
       <div className="flex flex-wrap gap-3">
         <button type="button" className="btn" onClick={() => choose("granted")}>

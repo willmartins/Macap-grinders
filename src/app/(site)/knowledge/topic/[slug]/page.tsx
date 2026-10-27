@@ -2,6 +2,7 @@ import { notFound } from "next/navigation";
 import { Suspense } from "react";
 
 import { Breadcrumbs } from "@/components/site/breadcrumbs";
+import { TextLink } from "@/components/site/text-link";
 import { SampleBanner } from "@/components/site/sample-banner";
 import { formatDate } from "@/lib/format";
 import { buildMetadata } from "@/lib/metadata";
@@ -52,9 +53,9 @@ async function TopicContent({ params }: { params: Promise<{ slug: string }> }) {
           related.map((post) => (
             <li key={post.slug} className="border-b border-line py-5">
               <h2 className="text-xl font-medium">
-                <a href={`/knowledge/${post.slug}`} className="underline-offset-4 hover:underline">
+                <TextLink href={`/knowledge/${post.slug}`} className="underline-offset-4 hover:underline">
                   {post.title}
-                </a>
+                </TextLink>
               </h2>
               <p className="mt-2 text-sm text-muted">{post.excerpt}</p>
               <p className="mt-2 text-sm text-muted">{formatDate(post.publishedAt)}</p>
