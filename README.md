@@ -48,6 +48,8 @@ See `.env.example`.
 
 Create a Vercel project for this repository. Set the environment variables above for Production and Preview. `NEXT_PUBLIC_SITE_URL` is the public origin (`https://macap.it`). Preview deployments and `macap-grinders.vercel.app` must leave `NEXT_PUBLIC_ALLOW_INDEXING` unset.
 
+Functions run in London (`lhr1`), set by `regions` in `vercel.json`. Static files stay on the CDN. The team plan includes London. If a plan excludes `lhr1`, use Frankfurt (`fra1`) instead.
+
 ## Indexing
 
 Indexing is off until the site launches on macap.it. The current Macap site confirms the canonical host: `www.macap.it` redirects to `https://macap.it/`, the canonical link is `https://macap.it/...`, and the sitemap is `https://macap.it/sitemap_index.xml`. This project defaults `NEXT_PUBLIC_SITE_URL` to `https://macap.it`.
