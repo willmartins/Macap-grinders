@@ -1,5 +1,6 @@
 import { draftMode } from "next/headers";
 import { VisualEditing } from "next-sanity/visual-editing";
+import { connection } from "next/server";
 import { Suspense } from "react";
 
 import { AnalyticsScripts } from "@/components/site/analytics-scripts";
@@ -11,6 +12,11 @@ import { ClickTracker } from "@/components/site/trackers";
 import { ThemeFrame } from "@/components/site/theme-frame";
 import { organisationJsonLd, websiteJsonLd } from "@/lib/jsonld";
 import { loadShell } from "@/sanity/lib/load";
+
+async function IndexingMarker() {
+  await connection();
+  return null;
+}
 
 async function DraftTools() {
   const { isEnabled } = await draftMode();
@@ -38,6 +44,9 @@ export default async function SiteLayout({ children }: { children: React.ReactNo
       <JsonLd data={websiteJsonLd()} />
       <AnalyticsScripts />
       <ClickTracker />
+      <Suspense fallback={null}>
+        <IndexingMarker />
+      </Suspense>
       <Suspense fallback={null}>
         <DraftTools />
       </Suspense>

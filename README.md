@@ -30,7 +30,8 @@ See `.env.example`.
 
 | Name | Purpose |
 | --- | --- |
-| `NEXT_PUBLIC_SITE_URL` | Canonical origin. Set this in production. Previews must not advertise `https://macap.it`. |
+| `NEXT_PUBLIC_SITE_URL` | Canonical origin for links, the sitemap and Open Graph. Defaults to `https://macap.it`. Do not set a `*.vercel.app` host. |
+| `NEXT_PUBLIC_ALLOW_INDEXING` | Set to `true` to allow indexing on any host. Otherwise indexing stays off. |
 | `NEXT_PUBLIC_SANITY_PROJECT_ID` | Sanity project. Defaults to `u5o31ts3` when unset. |
 | `NEXT_PUBLIC_SANITY_DATASET` | Dataset. Defaults to `production`. |
 | `SANITY_API_READ_TOKEN` | Server-only read token. Required for drafts and for a private dataset. Not sent to the browser. |
@@ -44,7 +45,24 @@ See `.env.example`.
 
 ## Vercel
 
-Create a Vercel project for this repository. Set the environment variables above for Production and Preview. `NEXT_PUBLIC_SITE_URL` on Production should be the public origin once DNS is ready. Preview deployments can leave it unset: the site then uses the Vercel host, not macap.it.
+Create a Vercel project for this repository. Set the environment variables above for Production and Preview. `NEXT_PUBLIC_SITE_URL` is the public origin (`https://macap.it`). Preview deployments and `macap-grinders.vercel.app` must leave `NEXT_PUBLIC_ALLOW_INDEXING` unset.
+
+## Indexing
+
+Indexing is off until the site launches on macap.it. The current Macap site confirms the canonical host: `www.macap.it` redirects to `https://macap.it/`, the canonical link is `https://macap.it/...`, and the sitemap is `https://macap.it/sitemap_index.xml`. This project defaults `NEXT_PUBLIC_SITE_URL` to `https://macap.it`.
+
+A deployment may be indexed only when either:
+
+- `NEXT_PUBLIC_ALLOW_INDEXING` is `true`, or
+- `VERCEL_ENV` is `production` and the request host is the host of `NEXT_PUBLIC_SITE_URL`.
+
+Otherwise:
+
+- `/robots.txt` is `User-agent: *` and `Disallow: /`, with no sitemap line.
+- Every response from the proxy sends `X-Robots-Tag: noindex, nofollow`.
+- Page metadata sets `noindex, nofollow`.
+
+Canonical URLs, the sitemap and Open Graph use `NEXT_PUBLIC_SITE_URL`. They do not use the Vercel host. When indexing is allowed, `robots.txt` allows `/`, blocks `/studio` and `/api`, and points at the sitemap. A discontinued grinder stays `noindex` even then.
 
 Vercel Web Analytics and Speed Insights are cookieless and load on the public site. Enable them on the Vercel project.
 

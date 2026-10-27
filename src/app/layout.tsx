@@ -26,6 +26,7 @@ export const metadata: Metadata = {
   metadataBase: new URL(getSiteUrl()),
   title: { default: `${siteName} coffee grinders`, template: "%s | Macap" },
   description: defaultDescription,
+  robots: { index: false, follow: false },
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

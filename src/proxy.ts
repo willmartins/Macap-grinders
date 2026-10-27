@@ -1,5 +1,6 @@
 import { NextResponse, type NextRequest } from "next/server";
 
+import { isIndexingAllowed } from "@/lib/indexing";
 import { legacyRedirects } from "@/lib/redirects/legacy";
 import { safeHref } from "@/lib/security";
 import { client } from "@/sanity/lib/client";
@@ -29,24 +30,39 @@ async function sanityRedirects(): Promise<SanityRedirect[]> {
   }
 }
 
+function withRobots(response: NextResponse, request: NextRequest) {
+  const host = request.headers.get("x-forwarded-host") || request.headers.get("host");
+  if (!isIndexingAllowed(host)) {
+    response.headers.set("X-Robots-Tag", "noindex, nofollow");
+  }
+  return response;
+}
+
 export async function proxy(request: NextRequest) {
   const path = normalise(request.nextUrl.pathname);
+  if (path.startsWith("/api") || path.startsWith("/studio") || path === "/robots.txt" || path === "/sitemap.xml") {
+    return withRobots(NextResponse.next(), request);
+  }
+
   const legacy = legacyRedirects[path];
   const legacyTarget = safeHref(legacy);
   if (legacyTarget && legacyTarget !== path) {
-    return NextResponse.redirect(new URL(legacyTarget, request.url), 301);
+    return withRobots(NextResponse.redirect(new URL(legacyTarget, request.url), 301), request);
   }
 
   const rows = await sanityRedirects();
   const match = rows.find((row) => normalise(row.source || "") === path);
   const destination = safeHref(match?.destination);
   if (destination && destination !== path) {
-    return NextResponse.redirect(new URL(destination, request.url), match?.permanent === false ? 302 : 301);
+    return withRobots(
+      NextResponse.redirect(new URL(destination, request.url), match?.permanent === false ? 302 : 301),
+      request,
+    );
   }
 
-  return NextResponse.next();
+  return withRobots(NextResponse.next(), request);
 }
 
 export const config = {
-  matcher: ["/((?!_next|api|studio|.*\\..*).*)"],
+  matcher: ["/((?!_next/static|_next/image|.*\\..*).*)", "/robots.txt", "/sitemap.xml"],
 };
