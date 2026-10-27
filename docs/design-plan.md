@@ -1,6 +1,6 @@
 # Macap visual direction
 
-This is a vibe pass, not the formal design system. The subject is a coffee grinder: a machined object, made in the Venice area since 1930, sold to a person choosing a machine for a counter or a bar. The references are Rocket Espresso, Polestar, Teenage Engineering, Ferrari and Bugatti. The object fills the frame. Colour is a stripe, not a wash. Type is a plate on the chassis, not a poster.
+This is a vibe pass, not the formal design system. The subject is a coffee grinder: a machined object, made in the Venice area since 1930, sold to a person choosing a machine for a counter or a bar. The primary references are Polestar, Teenage Engineering, On Running and New Balance. The feel stays a high-performance machine brand. The object fills the frame. Colour is a stripe, not a wash. Type is a plate on the chassis, not a poster. Nothing below is a copy of those four.
 
 Will's rules win where they meet this note: arrows on buttons and on text links, yellow as trim only, framed grinder cards, mobile swipe rows, questions, the first screen of a model page, the enquiry flow, and the official logo.
 
@@ -77,7 +77,7 @@ JOURNEY
 | 01                                           |
 | How you brew                                 |
 | one or two sentences                         |
-| [See the grinders →]                         |
+| [How much you grind →]                       |
 +----------------------------------------------+
 | 02                    | photograph           |
 | How you dose          |                      |
@@ -135,6 +135,26 @@ KNOWLEDGE
 +----------------------------------------------+
 ```
 
+## References
+
+Studied for what they do well. The Macap choice is the translation. The layout, type and colour of those sites stay theirs.
+
+**Polestar.** Restraint, scale, and product storytelling that behaves like a configurator. One decision, the consequence in view, then the next decision. Chrome is almost absent. Type and the object share a scale.
+
+Macap. The home split is the only large gesture: two machines, two places, a 3px seam. A journey is three decisions in order, not a magazine feature. Each chapter names the next chapter. The fast path on the photograph still jumps to the machines. There is no configurator, no studio black that is not true black, and no borrowed wordmark.
+
+**Teenage Engineering.** Playful precision. The product is an object you could pick up. Technical detail is drawn so it is pleasant to read. Labels are few and exact. Interaction feels like handling the thing.
+
+Macap. The grinder sits on a plain plinth inside a frame. Figures sit beside the object. A card answers the pointer, because that is how you know the frame is the machine. No borrowed orange, no toy grid, no joke in the interface.
+
+**On Running.** Bold product-led pages. One performance idea at a time, explained in plain language, with a pace from section to section. The shoe leads. Motion carries you forward.
+
+Macap. One decision per journey chapter. The next chapter is a link with the name of that chapter. Performance figures stay on the first screen of the model. Motion stays the single load on the home split. No gradient mesh, no scroll hijack, no campaign line.
+
+**New Balance.** Confident editorial type. Heritage and the current shoe in the same voice. A clear path from a category into a product.
+
+Macap. Since 1930 and the Venice workshop use the same sentences as 68 mm and 550 W. Knowledge is a shelf of articles. Primary navigation stays Home, Professional and Contact. A line is reached from the journey and the footer, not from a shop menu copied from a footwear site.
+
 ## Principles
 
 Spend the boldness on the home split. Everything else is quiet: black or white, one grotesque, space instead of rules, sentence case.
@@ -160,6 +180,13 @@ What changed, and why:
 - Hairline columns, the mosaic gaps, and the yellow bar on quotes and calls to action came out. They made every template a broadsheet.
 - Scroll fade and the slow image drift came out. The load moment on the home split is the only one.
 - Slashes joining a line and a status, or a topic and a date, came out. Those strings are the same device as a middle dot. The date, the topic and a status each sit on their own.
+
+The reference set then moved from Rocket Espresso, Ferrari and Bugatti to Polestar, Teenage Engineering, On Running and New Balance. The machine-brand feel stays. What changed because of that:
+
+- The home seam and the white or black grounds stay. They already match Polestar's restraint and On's product-led first screen. Ferrari's stripe and Bugatti's theatre were the risk. They are not the brief now.
+- Journey chapters name the next chapter. That is the configurator-like flow, without a configurator. On's pace is a link, not another animation.
+- Heritage stays in the same voice as the figures. New Balance's editorial confidence is the knowledge shelf and the large grotesque, not a heritage campaign.
+- Teenage Engineering's object-on-a-field is the framed card and the plinth. Their playfulness is the pointer response on that card, not a second colour.
 
 ## Generic traits
 

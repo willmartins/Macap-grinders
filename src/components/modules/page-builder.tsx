@@ -136,6 +136,11 @@ export function PageBuilder({ sections, journey }: { sections: Section[]; journe
           const step = journey
             ? String(sections.slice(0, sectionIndex).filter((item) => item._type === "imageText").length + 1).padStart(2, "0")
             : null;
+          const next = journey
+            ? sections
+                .slice(sectionIndex + 1)
+                .find((item) => item._type === "imageText" || item._type === "grinderGrid")
+            : undefined;
           return (
             <section key={section._key} id={section._key} className={`editorial ${section.imagePosition === "right" ? "is-flip" : ""}`}>
               {section.imageUrl ? (
@@ -157,6 +162,10 @@ export function PageBuilder({ sections, journey }: { sections: Section[]; journe
                 {section.link ? (
                   <p className="mt-8">
                     <ButtonLink href={section.link.href} label={section.link.label} journey={journey} />
+                  </p>
+                ) : next ? (
+                  <p className="mt-8">
+                    <TextLink href={`#${next._key}`}>{next.heading}</TextLink>
                   </p>
                 ) : null}
               </div>
