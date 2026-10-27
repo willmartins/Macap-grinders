@@ -9,7 +9,7 @@ import { RichTextBody } from "@/components/site/rich-text";
 import { TextLink } from "@/components/site/text-link";
 import { SampleBanner } from "@/components/site/sample-banner";
 import { formatDate } from "@/lib/format";
-import { articleJsonLd, faqJsonLd } from "@/lib/jsonld";
+import { articleJsonLd, faqJsonLd, jsonLdGraph } from "@/lib/jsonld";
 import { buildMetadata } from "@/lib/metadata";
 import { draftPerspective } from "@/sanity/lib/draft";
 import { loadPost, loadPosts } from "@/sanity/lib/load";
@@ -30,7 +30,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
     path: `/knowledge/${post.slug}`,
     noIndex: post.seo.noIndex,
     canonical: post.seo.canonical,
-    image: post.seo.imageUrl || post.imageUrl,
+    image: post.seo.imageUrl,
     type: "article",
   });
 }
@@ -47,6 +47,7 @@ async function PostContent({ params }: { params: Promise<{ slug: string }> }) {
         <BleedHero
           imageUrl={post.imageUrl}
           alt={post.imageAlt}
+          blur={post.imageLqip}
           eyebrow={post.topicTitle || undefined}
           title={post.title}
           short
@@ -81,11 +82,13 @@ async function PostContent({ params }: { params: Promise<{ slug: string }> }) {
       )}
       <div className="frame section-tight">
         <p className="max-w-2xl text-xl leading-snug">{post.answerFirst}</p>
-        <p className="mt-6 max-w-xs text-sm text-muted">
-          <span className="block">{post.author.name}</span>
+        <p className="mt-6 max-w-2xl text-sm text-muted">
+          <span className="block font-medium text-fg">{post.author.name}</span>
+          {post.author.role ? <span className="block">{post.author.role}</span> : null}
           {post.publishedAt ? <span className="block">{formatDate(post.publishedAt)}</span> : null}
           {post.updatedAt ? <span className="block">Updated {formatDate(post.updatedAt)}</span> : null}
         </p>
+        {post.author.bio ? <p className="mt-4 max-w-2xl leading-relaxed">{post.author.bio}</p> : null}
       </div>
       <div className="frame section-tight">
         <RichTextBody value={post.body} />
@@ -115,17 +118,22 @@ async function PostContent({ params }: { params: Promise<{ slug: string }> }) {
         </TextLink>
       </p>
       <JsonLd
-        data={articleJsonLd({
-          title: post.title,
-          description: post.answerFirst || post.excerpt,
-          slug: post.slug,
-          publishedAt: post.publishedAt,
-          updatedAt: post.updatedAt,
-          authorName: post.author.name,
-          imageUrl: post.imageUrl,
-        })}
+        data={jsonLdGraph([
+          articleJsonLd({
+            title: post.title,
+            description: post.answerFirst || post.excerpt,
+            slug: post.slug,
+            publishedAt: post.publishedAt,
+            updatedAt: post.updatedAt,
+            authorName: post.author.name,
+            authorRole: post.author.role,
+            authorBio: post.author.bio,
+            authorSameAs: post.author.sameAs,
+            imageUrl: post.imageUrl,
+          }),
+          faqJsonLd(post.faqs),
+        ])}
       />
-      <JsonLd data={faqJsonLd(post.faqs)} />
     </article>
   );
 }

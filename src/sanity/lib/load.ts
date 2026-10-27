@@ -43,6 +43,7 @@ import {
   mapSitemap,
   mapTopic,
   type SitemapEntry,
+  type SitemapPage,
 } from "@/sanity/lib/map";
 import {
   COLLECTION_QUERY,
@@ -302,6 +303,7 @@ export async function loadLegal(
 
 export async function loadSitemap(): Promise<{
   sample: boolean;
+  pages: SitemapPage[];
   grinders: SitemapEntry[];
   collections: SitemapEntry[];
   posts: SitemapEntry[];
@@ -309,14 +311,28 @@ export async function loadSitemap(): Promise<{
   legal: SitemapEntry[];
 }> {
   "use cache";
+  const stamped = "2026-10-01";
   const sample = {
     sample: true,
+    pages: [
+      { path: "/", updatedAt: stamped },
+      { path: "/home-grinders", updatedAt: stamped },
+      { path: "/professional", updatedAt: stamped },
+      { path: "/grinders", updatedAt: stamped },
+      { path: "/knowledge", updatedAt: stamped },
+      { path: "/about", updatedAt: stamped },
+      { path: "/contact", updatedAt: stamped },
+    ],
     grinders: sampleGrinders
       .filter((item) => item.status !== "discontinued")
-      .map((item) => ({ slug: item.slug, updatedAt: "2026-10-01" })),
-    collections: sampleCollections.map((item) => ({ slug: item.slug, updatedAt: "2026-10-01" })),
-    posts: samplePosts.map((item) => ({ slug: item.slug, updatedAt: item.updatedAt || item.publishedAt })),
-    topics: sampleTopics.map((item) => ({ slug: item.slug, updatedAt: "2026-10-01" })),
+      .map((item) => ({ slug: item.slug, updatedAt: stamped, image: item.imageUrl })),
+    collections: sampleCollections.map((item) => ({ slug: item.slug, updatedAt: stamped })),
+    posts: samplePosts.map((item) => ({
+      slug: item.slug,
+      updatedAt: item.updatedAt || item.publishedAt,
+      image: item.imageUrl,
+    })),
+    topics: sampleTopics.map((item) => ({ slug: item.slug, updatedAt: stamped })),
     legal: sampleLegal.map((item) => ({ slug: item.slug, updatedAt: item.effectiveDate })),
   };
   try {
@@ -335,6 +351,7 @@ export async function loadSitemap(): Promise<{
     if (!count) return sample;
     return {
       sample: false,
+      pages: mapped.pages.length ? mapped.pages : sample.pages,
       grinders: mapped.grinders,
       collections: mapped.collections,
       posts: mapped.posts,

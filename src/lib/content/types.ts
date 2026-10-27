@@ -80,12 +80,14 @@ export type GrinderCard = {
   motorPowerW: number | null;
   imageUrl: string | null;
   imageAlt: string;
+  imageLqip?: string | null;
 };
 
 export type GalleryImage = {
   _key: string;
   url: string | null;
   alt: string;
+  lqip?: string | null;
 };
 
 export type ArticleCard = {
@@ -137,6 +139,7 @@ export type Author = {
   slug: string;
   role: string;
   bio: string;
+  sameAs: string[];
 };
 
 export type Topic = {
@@ -155,6 +158,7 @@ export type Post = ArticleCard & {
   relatedGrinders: GrinderCard[];
   imageUrl: string | null;
   imageAlt: string;
+  imageLqip?: string | null;
   seo: SeoFields;
 };
 
@@ -182,6 +186,7 @@ export type Section =
       links: LinkItem[];
       imageUrl?: string | null;
       imageAlt?: string;
+      imageLqip?: string | null;
     }
   | { _key: string; _type: "richText"; heading?: string; body: RichText }
   | {
@@ -191,6 +196,7 @@ export type Section =
       text: string;
       imageUrl: string | null;
       imageAlt: string;
+      imageLqip?: string | null;
       imagePosition: "left" | "right";
       link?: LinkItem;
     }

@@ -1,4 +1,5 @@
 import {
+  BoltIcon,
   CaseIcon,
   CogIcon,
   ComposeIcon,
@@ -23,12 +24,13 @@ const audienceOptions = [
   { title: "Professional", value: "business" },
 ];
 
-const imageWithAlt = (name: string, title: string, description?: string) =>
+const imageWithAlt = (name: string, title: string, description?: string, group?: string) =>
   defineField({
     name,
     title,
     type: "image",
     description,
+    ...(group ? { group } : {}),
     options: { hotspot: true },
     fields: [
       defineField({
@@ -345,23 +347,35 @@ export const grinder = defineType({
   title: "Grinder",
   type: "document",
   icon: CaseIcon,
+  groups: [
+    { name: "content", title: "Content", default: true },
+    { name: "media", title: "Images" },
+    { name: "specs", title: "Specifications" },
+    { name: "related", title: "Related" },
+    { name: "search", title: "Search" },
+  ],
   fields: [
-    languageField,
+    { ...languageField, group: "content" },
     defineField({
       name: "name",
       title: "Name",
       type: "string",
+      description: "The model name, for example Supra 68.",
+      group: "content",
       validation: (rule) => rule.required(),
     }),
     defineField({
       name: "slug",
       title: "Slug",
       type: "slug",
+      description: "The address of the model page. Lower case, with hyphens.",
+      group: "content",
       options: { source: "name", maxLength: 96 },
       validation: (rule) => rule.required(),
     }),
     defineField({
       name: "group",
+      group: "content",
       title: "Group",
       type: "reference",
       to: [{ type: "grinderGroup" }],
@@ -372,6 +386,7 @@ export const grinder = defineType({
       name: "audience",
       title: "Audience",
       type: "string",
+      group: "content",
       options: { list: audienceOptions, layout: "radio" },
       validation: (rule) => rule.required(),
     }),
@@ -379,6 +394,7 @@ export const grinder = defineType({
       name: "status",
       title: "Status",
       type: "string",
+      group: "content",
       initialValue: "current",
       options: {
         list: [
@@ -395,6 +411,7 @@ export const grinder = defineType({
       title: "Short description",
       type: "text",
       rows: 3,
+      group: "content",
       validation: (rule) => rule.required().max(220),
     }),
     defineField({
@@ -402,15 +419,17 @@ export const grinder = defineType({
       title: "Answer-first introduction",
       type: "text",
       rows: 4,
+      group: "content",
       description:
         "One or two sentences that answer what this grinder is and who it is for. Shown at the top of the page and used by search and answer engines.",
       validation: (rule) => rule.required(),
     }),
-    imageWithAlt("heroImage", "Main image"),
+    imageWithAlt("heroImage", "Main image", "The photograph at the top of the model page.", "media"),
     defineField({
       name: "gallery",
       title: "Gallery",
       type: "array",
+      group: "media",
       of: [
         defineArrayMember({
           type: "image",
@@ -430,11 +449,13 @@ export const grinder = defineType({
       name: "specs",
       title: "Specifications",
       type: "grinderSpecs",
+      group: "specs",
     }),
     defineField({
       name: "extraSpecs",
       title: "Other specifications",
       type: "array",
+      group: "specs",
       description: "Use this for anything that does not fit the fields above. Label and value, for example “Doser: Yes”.",
       of: [
         defineArrayMember({
@@ -460,6 +481,7 @@ export const grinder = defineType({
     defineField({
       name: "faqs",
       title: "Questions",
+      group: "related",
       description:
         "Questions visitors ask about this model. Add up to six. If you leave this empty, the page writes up to three short answers from the burrs, the adjustment, and whether the grinder is for home or the bar. It only uses figures you have entered.",
       type: "array",
@@ -470,18 +492,21 @@ export const grinder = defineType({
       name: "relatedGrinders",
       title: "Related grinders",
       type: "array",
+      group: "related",
       of: [defineArrayMember({ type: "reference", to: [{ type: "grinder" }] })],
     }),
     defineField({
       name: "relatedArticles",
       title: "Related articles",
       type: "array",
+      group: "related",
       of: [defineArrayMember({ type: "reference", to: [{ type: "kbPost" }] })],
     }),
     defineField({
       name: "catalogue",
       title: "Catalogue PDF",
       type: "file",
+      group: "media",
       options: { accept: "application/pdf" },
       fields: [
         defineField({
@@ -492,7 +517,7 @@ export const grinder = defineType({
         }),
       ],
     }),
-    seoField,
+    { ...seoField, group: "search" },
   ],
   preview: {
     select: { title: "name", subtitle: "group.name", media: "heroImage" },
@@ -578,8 +603,26 @@ export const author = defineType({
       options: { source: "name", maxLength: 96 },
       validation: (rule) => rule.required(),
     }),
-    defineField({ name: "role", title: "Role", type: "string" }),
-    defineField({ name: "bio", title: "Bio", type: "text", rows: 4 }),
+    defineField({
+      name: "role",
+      title: "Role",
+      type: "string",
+      description: "Shown under the name on an article, and used as the author job title.",
+    }),
+    defineField({
+      name: "bio",
+      title: "Bio",
+      type: "text",
+      rows: 4,
+      description: "A short note on why this person can write about the subject. Shown on the article.",
+    }),
+    defineField({
+      name: "sameAs",
+      title: "Profile links",
+      type: "array",
+      description: "Public https profiles for this author. Leave empty when the author is Macap itself.",
+      of: [defineArrayMember({ type: "url" })],
+    }),
     imageWithAlt("image", "Photo"),
   ],
   preview: { select: { title: "name", subtitle: "role", media: "image" } },
@@ -622,18 +665,26 @@ export const kbPost = defineType({
   title: "Knowledge base post",
   type: "document",
   icon: DocumentTextIcon,
+  groups: [
+    { name: "content", title: "Content", default: true },
+    { name: "media", title: "Image" },
+    { name: "related", title: "Related" },
+    { name: "search", title: "Search" },
+  ],
   fields: [
-    languageField,
+    { ...languageField, group: "content" },
     defineField({
       name: "title",
       title: "Title",
       type: "string",
+      group: "content",
       validation: (rule) => rule.required(),
     }),
     defineField({
       name: "slug",
       title: "Slug",
       type: "slug",
+      group: "content",
       options: { source: "title", maxLength: 96 },
       validation: (rule) => rule.required(),
     }),
@@ -641,6 +692,7 @@ export const kbPost = defineType({
       name: "author",
       title: "Author",
       type: "reference",
+      group: "content",
       to: [{ type: "author" }],
       validation: (rule) => rule.required(),
     }),
@@ -648,6 +700,7 @@ export const kbPost = defineType({
       name: "topic",
       title: "Topic",
       type: "reference",
+      group: "content",
       to: [{ type: "kbTopic" }],
       validation: (rule) => rule.required(),
     }),
@@ -655,12 +708,14 @@ export const kbPost = defineType({
       name: "publishedAt",
       title: "Published",
       type: "datetime",
+      group: "content",
       validation: (rule) => rule.required(),
     }),
     defineField({
       name: "updatedAt",
       title: "Updated",
       type: "datetime",
+      group: "content",
       description: "Leave blank if the article has not been revised.",
     }),
     defineField({
@@ -668,6 +723,7 @@ export const kbPost = defineType({
       title: "Excerpt",
       type: "text",
       rows: 3,
+      group: "content",
       validation: (rule) => rule.required().max(220),
     }),
     defineField({
@@ -675,29 +731,34 @@ export const kbPost = defineType({
       title: "Answer-first introduction",
       type: "text",
       rows: 4,
+      group: "content",
       description: "The direct answer, before the longer article. Shown at the top of the page.",
       validation: (rule) => rule.required(),
     }),
-    imageWithAlt("image", "Image"),
+    imageWithAlt("image", "Image", "The photograph at the top of the article.", "media"),
     defineField({
       name: "body",
       title: "Article",
       type: "blockContent",
+      group: "content",
       validation: (rule) => rule.required(),
     }),
     defineField({
       name: "faqs",
       title: "Questions",
       type: "array",
+      group: "related",
+      description: "Only questions that are shown on the page. These become the FAQ details for this article.",
       of: [defineArrayMember({ type: "faq" })],
     }),
     defineField({
       name: "relatedGrinders",
       title: "Related grinders",
       type: "array",
+      group: "related",
       of: [defineArrayMember({ type: "reference", to: [{ type: "grinder" }] })],
     }),
-    seoField,
+    { ...seoField, group: "search" },
   ],
   preview: {
     select: { title: "title", subtitle: "topic.title", media: "image" },
@@ -876,6 +937,71 @@ export const distributor = defineType({
   },
 });
 
+export const experiment = defineType({
+  name: "experiment",
+  title: "Experiment",
+  type: "document",
+  icon: BoltIcon,
+  description:
+    "A place to write a hypothesis later. The website does not read these documents and does not assign a visitor to a variant.",
+  fields: [
+    defineField({
+      name: "name",
+      title: "Name",
+      type: "string",
+      validation: (rule) => rule.required(),
+    }),
+    defineField({
+      name: "hypothesis",
+      title: "Hypothesis",
+      type: "text",
+      rows: 3,
+      description: "What you expect to change, and for whom.",
+    }),
+    defineField({
+      name: "status",
+      title: "Status",
+      type: "string",
+      initialValue: "draft",
+      readOnly: true,
+      description: "Stays on draft. Nothing on the site is running a test.",
+      options: {
+        list: [{ title: "Draft", value: "draft" }],
+        layout: "radio",
+      },
+    }),
+    defineField({
+      name: "metric",
+      title: "Metric",
+      type: "string",
+      description: "The one number that would decide the test, for example enquiries started.",
+    }),
+    defineField({
+      name: "variants",
+      title: "Variants",
+      type: "array",
+      of: [
+        defineArrayMember({
+          type: "object",
+          fields: [
+            defineField({ name: "name", title: "Name", type: "string", validation: (rule) => rule.required() }),
+            defineField({
+              name: "notes",
+              title: "Notes",
+              type: "text",
+              rows: 3,
+              description: "What would change. This is not published.",
+            }),
+          ],
+          preview: { select: { title: "name" } },
+        }),
+      ],
+      validation: (rule) => rule.max(2).warning("Two variants are enough when a test is eventually run."),
+    }),
+  ],
+  preview: { select: { title: "name", subtitle: "status" } },
+});
+
 export const documentTypes = [
   siteSettings,
   homePage,
@@ -893,4 +1019,5 @@ export const documentTypes = [
   legalPage,
   redirect,
   distributor,
+  experiment,
 ];

@@ -1,8 +1,23 @@
 import type { Metadata } from "next";
 import { headers } from "next/headers";
+import { stegaClean } from "next-sanity";
 
+import { localePlan } from "@/i18n/locales";
 import { isIndexingAllowed } from "@/lib/indexing";
 import { getSiteUrl, openGraphLocale, siteName } from "@/lib/site";
+
+function plain(value: string): string {
+  return stegaClean(value).replace(/\s+/g, " ").trim();
+}
+
+/** Live locales only. Italian stays in `localePlan` until it is public. */
+export function hreflangAlternates(canonical: string): Record<string, string> {
+  const languages: Record<string, string> = { "x-default": canonical };
+  for (const locale of localePlan) {
+    if (locale.live) languages[locale.hreflang] = canonical;
+  }
+  return languages;
+}
 
 export async function robotsForRequest(pageNoIndex = false): Promise<Metadata["robots"]> {
   const headerList = await headers();
@@ -21,23 +36,32 @@ export async function buildMetadata(input: {
   image?: string | null;
   type?: "website" | "article";
 }): Promise<Metadata> {
-  const canonical = input.canonical || new URL(input.path, getSiteUrl()).toString();
+  const canonical = plain(input.canonical || new URL(input.path, getSiteUrl()).toString());
+  const title = plain(input.title);
+  const description = plain(input.description);
+  const image = input.image ? plain(input.image) : "";
   return {
-    title: { absolute: input.title },
-    description: input.description,
+    title: { absolute: title },
+    description,
     alternates: {
       canonical,
-      languages: { "en-GB": canonical },
+      languages: hreflangAlternates(canonical),
     },
     robots: await robotsForRequest(input.noIndex),
     openGraph: {
-      title: input.title,
-      description: input.description,
+      title,
+      description,
       url: canonical,
       locale: openGraphLocale,
       siteName,
       type: input.type || "website",
-      ...(input.image ? { images: [{ url: input.image }] } : {}),
+      ...(image ? { images: [{ url: image, width: 1200, height: 630 }] } : {}),
+    },
+    twitter: {
+      card: "summary_large_image",
+      title,
+      description,
+      ...(image ? { images: [image] } : {}),
     },
   };
 }

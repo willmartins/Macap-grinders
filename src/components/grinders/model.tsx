@@ -85,6 +85,7 @@ export function GrinderModel({
           product
           imageUrl={grinder.imageUrl}
           alt={grinder.imageAlt || grinder.name}
+          blur={grinder.imageLqip}
           eyebrow={eyebrow}
           title={grinder.name}
           text={positionLine(grinder.answerFirst)}

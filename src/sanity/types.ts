@@ -21,6 +21,23 @@ export type Dimensions = {
   heightMm?: number;
 };
 
+export type Experiment = {
+  _id: string;
+  _type: "experiment";
+  _createdAt: string;
+  _updatedAt: string;
+  _rev: string;
+  name: string;
+  hypothesis?: string;
+  status?: "draft";
+  metric?: string;
+  variants?: Array<{
+    name: string;
+    notes?: string;
+    _key: string;
+  }>;
+};
+
 export type Distributor = {
   _id: string;
   _type: "distributor";
@@ -163,6 +180,22 @@ export type KbPost = {
   seo?: Seo;
 };
 
+export type Seo = {
+  _type: "seo";
+  title?: string;
+  description?: string;
+  image?: {
+    asset?: SanityImageAssetReference;
+    media?: unknown;
+    hotspot?: SanityImageHotspot;
+    crop?: SanityImageCrop;
+    alt?: string;
+    _type: "image";
+  };
+  noIndex?: boolean;
+  canonical?: string;
+};
+
 export type SanityImageCrop = {
   _type: "sanity.imageCrop";
   top: number;
@@ -202,6 +235,7 @@ export type Author = {
   slug: Slug;
   role?: string;
   bio?: string;
+  sameAs?: Array<string>;
   image?: {
     asset?: SanityImageAssetReference;
     media?: unknown;
@@ -847,22 +881,6 @@ export type GrinderGroup = {
   seo?: Seo;
 };
 
-export type Seo = {
-  _type: "seo";
-  title?: string;
-  description?: string;
-  image?: {
-    asset?: SanityImageAssetReference;
-    media?: unknown;
-    hotspot?: SanityImageHotspot;
-    crop?: SanityImageCrop;
-    alt?: string;
-    _type: "image";
-  };
-  noIndex?: boolean;
-  canonical?: string;
-};
-
 export type FeatureList = {
   _type: "featureList";
   heading: string;
@@ -1050,6 +1068,7 @@ export type Geopoint = {
 
 export type AllSanitySchemaTypes =
   | Dimensions
+  | Experiment
   | Distributor
   | Redirect
   | LegalPage
@@ -1060,6 +1079,7 @@ export type AllSanitySchemaTypes =
   | KbTopicReference
   | GrinderReference
   | KbPost
+  | Seo
   | SanityImageCrop
   | SanityImageHotspot
   | KbTopic
@@ -1087,7 +1107,6 @@ export type AllSanitySchemaTypes =
   | Grinder
   | GrinderSpecs
   | GrinderGroup
-  | Seo
   | FeatureList
   | GrinderCollectionReference
   | CollectionCarousel
@@ -1181,7 +1200,7 @@ export type SHELL_QUERY_RESULT = {
 
 // Source: src/sanity/lib/queries.ts
 // Variable: HOME_QUERY
-// Query: *[_id == "homePage"][0]{  title,  introduction,  sections[]{    _key,    _type,    eyebrow, heading, text, intro, quote, attribution, role, caption, url, step,    "imageAlt": image.alt,    "imagePosition": imagePosition,    image,    links[]{ _key, label, href },    link{ _key, label, href },    body,    features[]{ _key, title, text },    faqs[]{ _key, question, answer },    grinders[]->{  _id,  name,  "slug": slug.current,  audience,  status,  shortDescription,  "groupName": group->name,  "groupSlug": group->slug.current,  "burrDiameterMm": specs.burrDiameterMm,  "burrType": specs.burrType,  "grindType": specs.grindType,  "motorPowerW": specs.motorPowerW,  "imageAlt": heroImage.alt,  heroImage},    "detailGrinders": grinders[]->{      _id, name, "slug": slug.current, audience, status, shortDescription,      "groupName": group->name, "groupSlug": group->slug.current,      "burrDiameterMm": specs.burrDiameterMm, "burrType": specs.burrType, "grindType": specs.grindType,      "imageAlt": heroImage.alt, heroImage,      answerFirst,      specs{  burrType,  burrDiameterMm,  grindType,  motorPowerW,  rpm,  hopperCapacityG,  outputGPerS,  adjustment,  "widthMm": dimensions.widthMm,  "depthMm": dimensions.depthMm,  "heightMm": dimensions.heightMm,  weightKg,  voltage,  display,  features},      extraSpecs[]{ _key, label, value },      faqs[]{ _key, question, answer }    },    "specGrinder": grinder->{      _id, name, "slug": slug.current, audience, status, shortDescription,      "groupName": group->name, "groupSlug": group->slug.current,      "burrDiameterMm": specs.burrDiameterMm, "burrType": specs.burrType, "grindType": specs.grindType,      "imageAlt": heroImage.alt, heroImage,      answerFirst,      specs{  burrType,  burrDiameterMm,  grindType,  motorPowerW,  rpm,  hopperCapacityG,  outputGPerS,  adjustment,  "widthMm": dimensions.widthMm,  "depthMm": dimensions.depthMm,  "heightMm": dimensions.heightMm,  weightKg,  voltage,  display,  features},      extraSpecs[]{ _key, label, value }    },    collections[]->{ name, "slug": slug.current, summary, audience },    posts[]->{  title,  "slug": slug.current,  excerpt,  publishedAt,  "topicTitle": topic->title,  "topicSlug": topic->slug.current}  },  "seoTitle": seo.title,  "seoDescription": seo.description,  "noIndex": seo.noIndex == true,  "canonical": seo.canonical}
+// Query: *[_id == "homePage"][0]{  title,  introduction,  sections[]{    _key,    _type,    eyebrow, heading, text, intro, quote, attribution, role, caption, url, step,    "imageAlt": image.alt,    "imagePosition": imagePosition,    "image": image{ alt, asset, crop, hotspot, "lqip": asset->metadata.lqip },    links[]{ _key, label, href },    link{ _key, label, href },    body,    features[]{ _key, title, text },    faqs[]{ _key, question, answer },    grinders[]->{  _id,  name,  "slug": slug.current,  audience,  status,  shortDescription,  "groupName": group->name,  "groupSlug": group->slug.current,  "burrDiameterMm": specs.burrDiameterMm,  "burrType": specs.burrType,  "grindType": specs.grindType,  "motorPowerW": specs.motorPowerW,  "imageAlt": heroImage.alt,  "heroImage": heroImage{ alt, asset, crop, hotspot, "lqip": asset->metadata.lqip }},    "detailGrinders": grinders[]->{      _id, name, "slug": slug.current, audience, status, shortDescription,      "groupName": group->name, "groupSlug": group->slug.current,      "burrDiameterMm": specs.burrDiameterMm, "burrType": specs.burrType, "grindType": specs.grindType,      "imageAlt": heroImage.alt, "heroImage": heroImage{ alt, asset, crop, hotspot, "lqip": asset->metadata.lqip },      answerFirst,      specs{  burrType,  burrDiameterMm,  grindType,  motorPowerW,  rpm,  hopperCapacityG,  outputGPerS,  adjustment,  "widthMm": dimensions.widthMm,  "depthMm": dimensions.depthMm,  "heightMm": dimensions.heightMm,  weightKg,  voltage,  display,  features},      extraSpecs[]{ _key, label, value },      faqs[]{ _key, question, answer }    },    "specGrinder": grinder->{      _id, name, "slug": slug.current, audience, status, shortDescription,      "groupName": group->name, "groupSlug": group->slug.current,      "burrDiameterMm": specs.burrDiameterMm, "burrType": specs.burrType, "grindType": specs.grindType,      "imageAlt": heroImage.alt, "heroImage": heroImage{ alt, asset, crop, hotspot, "lqip": asset->metadata.lqip },      answerFirst,      specs{  burrType,  burrDiameterMm,  grindType,  motorPowerW,  rpm,  hopperCapacityG,  outputGPerS,  adjustment,  "widthMm": dimensions.widthMm,  "depthMm": dimensions.depthMm,  "heightMm": dimensions.heightMm,  weightKg,  voltage,  display,  features},      extraSpecs[]{ _key, label, value }    },    collections[]->{ name, "slug": slug.current, summary, audience },    posts[]->{  title,  "slug": slug.current,  excerpt,  publishedAt,  "topicTitle": topic->title,  "topicSlug": topic->slug.current}  },    "seoTitle": seo.title,  "seoDescription": seo.description,  "noIndex": seo.noIndex == true,  "canonical": seo.canonical,  "seoImage": seo.image{ alt, asset, crop, hotspot, "lqip": asset->metadata.lqip }}
 export type HOME_QUERY_RESULT =
   | {
       title: null;
@@ -1191,6 +1210,7 @@ export type HOME_QUERY_RESULT =
       seoDescription: null;
       noIndex: false;
       canonical: null;
+      seoImage: null;
     }
   | {
       title: string | null;
@@ -1200,6 +1220,7 @@ export type HOME_QUERY_RESULT =
       seoDescription: null;
       noIndex: false;
       canonical: null;
+      seoImage: null;
     }
   | {
       title: null;
@@ -1209,6 +1230,13 @@ export type HOME_QUERY_RESULT =
       seoDescription: string | null;
       noIndex: boolean | false;
       canonical: string | null;
+      seoImage: {
+        alt: string | null;
+        asset: SanityImageAssetReference | null;
+        crop: SanityImageCrop | null;
+        hotspot: SanityImageHotspot | null;
+        lqip: string | null;
+      } | null;
     }
   | {
       title: string;
@@ -1218,6 +1246,13 @@ export type HOME_QUERY_RESULT =
       seoDescription: string | null;
       noIndex: boolean | false;
       canonical: string | null;
+      seoImage: {
+        alt: string | null;
+        asset: SanityImageAssetReference | null;
+        crop: SanityImageCrop | null;
+        hotspot: SanityImageHotspot | null;
+        lqip: string | null;
+      } | null;
     }
   | {
       title: null;
@@ -1291,12 +1326,11 @@ export type HOME_QUERY_RESULT =
               motorPowerW: number | null;
               imageAlt: string | null;
               heroImage: {
-                asset?: SanityImageAssetReference;
-                media?: unknown;
-                hotspot?: SanityImageHotspot;
-                crop?: SanityImageCrop;
-                alt?: string;
-                _type: "image";
+                alt: string | null;
+                asset: SanityImageAssetReference | null;
+                crop: SanityImageCrop | null;
+                hotspot: SanityImageHotspot | null;
+                lqip: string | null;
               } | null;
             }>;
             detailGrinders: Array<{
@@ -1313,12 +1347,11 @@ export type HOME_QUERY_RESULT =
               grindType: "both" | "espresso" | "filter" | null;
               imageAlt: string | null;
               heroImage: {
-                asset?: SanityImageAssetReference;
-                media?: unknown;
-                hotspot?: SanityImageHotspot;
-                crop?: SanityImageCrop;
-                alt?: string;
-                _type: "image";
+                alt: string | null;
+                asset: SanityImageAssetReference | null;
+                crop: SanityImageCrop | null;
+                hotspot: SanityImageHotspot | null;
+                lqip: string | null;
               } | null;
               answerFirst: string;
               specs: {
@@ -1509,12 +1542,11 @@ export type HOME_QUERY_RESULT =
               motorPowerW: number | null;
               imageAlt: string | null;
               heroImage: {
-                asset?: SanityImageAssetReference;
-                media?: unknown;
-                hotspot?: SanityImageHotspot;
-                crop?: SanityImageCrop;
-                alt?: string;
-                _type: "image";
+                alt: string | null;
+                asset: SanityImageAssetReference | null;
+                crop: SanityImageCrop | null;
+                hotspot: SanityImageHotspot | null;
+                lqip: string | null;
               } | null;
             }>;
             detailGrinders: Array<{
@@ -1531,12 +1563,11 @@ export type HOME_QUERY_RESULT =
               grindType: "both" | "espresso" | "filter" | null;
               imageAlt: string | null;
               heroImage: {
-                asset?: SanityImageAssetReference;
-                media?: unknown;
-                hotspot?: SanityImageHotspot;
-                crop?: SanityImageCrop;
-                alt?: string;
-                _type: "image";
+                alt: string | null;
+                asset: SanityImageAssetReference | null;
+                crop: SanityImageCrop | null;
+                hotspot: SanityImageHotspot | null;
+                lqip: string | null;
               } | null;
               answerFirst: string;
               specs: {
@@ -1587,12 +1618,11 @@ export type HOME_QUERY_RESULT =
             imageAlt: string | null;
             imagePosition: null;
             image: {
-              asset?: SanityImageAssetReference;
-              media?: unknown;
-              hotspot?: SanityImageHotspot;
-              crop?: SanityImageCrop;
-              alt?: string;
-              _type: "image";
+              alt: string | null;
+              asset: SanityImageAssetReference | null;
+              crop: SanityImageCrop | null;
+              hotspot: SanityImageHotspot | null;
+              lqip: string | null;
             } | null;
             links: Array<{
               _key: string;
@@ -1625,12 +1655,11 @@ export type HOME_QUERY_RESULT =
             imageAlt: string;
             imagePosition: "left" | "right" | null;
             image: {
-              asset?: SanityImageAssetReference;
-              media?: unknown;
-              hotspot?: SanityImageHotspot;
-              crop?: SanityImageCrop;
               alt: string;
-              _type: "image";
+              asset: SanityImageAssetReference | null;
+              crop: SanityImageCrop | null;
+              hotspot: SanityImageHotspot | null;
+              lqip: string | null;
             };
             links: null;
             link: {
@@ -1772,12 +1801,11 @@ export type HOME_QUERY_RESULT =
               grindType: "both" | "espresso" | "filter" | null;
               imageAlt: string | null;
               heroImage: {
-                asset?: SanityImageAssetReference;
-                media?: unknown;
-                hotspot?: SanityImageHotspot;
-                crop?: SanityImageCrop;
-                alt?: string;
-                _type: "image";
+                alt: string | null;
+                asset: SanityImageAssetReference | null;
+                crop: SanityImageCrop | null;
+                hotspot: SanityImageHotspot | null;
+                lqip: string | null;
               } | null;
               answerFirst: string;
               specs: {
@@ -1838,6 +1866,13 @@ export type HOME_QUERY_RESULT =
       seoDescription: string | null;
       noIndex: boolean | false;
       canonical: string | null;
+      seoImage: {
+        alt: string | null;
+        asset: SanityImageAssetReference | null;
+        crop: SanityImageCrop | null;
+        hotspot: SanityImageHotspot | null;
+        lqip: string | null;
+      } | null;
     }
   | {
       title: string;
@@ -1911,12 +1946,11 @@ export type HOME_QUERY_RESULT =
               motorPowerW: number | null;
               imageAlt: string | null;
               heroImage: {
-                asset?: SanityImageAssetReference;
-                media?: unknown;
-                hotspot?: SanityImageHotspot;
-                crop?: SanityImageCrop;
-                alt?: string;
-                _type: "image";
+                alt: string | null;
+                asset: SanityImageAssetReference | null;
+                crop: SanityImageCrop | null;
+                hotspot: SanityImageHotspot | null;
+                lqip: string | null;
               } | null;
             }>;
             detailGrinders: Array<{
@@ -1933,12 +1967,11 @@ export type HOME_QUERY_RESULT =
               grindType: "both" | "espresso" | "filter" | null;
               imageAlt: string | null;
               heroImage: {
-                asset?: SanityImageAssetReference;
-                media?: unknown;
-                hotspot?: SanityImageHotspot;
-                crop?: SanityImageCrop;
-                alt?: string;
-                _type: "image";
+                alt: string | null;
+                asset: SanityImageAssetReference | null;
+                crop: SanityImageCrop | null;
+                hotspot: SanityImageHotspot | null;
+                lqip: string | null;
               } | null;
               answerFirst: string;
               specs: {
@@ -2129,12 +2162,11 @@ export type HOME_QUERY_RESULT =
               motorPowerW: number | null;
               imageAlt: string | null;
               heroImage: {
-                asset?: SanityImageAssetReference;
-                media?: unknown;
-                hotspot?: SanityImageHotspot;
-                crop?: SanityImageCrop;
-                alt?: string;
-                _type: "image";
+                alt: string | null;
+                asset: SanityImageAssetReference | null;
+                crop: SanityImageCrop | null;
+                hotspot: SanityImageHotspot | null;
+                lqip: string | null;
               } | null;
             }>;
             detailGrinders: Array<{
@@ -2151,12 +2183,11 @@ export type HOME_QUERY_RESULT =
               grindType: "both" | "espresso" | "filter" | null;
               imageAlt: string | null;
               heroImage: {
-                asset?: SanityImageAssetReference;
-                media?: unknown;
-                hotspot?: SanityImageHotspot;
-                crop?: SanityImageCrop;
-                alt?: string;
-                _type: "image";
+                alt: string | null;
+                asset: SanityImageAssetReference | null;
+                crop: SanityImageCrop | null;
+                hotspot: SanityImageHotspot | null;
+                lqip: string | null;
               } | null;
               answerFirst: string;
               specs: {
@@ -2207,12 +2238,11 @@ export type HOME_QUERY_RESULT =
             imageAlt: string | null;
             imagePosition: null;
             image: {
-              asset?: SanityImageAssetReference;
-              media?: unknown;
-              hotspot?: SanityImageHotspot;
-              crop?: SanityImageCrop;
-              alt?: string;
-              _type: "image";
+              alt: string | null;
+              asset: SanityImageAssetReference | null;
+              crop: SanityImageCrop | null;
+              hotspot: SanityImageHotspot | null;
+              lqip: string | null;
             } | null;
             links: Array<{
               _key: string;
@@ -2245,12 +2275,11 @@ export type HOME_QUERY_RESULT =
             imageAlt: string;
             imagePosition: "left" | "right" | null;
             image: {
-              asset?: SanityImageAssetReference;
-              media?: unknown;
-              hotspot?: SanityImageHotspot;
-              crop?: SanityImageCrop;
               alt: string;
-              _type: "image";
+              asset: SanityImageAssetReference | null;
+              crop: SanityImageCrop | null;
+              hotspot: SanityImageHotspot | null;
+              lqip: string | null;
             };
             links: null;
             link: {
@@ -2392,12 +2421,11 @@ export type HOME_QUERY_RESULT =
               grindType: "both" | "espresso" | "filter" | null;
               imageAlt: string | null;
               heroImage: {
-                asset?: SanityImageAssetReference;
-                media?: unknown;
-                hotspot?: SanityImageHotspot;
-                crop?: SanityImageCrop;
-                alt?: string;
-                _type: "image";
+                alt: string | null;
+                asset: SanityImageAssetReference | null;
+                crop: SanityImageCrop | null;
+                hotspot: SanityImageHotspot | null;
+                lqip: string | null;
               } | null;
               answerFirst: string;
               specs: {
@@ -2458,12 +2486,19 @@ export type HOME_QUERY_RESULT =
       seoDescription: string | null;
       noIndex: boolean | false;
       canonical: string | null;
+      seoImage: {
+        alt: string | null;
+        asset: SanityImageAssetReference | null;
+        crop: SanityImageCrop | null;
+        hotspot: SanityImageHotspot | null;
+        lqip: string | null;
+      } | null;
     }
   | null;
 
 // Source: src/sanity/lib/queries.ts
 // Variable: JOURNEY_QUERY
-// Query: *[_type == "journeyPage" && slug.current == $slug && language == "en-GB"][0]{  title,  "slug": slug.current,  audience,  introduction,  sections[]{    _key,    _type,    eyebrow, heading, text, intro, quote, attribution, role, caption, url, step,    "imageAlt": image.alt,    imagePosition,    image,    links[]{ _key, label, href },    link{ _key, label, href },    body,    features[]{ _key, title, text },    faqs[]{ _key, question, answer },    grinders[]->{  _id,  name,  "slug": slug.current,  audience,  status,  shortDescription,  "groupName": group->name,  "groupSlug": group->slug.current,  "burrDiameterMm": specs.burrDiameterMm,  "burrType": specs.burrType,  "grindType": specs.grindType,  "motorPowerW": specs.motorPowerW,  "imageAlt": heroImage.alt,  heroImage},    "detailGrinders": grinders[]->{      _id, name, "slug": slug.current, audience, status, shortDescription,      "groupName": group->name, "groupSlug": group->slug.current,      "burrDiameterMm": specs.burrDiameterMm, "burrType": specs.burrType, "grindType": specs.grindType,      "imageAlt": heroImage.alt, heroImage,      answerFirst,      specs{  burrType,  burrDiameterMm,  grindType,  motorPowerW,  rpm,  hopperCapacityG,  outputGPerS,  adjustment,  "widthMm": dimensions.widthMm,  "depthMm": dimensions.depthMm,  "heightMm": dimensions.heightMm,  weightKg,  voltage,  display,  features},      extraSpecs[]{ _key, label, value },      faqs[]{ _key, question, answer }    },    "specGrinder": grinder->{      _id, name, "slug": slug.current, audience, status, shortDescription,      "groupName": group->name, "groupSlug": group->slug.current,      "burrDiameterMm": specs.burrDiameterMm, "burrType": specs.burrType, "grindType": specs.grindType,      "imageAlt": heroImage.alt, heroImage,      answerFirst,      specs{  burrType,  burrDiameterMm,  grindType,  motorPowerW,  rpm,  hopperCapacityG,  outputGPerS,  adjustment,  "widthMm": dimensions.widthMm,  "depthMm": dimensions.depthMm,  "heightMm": dimensions.heightMm,  weightKg,  voltage,  display,  features},      extraSpecs[]{ _key, label, value }    },    collections[]->{ name, "slug": slug.current, summary, audience },    posts[]->{  title,  "slug": slug.current,  excerpt,  publishedAt,  "topicTitle": topic->title,  "topicSlug": topic->slug.current}  },  "seoTitle": seo.title,  "seoDescription": seo.description,  "noIndex": seo.noIndex == true,  "canonical": seo.canonical}
+// Query: *[_type == "journeyPage" && slug.current == $slug && language == "en-GB"][0]{  title,  "slug": slug.current,  audience,  introduction,  sections[]{    _key,    _type,    eyebrow, heading, text, intro, quote, attribution, role, caption, url, step,    "imageAlt": image.alt,    imagePosition,    "image": image{ alt, asset, crop, hotspot, "lqip": asset->metadata.lqip },    links[]{ _key, label, href },    link{ _key, label, href },    body,    features[]{ _key, title, text },    faqs[]{ _key, question, answer },    grinders[]->{  _id,  name,  "slug": slug.current,  audience,  status,  shortDescription,  "groupName": group->name,  "groupSlug": group->slug.current,  "burrDiameterMm": specs.burrDiameterMm,  "burrType": specs.burrType,  "grindType": specs.grindType,  "motorPowerW": specs.motorPowerW,  "imageAlt": heroImage.alt,  "heroImage": heroImage{ alt, asset, crop, hotspot, "lqip": asset->metadata.lqip }},    "detailGrinders": grinders[]->{      _id, name, "slug": slug.current, audience, status, shortDescription,      "groupName": group->name, "groupSlug": group->slug.current,      "burrDiameterMm": specs.burrDiameterMm, "burrType": specs.burrType, "grindType": specs.grindType,      "imageAlt": heroImage.alt, "heroImage": heroImage{ alt, asset, crop, hotspot, "lqip": asset->metadata.lqip },      answerFirst,      specs{  burrType,  burrDiameterMm,  grindType,  motorPowerW,  rpm,  hopperCapacityG,  outputGPerS,  adjustment,  "widthMm": dimensions.widthMm,  "depthMm": dimensions.depthMm,  "heightMm": dimensions.heightMm,  weightKg,  voltage,  display,  features},      extraSpecs[]{ _key, label, value },      faqs[]{ _key, question, answer }    },    "specGrinder": grinder->{      _id, name, "slug": slug.current, audience, status, shortDescription,      "groupName": group->name, "groupSlug": group->slug.current,      "burrDiameterMm": specs.burrDiameterMm, "burrType": specs.burrType, "grindType": specs.grindType,      "imageAlt": heroImage.alt, "heroImage": heroImage{ alt, asset, crop, hotspot, "lqip": asset->metadata.lqip },      answerFirst,      specs{  burrType,  burrDiameterMm,  grindType,  motorPowerW,  rpm,  hopperCapacityG,  outputGPerS,  adjustment,  "widthMm": dimensions.widthMm,  "depthMm": dimensions.depthMm,  "heightMm": dimensions.heightMm,  weightKg,  voltage,  display,  features},      extraSpecs[]{ _key, label, value }    },    collections[]->{ name, "slug": slug.current, summary, audience },    posts[]->{  title,  "slug": slug.current,  excerpt,  publishedAt,  "topicTitle": topic->title,  "topicSlug": topic->slug.current}  },    "seoTitle": seo.title,  "seoDescription": seo.description,  "noIndex": seo.noIndex == true,  "canonical": seo.canonical,  "seoImage": seo.image{ alt, asset, crop, hotspot, "lqip": asset->metadata.lqip }}
 export type JOURNEY_QUERY_RESULT = {
   title: string;
   slug: string;
@@ -2538,12 +2573,11 @@ export type JOURNEY_QUERY_RESULT = {
           motorPowerW: number | null;
           imageAlt: string | null;
           heroImage: {
-            asset?: SanityImageAssetReference;
-            media?: unknown;
-            hotspot?: SanityImageHotspot;
-            crop?: SanityImageCrop;
-            alt?: string;
-            _type: "image";
+            alt: string | null;
+            asset: SanityImageAssetReference | null;
+            crop: SanityImageCrop | null;
+            hotspot: SanityImageHotspot | null;
+            lqip: string | null;
           } | null;
         }>;
         detailGrinders: Array<{
@@ -2560,12 +2594,11 @@ export type JOURNEY_QUERY_RESULT = {
           grindType: "both" | "espresso" | "filter" | null;
           imageAlt: string | null;
           heroImage: {
-            asset?: SanityImageAssetReference;
-            media?: unknown;
-            hotspot?: SanityImageHotspot;
-            crop?: SanityImageCrop;
-            alt?: string;
-            _type: "image";
+            alt: string | null;
+            asset: SanityImageAssetReference | null;
+            crop: SanityImageCrop | null;
+            hotspot: SanityImageHotspot | null;
+            lqip: string | null;
           } | null;
           answerFirst: string;
           specs: {
@@ -2756,12 +2789,11 @@ export type JOURNEY_QUERY_RESULT = {
           motorPowerW: number | null;
           imageAlt: string | null;
           heroImage: {
-            asset?: SanityImageAssetReference;
-            media?: unknown;
-            hotspot?: SanityImageHotspot;
-            crop?: SanityImageCrop;
-            alt?: string;
-            _type: "image";
+            alt: string | null;
+            asset: SanityImageAssetReference | null;
+            crop: SanityImageCrop | null;
+            hotspot: SanityImageHotspot | null;
+            lqip: string | null;
           } | null;
         }>;
         detailGrinders: Array<{
@@ -2778,12 +2810,11 @@ export type JOURNEY_QUERY_RESULT = {
           grindType: "both" | "espresso" | "filter" | null;
           imageAlt: string | null;
           heroImage: {
-            asset?: SanityImageAssetReference;
-            media?: unknown;
-            hotspot?: SanityImageHotspot;
-            crop?: SanityImageCrop;
-            alt?: string;
-            _type: "image";
+            alt: string | null;
+            asset: SanityImageAssetReference | null;
+            crop: SanityImageCrop | null;
+            hotspot: SanityImageHotspot | null;
+            lqip: string | null;
           } | null;
           answerFirst: string;
           specs: {
@@ -2834,12 +2865,11 @@ export type JOURNEY_QUERY_RESULT = {
         imageAlt: string | null;
         imagePosition: null;
         image: {
-          asset?: SanityImageAssetReference;
-          media?: unknown;
-          hotspot?: SanityImageHotspot;
-          crop?: SanityImageCrop;
-          alt?: string;
-          _type: "image";
+          alt: string | null;
+          asset: SanityImageAssetReference | null;
+          crop: SanityImageCrop | null;
+          hotspot: SanityImageHotspot | null;
+          lqip: string | null;
         } | null;
         links: Array<{
           _key: string;
@@ -2872,12 +2902,11 @@ export type JOURNEY_QUERY_RESULT = {
         imageAlt: string;
         imagePosition: "left" | "right" | null;
         image: {
-          asset?: SanityImageAssetReference;
-          media?: unknown;
-          hotspot?: SanityImageHotspot;
-          crop?: SanityImageCrop;
           alt: string;
-          _type: "image";
+          asset: SanityImageAssetReference | null;
+          crop: SanityImageCrop | null;
+          hotspot: SanityImageHotspot | null;
+          lqip: string | null;
         };
         links: null;
         link: {
@@ -3019,12 +3048,11 @@ export type JOURNEY_QUERY_RESULT = {
           grindType: "both" | "espresso" | "filter" | null;
           imageAlt: string | null;
           heroImage: {
-            asset?: SanityImageAssetReference;
-            media?: unknown;
-            hotspot?: SanityImageHotspot;
-            crop?: SanityImageCrop;
-            alt?: string;
-            _type: "image";
+            alt: string | null;
+            asset: SanityImageAssetReference | null;
+            crop: SanityImageCrop | null;
+            hotspot: SanityImageHotspot | null;
+            lqip: string | null;
           } | null;
           answerFirst: string;
           specs: {
@@ -3085,11 +3113,18 @@ export type JOURNEY_QUERY_RESULT = {
   seoDescription: string | null;
   noIndex: boolean | false;
   canonical: string | null;
+  seoImage: {
+    alt: string | null;
+    asset: SanityImageAssetReference | null;
+    crop: SanityImageCrop | null;
+    hotspot: SanityImageHotspot | null;
+    lqip: string | null;
+  } | null;
 } | null;
 
 // Source: src/sanity/lib/queries.ts
 // Variable: SIMPLE_PAGE_QUERY
-// Query: *[_id == $id][0]{  title,  introduction,  sections[]{    _key, _type, eyebrow, heading, text, intro, quote, attribution, role, caption, url, step,    "imageAlt": image.alt, imagePosition, image,    links[]{ _key, label, href }, link{ _key, label, href }, body,    features[]{ _key, title, text },    faqs[]{ _key, question, answer },    grinders[]->{  _id,  name,  "slug": slug.current,  audience,  status,  shortDescription,  "groupName": group->name,  "groupSlug": group->slug.current,  "burrDiameterMm": specs.burrDiameterMm,  "burrType": specs.burrType,  "grindType": specs.grindType,  "motorPowerW": specs.motorPowerW,  "imageAlt": heroImage.alt,  heroImage},    "detailGrinders": grinders[]->{      _id, name, "slug": slug.current, audience, status, shortDescription, answerFirst,      "groupName": group->name, "groupSlug": group->slug.current,      "burrDiameterMm": specs.burrDiameterMm, "burrType": specs.burrType, "grindType": specs.grindType,      "imageAlt": heroImage.alt, heroImage,      specs{  burrType,  burrDiameterMm,  grindType,  motorPowerW,  rpm,  hopperCapacityG,  outputGPerS,  adjustment,  "widthMm": dimensions.widthMm,  "depthMm": dimensions.depthMm,  "heightMm": dimensions.heightMm,  weightKg,  voltage,  display,  features},      extraSpecs[]{ _key, label, value },      faqs[]{ _key, question, answer }    },    "specGrinder": grinder->{      _id, name, "slug": slug.current, audience, status, shortDescription, answerFirst,      "groupName": group->name, "groupSlug": group->slug.current,      "burrDiameterMm": specs.burrDiameterMm, "burrType": specs.burrType, "grindType": specs.grindType,      "imageAlt": heroImage.alt, heroImage,      specs{  burrType,  burrDiameterMm,  grindType,  motorPowerW,  rpm,  hopperCapacityG,  outputGPerS,  adjustment,  "widthMm": dimensions.widthMm,  "depthMm": dimensions.depthMm,  "heightMm": dimensions.heightMm,  weightKg,  voltage,  display,  features},      extraSpecs[]{ _key, label, value },      faqs[]{ _key, question, answer }    },    collections[]->{ name, "slug": slug.current, summary, audience },    posts[]->{  title,  "slug": slug.current,  excerpt,  publishedAt,  "topicTitle": topic->title,  "topicSlug": topic->slug.current}  },  "seoTitle": seo.title,  "seoDescription": seo.description,  "noIndex": seo.noIndex == true,  "canonical": seo.canonical}
+// Query: *[_id == $id][0]{  title,  introduction,  sections[]{    _key, _type, eyebrow, heading, text, intro, quote, attribution, role, caption, url, step,    "imageAlt": image.alt, imagePosition, "image": image{ alt, asset, crop, hotspot, "lqip": asset->metadata.lqip },    links[]{ _key, label, href }, link{ _key, label, href }, body,    features[]{ _key, title, text },    faqs[]{ _key, question, answer },    grinders[]->{  _id,  name,  "slug": slug.current,  audience,  status,  shortDescription,  "groupName": group->name,  "groupSlug": group->slug.current,  "burrDiameterMm": specs.burrDiameterMm,  "burrType": specs.burrType,  "grindType": specs.grindType,  "motorPowerW": specs.motorPowerW,  "imageAlt": heroImage.alt,  "heroImage": heroImage{ alt, asset, crop, hotspot, "lqip": asset->metadata.lqip }},    "detailGrinders": grinders[]->{      _id, name, "slug": slug.current, audience, status, shortDescription, answerFirst,      "groupName": group->name, "groupSlug": group->slug.current,      "burrDiameterMm": specs.burrDiameterMm, "burrType": specs.burrType, "grindType": specs.grindType,      "imageAlt": heroImage.alt, "heroImage": heroImage{ alt, asset, crop, hotspot, "lqip": asset->metadata.lqip },      specs{  burrType,  burrDiameterMm,  grindType,  motorPowerW,  rpm,  hopperCapacityG,  outputGPerS,  adjustment,  "widthMm": dimensions.widthMm,  "depthMm": dimensions.depthMm,  "heightMm": dimensions.heightMm,  weightKg,  voltage,  display,  features},      extraSpecs[]{ _key, label, value },      faqs[]{ _key, question, answer }    },    "specGrinder": grinder->{      _id, name, "slug": slug.current, audience, status, shortDescription, answerFirst,      "groupName": group->name, "groupSlug": group->slug.current,      "burrDiameterMm": specs.burrDiameterMm, "burrType": specs.burrType, "grindType": specs.grindType,      "imageAlt": heroImage.alt, "heroImage": heroImage{ alt, asset, crop, hotspot, "lqip": asset->metadata.lqip },      specs{  burrType,  burrDiameterMm,  grindType,  motorPowerW,  rpm,  hopperCapacityG,  outputGPerS,  adjustment,  "widthMm": dimensions.widthMm,  "depthMm": dimensions.depthMm,  "heightMm": dimensions.heightMm,  weightKg,  voltage,  display,  features},      extraSpecs[]{ _key, label, value },      faqs[]{ _key, question, answer }    },    collections[]->{ name, "slug": slug.current, summary, audience },    posts[]->{  title,  "slug": slug.current,  excerpt,  publishedAt,  "topicTitle": topic->title,  "topicSlug": topic->slug.current}  },    "seoTitle": seo.title,  "seoDescription": seo.description,  "noIndex": seo.noIndex == true,  "canonical": seo.canonical,  "seoImage": seo.image{ alt, asset, crop, hotspot, "lqip": asset->metadata.lqip }}
 export type SIMPLE_PAGE_QUERY_RESULT =
   | {
       title: null;
@@ -3099,6 +3134,7 @@ export type SIMPLE_PAGE_QUERY_RESULT =
       seoDescription: null;
       noIndex: false;
       canonical: null;
+      seoImage: null;
     }
   | {
       title: string | null;
@@ -3108,6 +3144,7 @@ export type SIMPLE_PAGE_QUERY_RESULT =
       seoDescription: null;
       noIndex: false;
       canonical: null;
+      seoImage: null;
     }
   | {
       title: null;
@@ -3117,6 +3154,13 @@ export type SIMPLE_PAGE_QUERY_RESULT =
       seoDescription: string | null;
       noIndex: boolean | false;
       canonical: string | null;
+      seoImage: {
+        alt: string | null;
+        asset: SanityImageAssetReference | null;
+        crop: SanityImageCrop | null;
+        hotspot: SanityImageHotspot | null;
+        lqip: string | null;
+      } | null;
     }
   | {
       title: string;
@@ -3126,6 +3170,13 @@ export type SIMPLE_PAGE_QUERY_RESULT =
       seoDescription: string | null;
       noIndex: boolean | false;
       canonical: string | null;
+      seoImage: {
+        alt: string | null;
+        asset: SanityImageAssetReference | null;
+        crop: SanityImageCrop | null;
+        hotspot: SanityImageHotspot | null;
+        lqip: string | null;
+      } | null;
     }
   | {
       title: null;
@@ -3199,12 +3250,11 @@ export type SIMPLE_PAGE_QUERY_RESULT =
               motorPowerW: number | null;
               imageAlt: string | null;
               heroImage: {
-                asset?: SanityImageAssetReference;
-                media?: unknown;
-                hotspot?: SanityImageHotspot;
-                crop?: SanityImageCrop;
-                alt?: string;
-                _type: "image";
+                alt: string | null;
+                asset: SanityImageAssetReference | null;
+                crop: SanityImageCrop | null;
+                hotspot: SanityImageHotspot | null;
+                lqip: string | null;
               } | null;
             }>;
             detailGrinders: Array<{
@@ -3222,12 +3272,11 @@ export type SIMPLE_PAGE_QUERY_RESULT =
               grindType: "both" | "espresso" | "filter" | null;
               imageAlt: string | null;
               heroImage: {
-                asset?: SanityImageAssetReference;
-                media?: unknown;
-                hotspot?: SanityImageHotspot;
-                crop?: SanityImageCrop;
-                alt?: string;
-                _type: "image";
+                alt: string | null;
+                asset: SanityImageAssetReference | null;
+                crop: SanityImageCrop | null;
+                hotspot: SanityImageHotspot | null;
+                lqip: string | null;
               } | null;
               specs: {
                 burrType: "conical" | "flat" | null;
@@ -3417,12 +3466,11 @@ export type SIMPLE_PAGE_QUERY_RESULT =
               motorPowerW: number | null;
               imageAlt: string | null;
               heroImage: {
-                asset?: SanityImageAssetReference;
-                media?: unknown;
-                hotspot?: SanityImageHotspot;
-                crop?: SanityImageCrop;
-                alt?: string;
-                _type: "image";
+                alt: string | null;
+                asset: SanityImageAssetReference | null;
+                crop: SanityImageCrop | null;
+                hotspot: SanityImageHotspot | null;
+                lqip: string | null;
               } | null;
             }>;
             detailGrinders: Array<{
@@ -3440,12 +3488,11 @@ export type SIMPLE_PAGE_QUERY_RESULT =
               grindType: "both" | "espresso" | "filter" | null;
               imageAlt: string | null;
               heroImage: {
-                asset?: SanityImageAssetReference;
-                media?: unknown;
-                hotspot?: SanityImageHotspot;
-                crop?: SanityImageCrop;
-                alt?: string;
-                _type: "image";
+                alt: string | null;
+                asset: SanityImageAssetReference | null;
+                crop: SanityImageCrop | null;
+                hotspot: SanityImageHotspot | null;
+                lqip: string | null;
               } | null;
               specs: {
                 burrType: "conical" | "flat" | null;
@@ -3495,12 +3542,11 @@ export type SIMPLE_PAGE_QUERY_RESULT =
             imageAlt: string | null;
             imagePosition: null;
             image: {
-              asset?: SanityImageAssetReference;
-              media?: unknown;
-              hotspot?: SanityImageHotspot;
-              crop?: SanityImageCrop;
-              alt?: string;
-              _type: "image";
+              alt: string | null;
+              asset: SanityImageAssetReference | null;
+              crop: SanityImageCrop | null;
+              hotspot: SanityImageHotspot | null;
+              lqip: string | null;
             } | null;
             links: Array<{
               _key: string;
@@ -3533,12 +3579,11 @@ export type SIMPLE_PAGE_QUERY_RESULT =
             imageAlt: string;
             imagePosition: "left" | "right" | null;
             image: {
-              asset?: SanityImageAssetReference;
-              media?: unknown;
-              hotspot?: SanityImageHotspot;
-              crop?: SanityImageCrop;
               alt: string;
-              _type: "image";
+              asset: SanityImageAssetReference | null;
+              crop: SanityImageCrop | null;
+              hotspot: SanityImageHotspot | null;
+              lqip: string | null;
             };
             links: null;
             link: {
@@ -3681,12 +3726,11 @@ export type SIMPLE_PAGE_QUERY_RESULT =
               grindType: "both" | "espresso" | "filter" | null;
               imageAlt: string | null;
               heroImage: {
-                asset?: SanityImageAssetReference;
-                media?: unknown;
-                hotspot?: SanityImageHotspot;
-                crop?: SanityImageCrop;
-                alt?: string;
-                _type: "image";
+                alt: string | null;
+                asset: SanityImageAssetReference | null;
+                crop: SanityImageCrop | null;
+                hotspot: SanityImageHotspot | null;
+                lqip: string | null;
               } | null;
               specs: {
                 burrType: "conical" | "flat" | null;
@@ -3751,6 +3795,13 @@ export type SIMPLE_PAGE_QUERY_RESULT =
       seoDescription: string | null;
       noIndex: boolean | false;
       canonical: string | null;
+      seoImage: {
+        alt: string | null;
+        asset: SanityImageAssetReference | null;
+        crop: SanityImageCrop | null;
+        hotspot: SanityImageHotspot | null;
+        lqip: string | null;
+      } | null;
     }
   | {
       title: string;
@@ -3824,12 +3875,11 @@ export type SIMPLE_PAGE_QUERY_RESULT =
               motorPowerW: number | null;
               imageAlt: string | null;
               heroImage: {
-                asset?: SanityImageAssetReference;
-                media?: unknown;
-                hotspot?: SanityImageHotspot;
-                crop?: SanityImageCrop;
-                alt?: string;
-                _type: "image";
+                alt: string | null;
+                asset: SanityImageAssetReference | null;
+                crop: SanityImageCrop | null;
+                hotspot: SanityImageHotspot | null;
+                lqip: string | null;
               } | null;
             }>;
             detailGrinders: Array<{
@@ -3847,12 +3897,11 @@ export type SIMPLE_PAGE_QUERY_RESULT =
               grindType: "both" | "espresso" | "filter" | null;
               imageAlt: string | null;
               heroImage: {
-                asset?: SanityImageAssetReference;
-                media?: unknown;
-                hotspot?: SanityImageHotspot;
-                crop?: SanityImageCrop;
-                alt?: string;
-                _type: "image";
+                alt: string | null;
+                asset: SanityImageAssetReference | null;
+                crop: SanityImageCrop | null;
+                hotspot: SanityImageHotspot | null;
+                lqip: string | null;
               } | null;
               specs: {
                 burrType: "conical" | "flat" | null;
@@ -4042,12 +4091,11 @@ export type SIMPLE_PAGE_QUERY_RESULT =
               motorPowerW: number | null;
               imageAlt: string | null;
               heroImage: {
-                asset?: SanityImageAssetReference;
-                media?: unknown;
-                hotspot?: SanityImageHotspot;
-                crop?: SanityImageCrop;
-                alt?: string;
-                _type: "image";
+                alt: string | null;
+                asset: SanityImageAssetReference | null;
+                crop: SanityImageCrop | null;
+                hotspot: SanityImageHotspot | null;
+                lqip: string | null;
               } | null;
             }>;
             detailGrinders: Array<{
@@ -4065,12 +4113,11 @@ export type SIMPLE_PAGE_QUERY_RESULT =
               grindType: "both" | "espresso" | "filter" | null;
               imageAlt: string | null;
               heroImage: {
-                asset?: SanityImageAssetReference;
-                media?: unknown;
-                hotspot?: SanityImageHotspot;
-                crop?: SanityImageCrop;
-                alt?: string;
-                _type: "image";
+                alt: string | null;
+                asset: SanityImageAssetReference | null;
+                crop: SanityImageCrop | null;
+                hotspot: SanityImageHotspot | null;
+                lqip: string | null;
               } | null;
               specs: {
                 burrType: "conical" | "flat" | null;
@@ -4120,12 +4167,11 @@ export type SIMPLE_PAGE_QUERY_RESULT =
             imageAlt: string | null;
             imagePosition: null;
             image: {
-              asset?: SanityImageAssetReference;
-              media?: unknown;
-              hotspot?: SanityImageHotspot;
-              crop?: SanityImageCrop;
-              alt?: string;
-              _type: "image";
+              alt: string | null;
+              asset: SanityImageAssetReference | null;
+              crop: SanityImageCrop | null;
+              hotspot: SanityImageHotspot | null;
+              lqip: string | null;
             } | null;
             links: Array<{
               _key: string;
@@ -4158,12 +4204,11 @@ export type SIMPLE_PAGE_QUERY_RESULT =
             imageAlt: string;
             imagePosition: "left" | "right" | null;
             image: {
-              asset?: SanityImageAssetReference;
-              media?: unknown;
-              hotspot?: SanityImageHotspot;
-              crop?: SanityImageCrop;
               alt: string;
-              _type: "image";
+              asset: SanityImageAssetReference | null;
+              crop: SanityImageCrop | null;
+              hotspot: SanityImageHotspot | null;
+              lqip: string | null;
             };
             links: null;
             link: {
@@ -4306,12 +4351,11 @@ export type SIMPLE_PAGE_QUERY_RESULT =
               grindType: "both" | "espresso" | "filter" | null;
               imageAlt: string | null;
               heroImage: {
-                asset?: SanityImageAssetReference;
-                media?: unknown;
-                hotspot?: SanityImageHotspot;
-                crop?: SanityImageCrop;
-                alt?: string;
-                _type: "image";
+                alt: string | null;
+                asset: SanityImageAssetReference | null;
+                crop: SanityImageCrop | null;
+                hotspot: SanityImageHotspot | null;
+                lqip: string | null;
               } | null;
               specs: {
                 burrType: "conical" | "flat" | null;
@@ -4376,12 +4420,19 @@ export type SIMPLE_PAGE_QUERY_RESULT =
       seoDescription: string | null;
       noIndex: boolean | false;
       canonical: string | null;
+      seoImage: {
+        alt: string | null;
+        asset: SanityImageAssetReference | null;
+        crop: SanityImageCrop | null;
+        hotspot: SanityImageHotspot | null;
+        lqip: string | null;
+      } | null;
     }
   | null;
 
 // Source: src/sanity/lib/queries.ts
 // Variable: GRINDERS_QUERY
-// Query: *[_type == "grinder" && language == "en-GB"]|order(name asc){  _id,  name,  "slug": slug.current,  audience,  status,  shortDescription,  "groupName": group->name,  "groupSlug": group->slug.current,  "burrDiameterMm": specs.burrDiameterMm,  "burrType": specs.burrType,  "grindType": specs.grindType,  "motorPowerW": specs.motorPowerW,  "imageAlt": heroImage.alt,  heroImage}
+// Query: *[_type == "grinder" && language == "en-GB"]|order(name asc){  _id,  name,  "slug": slug.current,  audience,  status,  shortDescription,  "groupName": group->name,  "groupSlug": group->slug.current,  "burrDiameterMm": specs.burrDiameterMm,  "burrType": specs.burrType,  "grindType": specs.grindType,  "motorPowerW": specs.motorPowerW,  "imageAlt": heroImage.alt,  "heroImage": heroImage{ alt, asset, crop, hotspot, "lqip": asset->metadata.lqip }}
 export type GRINDERS_QUERY_RESULT = Array<{
   _id: string;
   name: string;
@@ -4397,18 +4448,17 @@ export type GRINDERS_QUERY_RESULT = Array<{
   motorPowerW: number | null;
   imageAlt: string | null;
   heroImage: {
-    asset?: SanityImageAssetReference;
-    media?: unknown;
-    hotspot?: SanityImageHotspot;
-    crop?: SanityImageCrop;
-    alt?: string;
-    _type: "image";
+    alt: string | null;
+    asset: SanityImageAssetReference | null;
+    crop: SanityImageCrop | null;
+    hotspot: SanityImageHotspot | null;
+    lqip: string | null;
   } | null;
 }>;
 
 // Source: src/sanity/lib/queries.ts
 // Variable: GRINDER_QUERY
-// Query: *[_type == "grinder" && slug.current == $slug && language == "en-GB"][0]{  _id, name, "slug": slug.current, audience, status, shortDescription, answerFirst,  "groupName": group->name, "groupSlug": group->slug.current,  "burrDiameterMm": specs.burrDiameterMm, "burrType": specs.burrType, "grindType": specs.grindType,  "imageAlt": heroImage.alt, heroImage,  gallery[]{ _key, alt, asset, crop, hotspot },  specs{  burrType,  burrDiameterMm,  grindType,  motorPowerW,  rpm,  hopperCapacityG,  outputGPerS,  adjustment,  "widthMm": dimensions.widthMm,  "depthMm": dimensions.depthMm,  "heightMm": dimensions.heightMm,  weightKg,  voltage,  display,  features},  extraSpecs[]{ _key, label, value },  faqs[]{ _key, question, answer },  relatedGrinders[]->{  _id,  name,  "slug": slug.current,  audience,  status,  shortDescription,  "groupName": group->name,  "groupSlug": group->slug.current,  "burrDiameterMm": specs.burrDiameterMm,  "burrType": specs.burrType,  "grindType": specs.grindType,  "motorPowerW": specs.motorPowerW,  "imageAlt": heroImage.alt,  heroImage},  relatedArticles[]->{  title,  "slug": slug.current,  excerpt,  publishedAt,  "topicTitle": topic->title,  "topicSlug": topic->slug.current},  "catalogueUrl": catalogue.asset->url,  "catalogueLabel": catalogue.label,  "seoTitle": seo.title,  "seoDescription": seo.description,  "noIndex": seo.noIndex == true,  "canonical": seo.canonical,  seoImage}
+// Query: *[_type == "grinder" && slug.current == $slug && language == "en-GB"][0]{  _id, name, "slug": slug.current, audience, status, shortDescription, answerFirst,  "groupName": group->name, "groupSlug": group->slug.current,  "burrDiameterMm": specs.burrDiameterMm, "burrType": specs.burrType, "grindType": specs.grindType,  "imageAlt": heroImage.alt, "heroImage": heroImage{ alt, asset, crop, hotspot, "lqip": asset->metadata.lqip },  gallery[]{ _key, alt, asset, crop, hotspot, "lqip": asset->metadata.lqip },  specs{  burrType,  burrDiameterMm,  grindType,  motorPowerW,  rpm,  hopperCapacityG,  outputGPerS,  adjustment,  "widthMm": dimensions.widthMm,  "depthMm": dimensions.depthMm,  "heightMm": dimensions.heightMm,  weightKg,  voltage,  display,  features},  extraSpecs[]{ _key, label, value },  faqs[]{ _key, question, answer },  relatedGrinders[]->{  _id,  name,  "slug": slug.current,  audience,  status,  shortDescription,  "groupName": group->name,  "groupSlug": group->slug.current,  "burrDiameterMm": specs.burrDiameterMm,  "burrType": specs.burrType,  "grindType": specs.grindType,  "motorPowerW": specs.motorPowerW,  "imageAlt": heroImage.alt,  "heroImage": heroImage{ alt, asset, crop, hotspot, "lqip": asset->metadata.lqip }},  relatedArticles[]->{  title,  "slug": slug.current,  excerpt,  publishedAt,  "topicTitle": topic->title,  "topicSlug": topic->slug.current},  "catalogueUrl": catalogue.asset->url,  "catalogueLabel": catalogue.label,    "seoTitle": seo.title,  "seoDescription": seo.description,  "noIndex": seo.noIndex == true,  "canonical": seo.canonical,  "seoImage": seo.image{ alt, asset, crop, hotspot, "lqip": asset->metadata.lqip }}
 export type GRINDER_QUERY_RESULT = {
   _id: string;
   name: string;
@@ -4424,12 +4474,11 @@ export type GRINDER_QUERY_RESULT = {
   grindType: "both" | "espresso" | "filter" | null;
   imageAlt: string | null;
   heroImage: {
-    asset?: SanityImageAssetReference;
-    media?: unknown;
-    hotspot?: SanityImageHotspot;
-    crop?: SanityImageCrop;
-    alt?: string;
-    _type: "image";
+    alt: string | null;
+    asset: SanityImageAssetReference | null;
+    crop: SanityImageCrop | null;
+    hotspot: SanityImageHotspot | null;
+    lqip: string | null;
   } | null;
   gallery: Array<{
     _key: string;
@@ -4437,6 +4486,7 @@ export type GRINDER_QUERY_RESULT = {
     asset: SanityImageAssetReference | null;
     crop: SanityImageCrop | null;
     hotspot: SanityImageHotspot | null;
+    lqip: string | null;
   }> | null;
   specs: {
     burrType: "conical" | "flat" | null;
@@ -4480,12 +4530,11 @@ export type GRINDER_QUERY_RESULT = {
     motorPowerW: number | null;
     imageAlt: string | null;
     heroImage: {
-      asset?: SanityImageAssetReference;
-      media?: unknown;
-      hotspot?: SanityImageHotspot;
-      crop?: SanityImageCrop;
-      alt?: string;
-      _type: "image";
+      alt: string | null;
+      asset: SanityImageAssetReference | null;
+      crop: SanityImageCrop | null;
+      hotspot: SanityImageHotspot | null;
+      lqip: string | null;
     } | null;
   }> | null;
   relatedArticles: Array<{
@@ -4502,12 +4551,18 @@ export type GRINDER_QUERY_RESULT = {
   seoDescription: string | null;
   noIndex: boolean | false;
   canonical: string | null;
-  seoImage: null;
+  seoImage: {
+    alt: string | null;
+    asset: SanityImageAssetReference | null;
+    crop: SanityImageCrop | null;
+    hotspot: SanityImageHotspot | null;
+    lqip: string | null;
+  } | null;
 } | null;
 
 // Source: src/sanity/lib/queries.ts
 // Variable: COLLECTION_QUERY
-// Query: *[_type == "grinderCollection" && slug.current == $slug && language == "en-GB"][0]{  _id, name, "slug": slug.current, summary, answerFirst, audience,  grinders[]->{  _id,  name,  "slug": slug.current,  audience,  status,  shortDescription,  "groupName": group->name,  "groupSlug": group->slug.current,  "burrDiameterMm": specs.burrDiameterMm,  "burrType": specs.burrType,  "grindType": specs.grindType,  "motorPowerW": specs.motorPowerW,  "imageAlt": heroImage.alt,  heroImage},  sections[]{    _key, _type, eyebrow, heading, text, intro, quote, attribution, role, caption, url, step,    "imageAlt": image.alt, imagePosition, image,    links[]{ _key, label, href }, link{ _key, label, href }, body,    features[]{ _key, title, text },    faqs[]{ _key, question, answer },    grinders[]->{  _id,  name,  "slug": slug.current,  audience,  status,  shortDescription,  "groupName": group->name,  "groupSlug": group->slug.current,  "burrDiameterMm": specs.burrDiameterMm,  "burrType": specs.burrType,  "grindType": specs.grindType,  "motorPowerW": specs.motorPowerW,  "imageAlt": heroImage.alt,  heroImage},    "detailGrinders": grinders[]->{      _id, name, "slug": slug.current, audience, status, shortDescription, answerFirst,      "groupName": group->name, "groupSlug": group->slug.current,      "burrDiameterMm": specs.burrDiameterMm, "burrType": specs.burrType, "grindType": specs.grindType,      "imageAlt": heroImage.alt, heroImage,      specs{  burrType,  burrDiameterMm,  grindType,  motorPowerW,  rpm,  hopperCapacityG,  outputGPerS,  adjustment,  "widthMm": dimensions.widthMm,  "depthMm": dimensions.depthMm,  "heightMm": dimensions.heightMm,  weightKg,  voltage,  display,  features},      extraSpecs[]{ _key, label, value },      faqs[]{ _key, question, answer }    },    "specGrinder": grinder->{      _id, name, "slug": slug.current, audience, status, shortDescription, answerFirst,      "groupName": group->name, "groupSlug": group->slug.current,      "burrDiameterMm": specs.burrDiameterMm, "burrType": specs.burrType, "grindType": specs.grindType,      "imageAlt": heroImage.alt, heroImage,      specs{  burrType,  burrDiameterMm,  grindType,  motorPowerW,  rpm,  hopperCapacityG,  outputGPerS,  adjustment,  "widthMm": dimensions.widthMm,  "depthMm": dimensions.depthMm,  "heightMm": dimensions.heightMm,  weightKg,  voltage,  display,  features},      extraSpecs[]{ _key, label, value },      faqs[]{ _key, question, answer }    },    collections[]->{ name, "slug": slug.current, summary, audience },    posts[]->{  title,  "slug": slug.current,  excerpt,  publishedAt,  "topicTitle": topic->title,  "topicSlug": topic->slug.current}  },  "seoTitle": seo.title,  "seoDescription": seo.description,  "noIndex": seo.noIndex == true,  "canonical": seo.canonical}
+// Query: *[_type == "grinderCollection" && slug.current == $slug && language == "en-GB"][0]{  _id, name, "slug": slug.current, summary, answerFirst, audience,  grinders[]->{  _id,  name,  "slug": slug.current,  audience,  status,  shortDescription,  "groupName": group->name,  "groupSlug": group->slug.current,  "burrDiameterMm": specs.burrDiameterMm,  "burrType": specs.burrType,  "grindType": specs.grindType,  "motorPowerW": specs.motorPowerW,  "imageAlt": heroImage.alt,  "heroImage": heroImage{ alt, asset, crop, hotspot, "lqip": asset->metadata.lqip }},  sections[]{    _key, _type, eyebrow, heading, text, intro, quote, attribution, role, caption, url, step,    "imageAlt": image.alt, imagePosition, "image": image{ alt, asset, crop, hotspot, "lqip": asset->metadata.lqip },    links[]{ _key, label, href }, link{ _key, label, href }, body,    features[]{ _key, title, text },    faqs[]{ _key, question, answer },    grinders[]->{  _id,  name,  "slug": slug.current,  audience,  status,  shortDescription,  "groupName": group->name,  "groupSlug": group->slug.current,  "burrDiameterMm": specs.burrDiameterMm,  "burrType": specs.burrType,  "grindType": specs.grindType,  "motorPowerW": specs.motorPowerW,  "imageAlt": heroImage.alt,  "heroImage": heroImage{ alt, asset, crop, hotspot, "lqip": asset->metadata.lqip }},    "detailGrinders": grinders[]->{      _id, name, "slug": slug.current, audience, status, shortDescription, answerFirst,      "groupName": group->name, "groupSlug": group->slug.current,      "burrDiameterMm": specs.burrDiameterMm, "burrType": specs.burrType, "grindType": specs.grindType,      "imageAlt": heroImage.alt, "heroImage": heroImage{ alt, asset, crop, hotspot, "lqip": asset->metadata.lqip },      specs{  burrType,  burrDiameterMm,  grindType,  motorPowerW,  rpm,  hopperCapacityG,  outputGPerS,  adjustment,  "widthMm": dimensions.widthMm,  "depthMm": dimensions.depthMm,  "heightMm": dimensions.heightMm,  weightKg,  voltage,  display,  features},      extraSpecs[]{ _key, label, value },      faqs[]{ _key, question, answer }    },    "specGrinder": grinder->{      _id, name, "slug": slug.current, audience, status, shortDescription, answerFirst,      "groupName": group->name, "groupSlug": group->slug.current,      "burrDiameterMm": specs.burrDiameterMm, "burrType": specs.burrType, "grindType": specs.grindType,      "imageAlt": heroImage.alt, "heroImage": heroImage{ alt, asset, crop, hotspot, "lqip": asset->metadata.lqip },      specs{  burrType,  burrDiameterMm,  grindType,  motorPowerW,  rpm,  hopperCapacityG,  outputGPerS,  adjustment,  "widthMm": dimensions.widthMm,  "depthMm": dimensions.depthMm,  "heightMm": dimensions.heightMm,  weightKg,  voltage,  display,  features},      extraSpecs[]{ _key, label, value },      faqs[]{ _key, question, answer }    },    collections[]->{ name, "slug": slug.current, summary, audience },    posts[]->{  title,  "slug": slug.current,  excerpt,  publishedAt,  "topicTitle": topic->title,  "topicSlug": topic->slug.current}  },    "seoTitle": seo.title,  "seoDescription": seo.description,  "noIndex": seo.noIndex == true,  "canonical": seo.canonical,  "seoImage": seo.image{ alt, asset, crop, hotspot, "lqip": asset->metadata.lqip }}
 export type COLLECTION_QUERY_RESULT = {
   _id: string;
   name: string;
@@ -4530,12 +4585,11 @@ export type COLLECTION_QUERY_RESULT = {
     motorPowerW: number | null;
     imageAlt: string | null;
     heroImage: {
-      asset?: SanityImageAssetReference;
-      media?: unknown;
-      hotspot?: SanityImageHotspot;
-      crop?: SanityImageCrop;
-      alt?: string;
-      _type: "image";
+      alt: string | null;
+      asset: SanityImageAssetReference | null;
+      crop: SanityImageCrop | null;
+      hotspot: SanityImageHotspot | null;
+      lqip: string | null;
     } | null;
   }> | null;
   sections: Array<
@@ -4607,12 +4661,11 @@ export type COLLECTION_QUERY_RESULT = {
           motorPowerW: number | null;
           imageAlt: string | null;
           heroImage: {
-            asset?: SanityImageAssetReference;
-            media?: unknown;
-            hotspot?: SanityImageHotspot;
-            crop?: SanityImageCrop;
-            alt?: string;
-            _type: "image";
+            alt: string | null;
+            asset: SanityImageAssetReference | null;
+            crop: SanityImageCrop | null;
+            hotspot: SanityImageHotspot | null;
+            lqip: string | null;
           } | null;
         }>;
         detailGrinders: Array<{
@@ -4630,12 +4683,11 @@ export type COLLECTION_QUERY_RESULT = {
           grindType: "both" | "espresso" | "filter" | null;
           imageAlt: string | null;
           heroImage: {
-            asset?: SanityImageAssetReference;
-            media?: unknown;
-            hotspot?: SanityImageHotspot;
-            crop?: SanityImageCrop;
-            alt?: string;
-            _type: "image";
+            alt: string | null;
+            asset: SanityImageAssetReference | null;
+            crop: SanityImageCrop | null;
+            hotspot: SanityImageHotspot | null;
+            lqip: string | null;
           } | null;
           specs: {
             burrType: "conical" | "flat" | null;
@@ -4825,12 +4877,11 @@ export type COLLECTION_QUERY_RESULT = {
           motorPowerW: number | null;
           imageAlt: string | null;
           heroImage: {
-            asset?: SanityImageAssetReference;
-            media?: unknown;
-            hotspot?: SanityImageHotspot;
-            crop?: SanityImageCrop;
-            alt?: string;
-            _type: "image";
+            alt: string | null;
+            asset: SanityImageAssetReference | null;
+            crop: SanityImageCrop | null;
+            hotspot: SanityImageHotspot | null;
+            lqip: string | null;
           } | null;
         }>;
         detailGrinders: Array<{
@@ -4848,12 +4899,11 @@ export type COLLECTION_QUERY_RESULT = {
           grindType: "both" | "espresso" | "filter" | null;
           imageAlt: string | null;
           heroImage: {
-            asset?: SanityImageAssetReference;
-            media?: unknown;
-            hotspot?: SanityImageHotspot;
-            crop?: SanityImageCrop;
-            alt?: string;
-            _type: "image";
+            alt: string | null;
+            asset: SanityImageAssetReference | null;
+            crop: SanityImageCrop | null;
+            hotspot: SanityImageHotspot | null;
+            lqip: string | null;
           } | null;
           specs: {
             burrType: "conical" | "flat" | null;
@@ -4903,12 +4953,11 @@ export type COLLECTION_QUERY_RESULT = {
         imageAlt: string | null;
         imagePosition: null;
         image: {
-          asset?: SanityImageAssetReference;
-          media?: unknown;
-          hotspot?: SanityImageHotspot;
-          crop?: SanityImageCrop;
-          alt?: string;
-          _type: "image";
+          alt: string | null;
+          asset: SanityImageAssetReference | null;
+          crop: SanityImageCrop | null;
+          hotspot: SanityImageHotspot | null;
+          lqip: string | null;
         } | null;
         links: Array<{
           _key: string;
@@ -4941,12 +4990,11 @@ export type COLLECTION_QUERY_RESULT = {
         imageAlt: string;
         imagePosition: "left" | "right" | null;
         image: {
-          asset?: SanityImageAssetReference;
-          media?: unknown;
-          hotspot?: SanityImageHotspot;
-          crop?: SanityImageCrop;
           alt: string;
-          _type: "image";
+          asset: SanityImageAssetReference | null;
+          crop: SanityImageCrop | null;
+          hotspot: SanityImageHotspot | null;
+          lqip: string | null;
         };
         links: null;
         link: {
@@ -5089,12 +5137,11 @@ export type COLLECTION_QUERY_RESULT = {
           grindType: "both" | "espresso" | "filter" | null;
           imageAlt: string | null;
           heroImage: {
-            asset?: SanityImageAssetReference;
-            media?: unknown;
-            hotspot?: SanityImageHotspot;
-            crop?: SanityImageCrop;
-            alt?: string;
-            _type: "image";
+            alt: string | null;
+            asset: SanityImageAssetReference | null;
+            crop: SanityImageCrop | null;
+            hotspot: SanityImageHotspot | null;
+            lqip: string | null;
           } | null;
           specs: {
             burrType: "conical" | "flat" | null;
@@ -5159,6 +5206,13 @@ export type COLLECTION_QUERY_RESULT = {
   seoDescription: string | null;
   noIndex: boolean | false;
   canonical: string | null;
+  seoImage: {
+    alt: string | null;
+    asset: SanityImageAssetReference | null;
+    crop: SanityImageCrop | null;
+    hotspot: SanityImageHotspot | null;
+    lqip: string | null;
+  } | null;
 } | null;
 
 // Source: src/sanity/lib/queries.ts
@@ -5175,7 +5229,7 @@ export type POSTS_QUERY_RESULT = Array<{
 
 // Source: src/sanity/lib/queries.ts
 // Variable: POST_QUERY
-// Query: *[_type == "kbPost" && slug.current == $slug && language == "en-GB"][0]{  title, "slug": slug.current, excerpt, publishedAt, updatedAt, answerFirst, body,  "topicTitle": topic->title, "topicSlug": topic->slug.current,  "authorName": author->name, "authorSlug": author->slug.current, "authorRole": author->role, "authorBio": author->bio,  "imageAlt": image.alt, image,  faqs[]{ _key, question, answer },  relatedGrinders[]->{  _id,  name,  "slug": slug.current,  audience,  status,  shortDescription,  "groupName": group->name,  "groupSlug": group->slug.current,  "burrDiameterMm": specs.burrDiameterMm,  "burrType": specs.burrType,  "grindType": specs.grindType,  "motorPowerW": specs.motorPowerW,  "imageAlt": heroImage.alt,  heroImage},  "seoTitle": seo.title,  "seoDescription": seo.description,  "noIndex": seo.noIndex == true,  "canonical": seo.canonical}
+// Query: *[_type == "kbPost" && slug.current == $slug && language == "en-GB"][0]{  title, "slug": slug.current, excerpt, publishedAt, updatedAt, answerFirst, body,  "topicTitle": topic->title, "topicSlug": topic->slug.current,  "authorName": author->name, "authorSlug": author->slug.current, "authorRole": author->role, "authorBio": author->bio,  "authorSameAs": author->sameAs,  "imageAlt": image.alt, "image": image{ alt, asset, crop, hotspot, "lqip": asset->metadata.lqip },  faqs[]{ _key, question, answer },  relatedGrinders[]->{  _id,  name,  "slug": slug.current,  audience,  status,  shortDescription,  "groupName": group->name,  "groupSlug": group->slug.current,  "burrDiameterMm": specs.burrDiameterMm,  "burrType": specs.burrType,  "grindType": specs.grindType,  "motorPowerW": specs.motorPowerW,  "imageAlt": heroImage.alt,  "heroImage": heroImage{ alt, asset, crop, hotspot, "lqip": asset->metadata.lqip }},    "seoTitle": seo.title,  "seoDescription": seo.description,  "noIndex": seo.noIndex == true,  "canonical": seo.canonical,  "seoImage": seo.image{ alt, asset, crop, hotspot, "lqip": asset->metadata.lqip }}
 export type POST_QUERY_RESULT = {
   title: string;
   slug: string;
@@ -5190,14 +5244,14 @@ export type POST_QUERY_RESULT = {
   authorSlug: string;
   authorRole: string | null;
   authorBio: string | null;
+  authorSameAs: Array<string> | null;
   imageAlt: string | null;
   image: {
-    asset?: SanityImageAssetReference;
-    media?: unknown;
-    hotspot?: SanityImageHotspot;
-    crop?: SanityImageCrop;
-    alt?: string;
-    _type: "image";
+    alt: string | null;
+    asset: SanityImageAssetReference | null;
+    crop: SanityImageCrop | null;
+    hotspot: SanityImageHotspot | null;
+    lqip: string | null;
   } | null;
   faqs: Array<{
     _key: string;
@@ -5219,34 +5273,49 @@ export type POST_QUERY_RESULT = {
     motorPowerW: number | null;
     imageAlt: string | null;
     heroImage: {
-      asset?: SanityImageAssetReference;
-      media?: unknown;
-      hotspot?: SanityImageHotspot;
-      crop?: SanityImageCrop;
-      alt?: string;
-      _type: "image";
+      alt: string | null;
+      asset: SanityImageAssetReference | null;
+      crop: SanityImageCrop | null;
+      hotspot: SanityImageHotspot | null;
+      lqip: string | null;
     } | null;
   }> | null;
   seoTitle: string | null;
   seoDescription: string | null;
   noIndex: boolean | false;
   canonical: string | null;
+  seoImage: {
+    alt: string | null;
+    asset: SanityImageAssetReference | null;
+    crop: SanityImageCrop | null;
+    hotspot: SanityImageHotspot | null;
+    lqip: string | null;
+  } | null;
 } | null;
 
 // Source: src/sanity/lib/queries.ts
 // Variable: TOPICS_QUERY
-// Query: *[_type == "kbTopic" && language == "en-GB"]|order(title asc){  title, "slug": slug.current, description,  "seoTitle": seo.title, "seoDescription": seo.description}
+// Query: *[_type == "kbTopic" && language == "en-GB"]|order(title asc){  title, "slug": slug.current, description,    "seoTitle": seo.title,  "seoDescription": seo.description,  "noIndex": seo.noIndex == true,  "canonical": seo.canonical,  "seoImage": seo.image{ alt, asset, crop, hotspot, "lqip": asset->metadata.lqip }}
 export type TOPICS_QUERY_RESULT = Array<{
   title: string;
   slug: string;
   description: string;
   seoTitle: string | null;
   seoDescription: string | null;
+  noIndex: boolean | false;
+  canonical: string | null;
+  seoImage: {
+    alt: string | null;
+    asset: SanityImageAssetReference | null;
+    crop: SanityImageCrop | null;
+    hotspot: SanityImageHotspot | null;
+    lqip: string | null;
+  } | null;
 }>;
 
 // Source: src/sanity/lib/queries.ts
 // Variable: LEGAL_QUERY
-// Query: *[_type == "legalPage" && slug.current == $slug && language == "en-GB"][0]{  title, "slug": slug.current, effectiveDate, body,  "seoTitle": seo.title, "seoDescription": seo.description, "noIndex": seo.noIndex == true}
+// Query: *[_type == "legalPage" && slug.current == $slug && language == "en-GB"][0]{  title, "slug": slug.current, effectiveDate, body,    "seoTitle": seo.title,  "seoDescription": seo.description,  "noIndex": seo.noIndex == true,  "canonical": seo.canonical,  "seoImage": seo.image{ alt, asset, crop, hotspot, "lqip": asset->metadata.lqip }}
 export type LEGAL_QUERY_RESULT = {
   title: string;
   slug: string;
@@ -5255,15 +5324,34 @@ export type LEGAL_QUERY_RESULT = {
   seoTitle: string | null;
   seoDescription: string | null;
   noIndex: boolean | false;
+  canonical: string | null;
+  seoImage: {
+    alt: string | null;
+    asset: SanityImageAssetReference | null;
+    crop: SanityImageCrop | null;
+    hotspot: SanityImageHotspot | null;
+    lqip: string | null;
+  } | null;
 } | null;
 
 // Source: src/sanity/lib/queries.ts
 // Variable: SITEMAP_QUERY
-// Query: {  "grinders": *[_type == "grinder" && language == "en-GB" && status != "discontinued" && seo.noIndex != true]{    "slug": slug.current, _updatedAt  },  "collections": *[_type == "grinderCollection" && language == "en-GB" && seo.noIndex != true]{    "slug": slug.current, _updatedAt  },  "posts": *[_type == "kbPost" && language == "en-GB" && seo.noIndex != true]{    "slug": slug.current, _updatedAt  },  "topics": *[_type == "kbTopic" && language == "en-GB" && seo.noIndex != true]{    "slug": slug.current, _updatedAt  },  "legal": *[_type == "legalPage" && language == "en-GB" && seo.noIndex != true]{    "slug": slug.current, _updatedAt  }}
+// Query: {  "pages": *[    _id in ["homePage", "aboutPage", "contactPage", "knowledgeHubPage", "grindersIndexPage"]    || (_type == "journeyPage" && slug.current in ["home-grinders", "professional"] && language == "en-GB")  ]{    "path": select(      _id == "homePage" => "/",      _id == "aboutPage" => "/about",      _id == "contactPage" => "/contact",      _id == "knowledgeHubPage" => "/knowledge",      _id == "grindersIndexPage" => "/grinders",      _type == "journeyPage" => "/" + slug.current    ),    _updatedAt  },  "grinders": *[_type == "grinder" && language == "en-GB" && status != "discontinued" && seo.noIndex != true]{    "slug": slug.current,    _updatedAt,    "image": coalesce(seo.image.asset->url, heroImage.asset->url)  },  "collections": *[_type == "grinderCollection" && language == "en-GB" && seo.noIndex != true]{    "slug": slug.current, _updatedAt  },  "posts": *[_type == "kbPost" && language == "en-GB" && seo.noIndex != true]{    "slug": slug.current,    _updatedAt,    "image": coalesce(seo.image.asset->url, image.asset->url)  },  "topics": *[_type == "kbTopic" && language == "en-GB" && seo.noIndex != true]{    "slug": slug.current, _updatedAt  },  "legal": *[_type == "legalPage" && language == "en-GB" && seo.noIndex != true]{    "slug": slug.current, _updatedAt  }}
 export type SITEMAP_QUERY_RESULT = {
+  pages: Array<
+    | {
+        path: string | "/" | "/about" | "/contact" | "/grinders" | "/knowledge";
+        _updatedAt: string;
+      }
+    | {
+        path: "/" | "/about" | "/contact" | "/grinders" | "/knowledge";
+        _updatedAt: string;
+      }
+  >;
   grinders: Array<{
     slug: string;
     _updatedAt: string;
+    image: string | null;
   }>;
   collections: Array<{
     slug: string;
@@ -5272,6 +5360,7 @@ export type SITEMAP_QUERY_RESULT = {
   posts: Array<{
     slug: string;
     _updatedAt: string;
+    image: string | null;
   }>;
   topics: Array<{
     slug: string;

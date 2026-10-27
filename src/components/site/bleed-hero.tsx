@@ -16,6 +16,7 @@ export function BleedHero({
   figures,
   crumbs,
   product = false,
+  blur = null,
 }: {
   imageUrl: string;
   alt: string;
@@ -29,6 +30,7 @@ export function BleedHero({
   figures?: Figure[];
   crumbs?: ReactNode;
   product?: boolean;
+  blur?: string | null;
 }) {
   const heroClass = [short ? "hero-bleed hero-bleed-short" : "hero-bleed", product ? "product-hero" : ""]
     .filter(Boolean)
@@ -43,6 +45,8 @@ export function BleedHero({
           fill
           priority={priority}
           sizes="100vw"
+          placeholder={blur ? "blur" : "empty"}
+          blurDataURL={blur || undefined}
           className="object-cover"
           style={{ objectPosition: focus }}
         />

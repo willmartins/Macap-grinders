@@ -70,6 +70,7 @@ const author: Author = {
   slug: "macap",
   role: "Macap editorial",
   bio: "Notes from Macap on choosing, using and looking after a coffee grinder.",
+  sameAs: [],
 };
 
 export const sampleGroups: Group[] = [

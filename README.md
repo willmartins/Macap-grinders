@@ -71,6 +71,8 @@ Vercel Web Analytics and Speed Insights are cookieless and load on the public si
 
 ## Sanity
 
+Agent skills for Sanity, content modelling, SEO and experimentation live in `.agents/skills`, pinned in `skills-lock.json`. The audit is `docs/sanity-seo-aio-audit.md`. Schema changes still need `sanity schema deploy` before Studio in the cloud sees them. Do not use the old project `xb4mqxnu`.
+
 CORS origins to add in the Sanity project: `http://localhost:3000`, the production origin, and `https://*.vercel.app` if editors use preview deployments. Studio is embedded, so the site origin must be allowed.
 
 The dataset can stay private. The read token stays on the server. Presentation uses `/api/draft-mode/enable`. A browser token is not configured.

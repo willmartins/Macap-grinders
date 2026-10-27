@@ -1,4 +1,5 @@
 import {
+  BoltIcon,
   CaseIcon,
   CogIcon,
   ComposeIcon,
@@ -103,9 +104,12 @@ export const structure: StructureResolver = (S) =>
       S.divider(),
       S.documentTypeListItem("legalPage").title("Legal pages").icon(DocumentIcon),
       S.documentTypeListItem("redirect").title("Redirects").icon(LinkIcon),
+      S.documentTypeListItem("experiment").title("Experiments (not live)").icon(BoltIcon),
       S.divider(),
       ...S.documentTypeListItems().filter((item) => {
         const id = item.getId();
-        return id ? !singletonIds.has(id) && id !== "journeyPage" && id !== "distributor" : false;
+        return id
+          ? !singletonIds.has(id) && id !== "journeyPage" && id !== "distributor" && id !== "experiment"
+          : false;
       }),
     ]);
