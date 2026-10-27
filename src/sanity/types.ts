@@ -1165,7 +1165,7 @@ export type SHELL_QUERY_RESULT = {
 
 // Source: src/sanity/lib/queries.ts
 // Variable: HOME_QUERY
-// Query: *[_id == "homePage"][0]{  title,  introduction,  sections[]{    _key,    _type,    eyebrow, heading, text, intro, quote, attribution, role, caption, url, step,    "imageAlt": image.alt,    "imagePosition": imagePosition,    image,    links[]{ _key, label, href },    link{ _key, label, href },    body,    features[]{ _key, title, text },    faqs[]{ _key, question, answer },    grinders[]->{  _id,  name,  "slug": slug.current,  audience,  status,  shortDescription,  "groupName": group->name,  "groupSlug": group->slug.current,  "burrDiameterMm": specs.burrDiameterMm,  "burrType": specs.burrType,  "grindType": specs.grindType,  "imageAlt": heroImage.alt,  heroImage},    "detailGrinders": grinders[]->{      _id, name, "slug": slug.current, audience, status, shortDescription,      "groupName": group->name, "groupSlug": group->slug.current,      "burrDiameterMm": specs.burrDiameterMm, "burrType": specs.burrType, "grindType": specs.grindType,      "imageAlt": heroImage.alt, heroImage,      answerFirst,      specs{  burrType,  burrDiameterMm,  grindType,  motorPowerW,  rpm,  hopperCapacityG,  outputGPerS,  adjustment,  "widthMm": dimensions.widthMm,  "depthMm": dimensions.depthMm,  "heightMm": dimensions.heightMm,  weightKg,  voltage,  display,  features},      extraSpecs[]{ _key, label, value },      faqs[]{ _key, question, answer }    },    "specGrinder": grinder->{      _id, name, "slug": slug.current, audience, status, shortDescription,      "groupName": group->name, "groupSlug": group->slug.current,      "burrDiameterMm": specs.burrDiameterMm, "burrType": specs.burrType, "grindType": specs.grindType,      "imageAlt": heroImage.alt, heroImage,      answerFirst,      specs{  burrType,  burrDiameterMm,  grindType,  motorPowerW,  rpm,  hopperCapacityG,  outputGPerS,  adjustment,  "widthMm": dimensions.widthMm,  "depthMm": dimensions.depthMm,  "heightMm": dimensions.heightMm,  weightKg,  voltage,  display,  features},      extraSpecs[]{ _key, label, value }    },    collections[]->{ name, "slug": slug.current, summary, audience },    posts[]->{  title,  "slug": slug.current,  excerpt,  publishedAt,  "topicTitle": topic->title,  "topicSlug": topic->slug.current}  },  "seoTitle": seo.title,  "seoDescription": seo.description,  "noIndex": seo.noIndex == true,  "canonical": seo.canonical}
+// Query: *[_id == "homePage"][0]{  title,  introduction,  sections[]{    _key,    _type,    eyebrow, heading, text, intro, quote, attribution, role, caption, url, step,    "imageAlt": image.alt,    "imagePosition": imagePosition,    image,    links[]{ _key, label, href },    link{ _key, label, href },    body,    features[]{ _key, title, text },    faqs[]{ _key, question, answer },    grinders[]->{  _id,  name,  "slug": slug.current,  audience,  status,  shortDescription,  "groupName": group->name,  "groupSlug": group->slug.current,  "burrDiameterMm": specs.burrDiameterMm,  "burrType": specs.burrType,  "grindType": specs.grindType,  "motorPowerW": specs.motorPowerW,  "imageAlt": heroImage.alt,  heroImage},    "detailGrinders": grinders[]->{      _id, name, "slug": slug.current, audience, status, shortDescription,      "groupName": group->name, "groupSlug": group->slug.current,      "burrDiameterMm": specs.burrDiameterMm, "burrType": specs.burrType, "grindType": specs.grindType,      "imageAlt": heroImage.alt, heroImage,      answerFirst,      specs{  burrType,  burrDiameterMm,  grindType,  motorPowerW,  rpm,  hopperCapacityG,  outputGPerS,  adjustment,  "widthMm": dimensions.widthMm,  "depthMm": dimensions.depthMm,  "heightMm": dimensions.heightMm,  weightKg,  voltage,  display,  features},      extraSpecs[]{ _key, label, value },      faqs[]{ _key, question, answer }    },    "specGrinder": grinder->{      _id, name, "slug": slug.current, audience, status, shortDescription,      "groupName": group->name, "groupSlug": group->slug.current,      "burrDiameterMm": specs.burrDiameterMm, "burrType": specs.burrType, "grindType": specs.grindType,      "imageAlt": heroImage.alt, heroImage,      answerFirst,      specs{  burrType,  burrDiameterMm,  grindType,  motorPowerW,  rpm,  hopperCapacityG,  outputGPerS,  adjustment,  "widthMm": dimensions.widthMm,  "depthMm": dimensions.depthMm,  "heightMm": dimensions.heightMm,  weightKg,  voltage,  display,  features},      extraSpecs[]{ _key, label, value }    },    collections[]->{ name, "slug": slug.current, summary, audience },    posts[]->{  title,  "slug": slug.current,  excerpt,  publishedAt,  "topicTitle": topic->title,  "topicSlug": topic->slug.current}  },  "seoTitle": seo.title,  "seoDescription": seo.description,  "noIndex": seo.noIndex == true,  "canonical": seo.canonical}
 export type HOME_QUERY_RESULT =
   | {
       title: null;
@@ -1272,6 +1272,7 @@ export type HOME_QUERY_RESULT =
               burrDiameterMm: number | null;
               burrType: "conical" | "flat" | null;
               grindType: "both" | "espresso" | "filter" | null;
+              motorPowerW: number | null;
               imageAlt: string | null;
               heroImage: {
                 asset?: SanityImageAssetReference;
@@ -1489,6 +1490,7 @@ export type HOME_QUERY_RESULT =
               burrDiameterMm: number | null;
               burrType: "conical" | "flat" | null;
               grindType: "both" | "espresso" | "filter" | null;
+              motorPowerW: number | null;
               imageAlt: string | null;
               heroImage: {
                 asset?: SanityImageAssetReference;
@@ -1890,6 +1892,7 @@ export type HOME_QUERY_RESULT =
               burrDiameterMm: number | null;
               burrType: "conical" | "flat" | null;
               grindType: "both" | "espresso" | "filter" | null;
+              motorPowerW: number | null;
               imageAlt: string | null;
               heroImage: {
                 asset?: SanityImageAssetReference;
@@ -2107,6 +2110,7 @@ export type HOME_QUERY_RESULT =
               burrDiameterMm: number | null;
               burrType: "conical" | "flat" | null;
               grindType: "both" | "espresso" | "filter" | null;
+              motorPowerW: number | null;
               imageAlt: string | null;
               heroImage: {
                 asset?: SanityImageAssetReference;
@@ -2443,7 +2447,7 @@ export type HOME_QUERY_RESULT =
 
 // Source: src/sanity/lib/queries.ts
 // Variable: JOURNEY_QUERY
-// Query: *[_type == "journeyPage" && slug.current == $slug && language == "en-GB"][0]{  title,  "slug": slug.current,  audience,  introduction,  sections[]{    _key,    _type,    eyebrow, heading, text, intro, quote, attribution, role, caption, url, step,    "imageAlt": image.alt,    imagePosition,    image,    links[]{ _key, label, href },    link{ _key, label, href },    body,    features[]{ _key, title, text },    faqs[]{ _key, question, answer },    grinders[]->{  _id,  name,  "slug": slug.current,  audience,  status,  shortDescription,  "groupName": group->name,  "groupSlug": group->slug.current,  "burrDiameterMm": specs.burrDiameterMm,  "burrType": specs.burrType,  "grindType": specs.grindType,  "imageAlt": heroImage.alt,  heroImage},    "detailGrinders": grinders[]->{      _id, name, "slug": slug.current, audience, status, shortDescription,      "groupName": group->name, "groupSlug": group->slug.current,      "burrDiameterMm": specs.burrDiameterMm, "burrType": specs.burrType, "grindType": specs.grindType,      "imageAlt": heroImage.alt, heroImage,      answerFirst,      specs{  burrType,  burrDiameterMm,  grindType,  motorPowerW,  rpm,  hopperCapacityG,  outputGPerS,  adjustment,  "widthMm": dimensions.widthMm,  "depthMm": dimensions.depthMm,  "heightMm": dimensions.heightMm,  weightKg,  voltage,  display,  features},      extraSpecs[]{ _key, label, value },      faqs[]{ _key, question, answer }    },    "specGrinder": grinder->{      _id, name, "slug": slug.current, audience, status, shortDescription,      "groupName": group->name, "groupSlug": group->slug.current,      "burrDiameterMm": specs.burrDiameterMm, "burrType": specs.burrType, "grindType": specs.grindType,      "imageAlt": heroImage.alt, heroImage,      answerFirst,      specs{  burrType,  burrDiameterMm,  grindType,  motorPowerW,  rpm,  hopperCapacityG,  outputGPerS,  adjustment,  "widthMm": dimensions.widthMm,  "depthMm": dimensions.depthMm,  "heightMm": dimensions.heightMm,  weightKg,  voltage,  display,  features},      extraSpecs[]{ _key, label, value }    },    collections[]->{ name, "slug": slug.current, summary, audience },    posts[]->{  title,  "slug": slug.current,  excerpt,  publishedAt,  "topicTitle": topic->title,  "topicSlug": topic->slug.current}  },  "seoTitle": seo.title,  "seoDescription": seo.description,  "noIndex": seo.noIndex == true,  "canonical": seo.canonical}
+// Query: *[_type == "journeyPage" && slug.current == $slug && language == "en-GB"][0]{  title,  "slug": slug.current,  audience,  introduction,  sections[]{    _key,    _type,    eyebrow, heading, text, intro, quote, attribution, role, caption, url, step,    "imageAlt": image.alt,    imagePosition,    image,    links[]{ _key, label, href },    link{ _key, label, href },    body,    features[]{ _key, title, text },    faqs[]{ _key, question, answer },    grinders[]->{  _id,  name,  "slug": slug.current,  audience,  status,  shortDescription,  "groupName": group->name,  "groupSlug": group->slug.current,  "burrDiameterMm": specs.burrDiameterMm,  "burrType": specs.burrType,  "grindType": specs.grindType,  "motorPowerW": specs.motorPowerW,  "imageAlt": heroImage.alt,  heroImage},    "detailGrinders": grinders[]->{      _id, name, "slug": slug.current, audience, status, shortDescription,      "groupName": group->name, "groupSlug": group->slug.current,      "burrDiameterMm": specs.burrDiameterMm, "burrType": specs.burrType, "grindType": specs.grindType,      "imageAlt": heroImage.alt, heroImage,      answerFirst,      specs{  burrType,  burrDiameterMm,  grindType,  motorPowerW,  rpm,  hopperCapacityG,  outputGPerS,  adjustment,  "widthMm": dimensions.widthMm,  "depthMm": dimensions.depthMm,  "heightMm": dimensions.heightMm,  weightKg,  voltage,  display,  features},      extraSpecs[]{ _key, label, value },      faqs[]{ _key, question, answer }    },    "specGrinder": grinder->{      _id, name, "slug": slug.current, audience, status, shortDescription,      "groupName": group->name, "groupSlug": group->slug.current,      "burrDiameterMm": specs.burrDiameterMm, "burrType": specs.burrType, "grindType": specs.grindType,      "imageAlt": heroImage.alt, heroImage,      answerFirst,      specs{  burrType,  burrDiameterMm,  grindType,  motorPowerW,  rpm,  hopperCapacityG,  outputGPerS,  adjustment,  "widthMm": dimensions.widthMm,  "depthMm": dimensions.depthMm,  "heightMm": dimensions.heightMm,  weightKg,  voltage,  display,  features},      extraSpecs[]{ _key, label, value }    },    collections[]->{ name, "slug": slug.current, summary, audience },    posts[]->{  title,  "slug": slug.current,  excerpt,  publishedAt,  "topicTitle": topic->title,  "topicSlug": topic->slug.current}  },  "seoTitle": seo.title,  "seoDescription": seo.description,  "noIndex": seo.noIndex == true,  "canonical": seo.canonical}
 export type JOURNEY_QUERY_RESULT = {
   title: string;
   slug: string;
@@ -2515,6 +2519,7 @@ export type JOURNEY_QUERY_RESULT = {
           burrDiameterMm: number | null;
           burrType: "conical" | "flat" | null;
           grindType: "both" | "espresso" | "filter" | null;
+          motorPowerW: number | null;
           imageAlt: string | null;
           heroImage: {
             asset?: SanityImageAssetReference;
@@ -2732,6 +2737,7 @@ export type JOURNEY_QUERY_RESULT = {
           burrDiameterMm: number | null;
           burrType: "conical" | "flat" | null;
           grindType: "both" | "espresso" | "filter" | null;
+          motorPowerW: number | null;
           imageAlt: string | null;
           heroImage: {
             asset?: SanityImageAssetReference;
@@ -3067,7 +3073,7 @@ export type JOURNEY_QUERY_RESULT = {
 
 // Source: src/sanity/lib/queries.ts
 // Variable: SIMPLE_PAGE_QUERY
-// Query: *[_id == $id][0]{  title,  introduction,  sections[]{    _key, _type, eyebrow, heading, text, intro, quote, attribution, role, caption, url, step,    "imageAlt": image.alt, imagePosition, image,    links[]{ _key, label, href }, link{ _key, label, href }, body,    features[]{ _key, title, text },    faqs[]{ _key, question, answer },    grinders[]->{  _id,  name,  "slug": slug.current,  audience,  status,  shortDescription,  "groupName": group->name,  "groupSlug": group->slug.current,  "burrDiameterMm": specs.burrDiameterMm,  "burrType": specs.burrType,  "grindType": specs.grindType,  "imageAlt": heroImage.alt,  heroImage},    "detailGrinders": grinders[]->{      _id, name, "slug": slug.current, audience, status, shortDescription, answerFirst,      "groupName": group->name, "groupSlug": group->slug.current,      "burrDiameterMm": specs.burrDiameterMm, "burrType": specs.burrType, "grindType": specs.grindType,      "imageAlt": heroImage.alt, heroImage,      specs{  burrType,  burrDiameterMm,  grindType,  motorPowerW,  rpm,  hopperCapacityG,  outputGPerS,  adjustment,  "widthMm": dimensions.widthMm,  "depthMm": dimensions.depthMm,  "heightMm": dimensions.heightMm,  weightKg,  voltage,  display,  features},      extraSpecs[]{ _key, label, value },      faqs[]{ _key, question, answer }    },    "specGrinder": grinder->{      _id, name, "slug": slug.current, audience, status, shortDescription, answerFirst,      "groupName": group->name, "groupSlug": group->slug.current,      "burrDiameterMm": specs.burrDiameterMm, "burrType": specs.burrType, "grindType": specs.grindType,      "imageAlt": heroImage.alt, heroImage,      specs{  burrType,  burrDiameterMm,  grindType,  motorPowerW,  rpm,  hopperCapacityG,  outputGPerS,  adjustment,  "widthMm": dimensions.widthMm,  "depthMm": dimensions.depthMm,  "heightMm": dimensions.heightMm,  weightKg,  voltage,  display,  features},      extraSpecs[]{ _key, label, value },      faqs[]{ _key, question, answer }    },    collections[]->{ name, "slug": slug.current, summary, audience },    posts[]->{  title,  "slug": slug.current,  excerpt,  publishedAt,  "topicTitle": topic->title,  "topicSlug": topic->slug.current}  },  "seoTitle": seo.title,  "seoDescription": seo.description,  "noIndex": seo.noIndex == true,  "canonical": seo.canonical}
+// Query: *[_id == $id][0]{  title,  introduction,  sections[]{    _key, _type, eyebrow, heading, text, intro, quote, attribution, role, caption, url, step,    "imageAlt": image.alt, imagePosition, image,    links[]{ _key, label, href }, link{ _key, label, href }, body,    features[]{ _key, title, text },    faqs[]{ _key, question, answer },    grinders[]->{  _id,  name,  "slug": slug.current,  audience,  status,  shortDescription,  "groupName": group->name,  "groupSlug": group->slug.current,  "burrDiameterMm": specs.burrDiameterMm,  "burrType": specs.burrType,  "grindType": specs.grindType,  "motorPowerW": specs.motorPowerW,  "imageAlt": heroImage.alt,  heroImage},    "detailGrinders": grinders[]->{      _id, name, "slug": slug.current, audience, status, shortDescription, answerFirst,      "groupName": group->name, "groupSlug": group->slug.current,      "burrDiameterMm": specs.burrDiameterMm, "burrType": specs.burrType, "grindType": specs.grindType,      "imageAlt": heroImage.alt, heroImage,      specs{  burrType,  burrDiameterMm,  grindType,  motorPowerW,  rpm,  hopperCapacityG,  outputGPerS,  adjustment,  "widthMm": dimensions.widthMm,  "depthMm": dimensions.depthMm,  "heightMm": dimensions.heightMm,  weightKg,  voltage,  display,  features},      extraSpecs[]{ _key, label, value },      faqs[]{ _key, question, answer }    },    "specGrinder": grinder->{      _id, name, "slug": slug.current, audience, status, shortDescription, answerFirst,      "groupName": group->name, "groupSlug": group->slug.current,      "burrDiameterMm": specs.burrDiameterMm, "burrType": specs.burrType, "grindType": specs.grindType,      "imageAlt": heroImage.alt, heroImage,      specs{  burrType,  burrDiameterMm,  grindType,  motorPowerW,  rpm,  hopperCapacityG,  outputGPerS,  adjustment,  "widthMm": dimensions.widthMm,  "depthMm": dimensions.depthMm,  "heightMm": dimensions.heightMm,  weightKg,  voltage,  display,  features},      extraSpecs[]{ _key, label, value },      faqs[]{ _key, question, answer }    },    collections[]->{ name, "slug": slug.current, summary, audience },    posts[]->{  title,  "slug": slug.current,  excerpt,  publishedAt,  "topicTitle": topic->title,  "topicSlug": topic->slug.current}  },  "seoTitle": seo.title,  "seoDescription": seo.description,  "noIndex": seo.noIndex == true,  "canonical": seo.canonical}
 export type SIMPLE_PAGE_QUERY_RESULT =
   | {
       title: null;
@@ -3174,6 +3180,7 @@ export type SIMPLE_PAGE_QUERY_RESULT =
               burrDiameterMm: number | null;
               burrType: "conical" | "flat" | null;
               grindType: "both" | "espresso" | "filter" | null;
+              motorPowerW: number | null;
               imageAlt: string | null;
               heroImage: {
                 asset?: SanityImageAssetReference;
@@ -3391,6 +3398,7 @@ export type SIMPLE_PAGE_QUERY_RESULT =
               burrDiameterMm: number | null;
               burrType: "conical" | "flat" | null;
               grindType: "both" | "espresso" | "filter" | null;
+              motorPowerW: number | null;
               imageAlt: string | null;
               heroImage: {
                 asset?: SanityImageAssetReference;
@@ -3797,6 +3805,7 @@ export type SIMPLE_PAGE_QUERY_RESULT =
               burrDiameterMm: number | null;
               burrType: "conical" | "flat" | null;
               grindType: "both" | "espresso" | "filter" | null;
+              motorPowerW: number | null;
               imageAlt: string | null;
               heroImage: {
                 asset?: SanityImageAssetReference;
@@ -4014,6 +4023,7 @@ export type SIMPLE_PAGE_QUERY_RESULT =
               burrDiameterMm: number | null;
               burrType: "conical" | "flat" | null;
               grindType: "both" | "espresso" | "filter" | null;
+              motorPowerW: number | null;
               imageAlt: string | null;
               heroImage: {
                 asset?: SanityImageAssetReference;
@@ -4355,7 +4365,7 @@ export type SIMPLE_PAGE_QUERY_RESULT =
 
 // Source: src/sanity/lib/queries.ts
 // Variable: GRINDERS_QUERY
-// Query: *[_type == "grinder" && language == "en-GB"]|order(name asc){  _id,  name,  "slug": slug.current,  audience,  status,  shortDescription,  "groupName": group->name,  "groupSlug": group->slug.current,  "burrDiameterMm": specs.burrDiameterMm,  "burrType": specs.burrType,  "grindType": specs.grindType,  "imageAlt": heroImage.alt,  heroImage}
+// Query: *[_type == "grinder" && language == "en-GB"]|order(name asc){  _id,  name,  "slug": slug.current,  audience,  status,  shortDescription,  "groupName": group->name,  "groupSlug": group->slug.current,  "burrDiameterMm": specs.burrDiameterMm,  "burrType": specs.burrType,  "grindType": specs.grindType,  "motorPowerW": specs.motorPowerW,  "imageAlt": heroImage.alt,  heroImage}
 export type GRINDERS_QUERY_RESULT = Array<{
   _id: string;
   name: string;
@@ -4368,6 +4378,7 @@ export type GRINDERS_QUERY_RESULT = Array<{
   burrDiameterMm: number | null;
   burrType: "conical" | "flat" | null;
   grindType: "both" | "espresso" | "filter" | null;
+  motorPowerW: number | null;
   imageAlt: string | null;
   heroImage: {
     asset?: SanityImageAssetReference;
@@ -4381,7 +4392,7 @@ export type GRINDERS_QUERY_RESULT = Array<{
 
 // Source: src/sanity/lib/queries.ts
 // Variable: GRINDER_QUERY
-// Query: *[_type == "grinder" && slug.current == $slug && language == "en-GB"][0]{  _id, name, "slug": slug.current, audience, status, shortDescription, answerFirst,  "groupName": group->name, "groupSlug": group->slug.current,  "burrDiameterMm": specs.burrDiameterMm, "burrType": specs.burrType, "grindType": specs.grindType,  "imageAlt": heroImage.alt, heroImage,  gallery[]{ _key, alt, asset, crop, hotspot },  specs{  burrType,  burrDiameterMm,  grindType,  motorPowerW,  rpm,  hopperCapacityG,  outputGPerS,  adjustment,  "widthMm": dimensions.widthMm,  "depthMm": dimensions.depthMm,  "heightMm": dimensions.heightMm,  weightKg,  voltage,  display,  features},  extraSpecs[]{ _key, label, value },  faqs[]{ _key, question, answer },  relatedGrinders[]->{  _id,  name,  "slug": slug.current,  audience,  status,  shortDescription,  "groupName": group->name,  "groupSlug": group->slug.current,  "burrDiameterMm": specs.burrDiameterMm,  "burrType": specs.burrType,  "grindType": specs.grindType,  "imageAlt": heroImage.alt,  heroImage},  relatedArticles[]->{  title,  "slug": slug.current,  excerpt,  publishedAt,  "topicTitle": topic->title,  "topicSlug": topic->slug.current},  "catalogueUrl": catalogue.asset->url,  "catalogueLabel": catalogue.label,  "seoTitle": seo.title,  "seoDescription": seo.description,  "noIndex": seo.noIndex == true,  "canonical": seo.canonical,  seoImage}
+// Query: *[_type == "grinder" && slug.current == $slug && language == "en-GB"][0]{  _id, name, "slug": slug.current, audience, status, shortDescription, answerFirst,  "groupName": group->name, "groupSlug": group->slug.current,  "burrDiameterMm": specs.burrDiameterMm, "burrType": specs.burrType, "grindType": specs.grindType,  "imageAlt": heroImage.alt, heroImage,  gallery[]{ _key, alt, asset, crop, hotspot },  specs{  burrType,  burrDiameterMm,  grindType,  motorPowerW,  rpm,  hopperCapacityG,  outputGPerS,  adjustment,  "widthMm": dimensions.widthMm,  "depthMm": dimensions.depthMm,  "heightMm": dimensions.heightMm,  weightKg,  voltage,  display,  features},  extraSpecs[]{ _key, label, value },  faqs[]{ _key, question, answer },  relatedGrinders[]->{  _id,  name,  "slug": slug.current,  audience,  status,  shortDescription,  "groupName": group->name,  "groupSlug": group->slug.current,  "burrDiameterMm": specs.burrDiameterMm,  "burrType": specs.burrType,  "grindType": specs.grindType,  "motorPowerW": specs.motorPowerW,  "imageAlt": heroImage.alt,  heroImage},  relatedArticles[]->{  title,  "slug": slug.current,  excerpt,  publishedAt,  "topicTitle": topic->title,  "topicSlug": topic->slug.current},  "catalogueUrl": catalogue.asset->url,  "catalogueLabel": catalogue.label,  "seoTitle": seo.title,  "seoDescription": seo.description,  "noIndex": seo.noIndex == true,  "canonical": seo.canonical,  seoImage}
 export type GRINDER_QUERY_RESULT = {
   _id: string;
   name: string;
@@ -4450,6 +4461,7 @@ export type GRINDER_QUERY_RESULT = {
     burrDiameterMm: number | null;
     burrType: "conical" | "flat" | null;
     grindType: "both" | "espresso" | "filter" | null;
+    motorPowerW: number | null;
     imageAlt: string | null;
     heroImage: {
       asset?: SanityImageAssetReference;
@@ -4479,7 +4491,7 @@ export type GRINDER_QUERY_RESULT = {
 
 // Source: src/sanity/lib/queries.ts
 // Variable: COLLECTION_QUERY
-// Query: *[_type == "grinderCollection" && slug.current == $slug && language == "en-GB"][0]{  _id, name, "slug": slug.current, summary, answerFirst, audience,  grinders[]->{  _id,  name,  "slug": slug.current,  audience,  status,  shortDescription,  "groupName": group->name,  "groupSlug": group->slug.current,  "burrDiameterMm": specs.burrDiameterMm,  "burrType": specs.burrType,  "grindType": specs.grindType,  "imageAlt": heroImage.alt,  heroImage},  sections[]{    _key, _type, eyebrow, heading, text, intro, quote, attribution, role, caption, url, step,    "imageAlt": image.alt, imagePosition, image,    links[]{ _key, label, href }, link{ _key, label, href }, body,    features[]{ _key, title, text },    faqs[]{ _key, question, answer },    grinders[]->{  _id,  name,  "slug": slug.current,  audience,  status,  shortDescription,  "groupName": group->name,  "groupSlug": group->slug.current,  "burrDiameterMm": specs.burrDiameterMm,  "burrType": specs.burrType,  "grindType": specs.grindType,  "imageAlt": heroImage.alt,  heroImage},    "detailGrinders": grinders[]->{      _id, name, "slug": slug.current, audience, status, shortDescription, answerFirst,      "groupName": group->name, "groupSlug": group->slug.current,      "burrDiameterMm": specs.burrDiameterMm, "burrType": specs.burrType, "grindType": specs.grindType,      "imageAlt": heroImage.alt, heroImage,      specs{  burrType,  burrDiameterMm,  grindType,  motorPowerW,  rpm,  hopperCapacityG,  outputGPerS,  adjustment,  "widthMm": dimensions.widthMm,  "depthMm": dimensions.depthMm,  "heightMm": dimensions.heightMm,  weightKg,  voltage,  display,  features},      extraSpecs[]{ _key, label, value },      faqs[]{ _key, question, answer }    },    "specGrinder": grinder->{      _id, name, "slug": slug.current, audience, status, shortDescription, answerFirst,      "groupName": group->name, "groupSlug": group->slug.current,      "burrDiameterMm": specs.burrDiameterMm, "burrType": specs.burrType, "grindType": specs.grindType,      "imageAlt": heroImage.alt, heroImage,      specs{  burrType,  burrDiameterMm,  grindType,  motorPowerW,  rpm,  hopperCapacityG,  outputGPerS,  adjustment,  "widthMm": dimensions.widthMm,  "depthMm": dimensions.depthMm,  "heightMm": dimensions.heightMm,  weightKg,  voltage,  display,  features},      extraSpecs[]{ _key, label, value },      faqs[]{ _key, question, answer }    },    collections[]->{ name, "slug": slug.current, summary, audience },    posts[]->{  title,  "slug": slug.current,  excerpt,  publishedAt,  "topicTitle": topic->title,  "topicSlug": topic->slug.current}  },  "seoTitle": seo.title,  "seoDescription": seo.description,  "noIndex": seo.noIndex == true,  "canonical": seo.canonical}
+// Query: *[_type == "grinderCollection" && slug.current == $slug && language == "en-GB"][0]{  _id, name, "slug": slug.current, summary, answerFirst, audience,  grinders[]->{  _id,  name,  "slug": slug.current,  audience,  status,  shortDescription,  "groupName": group->name,  "groupSlug": group->slug.current,  "burrDiameterMm": specs.burrDiameterMm,  "burrType": specs.burrType,  "grindType": specs.grindType,  "motorPowerW": specs.motorPowerW,  "imageAlt": heroImage.alt,  heroImage},  sections[]{    _key, _type, eyebrow, heading, text, intro, quote, attribution, role, caption, url, step,    "imageAlt": image.alt, imagePosition, image,    links[]{ _key, label, href }, link{ _key, label, href }, body,    features[]{ _key, title, text },    faqs[]{ _key, question, answer },    grinders[]->{  _id,  name,  "slug": slug.current,  audience,  status,  shortDescription,  "groupName": group->name,  "groupSlug": group->slug.current,  "burrDiameterMm": specs.burrDiameterMm,  "burrType": specs.burrType,  "grindType": specs.grindType,  "motorPowerW": specs.motorPowerW,  "imageAlt": heroImage.alt,  heroImage},    "detailGrinders": grinders[]->{      _id, name, "slug": slug.current, audience, status, shortDescription, answerFirst,      "groupName": group->name, "groupSlug": group->slug.current,      "burrDiameterMm": specs.burrDiameterMm, "burrType": specs.burrType, "grindType": specs.grindType,      "imageAlt": heroImage.alt, heroImage,      specs{  burrType,  burrDiameterMm,  grindType,  motorPowerW,  rpm,  hopperCapacityG,  outputGPerS,  adjustment,  "widthMm": dimensions.widthMm,  "depthMm": dimensions.depthMm,  "heightMm": dimensions.heightMm,  weightKg,  voltage,  display,  features},      extraSpecs[]{ _key, label, value },      faqs[]{ _key, question, answer }    },    "specGrinder": grinder->{      _id, name, "slug": slug.current, audience, status, shortDescription, answerFirst,      "groupName": group->name, "groupSlug": group->slug.current,      "burrDiameterMm": specs.burrDiameterMm, "burrType": specs.burrType, "grindType": specs.grindType,      "imageAlt": heroImage.alt, heroImage,      specs{  burrType,  burrDiameterMm,  grindType,  motorPowerW,  rpm,  hopperCapacityG,  outputGPerS,  adjustment,  "widthMm": dimensions.widthMm,  "depthMm": dimensions.depthMm,  "heightMm": dimensions.heightMm,  weightKg,  voltage,  display,  features},      extraSpecs[]{ _key, label, value },      faqs[]{ _key, question, answer }    },    collections[]->{ name, "slug": slug.current, summary, audience },    posts[]->{  title,  "slug": slug.current,  excerpt,  publishedAt,  "topicTitle": topic->title,  "topicSlug": topic->slug.current}  },  "seoTitle": seo.title,  "seoDescription": seo.description,  "noIndex": seo.noIndex == true,  "canonical": seo.canonical}
 export type COLLECTION_QUERY_RESULT = {
   _id: string;
   name: string;
@@ -4499,6 +4511,7 @@ export type COLLECTION_QUERY_RESULT = {
     burrDiameterMm: number | null;
     burrType: "conical" | "flat" | null;
     grindType: "both" | "espresso" | "filter" | null;
+    motorPowerW: number | null;
     imageAlt: string | null;
     heroImage: {
       asset?: SanityImageAssetReference;
@@ -4575,6 +4588,7 @@ export type COLLECTION_QUERY_RESULT = {
           burrDiameterMm: number | null;
           burrType: "conical" | "flat" | null;
           grindType: "both" | "espresso" | "filter" | null;
+          motorPowerW: number | null;
           imageAlt: string | null;
           heroImage: {
             asset?: SanityImageAssetReference;
@@ -4792,6 +4806,7 @@ export type COLLECTION_QUERY_RESULT = {
           burrDiameterMm: number | null;
           burrType: "conical" | "flat" | null;
           grindType: "both" | "espresso" | "filter" | null;
+          motorPowerW: number | null;
           imageAlt: string | null;
           heroImage: {
             asset?: SanityImageAssetReference;
@@ -5144,7 +5159,7 @@ export type POSTS_QUERY_RESULT = Array<{
 
 // Source: src/sanity/lib/queries.ts
 // Variable: POST_QUERY
-// Query: *[_type == "kbPost" && slug.current == $slug && language == "en-GB"][0]{  title, "slug": slug.current, excerpt, publishedAt, updatedAt, answerFirst, body,  "topicTitle": topic->title, "topicSlug": topic->slug.current,  "authorName": author->name, "authorSlug": author->slug.current, "authorRole": author->role, "authorBio": author->bio,  "imageAlt": image.alt, image,  faqs[]{ _key, question, answer },  relatedGrinders[]->{  _id,  name,  "slug": slug.current,  audience,  status,  shortDescription,  "groupName": group->name,  "groupSlug": group->slug.current,  "burrDiameterMm": specs.burrDiameterMm,  "burrType": specs.burrType,  "grindType": specs.grindType,  "imageAlt": heroImage.alt,  heroImage},  "seoTitle": seo.title,  "seoDescription": seo.description,  "noIndex": seo.noIndex == true,  "canonical": seo.canonical}
+// Query: *[_type == "kbPost" && slug.current == $slug && language == "en-GB"][0]{  title, "slug": slug.current, excerpt, publishedAt, updatedAt, answerFirst, body,  "topicTitle": topic->title, "topicSlug": topic->slug.current,  "authorName": author->name, "authorSlug": author->slug.current, "authorRole": author->role, "authorBio": author->bio,  "imageAlt": image.alt, image,  faqs[]{ _key, question, answer },  relatedGrinders[]->{  _id,  name,  "slug": slug.current,  audience,  status,  shortDescription,  "groupName": group->name,  "groupSlug": group->slug.current,  "burrDiameterMm": specs.burrDiameterMm,  "burrType": specs.burrType,  "grindType": specs.grindType,  "motorPowerW": specs.motorPowerW,  "imageAlt": heroImage.alt,  heroImage},  "seoTitle": seo.title,  "seoDescription": seo.description,  "noIndex": seo.noIndex == true,  "canonical": seo.canonical}
 export type POST_QUERY_RESULT = {
   title: string;
   slug: string;
@@ -5185,6 +5200,7 @@ export type POST_QUERY_RESULT = {
     burrDiameterMm: number | null;
     burrType: "conical" | "flat" | null;
     grindType: "both" | "espresso" | "filter" | null;
+    motorPowerW: number | null;
     imageAlt: string | null;
     heroImage: {
       asset?: SanityImageAssetReference;

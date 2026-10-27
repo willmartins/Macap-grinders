@@ -59,6 +59,7 @@ function card(grinder: Grinder): GrinderCard {
     burrDiameterMm: grinder.burrDiameterMm,
     burrType: grinder.burrType,
     grindType: grinder.grindType,
+    motorPowerW: grinder.motorPowerW,
     imageUrl: grinder.imageUrl,
     imageAlt: grinder.imageAlt,
   };
@@ -109,8 +110,16 @@ export const sampleGroups: Group[] = [
   },
 ];
 
-function makeGrinder(input: Omit<Grinder, "relatedGrinders" | "relatedArticles" | "gallery">): Grinder {
-  return { ...input, gallery: [], relatedGrinders: [], relatedArticles: [] };
+function makeGrinder(
+  input: Omit<Grinder, "relatedGrinders" | "relatedArticles" | "gallery" | "motorPowerW">,
+): Grinder {
+  return {
+    ...input,
+    motorPowerW: input.specs.motorPowerW,
+    gallery: [],
+    relatedGrinders: [],
+    relatedArticles: [],
+  };
 }
 
 const supra68 = makeGrinder({

@@ -196,6 +196,9 @@ export function mapCard(value: unknown): GrinderCard | null {
     burrDiameterMm: numberValue(value.burrDiameterMm),
     burrType: burr(value.burrType),
     grindType: grind(value.grindType),
+    motorPowerW:
+      numberValue(value.motorPowerW) ??
+      (isRecord(value.specs) ? numberValue(value.specs.motorPowerW) : null),
     imageUrl: image.url,
     imageAlt: image.alt || display(value.imageAlt),
   };

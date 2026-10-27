@@ -77,6 +77,7 @@ export type GrinderCard = {
   burrDiameterMm: number | null;
   burrType: BurrType | null;
   grindType: GrindType | null;
+  motorPowerW: number | null;
   imageUrl: string | null;
   imageAlt: string;
 };

@@ -12,6 +12,7 @@ const card = `{
   "burrDiameterMm": specs.burrDiameterMm,
   "burrType": specs.burrType,
   "grindType": specs.grindType,
+  "motorPowerW": specs.motorPowerW,
   "imageAlt": heroImage.alt,
   heroImage
 }`;

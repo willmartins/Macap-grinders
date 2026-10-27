@@ -1,48 +1,79 @@
-import { PhotoSlot } from "@/components/site/photo-slot";
-import { TextLink } from "@/components/site/text-link";
-import type { GrinderCard } from "@/lib/content/types";
+import Image from "next/image";
+
+import { ArrowText, TextLink } from "@/components/site/text-link";
+import type { GrindType, GrinderCard } from "@/lib/content/types";
 import { formatNumber } from "@/lib/format";
 
 const statusLabel = { new: "New", current: "", discontinued: "Discontinued" };
+const grindLabel: Record<GrindType, string> = {
+  espresso: "Espresso",
+  filter: "Filter",
+  both: "Espresso and filter",
+};
+
+function keySpecs(grinder: GrinderCard): { label: string; value: string }[] {
+  const specs: { label: string; value: string }[] = [];
+  if (grinder.burrDiameterMm != null) {
+    specs.push({ label: "Burrs", value: `${formatNumber(grinder.burrDiameterMm)} mm` });
+  }
+  if (grinder.motorPowerW != null) {
+    specs.push({ label: "Motor", value: `${formatNumber(grinder.motorPowerW)} W` });
+  } else if (grinder.grindType) {
+    specs.push({ label: "Grind", value: grindLabel[grinder.grindType] });
+  }
+  return specs.slice(0, 2);
+}
 
 export function GrinderCardView({ grinder }: { grinder: GrinderCard }) {
   const status = statusLabel[grinder.status];
+  const line = grinder.groupName || "Macap";
+  const specs = keySpecs(grinder);
+  const accessible = [grinder.name, line, status, ...specs.map((spec) => `${spec.label} ${spec.value}`), "View model"]
+    .filter(Boolean)
+    .join(", ");
+
   return (
-    <article className="flex h-full flex-col">
-      <a href={`/grinders/${grinder.slug}`} className="block">
-        <PhotoSlot
-          imageUrl={grinder.imageUrl}
-          alt={grinder.imageAlt || grinder.name}
-          ratio="1/1"
-          sizes="(min-width: 1024px) 28rem, (min-width: 640px) 50vw, 100vw"
-        />
-      </a>
-      <div className="flex flex-1 flex-col gap-3 border-t border-line pt-4">
+    <a className="machine-card" href={`/grinders/${grinder.slug}`} aria-label={accessible}>
+      <div className="machine-plinth">
+        {grinder.imageUrl ? (
+          <div className="machine-shot">
+            <Image
+              src={grinder.imageUrl}
+              alt=""
+              fill
+              sizes="(min-width: 1024px) 24rem, (min-width: 640px) 46vw, 84vw"
+              className="object-contain"
+            />
+          </div>
+        ) : (
+          <p className="label text-muted">Photography to follow</p>
+        )}
+      </div>
+      <div className="machine-foot">
         <p className="label text-muted">
-          {grinder.groupName || "Macap"}
+          {line}
           {status ? `  /  ${status}` : ""}
         </p>
-        <div className="flex items-end justify-between gap-4">
-          <h3 className="text-2xl font-medium tracking-tight">
-            <TextLink href={`/grinders/${grinder.slug}`} className="underline-offset-4 hover:underline">
-              {grinder.name}
-            </TextLink>
-          </h3>
-          {grinder.burrDiameterMm != null ? (
-            <p className="stat text-[2rem]">
-              {formatNumber(grinder.burrDiameterMm)}
-              <span className="label ml-1 text-muted">mm</span>
-            </p>
-          ) : null}
+        <h3 className="machine-name">{grinder.name}</h3>
+        <div className="machine-end">
+          {specs.length ? (
+            <dl className="machine-specs">
+              {specs.map((spec) => (
+                <div key={spec.label}>
+                  <dt>{spec.label}</dt>
+                  <dd>{spec.value}</dd>
+                </div>
+              ))}
+            </dl>
+          ) : (
+            <p className="machine-specs" />
+          )}
+          <p className="machine-go">
+            <ArrowText>View model</ArrowText>
+          </p>
         </div>
-        <p className="text-sm leading-relaxed text-muted">{grinder.shortDescription}</p>
-        <p className="mt-auto pt-4">
-          <TextLink href={`/compare?m=${grinder.slug}`} className="label underline-offset-4 hover:underline">
-            Compare
-          </TextLink>
-        </p>
       </div>
-    </article>
+    </a>
   );
 }
 
@@ -69,7 +100,7 @@ export function GrinderGrid({ grinders, snap = false }: { grinders: GrinderCard[
     );
   }
   return (
-    <ul className="grid gap-x-6 gap-y-14 sm:grid-cols-2 lg:grid-cols-3">
+    <ul className="machine-grid">
       {grinders.map((grinder) => (
         <li key={grinder.id}>
           <GrinderCardView grinder={grinder} />

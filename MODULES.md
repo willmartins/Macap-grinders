@@ -7,7 +7,7 @@ Page sections share one name in code and in Sanity Studio. They are rendered by 
 | heroBanner | src/components/modules/page-builder.tsx | heroBanner | Home, journeys, about, knowledge | Full-bleed photograph, large headline, short line, up to two links. |
 | richText | src/components/modules/page-builder.tsx | richText | About, legal, any page | Heading plus portable text. |
 | imageText | src/components/modules/page-builder.tsx | imageText | Home, about | Full-width photograph beside a short explanation and an optional link. |
-| grinderGrid | src/components/modules/page-builder.tsx | grinderGrid | Journeys, collections | A grid of grinders chosen in Studio. |
+| grinderGrid | src/components/modules/page-builder.tsx | grinderGrid | Journeys, collections, groups, related models | A grid of grinder cards. Each card is one link. |
 | collectionCarousel | src/components/modules/page-builder.tsx | collectionCarousel | Journeys | A sideways list of collections. |
 | featureList | src/components/modules/page-builder.tsx | featureList | Journeys | Three or more short points, such as brew, burr and noise. |
 | specTable | src/components/modules/page-builder.tsx | specTable | Any page section | A real HTML specification table for one grinder. |
@@ -27,9 +27,19 @@ Standalone text links use `TextLink` from `src/components/site/text-link.tsx`. T
 
 The arrow is the button glyph (`→`), hidden from assistive technology, kept on the same line as the last word, and nudged slightly on hover and keyboard focus. Reduced motion turns the nudge off. An `http` or `https` address uses a north-east arrow (`↗`) and opens in a new tab. `mailto` and `tel` keep the horizontal arrow.
 
-Use it for card titles, view-all and read-more lines, collection, group and model links, knowledge links, compare links, footer links, legal links, contact links, and links inside portable text.
+Use it for view-all and read-more lines, collection links, knowledge links, compare links, footer links, legal links, contact links, and links inside portable text.
 
-Leave these without `TextLink`: buttons (`.btn` already has an arrow), the header navigation, the logo, breadcrumbs, the skip link, and any link that wraps a whole image card which already shows an arrow. A link that only wraps a photograph does not take an arrow.
+Leave these without `TextLink`: buttons (`.btn` already has an arrow), the header navigation, the logo, breadcrumbs, the skip link, and a grinder card. The card is one link and already shows `View model` with the arrow.
+
+## Grinder cards
+
+`GrinderCardView` in `src/components/grinders/grinder-card.tsx` is the shared card for the catalogue, collections, groups, home and professional journeys, related models, and knowledge articles.
+
+The whole card is one link to the model. There is no second link inside it. The photograph sits on a neutral plinth inside a hairline frame. The footer shows the line, the model name, up to two figures from that grinder (burr size, then motor power, or grind type when the motor is not set), and `View model` with the button arrow. That arrow is the card's arrow.
+
+On a pointer that can hover, the border and surface change, the photograph scales slightly inside the plinth, and the arrow nudges. Keyboard focus uses the same arrow nudge and the yellow focus ring. Reduced motion turns the scale and the nudge off. On a touch screen the frame, plinth, and `View model` are enough to show that the card is clickable.
+
+Cards stretch to one height in a grid and in a mobile swipe row. A missing figure is left out. Nothing is invented.
 
 ## Grinder questions
 
