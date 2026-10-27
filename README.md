@@ -162,7 +162,7 @@ If both `NEXT_PUBLIC_GA_MEASUREMENT_ID` and `NEXT_PUBLIC_GTM_ID` are set, use on
 - Type: Schibsted Grotesk for headlines, on `--font-macap`. IBM Plex Mono for labels and indexes, on `--font-macap-mono`. Replace the Grotesk token when the Graphik or Neue Haas Grotesk licence is available. The wordmark is drawn in the logo SVG, not set in type.
 - Model pages lead with a full-bleed photograph and the burr, motor, output and hopper figures, then engineering, burrs, motor, control and the specification table.
 - Motion is a short rise and a slight image scale, only when the browser allows scroll-driven animation and the visitor has not asked for reduced motion.
-- Logos in `public/brand/` were traced from the V12 page render. They are not the master artwork. Use only these files until V12 delivers the masters. Do not use the old logo.
+- Logos in `public/brand/` are the official V12 artwork. `macap-logo.svg` is the wordmark and mark. `macap-icon.svg` is the mark alone. White files use the same geometry with `fill="#fff"`. Inline the artwork with `currentColor`. Favicons, the Apple touch icon and the manifest icons are the mark on a black tile.
 
 ## Security
 
@@ -177,5 +177,5 @@ If both `NEXT_PUBLIC_GA_MEASUREMENT_ID` and `NEXT_PUBLIC_GTM_ID` are set, use on
 - Sanity read token, write token and revalidate secret. CORS origins.
 - Resend domain and the contact inbox. Macap adds distributors in Sanity when the list is ready. There is no mailing-list provider yet. A sign-up is flagged on the Macap enquiry email.
 - GA4 measurement id, if Macap still wants Google Analytics.
-- Master logo files and the licensed typefaces from V12.
+- Licensed typefaces from V12.
 - Real catalogue copy, photography and legal text. The pages marked placeholder are not ready to publish.

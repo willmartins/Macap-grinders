@@ -1,5 +1,8 @@
 "use client";
 
+import Link from "next/link";
+
+import { MacapLogo } from "@/components/brand/marks";
 import { TextLink } from "@/components/site/text-link";
 import type { Shell } from "@/lib/content/types";
 import { telHref } from "@/lib/security";
@@ -8,27 +11,32 @@ import { publicOffice } from "@/lib/site";
 export function Footer({ shell }: { shell: Shell }) {
   const { settings, collections, legal } = shell;
   return (
-    <footer className="mt-auto border-t border-line">
+    <footer className="site-footer mt-auto border-t border-line">
       <div className="frame section-hero grid gap-[var(--gap-block)] md:grid-cols-4">
-        <address className="not-italic text-sm leading-6">
-          <p className="label">
-            <span className="trim" />
-            Est. 1930
-          </p>
-          <p className="mt-4 font-medium">{settings.siteName}</p>
-          <p className="mt-3 whitespace-pre-line">{settings.address}</p>
-          <p className="mt-3">
-            <TextLink href={telHref(settings.phone)} className="hover:shadow-[inset_0_-1px_0_var(--accent)]">
-              {settings.phone}
-            </TextLink>
-          </p>
-          <p>Fax {publicOffice.fax}</p>
-          <p>
-            <TextLink href={`mailto:${settings.email}`} className="hover:shadow-[inset_0_-1px_0_var(--accent)]">
-              {settings.email}
-            </TextLink>
-          </p>
-        </address>
+        <div>
+          <Link href="/" className="brand-lockup" aria-label="Macap">
+            <MacapLogo className="brand-logo" />
+          </Link>
+          <address className="not-italic text-sm leading-6">
+            <p className="label">
+              <span className="trim" />
+              Est. 1930
+            </p>
+            <p className="mt-4 font-medium">{settings.siteName}</p>
+            <p className="mt-3 whitespace-pre-line">{settings.address}</p>
+            <p className="mt-3">
+              <TextLink href={telHref(settings.phone)} className="hover:shadow-[inset_0_-1px_0_var(--accent)]">
+                {settings.phone}
+              </TextLink>
+            </p>
+            <p>Fax {publicOffice.fax}</p>
+            <p>
+              <TextLink href={`mailto:${settings.email}`} className="hover:shadow-[inset_0_-1px_0_var(--accent)]">
+                {settings.email}
+              </TextLink>
+            </p>
+          </address>
+        </div>
         <nav aria-label="Footer">
           <p className="label">On this site</p>
           <ul className="mt-3 grid gap-2 text-sm">

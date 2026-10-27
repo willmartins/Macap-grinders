@@ -6,6 +6,7 @@ import { structureTool } from "sanity/structure";
 import { dataset, projectId } from "./src/sanity/env";
 import { schemaTypes, singletonTypes } from "./src/sanity/schemaTypes";
 import { structure } from "./src/sanity/structure";
+import { StudioIcon, StudioLogo } from "./src/sanity/studio-brand";
 
 const singletons = new Set<string>(singletonTypes);
 
@@ -14,6 +15,8 @@ const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000";
 export default defineConfig({
   name: "macap",
   title: "Macap",
+  icon: StudioIcon,
+  logo: StudioLogo,
   projectId,
   dataset,
   basePath: "/studio",

@@ -9,6 +9,7 @@
     "lint": "eslint .",
     "typecheck": "tsc --noEmit",
     "check:overlap": "node scripts/check-overlap.mjs",
+    "brand:icons": "node scripts/brand-icons.mjs",
     "typegen": "sanity schema extract --enforce-required-fields --force && sanity typegen generate",
     "import:content": "node --experimental-strip-types scripts/import/index.ts"
   },

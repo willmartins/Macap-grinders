@@ -149,12 +149,27 @@ section[id],
   vertical-align: middle;
 }
 
-[data-theme="professional"] .logo-on-light {
-  display: none;
+.brand-lockup {
+  display: inline-flex;
+  align-items: center;
+  color: inherit;
+  line-height: 0;
 }
 
-[data-theme="professional"] .logo-on-dark {
-  display: inline-flex;
+.brand-logo {
+  display: block;
+  height: 1.625rem;
+  width: auto;
+}
+
+/* One logo-height of clear space to the right, and even space above and below inside the 4.5rem bar. */
+.site-header .brand-lockup {
+  padding-block: 1.4375rem;
+  padding-inline-end: 1.625rem;
+}
+
+.site-footer .brand-lockup {
+  margin-bottom: 1.625rem;
 }
 
 .btn {
@@ -707,31 +722,11 @@ html:has(.sample-banner) {
   transition: background 0.2s linear, border-color 0.2s linear, color 0.2s linear;
 }
 
-.logo-on-dark {
-  display: none;
-}
-
-[data-theme="professional"] .site-header .logo-on-light {
-  display: none;
-}
-
-[data-theme="professional"] .site-header .logo-on-dark {
-  display: inline-flex;
-}
-
 /* A full-bleed hero is the only template with a transparent header. Scrolling, or opening the menu, makes it solid. */
 body:has(main [data-hero]) .site-header[data-solid="false"]:not(:has(details[open])) {
   border-bottom-color: transparent;
   background: transparent;
   color: #ffffff;
-}
-
-body:has(main [data-hero]) .site-header[data-solid="false"]:not(:has(details[open])) .logo-on-light {
-  display: none;
-}
-
-body:has(main [data-hero]) .site-header[data-solid="false"]:not(:has(details[open])) .logo-on-dark {
-  display: inline-flex;
 }
 
 body:has(main [data-hero]) .site-header[data-solid="false"]:not(:has(details[open])) a {

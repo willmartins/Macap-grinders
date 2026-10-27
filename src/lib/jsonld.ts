@@ -2,6 +2,15 @@ import type { ArticleCard, FaqItem, Grinder, Shell } from "@/lib/content/types";
 import { specEntries } from "@/lib/specs";
 import { getSiteUrl, siteName } from "@/lib/site";
 
+function organisationLogo(): JsonLdNode {
+  return {
+    "@type": "ImageObject",
+    url: new URL("/brand/macap-logo.svg", getSiteUrl()).toString(),
+    width: 670.53,
+    height: 114.32,
+  };
+}
+
 export type JsonLdNode = Record<string, unknown>;
 
 function defined(value: Record<string, unknown>): JsonLdNode {
@@ -24,6 +33,7 @@ export function organisationJsonLd(shell: Shell): JsonLdNode {
       ? { "@type": "PostalAddress", streetAddress: org.address }
       : undefined,
     sameAs: org.sameAs.length ? org.sameAs : undefined,
+    logo: organisationLogo(),
   });
 }
 
@@ -34,7 +44,7 @@ export function websiteJsonLd(): JsonLdNode {
     name: siteName,
     url: getSiteUrl(),
     inLanguage: "en-GB",
-    publisher: { "@type": "Organization", name: siteName },
+    publisher: { "@type": "Organization", name: siteName, logo: organisationLogo() },
   };
 }
 
@@ -100,7 +110,7 @@ export function articleJsonLd(input: {
     dateModified: input.updatedAt || input.publishedAt,
     inLanguage: "en-GB",
     author: { "@type": "Organization", name: input.authorName || siteName },
-    publisher: { "@type": "Organization", name: siteName },
+    publisher: { "@type": "Organization", name: siteName, logo: organisationLogo() },
     image: input.imageUrl || undefined,
     mainEntityOfPage: new URL(`/knowledge/${input.slug}`, getSiteUrl()).toString(),
   });

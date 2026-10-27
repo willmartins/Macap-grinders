@@ -1,10 +1,10 @@
 "use client";
 
-import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useLayoutEffect, useState } from "react";
 
+import { MacapLogo } from "@/components/brand/marks";
 import type { LinkItem } from "@/lib/content/types";
 
 export function Header({ links }: { links: LinkItem[] }) {
@@ -50,13 +50,8 @@ export function Header({ links }: { links: LinkItem[] }) {
   return (
     <header className="site-header" data-solid={solid ? "true" : "false"}>
       <div className="frame flex min-h-[4.5rem] items-center justify-between gap-6">
-        <Link href="/" className="shrink-0" aria-label="Macap, home">
-          <span className="logo-on-light inline-flex">
-            <Image src="/brand/macap-logo-black.svg" alt="" width={156} height={25} priority />
-          </span>
-          <span className="logo-on-dark">
-            <Image src="/brand/macap-logo-white.svg" alt="" width={156} height={25} priority />
-          </span>
+        <Link href="/" className="brand-lockup shrink-0" aria-label="Macap">
+          <MacapLogo className="brand-logo" />
         </Link>
         <details className="site-menu md:hidden">
           <summary className="label cursor-pointer border border-current px-3 py-2">Menu</summary>
