@@ -42,15 +42,11 @@ async function GrindersContent({
   return (
     <article>
       {page.sample || catalogue.sample ? <SampleBanner /> : null}
-      <header className="frame pt-16 md:pt-24">
-        <p className="label">
-          <span className="trim" />
-          Catalogue
-        </p>
-        <h1 className="display mt-5">{page.title}</h1>
+      <header className="frame section-tight">
+        <h1 className="display">{page.title}</h1>
         <p className="mt-6 max-w-2xl text-lg leading-relaxed">{page.introduction}</p>
       </header>
-      <div className="frame py-12">
+      <div className="frame section-tight">
         <FilterBar groups={catalogue.groups} burrs={burrs} filters={filters} />
         <p className="mt-8 text-sm text-muted">
           {grinders.length} {grinders.length === 1 ? "grinder" : "grinders"}

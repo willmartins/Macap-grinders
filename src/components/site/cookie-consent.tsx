@@ -94,7 +94,7 @@ export function CookieConsent() {
         </>
       ) : null}
       {open && choice != null ? (
-        <div className="fixed inset-0 z-50 grid place-items-end bg-black/50 p-4 md:place-items-center" role="presentation">
+        <div className="cookie-dialog fixed inset-0 grid place-items-end bg-black/50 p-4 md:place-items-center" role="presentation">
           <div
             role="dialog"
             aria-modal="true"

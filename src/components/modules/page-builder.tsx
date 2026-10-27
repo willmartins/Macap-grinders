@@ -58,7 +58,7 @@ function SectionIntro({ heading, intro }: { heading?: string; intro?: string }) 
   if (!heading && !intro) return null;
   const step = heading === "Find your grinder" ? "03" : null;
   return (
-    <div className="mb-12 max-w-3xl">
+    <div className="stack-block max-w-3xl">
       {step ? (
         <p className="label mb-5">
           <span className="trim" />
@@ -116,7 +116,7 @@ export function PageBuilder({ sections, journey }: { sections: Section[]; journe
             );
           }
           return (
-            <header key={section._key} id={section._key} className="frame pb-6 pt-8 md:pt-12">
+            <header key={section._key} id={section._key} className="frame section-tight">
               {section.eyebrow ? (
                 <p className="label">
                   <span className="trim" />
@@ -179,7 +179,7 @@ export function PageBuilder({ sections, journey }: { sections: Section[]; journe
         }
 
         return (
-          <section key={section._key} id={section._key} className="frame reveal py-20 md:py-28">
+          <section key={section._key} id={section._key} className="frame reveal section">
             {section._type === "richText" ? (
               <>
                 {section.heading ? <h2 className="display-sm">{section.heading}</h2> : null}
@@ -198,7 +198,7 @@ export function PageBuilder({ sections, journey }: { sections: Section[]; journe
               <>
                 <SectionIntro heading={section.heading} intro={section.intro} />
                 <ul className="grid gap-px bg-line sm:grid-cols-2 lg:grid-cols-3">
-                  {section.collections.map((collection, index) => {
+                  {section.collections.map((collection) => {
                     const shot = collectionShot(collection.slug);
                     return (
                       <li key={collection.slug} className="bg-bg">
@@ -208,8 +208,7 @@ export function PageBuilder({ sections, journey }: { sections: Section[]; journe
                           </a>
                         ) : null}
                         <div className="p-5">
-                          <p className="label text-muted">{String(index + 1).padStart(2, "0")}</p>
-                          <h3 className="mt-3 text-2xl font-medium tracking-tight">
+                          <h3 className="text-2xl font-medium tracking-tight">
                             <TextLink
                               href={`/collections/${collection.slug}`}
                               className="underline-offset-4 hover:underline"
@@ -230,13 +229,9 @@ export function PageBuilder({ sections, journey }: { sections: Section[]; journe
               <>
                 <SectionIntro heading={section.heading} intro={section.intro} />
                 <ol className="module-grid">
-                  {section.features.map((feature, index) => (
+                  {section.features.map((feature) => (
                     <li key={feature._key}>
-                      <p className="label">
-                        <span className="trim" />
-                        {String(index + 1).padStart(2, "0")}
-                      </p>
-                      <h3 className="mt-4 text-2xl font-medium tracking-tight">{feature.title}</h3>
+                      <h3 className="text-2xl font-medium tracking-tight">{feature.title}</h3>
                       <p className="mt-3 max-w-sm text-sm leading-relaxed text-muted">{feature.text}</p>
                     </li>
                   ))}
@@ -256,10 +251,9 @@ export function PageBuilder({ sections, journey }: { sections: Section[]; journe
                 <SectionIntro heading={section.heading} intro={section.intro} />
                 <CompareTable grinders={section.grinders} />
                 <ul className="mt-10 grid max-w-3xl gap-4 text-sm leading-relaxed">
-                  {explainDifferences(section.grinders).map((note, index) => (
-                    <li key={note} className="grid grid-cols-[3rem_1fr] gap-3 border-t border-line pt-4">
-                      <span className="label text-muted">{String(index + 1).padStart(2, "0")}</span>
-                      <span>{note}</span>
+                  {explainDifferences(section.grinders).map((note) => (
+                    <li key={note} className="border-t border-line pt-4">
+                      {note}
                     </li>
                   ))}
                 </ul>
@@ -298,10 +292,9 @@ export function PageBuilder({ sections, journey }: { sections: Section[]; journe
               <>
                 <SectionIntro heading={section.heading} intro={section.intro} />
                 <ul className="divide-y divide-line border-y border-line">
-                  {section.posts.map((post, index) => (
-                    <li key={post.slug} className="grid gap-2 py-6 md:grid-cols-12">
-                      <p className="label text-muted md:col-span-2">{String(index + 1).padStart(2, "0")}</p>
-                      <div className="md:col-span-10">
+                  {section.posts.map((post) => (
+                    <li key={post.slug} className="grid gap-2 py-6">
+                      <div>
                         <h3 className="text-2xl font-medium tracking-tight">
                           <TextLink href={`/knowledge/${post.slug}`} className="underline-offset-4 hover:underline">
                             {post.title}

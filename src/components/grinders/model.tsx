@@ -23,14 +23,11 @@ function positionLine(text: string): string {
   return (match ? match[0] : text).trim();
 }
 
-function Index({ n, title }: { n: string; title: string }) {
+function SectionTitle({ kicker, title }: { kicker?: string; title: string }) {
   return (
     <div>
-      <p className="label">
-        <span className="trim" />
-        {n}
-      </p>
-      <h2 className="mt-4 text-3xl font-medium tracking-tight md:text-6xl">{title}</h2>
+      {kicker ? <p className="label text-muted">{kicker}</p> : null}
+      <h2 className={`${kicker ? "mt-4" : ""} text-3xl font-medium tracking-tight md:text-5xl`}>{title}</h2>
     </div>
   );
 }
@@ -106,7 +103,7 @@ export function GrinderModel({
               { name: grinder.name, path: `/grinders/${grinder.slug}` },
             ]}
           />
-          <header className="frame pb-8 pt-8 md:pt-12">
+          <header className="frame section-tight">
             <p className="label">
               <span className="trim" />
               {eyebrow}
@@ -132,7 +129,10 @@ export function GrinderModel({
               }
             />
             <div className="editorial-copy">
-              <Index n="01  /  Burrs" title={specs.burrType ? burrLabel[specs.burrType] || specs.burrType : "Burrs"} />
+              <SectionTitle
+                kicker={specs.burrType ? "Burrs" : undefined}
+                title={specs.burrType ? burrLabel[specs.burrType] || specs.burrType : "Burrs"}
+              />
               {specs.burrDiameterMm != null ? (
                 <p className="stat mt-6 md:mt-8">
                   {formatNumber(specs.burrDiameterMm)}
@@ -150,7 +150,7 @@ export function GrinderModel({
             <article className="feature-card editorial is-flip">
               <CardImage image={motorShot || burrShot} />
               <div className="editorial-copy">
-                <Index n="02  /  Motor" title="Drive" />
+                <SectionTitle title="Drive" />
                 <div className="mt-6 grid gap-8 sm:grid-cols-2 md:mt-10">
                   {specs.motorPowerW != null ? (
                     <p>
@@ -179,24 +179,23 @@ export function GrinderModel({
           {specs.adjustment || specs.display || specs.features.length ? (
             <article className="feature-card is-control">
               <div className="editorial-copy">
-                <Index n="03  /  Control" title="How it is set" />
+                <SectionTitle title="How it is set" />
                 <ul className="module-grid mt-8">
                   {specs.adjustment ? (
                     <li>
-                      <p className="label text-muted">01  Adjustment</p>
+                      <p className="label text-muted">Adjustment</p>
                       <p className="mt-4 text-2xl font-medium tracking-tight">{specs.adjustment}</p>
                     </li>
                   ) : null}
                   {specs.display ? (
                     <li>
-                      <p className="label text-muted">02  Display</p>
+                      <p className="label text-muted">Display</p>
                       <p className="mt-4 text-2xl font-medium tracking-tight">{specs.display}</p>
                     </li>
                   ) : null}
-                  {specs.features.map((feature, index) => (
+                  {specs.features.map((feature) => (
                     <li key={feature}>
-                      <p className="label text-muted">{String(index + 3).padStart(2, "0")}  Feature</p>
-                      <p className="mt-4 text-2xl font-medium tracking-tight">{feature}</p>
+                      <p className="text-2xl font-medium tracking-tight">{feature}</p>
                     </li>
                   ))}
                 </ul>
@@ -225,8 +224,8 @@ export function GrinderModel({
         </ul>
       ) : null}
 
-      <section className="frame reveal py-20 md:py-32">
-        <Index n="04  /  Data" title="Specifications" />
+      <section className="frame reveal section">
+        <SectionTitle title="Specifications" />
         <div className="mt-12 max-w-4xl">
           <SpecTable grinder={grinder} />
         </div>
@@ -240,7 +239,7 @@ export function GrinderModel({
       </section>
 
       {faqs.length ? (
-        <section className="frame reveal pb-20" aria-labelledby="faq-heading">
+        <section className="frame reveal section" aria-labelledby="faq-heading">
           <h2 id="faq-heading" className="text-4xl font-medium tracking-tight">
             Questions
           </h2>
@@ -256,7 +255,7 @@ export function GrinderModel({
       ) : null}
 
       {siblings.length ? (
-        <section className="reveal pb-20" aria-labelledby="siblings-heading">
+        <section className="reveal section" aria-labelledby="siblings-heading">
           <div className="frame">
             <h2 id="siblings-heading" className="text-4xl font-medium tracking-tight">
               {sameLine && grinder.groupName ? `The ${grinder.groupName} line` : "Related models"}
@@ -269,13 +268,12 @@ export function GrinderModel({
       ) : null}
 
       {grinder.relatedArticles.length ? (
-        <section className="frame reveal pb-24">
-          <h2 className="mb-8 text-4xl font-medium tracking-tight">Related reading</h2>
+        <section className="frame reveal section">
+          <h2 className="stack-block text-4xl font-medium tracking-tight">Related reading</h2>
           <ul className="divide-y divide-line border-y border-line">
-            {grinder.relatedArticles.map((post, index) => (
+            {grinder.relatedArticles.map((post) => (
               <li key={post.slug} className="grid gap-2 py-6 md:grid-cols-12">
-                <p className="label text-muted md:col-span-2">{String(index + 1).padStart(2, "0")}</p>
-                <div className="md:col-span-7">
+                <div className="md:col-span-9">
                   <h3 className="text-2xl font-medium tracking-tight">
                     <TextLink href={`/knowledge/${post.slug}`} className="underline-offset-4 hover:underline">
                       {post.title}

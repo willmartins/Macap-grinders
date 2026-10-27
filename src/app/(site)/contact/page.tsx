@@ -24,7 +24,7 @@ async function ContactContent() {
     <>
       <ContentPage page={page} />
       {hasForm ? null : (
-        <div className="frame pb-20">
+        <div className="frame section-tight">
           <ContactForm />
         </div>
       )}

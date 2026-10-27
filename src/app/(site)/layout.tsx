@@ -30,7 +30,7 @@ export default async function SiteLayout({ children }: { children: React.ReactNo
     <ThemeFrame>
       <a
         href="#content"
-        className="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-50 focus:bg-bg focus:px-3 focus:py-2"
+        className="skip-link sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:bg-bg focus:px-3 focus:py-2"
       >
         Skip to content
       </a>

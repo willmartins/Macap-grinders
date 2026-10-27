@@ -46,7 +46,7 @@ async function PostContent({ params }: { params: Promise<{ slug: string }> }) {
         <BleedHero
           imageUrl={post.imageUrl}
           alt={post.imageAlt}
-          eyebrow={post.topicTitle || "Knowledge"}
+          eyebrow={post.topicTitle || undefined}
           title={post.title}
           short
           crumbs={
@@ -73,12 +73,12 @@ async function PostContent({ params }: { params: Promise<{ slug: string }> }) {
               { name: post.title, path: `/knowledge/${post.slug}` },
             ]}
           />
-          <header className="frame pt-10 md:pt-16">
+          <header className="frame section-tight">
             <h1 className="display-sm max-w-4xl">{post.title}</h1>
           </header>
         </>
       )}
-      <div className="frame py-12">
+      <div className="frame section-tight">
         <p className="max-w-2xl text-xl leading-snug">{post.answerFirst}</p>
         <p className="label mt-6 text-muted">
           {post.author.name}
@@ -86,11 +86,11 @@ async function PostContent({ params }: { params: Promise<{ slug: string }> }) {
           {post.updatedAt ? ` / Updated ${formatDate(post.updatedAt)}` : ""}
         </p>
       </div>
-      <div className="frame pb-10">
+      <div className="frame section-tight">
         <RichTextBody value={post.body} />
       </div>
       {post.faqs.length ? (
-        <section className="frame pb-12">
+        <section className="frame section-tight">
           <h2 className="text-3xl font-medium tracking-tight">Questions</h2>
           <div className="mt-6 max-w-3xl divide-y divide-line border-y border-line">
             {post.faqs.map((faq) => (
@@ -103,7 +103,7 @@ async function PostContent({ params }: { params: Promise<{ slug: string }> }) {
         </section>
       ) : null}
       {post.relatedGrinders.length ? (
-        <section className="frame pb-24">
+        <section className="frame section">
           <h2 className="mb-6 text-3xl font-medium tracking-tight">Grinders in this note</h2>
           <GrinderGrid grinders={post.relatedGrinders} />
         </section>

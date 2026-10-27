@@ -49,7 +49,6 @@ async function CollectionContent({ params }: { params: Promise<{ slug: string }>
         <BleedHero
           imageUrl={shot.src}
           alt={shot.alt}
-          eyebrow="Collection"
           title={collection.name}
           text={collection.answerFirst || collection.summary}
           short
@@ -60,13 +59,13 @@ async function CollectionContent({ params }: { params: Promise<{ slug: string }>
       ) : (
         <>
           <Breadcrumbs items={[{ name: collection.name, path: `/collections/${collection.slug}` }]} />
-          <header className="frame py-16 md:py-24">
+          <header className="frame section-tight">
             <h1 className="display">{collection.name}</h1>
             <p className="mt-6 max-w-2xl text-lg leading-relaxed">{collection.answerFirst || collection.summary}</p>
           </header>
         </>
       )}
-      <div className="frame py-16">
+      <div className="frame section">
         <GrinderGrid grinders={collection.grinders} />
       </div>
       <PageBuilder sections={collection.sections} />

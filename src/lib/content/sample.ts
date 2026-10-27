@@ -887,7 +887,7 @@ export const sampleHomeJourney: Journey = {
     {
       _key: "h-hero",
       _type: "heroBanner",
-      eyebrow: "Home",
+      eyebrow: "",
       heading: "For the counter.",
       text: "Choose by how you brew, then by how much you grind.",
       imageUrl: pageShots.homeJourney.src,
@@ -977,7 +977,7 @@ export const sampleProfessionalJourney: Journey = {
     {
       _key: "p-hero",
       _type: "heroBanner",
-      eyebrow: "Professional",
+      eyebrow: "",
       heading: "For service.",
       text: "Choose by output, then by how you dose, then by the counter.",
       imageUrl: pageShots.professionalJourney.src,
@@ -1067,7 +1067,7 @@ export const sampleHomePage: PageDocument = {
     {
       _key: "home-hero",
       _type: "heroBanner",
-      eyebrow: "Coffee grinders, made in Italy",
+      eyebrow: "",
       heading: "For the home. For the bar.",
       text: "Macap has made coffee grinders in the Venice area since 1930.",
       imageUrl: pageShots.homeHero.src,
@@ -1119,7 +1119,7 @@ export const sampleAbout: PageDocument = {
     {
       _key: "about-hero",
       _type: "heroBanner",
-      eyebrow: "About",
+      eyebrow: "",
       heading: "Macap",
       text: "Coffee grinders, made in the Venice area since 1930.",
       imageUrl: pageShots.aboutHero.src,
@@ -1186,7 +1186,7 @@ export const sampleKnowledgeHub: PageDocument = {
     {
       _key: "kb-hero",
       _type: "heroBanner",
-      eyebrow: "Knowledge",
+      eyebrow: "",
       heading: "Knowledge",
       text: "Sample articles, so the hub can be reviewed before Macap publishes the final pieces.",
       links: [],

@@ -78,6 +78,9 @@ importers:
       eslint-config-next:
         specifier: 16.4.3
         version: 16.4.3(@typescript-eslint/parser@8.72.1(eslint@9.39.5(jiti@2.7.0))(typescript@5.9.3))(eslint@9.39.5(jiti@2.7.0))(typescript@5.9.3)
+      playwright-core:
+        specifier: ^1.64.1
+        version: 1.64.1
       tailwindcss:
         specifier: ^4
         version: 4.3.3
@@ -5090,6 +5093,11 @@ packages:
 
   player.style@0.3.5:
     resolution: {integrity: sha512-hknPiLjNtJP5zM0vCVXsl3Pef+uQnecYg8X/1vjd/Y3TdAgs/zxhck02SFTxRSckaObKemP5tUT8wTH7ByUmnw==}
+
+  playwright-core@1.64.1:
+    resolution: {integrity: sha512-BC4s8y6SEVA6Q1rSxZTto8hI1KUI3xXlHGZgvGqP4IqPdI/a6FX9H29IDNz7vKo9l21b6LfYosScPL6M3xxyDQ==}
+    engines: {node: '>=20'}
+    hasBin: true
 
   pluralize-esm@9.0.5:
     resolution: {integrity: sha512-Kb2dcpMsIutFw2hYrN0EhsAXOUJTd6FVMIxvNAkZCMQLVt9NGZqQczvGpYDxNWCZeCWLHUPxQIBudWzt1h7VVA==}
@@ -11802,6 +11810,8 @@ snapshots:
       media-chrome: 4.19.4(react@19.3.0)
     transitivePeerDependencies:
       - react
+
+  playwright-core@1.64.1: {}
 
   pluralize-esm@9.0.5: {}
 

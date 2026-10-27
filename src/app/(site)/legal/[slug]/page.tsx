@@ -42,7 +42,7 @@ async function LegalContent({ params }: { params: Promise<{ slug: string }> }) {
   return (
     <article>
       <Breadcrumbs items={[{ name: page.title, path: `/legal/${page.slug}` }]} />
-      <header className="frame py-16 md:py-24">
+      <header className="frame section-tight">
         <h1 className="display">{page.title}</h1>
         {page.effectiveDate ? (
           <p className="label mt-6 text-muted">Effective {formatDate(page.effectiveDate)}</p>
@@ -51,7 +51,7 @@ async function LegalContent({ params }: { params: Promise<{ slug: string }> }) {
           <p className="mt-6 max-w-2xl border border-line p-4 text-sm">Placeholder for legal review.</p>
         ) : null}
       </header>
-      <div className="frame pb-20">
+      <div className="frame section-tight">
         <RichTextBody value={page.body} />
       </div>
     </article>

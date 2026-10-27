@@ -3,46 +3,64 @@
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useEffect, useLayoutEffect, useState } from "react";
 
 import type { LinkItem } from "@/lib/content/types";
-
-function routeHasHero(pathname: string): boolean {
-  if (pathname === "/" || pathname === "/home-grinders" || pathname === "/professional") return true;
-  if (pathname === "/about" || pathname === "/knowledge") return true;
-  if (pathname.startsWith("/grinders/") && pathname !== "/grinders") return true;
-  if (pathname.startsWith("/collections/")) return true;
-  if (pathname.startsWith("/knowledge/") && !pathname.startsWith("/knowledge/topic")) return true;
-  return false;
-}
 
 export function Header({ links }: { links: LinkItem[] }) {
   const pathname = usePathname() || "/";
   const [solid, setSolid] = useState(false);
-  const canOverlay = routeHasHero(pathname);
-  const overlay = canOverlay && !solid;
+
+  useLayoutEffect(() => {
+    const apply = () => {
+      const header = document.querySelector<HTMLElement>(".site-header");
+      const banner = document.querySelector<HTMLElement>(".sample-banner");
+      const bannerH = banner ? Math.ceil(banner.getBoundingClientRect().height) : 0;
+      const headerH = header ? Math.ceil(header.getBoundingClientRect().height) : 0;
+      const chrome = `${bannerH + headerH}px`;
+      for (const node of [document.documentElement, document.body]) {
+        node.style.setProperty("--banner-h", `${bannerH}px`);
+        node.style.setProperty("--chrome-h", chrome);
+        if (headerH > 0) node.style.setProperty("--header-h", `${headerH}px`);
+      }
+    };
+    apply();
+    const resize = new ResizeObserver(apply);
+    const header = document.querySelector(".site-header");
+    const banner = document.querySelector(".sample-banner");
+    if (header) resize.observe(header);
+    if (banner) resize.observe(banner);
+    const mutations = new MutationObserver(apply);
+    mutations.observe(document.body, { childList: true, subtree: true });
+    window.addEventListener("resize", apply);
+    return () => {
+      resize.disconnect();
+      mutations.disconnect();
+      window.removeEventListener("resize", apply);
+    };
+  }, [pathname]);
 
   useEffect(() => {
-    const onScroll = () => setSolid(window.scrollY > 8);
+    const onScroll = () => setSolid(window.scrollY > 12);
     onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
   }, [pathname]);
 
   return (
-    <header className="site-header" data-overlay={overlay ? "true" : "false"}>
-      <div className="frame flex h-full items-center justify-between gap-6">
+    <header className="site-header" data-solid={solid ? "true" : "false"}>
+      <div className="frame flex min-h-[4.5rem] items-center justify-between gap-6">
         <Link href="/" className="shrink-0" aria-label="Macap, home">
           <span className="logo-on-light inline-flex">
             <Image src="/brand/macap-logo-black.svg" alt="" width={156} height={25} priority />
           </span>
-          <span className="logo-on-dark hidden">
+          <span className="logo-on-dark">
             <Image src="/brand/macap-logo-white.svg" alt="" width={156} height={25} priority />
           </span>
         </Link>
-        <details className="relative md:hidden">
+        <details className="site-menu md:hidden">
           <summary className="label cursor-pointer border border-current px-3 py-2">Menu</summary>
-          <nav aria-label="Primary" className="menu-panel absolute right-0 z-20 mt-2 min-w-56 border border-line bg-bg p-4 text-fg">
+          <nav aria-label="Primary" className="menu-panel">
             <ul className="grid gap-1">
               {links.map((link) => (
                 <li key={link._key}>

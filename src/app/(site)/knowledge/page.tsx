@@ -34,13 +34,12 @@ async function KnowledgeContent() {
     <>
       {posts.sample && !page.sample ? <SampleBanner /> : null}
       <ContentPage page={page} />
-      <section className="frame pb-8">
+      <section className="frame section">
         <h2 className="display-sm">Topics</h2>
         <ol className="module-grid mt-8">
-          {topics.topics.map((topic, index) => (
+          {topics.topics.map((topic) => (
             <li key={topic.slug}>
-              <p className="label text-muted">{String(index + 1).padStart(2, "0")}</p>
-              <h3 className="mt-3 text-2xl font-medium tracking-tight">
+              <h3 className="text-2xl font-medium tracking-tight">
                 <TextLink href={`/knowledge/topic/${topic.slug}`} className="underline-offset-4 hover:underline">
                   {topic.title}
                 </TextLink>
@@ -50,20 +49,19 @@ async function KnowledgeContent() {
           ))}
         </ol>
       </section>
-      <section className="frame pb-24">
+      <section className="frame section">
         <h2 className="display-sm">Articles</h2>
         <ul className="mt-8 divide-y divide-line border-y border-line">
-          {posts.posts.map((post, index) => {
+          {posts.posts.map((post) => {
             const shot = articleShot(post.slug);
             return (
               <li key={post.slug} className="grid items-center gap-6 py-6 md:grid-cols-12">
-                <p className="label text-muted md:col-span-1">{String(index + 1).padStart(2, "0")}</p>
                 {shot ? (
                   <a href={`/knowledge/${post.slug}`} className="md:col-span-3">
                     <PhotoSlot imageUrl={shot.src} alt={shot.alt} ratio="16/9" sizes="(min-width: 768px) 18rem, 100vw" />
                   </a>
                 ) : null}
-                <div className={shot ? "md:col-span-6" : "md:col-span-9"}>
+                <div className={shot ? "md:col-span-7" : "md:col-span-10"}>
                   <h3 className="text-2xl font-medium tracking-tight">
                     <TextLink href={`/knowledge/${post.slug}`} className="underline-offset-4 hover:underline">
                       {post.title}

@@ -44,17 +44,13 @@ async function CompareContent({
     <article>
       <TrackCompare models={grinders.map((grinder) => grinder.slug).join(",")} />
       {sample ? <SampleBanner /> : null}
-      <header className="frame pt-16 md:pt-24">
-        <p className="label">
-          <span className="trim" />
-          Two or three models
-        </p>
-        <h1 className="display mt-5">Compare</h1>
+      <header className="frame section-tight">
+        <h1 className="display">Compare</h1>
         <p className="mt-6 max-w-2xl text-lg">
           Choose two or three grinders. The table is the specification. The notes describe the difference.
         </p>
       </header>
-      <div className="frame py-12">
+      <div className="frame section-tight">
         {grinders.length >= 2 ? (
           <>
             <ul className="mb-12 grid gap-8 md:grid-cols-3">
