@@ -1,0 +1,129 @@
+/*
+  Image containment. Next/Image with fill is position:absolute.
+  If the frame is not positioned and sized, the photograph attaches to a
+  larger ancestor and paints over the next section. These frames are the
+  contract: positioned, a real height, and overflow clipped.
+*/
+
+:root,
+[data-theme="home"],
+[data-theme="neutral"],
+[data-theme="professional"] {
+  --bg: #ffffff;
+  --fg: #000000;
+  --muted: #5c5c5c;
+  --line: #e4e4e4;
+  --surface: #ffffff;
+  --plinth: #e4e4e4;
+}
+
+.site-header {
+  background: #ffffff;
+  color: #000000;
+  border-bottom: 1px solid #e4e4e4;
+}
+
+.site-header a {
+  color: #000000;
+}
+
+.choice-frame,
+.stage-media,
+.editorial-media,
+.gallery-strip > li,
+.machine-plinth {
+  position: relative;
+  display: block;
+  overflow: hidden;
+  background: #e4e4e4;
+}
+
+.choice-frame,
+.stage-media,
+.editorial-media {
+  width: 100%;
+  height: 16rem;
+}
+
+.gallery-strip > li {
+  height: 16rem;
+  min-height: 16rem;
+}
+
+.machine-plinth {
+  aspect-ratio: 1;
+  height: auto;
+}
+
+.machine-shot {
+  position: absolute;
+  inset: 9%;
+  overflow: hidden;
+}
+
+.model-hero {
+  position: relative;
+  isolation: isolate;
+  display: grid;
+  align-items: end;
+  overflow: hidden;
+  min-height: calc(100svh - var(--chrome-h));
+  background: #111111;
+  color: #ffffff;
+}
+
+.model-hero-media,
+.model-hero-scrim {
+  position: absolute;
+  inset: 0;
+}
+
+.model-hero-media {
+  z-index: 0;
+  overflow: hidden;
+}
+
+.model-hero-scrim {
+  z-index: 1;
+  pointer-events: none;
+}
+
+.model-hero-copy {
+  position: relative;
+  z-index: 2;
+}
+
+.model-hero-figures {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 0.75rem 1.25rem;
+}
+
+.model-hero-figures .stat {
+  white-space: nowrap;
+}
+
+.choice-frame img,
+.stage-media img,
+.editorial-media img,
+.gallery-strip > li img,
+.model-hero-media img,
+.machine-shot img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  max-width: none;
+}
+
+.choice-frame img,
+.stage-media img,
+.editorial-media img,
+.gallery-strip > li img,
+.model-hero-media img {
+  object-fit: cover;
+}
+
+.machine-shot img {
+  object-fit: contain;
+}

@@ -8,6 +8,7 @@ import { defaultDescription, getSiteUrl, siteName } from "@/lib/site";
 import { SanityLive } from "@/sanity/lib/live";
 
 import "./globals.css";
+import "./contain.css";
 
 const macap = Schibsted_Grotesk({
   subsets: ["latin"],
