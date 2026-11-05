@@ -7,3 +7,5 @@ A grinder page is the exception. The first screen is a full-bleed photograph. Th
 Everywhere else, a photograph is a framed block in the content width. It does not run under the header, and it does not spill into the next section. Home is a white introduction and two choices, each with its own complete photograph. Journeys, collections and knowledge use the same calm opening: type, then one framed image.
 
 The header is solid white on every template, including over the product photograph.
+
+Every photograph that uses a filled image sits in a frame with a real height, `position: relative`, and `overflow: hidden`. Those rules also live in `src/app/contain.css`, loaded after the main sheet, so a fill image cannot attach to the page and cover the next section. The build fails if that CSS is missing from the production bundle.
