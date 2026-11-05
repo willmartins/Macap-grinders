@@ -1,5 +1,7 @@
 # Macap visual direction
 
+The white redesign in `docs/white-redesign.md` supersedes the black professional ground and the full-bleed heroes described below. Those notes stay as the record of the earlier pass.
+
 This is a vibe pass, not the formal design system. The subject is a coffee grinder: a machined object, made in the Venice area since 1930, sold to a person choosing a machine for a counter or a bar. The primary references are Polestar, Teenage Engineering, On Running and New Balance. The feel stays a high-performance machine brand. The object fills the frame. Colour is a stripe, not a wash. Type is a plate on the chassis, not a poster. Nothing below is a copy of those four.
 
 Will's rules win where they meet this note: arrows on buttons and on text links, yellow as trim only, framed grinder cards, mobile swipe rows, questions, the first screen of a model page, the enquiry flow, and the official logo.

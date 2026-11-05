@@ -91,7 +91,7 @@ export function PageBuilder({ sections, journey }: { sections: Section[]; journe
               label={link.label}
               journey={journey}
               step={link.label}
-              className={index === 0 ? "btn btn-on-photo" : "btn btn-secondary btn-on-photo"}
+              className={index === 0 ? "btn" : "btn btn-secondary"}
             />
           ));
           if (section.imageUrl) {

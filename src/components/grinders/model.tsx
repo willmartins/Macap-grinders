@@ -101,7 +101,7 @@ export function GrinderModel({
               imageAlt: grinder.imageAlt,
             }}
           />
-          <a href={relatedCompare} className="btn btn-secondary btn-on-photo">
+          <a href={relatedCompare} className="btn btn-secondary">
             Compare
           </a>
         </BleedHero>

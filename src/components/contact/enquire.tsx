@@ -7,7 +7,7 @@ import type { EnquiryGrinder } from "@/lib/enquiry";
 
 export function Enquire({
   grinder,
-  variant = "photo",
+  variant = "plain",
 }: {
   grinder: EnquiryGrinder;
   variant?: "photo" | "plain";
