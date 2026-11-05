@@ -1291,7 +1291,9 @@ export const sampleShell: Shell = {
     navigation: [
       { _key: "nav-home", label: "Home", href: "/home-grinders" },
       { _key: "nav-pro", label: "Professional", href: "/professional" },
-      { _key: "nav-contact", label: "Contact us", href: "/contact" },
+      { _key: "nav-about", label: "About", href: "/about" },
+      { _key: "nav-knowledge", label: "Knowledge hub", href: "/knowledge" },
+      { _key: "nav-contact", label: "Contact", href: "/contact" },
     ],
     footerNavigation: [
       { _key: "f-grinders", label: "All grinders", href: "/grinders" },

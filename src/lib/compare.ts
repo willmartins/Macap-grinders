@@ -29,7 +29,7 @@ export function explainDifferences(grinders: Grinder[]): string[] {
       (grinder) =>
         `${grinder.name}: ${burrLabel[grinder.specs.burrType || ""] || grinder.specs.burrType} burrs`,
     );
-    notes.push(`${parts.join(". ")}. Both grind coffee. The particle shape differs.`);
+    notes.push(`Burrs: ${parts.join(". ")}. Both grind coffee. The particle shape differs.`);
   }
 
   const sized = grinders.filter((grinder) => grinder.specs.burrDiameterMm != null);
@@ -45,7 +45,7 @@ export function explainDifferences(grinders: Grinder[]): string[] {
       smallest.specs.burrDiameterMm !== largest.specs.burrDiameterMm
     ) {
       notes.push(
-        `${largest.name} has ${largest.specs.burrDiameterMm} mm burrs. ${smallest.name} has ${smallest.specs.burrDiameterMm} mm burrs. A larger burr is for busier service.`,
+        `Burrs: ${largest.name} has ${largest.specs.burrDiameterMm} mm burrs. ${smallest.name} has ${smallest.specs.burrDiameterMm} mm burrs. A larger burr is for busier service.`,
       );
     }
   }
@@ -57,7 +57,7 @@ export function explainDifferences(grinders: Grinder[]): string[] {
     )[0];
     if (fastest?.specs.outputGPerS) {
       notes.push(
-        `${fastest.name} is the quickest here, at ${fastest.specs.outputGPerS} g/s. That figure is speed, not flavour.`,
+        `Output: ${fastest.name} is the quickest here, at ${fastest.specs.outputGPerS} g/s. That figure is speed, not flavour.`,
       );
     }
   }
@@ -75,7 +75,7 @@ export function explainDifferences(grinders: Grinder[]): string[] {
       smallest.specs.hopperCapacityG !== largest.specs.hopperCapacityG
     ) {
       notes.push(
-        `${largest.name} holds ${largest.specs.hopperCapacityG} g. ${smallest.name} holds ${smallest.specs.hopperCapacityG} g.`,
+        `Capacity: ${largest.name} holds ${largest.specs.hopperCapacityG} g. ${smallest.name} holds ${smallest.specs.hopperCapacityG} g.`,
       );
     }
   }
@@ -86,21 +86,21 @@ export function explainDifferences(grinders: Grinder[]): string[] {
       .filter((grinder) => grinder.audience === "business")
       .map((grinder) => grinder.name);
     notes.push(
-      `${home.join(" and ") || "The home model"} is for a home counter. ${business.join(" and ") || "The professional model"} is for the bar.`,
+      `Application: ${home.join(" and ") || "The home model"} is for a home counter. ${business.join(" and ") || "The professional model"} is for the bar.`,
     );
   }
 
   const adjustments = grinders.filter((grinder) => grinder.specs.adjustment);
   if (new Set(adjustments.map((grinder) => grinder.specs.adjustment)).size > 1) {
     const lines = adjustments.map((grinder) => `${grinder.name}: ${grinder.specs.adjustment}`);
-    notes.push(`Adjustment differs. ${lines.join(". ")}.`);
+    notes.push(`Adjustment: ${lines.join(". ")}.`);
   }
 
   const displays = grinders.filter((grinder) => grinder.specs.display);
   const without = grinders.filter((grinder) => !grinder.specs.display);
   if (displays.length && without.length) {
     notes.push(
-      `${displays.map((grinder) => grinder.name).join(" and ")} ${displays.length > 1 ? "have" : "has"} a display. ${without.map((grinder) => grinder.name).join(" and ")} ${without.length > 1 ? "do" : "does"} not.`,
+      `Display: ${displays.map((grinder) => grinder.name).join(" and ")} ${displays.length > 1 ? "have" : "has"} a display. ${without.map((grinder) => grinder.name).join(" and ")} ${without.length > 1 ? "do" : "does"} not.`,
     );
   }
 
@@ -111,7 +111,7 @@ export function explainDifferences(grinders: Grinder[]): string[] {
     const heaviest = sorted[sorted.length - 1];
     if (lightest && heaviest && lightest.specs.weightKg !== heaviest.specs.weightKg) {
       notes.push(
-        `${lightest.name} weighs ${lightest.specs.weightKg} kg. ${heaviest.name} weighs ${heaviest.specs.weightKg} kg.`,
+        `Weight: ${lightest.name} weighs ${lightest.specs.weightKg} kg. ${heaviest.name} weighs ${heaviest.specs.weightKg} kg.`,
       );
     }
   }
@@ -122,7 +122,7 @@ export function explainDifferences(grinders: Grinder[]): string[] {
       (grinder) =>
         `${grinder.name}: ${grindLabel[grinder.specs.grindType || ""] || grinder.specs.grindType}`,
     );
-    notes.push(`${lines.join(". ")}. Match the grinder to the brew.`);
+    notes.push(`Grind: ${lines.join(". ")}. Match the grinder to the brew.`);
   }
 
   for (const grinder of grinders) {
@@ -133,12 +133,12 @@ export function explainDifferences(grinders: Grinder[]): string[] {
         ),
     );
     if (unique.length) {
-      notes.push(`${grinder.name} alone lists ${unique.join(", ")}.`);
+      notes.push(`Features: ${grinder.name} alone lists ${unique.join(", ")}.`);
     }
   }
 
   if (!notes.length) {
-    notes.push(`${names(grinders)} are close on these figures. Read each grinder page before you choose.`);
+    notes.push(`Overview: ${names(grinders)} are close on these figures. Read each grinder page before you choose.`);
   }
 
   return notes;

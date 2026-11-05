@@ -7,7 +7,8 @@ import { useEffect, useLayoutEffect, useState } from "react";
 import { MacapLogo } from "@/components/brand/marks";
 import type { LinkItem } from "@/lib/content/types";
 
-export function Header({ links }: { links: LinkItem[] }) {
+export function Header({ links: _links }: { links?: LinkItem[] }) {
+  void _links;
   const pathname = usePathname() || "/";
   const [solid, setSolid] = useState(false);
 
@@ -54,37 +55,109 @@ export function Header({ links }: { links: LinkItem[] }) {
           <MacapLogo className="brand-logo" />
         </Link>
         <details className="site-menu md:hidden">
-          <summary className="nav-link cursor-pointer border border-current px-3 py-2">Menu</summary>
-          <nav aria-label="Primary" className="menu-panel">
+          <summary className="nav-link cursor-pointer border border-current px-3 py-2 text-sm font-semibold">
+            Menu
+          </summary>
+          <nav aria-label="Primary" className="menu-panel p-5">
             <ul className="grid gap-1">
-              {links.map((link) => (
-                <li key={link._key}>
-                  <a
-                    href={link.href}
-                    aria-current={pathname === link.href ? "page" : undefined}
-                    className="nav-link block py-3 aria-[current=page]:shadow-[inset_0_-1px_0_var(--accent)]"
-                  >
-                    {link.label}
-                  </a>
-                </li>
-              ))}
+              <li>
+                <Link
+                  href="/home-grinders"
+                  aria-current={pathname === "/home-grinders" || pathname.startsWith("/home-grinders/") ? "page" : undefined}
+                  className="nav-link block py-2.5 aria-[current=page]:shadow-[inset_0_-2px_0_var(--accent)]"
+                >
+                  Home
+                </Link>
+              </li>
+              <li>
+                <Link
+                  href="/professional"
+                  aria-current={pathname === "/professional" || pathname.startsWith("/professional/") ? "page" : undefined}
+                  className="nav-link block py-2.5 aria-[current=page]:shadow-[inset_0_-2px_0_var(--accent)]"
+                >
+                  Professional
+                </Link>
+              </li>
+              <li className="my-2 border-t border-line" aria-hidden="true" />
+              <li>
+                <Link
+                  href="/about"
+                  aria-current={pathname === "/about" || pathname.startsWith("/about/") ? "page" : undefined}
+                  className="nav-link block py-2.5 aria-[current=page]:shadow-[inset_0_-2px_0_var(--accent)]"
+                >
+                  About
+                </Link>
+              </li>
+              <li>
+                <Link
+                  href="/knowledge"
+                  aria-current={pathname.startsWith("/knowledge") ? "page" : undefined}
+                  className="nav-link block py-2.5 aria-[current=page]:shadow-[inset_0_-2px_0_var(--accent)]"
+                >
+                  Knowledge hub
+                </Link>
+              </li>
+              <li className="mt-4 pt-2">
+                <Link href="/contact" className="btn w-full justify-center">
+                  Contact
+                </Link>
+              </li>
             </ul>
           </nav>
         </details>
-        <nav aria-label="Primary" className="hidden md:block">
-          <ul className="flex items-center gap-10">
-            {links.map((link) => (
-              <li key={link._key}>
-                <a
-                  href={link.href}
-                  aria-current={pathname === link.href ? "page" : undefined}
-                  className="nav-link aria-[current=page]:shadow-[inset_0_-1px_0_var(--accent)] hover:shadow-[inset_0_-1px_0_var(--accent)]"
-                >
-                  {link.label}
-                </a>
-              </li>
-            ))}
-          </ul>
+
+        {/* Desktop Primary Nav Bar */}
+        <nav aria-label="Primary" className="hidden md:flex items-center gap-6 lg:gap-8">
+          {/* Primary Journey links */}
+          <div className="flex items-center gap-6 lg:gap-8">
+            <Link
+              href="/home-grinders"
+              aria-current={pathname === "/home-grinders" || pathname.startsWith("/home-grinders/") ? "page" : undefined}
+              className="nav-link aria-[current=page]:shadow-[inset_0_-2px_0_var(--accent)] hover:shadow-[inset_0_-2px_0_var(--accent)]"
+            >
+              Home
+            </Link>
+            <Link
+              href="/professional"
+              aria-current={pathname === "/professional" || pathname.startsWith("/professional/") ? "page" : undefined}
+              className="nav-link aria-[current=page]:shadow-[inset_0_-2px_0_var(--accent)] hover:shadow-[inset_0_-2px_0_var(--accent)]"
+            >
+              Professional
+            </Link>
+          </div>
+
+          {/* Vertical Divider Pipe */}
+          <span className="text-muted/40 font-light select-none text-base" aria-hidden="true">
+            |
+          </span>
+
+          {/* Secondary links */}
+          <div className="flex items-center gap-6 lg:gap-8">
+            <Link
+              href="/about"
+              aria-current={pathname === "/about" || pathname.startsWith("/about/") ? "page" : undefined}
+              className="nav-link aria-[current=page]:shadow-[inset_0_-2px_0_var(--accent)] hover:shadow-[inset_0_-2px_0_var(--accent)]"
+            >
+              About
+            </Link>
+            <Link
+              href="/knowledge"
+              aria-current={pathname.startsWith("/knowledge") ? "page" : undefined}
+              className="nav-link aria-[current=page]:shadow-[inset_0_-2px_0_var(--accent)] hover:shadow-[inset_0_-2px_0_var(--accent)]"
+            >
+              Knowledge hub
+            </Link>
+          </div>
+
+          {/* Primary CTA button */}
+          <div className="ml-1">
+            <Link
+              href="/contact"
+              className="btn text-sm py-2 px-5 min-h-[2.5rem]"
+            >
+              Contact
+            </Link>
+          </div>
         </nav>
       </div>
     </header>

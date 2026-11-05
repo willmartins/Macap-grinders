@@ -48,7 +48,13 @@ async function GrinderContent({ params }: { params: Promise<{ slug: string }> })
       <ThemeLock theme={grinder.audience === "business" ? "professional" : "home"} />
       <TrackGrinderView slug={grinder.slug} name={grinder.name} audience={grinder.audience} />
       {sample ? <SampleBanner /> : null}
-      <GrinderModel grinder={grinder} sample={sample} faqs={faqs} siblings={related} />
+      <GrinderModel
+        grinder={grinder}
+        sample={sample}
+        faqs={faqs}
+        siblings={related}
+        allGrinders={catalogue.grinders}
+      />
       <JsonLd data={jsonLdGraph([productJsonLd(grinder), faqJsonLd(faqs)])} />
     </article>
   );

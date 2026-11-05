@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
-import { Schibsted_Grotesk } from "next/font/google";
+import localFont from "next/font/local";
+import { Space_Mono } from "next/font/google";
 import { Suspense } from "react";
 import Script from "next/script";
 
@@ -10,9 +11,37 @@ import { SanityLive } from "@/sanity/lib/live";
 import "./globals.css";
 import "./contain.css";
 
-const macap = Schibsted_Grotesk({
-  subsets: ["latin"],
+const macap = localFont({
+  src: [
+    {
+      path: "../../public/fonts/elza/Elza-Light.woff2",
+      weight: "300",
+      style: "normal",
+    },
+    {
+      path: "../../public/fonts/elza/Elza-Regular.woff2",
+      weight: "400",
+      style: "normal",
+    },
+    {
+      path: "../../public/fonts/elza/Elza-Semibold.woff2",
+      weight: "600",
+      style: "normal",
+    },
+    {
+      path: "../../public/fonts/elza/Elza-Bold.woff2",
+      weight: "700",
+      style: "normal",
+    },
+  ],
   variable: "--font-macap",
+  display: "swap",
+});
+
+const spaceMono = Space_Mono({
+  weight: ["400"],
+  subsets: ["latin"],
+  variable: "--font-mono",
   display: "swap",
 });
 
@@ -25,7 +54,7 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en-GB" className={`${macap.variable} h-full`}>
+    <html lang="en-GB" className={`${macap.variable} ${spaceMono.variable} h-full`}>
       <body className="flex min-h-full flex-col bg-white font-sans text-black antialiased">
         <Script id="consent-mode" strategy="beforeInteractive">
           {consentBootstrap}

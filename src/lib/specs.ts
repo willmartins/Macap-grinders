@@ -74,8 +74,8 @@ export function specEntries(grinder: Pick<Grinder, "audience" | "status" | "spec
     specs.weightKg != null ? { label: "Weight", value: `${formatNumber(specs.weightKg)} kg` } : null,
     specs.voltage ? { label: "Voltage", value: specs.voltage } : null,
     specs.display ? { label: "Display", value: specs.display } : null,
-    specs.features.length ? { label: "Features", value: specs.features.join(", ") } : null,
     ...specs.extra.map((item) => ({ label: item.label, value: item.value })),
+    specs.features.length ? { label: "Features", value: specs.features.join(", ") } : null,
   ];
   return rows.filter((row): row is SpecRow => Boolean(row?.value));
 }

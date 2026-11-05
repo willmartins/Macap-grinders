@@ -11,6 +11,9 @@
   --accent-fg: #000000;
   --surface: #ffffff;
   --plinth: #e4e4e4;
+  --sand: #f2ede4;
+  --sand-muted: #e5dfd2;
+  --light-grey: #f9f9f9;
 }
 
 [data-theme="professional"] {
@@ -22,6 +25,9 @@
   --accent-fg: #000000;
   --surface: #ffffff;
   --plinth: #e4e4e4;
+  --sand: #f2ede4;
+  --sand-muted: #e5dfd2;
+  --light-grey: #f9f9f9;
 }
 
 :root {
@@ -58,6 +64,7 @@ html {
 
 @theme inline {
   --font-sans: var(--font-macap), "Helvetica Neue", Helvetica, Arial, sans-serif;
+  --font-mono: var(--font-mono), "Space Mono", ui-monospace, monospace;
   --color-bg: var(--bg);
   --color-fg: var(--fg);
   --color-muted: var(--muted);
@@ -66,6 +73,25 @@ html {
   --color-accent-fg: var(--accent-fg);
   --color-surface: var(--surface);
   --color-plinth: var(--plinth);
+  --color-sand: var(--sand);
+  --color-sand-muted: var(--sand-muted);
+  --color-light-grey: var(--light-grey);
+}
+
+.bg-sand {
+  background-color: var(--sand);
+}
+
+.bg-sand-muted {
+  background-color: var(--sand-muted);
+}
+
+.border-sand-muted {
+  border-color: var(--sand-muted);
+}
+
+.bg-light-grey {
+  background-color: var(--light-grey);
 }
 
 body {
@@ -117,9 +143,9 @@ section[id],
   display: inline-flex;
   align-items: center;
   min-height: 44px;
-  font-size: 0.9375rem;
-  font-weight: 500;
-  letter-spacing: 0;
+  font-size: 1.0625rem;
+  font-weight: 600;
+  letter-spacing: -0.01em;
   line-height: 1.2;
 }
 
@@ -203,10 +229,14 @@ section[id],
   width: auto;
 }
 
-/* One logo-height of clear space to the right, and even space above and below inside the 4.5rem bar. */
+/* Nav header logo sized to 1.9rem with balanced vertical clearance */
+.site-header .brand-logo {
+  height: 1.9rem;
+}
+
 .site-header .brand-lockup {
-  padding-block: 1.4375rem;
-  padding-inline-end: 1.625rem;
+  padding-block: 1.3rem;
+  padding-inline-end: 1.9rem;
 }
 
 .site-footer .brand-lockup {
