@@ -1,0 +1,147 @@
+import { notFound } from "next/navigation";
+import { Suspense } from "react";
+
+import { GrinderGrid } from "@/components/grinders/grinder-card";
+import { Breadcrumbs } from "@/components/site/breadcrumbs";
+import { JsonLd } from "@/components/site/json-ld";
+import { BleedHero } from "@/components/site/bleed-hero";
+import { RichTextBody } from "@/components/site/rich-text";
+import { TextLink } from "@/components/site/text-link";
+import { SampleBanner } from "@/components/site/sample-banner";
+import { formatDate } from "@/lib/format";
+import { articleJsonLd, faqJsonLd, jsonLdGraph } from "@/lib/jsonld";
+import { buildMetadata } from "@/lib/metadata";
+import { draftPerspective } from "@/sanity/lib/draft";
+import { loadPost, loadPosts } from "@/sanity/lib/load";
+
+export async function generateStaticParams() {
+  const { posts } = await loadPosts("published");
+  return posts.map((post) => ({ slug: post.slug }));
+}
+
+export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }) {
+  const { slug } = await params;
+  const loaded = await loadPost(slug, "published");
+  if (!loaded) return {};
+  const { post } = loaded;
+  return buildMetadata({
+    title: post.seo.title || post.title,
+    description: post.seo.description || post.answerFirst || post.excerpt,
+    path: `/knowledge/${post.slug}`,
+    noIndex: post.seo.noIndex,
+    canonical: post.seo.canonical,
+    image: post.seo.imageUrl,
+    type: "article",
+  });
+}
+
+async function PostContent({ params }: { params: Promise<{ slug: string }> }) {
+  const { slug } = await params;
+  const loaded = await loadPost(slug, await draftPerspective());
+  if (!loaded) notFound();
+  const { post, sample } = loaded;
+  return (
+    <article>
+      {sample ? <SampleBanner /> : null}
+      {post.imageUrl ? (
+        <BleedHero
+          imageUrl={post.imageUrl}
+          alt={post.imageAlt}
+          blur={post.imageLqip}
+          eyebrow={post.topicTitle || undefined}
+          title={post.title}
+          short
+          crumbs={
+            <Breadcrumbs
+              bare
+              items={[
+                { name: "Knowledge", path: "/knowledge" },
+                ...(post.topicSlug && post.topicTitle
+                  ? [{ name: post.topicTitle, path: `/knowledge/topic/${post.topicSlug}` }]
+                  : []),
+                { name: post.title, path: `/knowledge/${post.slug}` },
+              ]}
+            />
+          }
+        />
+      ) : (
+        <>
+          <Breadcrumbs
+            items={[
+              { name: "Knowledge", path: "/knowledge" },
+              ...(post.topicSlug && post.topicTitle
+                ? [{ name: post.topicTitle, path: `/knowledge/topic/${post.topicSlug}` }]
+                : []),
+              { name: post.title, path: `/knowledge/${post.slug}` },
+            ]}
+          />
+          <header className="frame section-tight">
+            <h1 className="display-sm max-w-4xl">{post.title}</h1>
+          </header>
+        </>
+      )}
+      <div className="frame section-tight">
+        <p className="max-w-2xl text-xl leading-snug">{post.answerFirst}</p>
+        <p className="mt-6 max-w-2xl text-sm text-muted">
+          <span className="block font-medium text-fg">{post.author.name}</span>
+          {post.author.role ? <span className="block">{post.author.role}</span> : null}
+          {post.publishedAt ? <span className="block">{formatDate(post.publishedAt)}</span> : null}
+          {post.updatedAt ? <span className="block">Updated {formatDate(post.updatedAt)}</span> : null}
+        </p>
+        {post.author.bio ? <p className="mt-4 max-w-2xl leading-relaxed">{post.author.bio}</p> : null}
+      </div>
+      <div className="frame section-tight">
+        <RichTextBody value={post.body} />
+      </div>
+      {post.faqs.length ? (
+        <section className="frame section-tight">
+          <h2 className="text-3xl font-medium tracking-tight">Questions</h2>
+          <div className="mt-6 max-w-3xl divide-y divide-line border-y border-line">
+            {post.faqs.map((faq) => (
+              <details key={faq._key} className="py-2">
+                <summary className="cursor-pointer font-medium">{faq.question}</summary>
+                <p className="mt-3 text-sm leading-relaxed text-muted">{faq.answer}</p>
+              </details>
+            ))}
+          </div>
+        </section>
+      ) : null}
+      {post.relatedGrinders.length ? (
+        <section className="frame section">
+          <h2 className="mb-6 text-3xl font-medium tracking-tight">Grinders in this note</h2>
+          <GrinderGrid grinders={post.relatedGrinders} />
+        </section>
+      ) : null}
+      <p className="frame pb-[var(--space-standard)]">
+        <TextLink href="/knowledge" className="tap">
+          All articles
+        </TextLink>
+      </p>
+      <JsonLd
+        data={jsonLdGraph([
+          articleJsonLd({
+            title: post.title,
+            description: post.answerFirst || post.excerpt,
+            slug: post.slug,
+            publishedAt: post.publishedAt,
+            updatedAt: post.updatedAt,
+            authorName: post.author.name,
+            authorRole: post.author.role,
+            authorBio: post.author.bio,
+            authorSameAs: post.author.sameAs,
+            imageUrl: post.imageUrl,
+          }),
+          faqJsonLd(post.faqs),
+        ])}
+      />
+    </article>
+  );
+}
+
+export default function PostPage({ params }: { params: Promise<{ slug: string }> }) {
+  return (
+    <Suspense fallback={<p className="px-5 py-20 text-muted">Loading.</p>}>
+      <PostContent params={params} />
+    </Suspense>
+  );
+}
