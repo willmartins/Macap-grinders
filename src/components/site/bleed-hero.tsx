@@ -14,6 +14,7 @@ export function BleedHero({
   focus = "center",
   figures,
   crumbs,
+  product = false,
   blur = null,
 }: {
   imageUrl: string;
@@ -30,27 +31,55 @@ export function BleedHero({
   product?: boolean;
   blur?: string | null;
 }) {
-  return (
-    <header className="stage">
-      <div className="frame stage-grid">
-        <div className="stage-copy">
+  if (product) {
+    return (
+      <header className="model-hero">
+        <div className="model-hero-media">
+          <Image
+            src={imageUrl}
+            alt={alt}
+            fill
+            priority={priority}
+            sizes="100vw"
+            placeholder={blur ? "blur" : "empty"}
+            blurDataURL={blur || undefined}
+            className="object-cover"
+            style={{ objectPosition: focus }}
+          />
+        </div>
+        <div className="model-hero-scrim" aria-hidden="true" />
+        <div className="model-hero-copy frame">
           {crumbs}
-          {eyebrow ? <p className="label text-muted">{eyebrow}</p> : null}
-          <h1 className="display-sm mt-4 max-w-3xl">{title}</h1>
-          {text ? <p className="stage-lead">{text}</p> : null}
+          {eyebrow ? <p className="label text-white/80">{eyebrow}</p> : null}
+          <h1 className="display mt-3 max-w-5xl text-white">{title}</h1>
+          {text ? <p className="model-hero-lead">{text}</p> : null}
           {figures && figures.length ? (
-            <ul className="stage-figures" aria-label="Key figures">
+            <ul className="model-hero-figures" aria-label="Key figures">
               {figures.map((figure) => (
                 <li key={figure.label}>
-                  <p className="label text-muted">{figure.label}</p>
-                  <p className="stat mt-2">
+                  <p className="label text-white/75">{figure.label}</p>
+                  <p className="stat">
                     {figure.value}
-                    <span className="label ml-2 text-muted">{figure.unit}</span>
+                    <span className="label">{figure.unit}</span>
                   </p>
                 </li>
               ))}
             </ul>
           ) : null}
+          {children ? <div className="model-hero-actions flex flex-wrap gap-3">{children}</div> : null}
+        </div>
+      </header>
+    );
+  }
+
+  return (
+    <header className="stage">
+      <div className="frame stage-grid">
+        <div className="stage-copy">
+          {crumbs}
+          {eyebrow ? <p className="label mt-4 text-muted">{eyebrow}</p> : null}
+          <h1 className="display-sm mt-3 max-w-xl">{title}</h1>
+          {text ? <p className="stage-lead">{text}</p> : null}
           {children ? <div className="stage-actions flex flex-wrap gap-3">{children}</div> : null}
         </div>
         <figure className="stage-media">
@@ -59,7 +88,7 @@ export function BleedHero({
             alt={alt}
             fill
             priority={priority}
-            sizes="(min-width: 900px) 40rem, 100vw"
+            sizes="(min-width: 900px) 36rem, 100vw"
             placeholder={blur ? "blur" : "empty"}
             blurDataURL={blur || undefined}
             className="object-cover"
@@ -90,13 +119,13 @@ export function SplitHero({
     <header className="home-choice">
       <div className="frame">
         <p className="label text-muted">Macap, since 1930</p>
-        <h1 className="display-sm mt-4 max-w-3xl">Coffee grinders for the counter and the bar.</h1>
+        <h1 className="display-sm mt-3 max-w-3xl">Coffee grinders for the counter and the bar.</h1>
       </div>
       <div className="frame home-choice-grid">
         <a href="/home-grinders" className="choice-card">
           <p className="display-sm">For the home.</p>
-          <p className="max-w-sm text-lg leading-relaxed">Studio grinders for a domestic counter.</p>
-          <p className="btn mt-1 w-fit">Home grinders</p>
+          <p className="choice-line">Studio grinders for a domestic counter.</p>
+          <p className="btn w-fit">Home grinders</p>
           <figure className="choice-frame">
             <Image
               src={homeImage}
@@ -111,8 +140,8 @@ export function SplitHero({
         </a>
         <a href="/professional" className="choice-card">
           <p className="display-sm">For the bar.</p>
-          <p className="max-w-sm text-lg leading-relaxed">Supra, Supra G, Pro and Leo.</p>
-          <p className="btn btn-secondary mt-1 w-fit">Professional</p>
+          <p className="choice-line">Supra, Supra G, Pro and Leo.</p>
+          <p className="btn btn-secondary w-fit">Professional</p>
           <figure className="choice-frame">
             <Image
               src={proImage}

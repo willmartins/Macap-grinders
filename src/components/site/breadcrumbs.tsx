@@ -3,22 +3,25 @@ import { breadcrumbJsonLd } from "@/lib/jsonld";
 
 export function Breadcrumbs({
   items,
+  overlay = false,
+  bare = false,
 }: {
   items: Array<{ name: string; path: string }>;
   overlay?: boolean;
+  bare?: boolean;
 }) {
   const trail = [{ name: "Macap", path: "/" }, ...items];
   return (
     <>
-      <nav aria-label="Breadcrumb" className="frame pt-6">
-        <ol className="label flex flex-wrap gap-x-2 gap-y-1 text-muted">
+      <nav aria-label="Breadcrumb" className={bare ? "crumbs" : "frame pt-6"}>
+        <ol className={`label flex flex-wrap gap-x-2 gap-y-1 ${overlay ? "text-white/80" : "text-muted"}`}>
           {trail.map((item, index) => {
             const last = index === trail.length - 1;
             return (
               <li key={item.path} className="flex gap-2">
                 {index > 0 ? <span aria-hidden="true">/</span> : null}
                 {last ? (
-                  <span aria-current="page" className="text-fg">
+                  <span aria-current="page" className={overlay ? "text-white" : "text-fg"}>
                     {item.name}
                   </span>
                 ) : (

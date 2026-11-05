@@ -53,7 +53,7 @@ async function PostContent({ params }: { params: Promise<{ slug: string }> }) {
           short
           crumbs={
             <Breadcrumbs
-              overlay
+              bare
               items={[
                 { name: "Knowledge", path: "/knowledge" },
                 ...(post.topicSlug && post.topicTitle

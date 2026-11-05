@@ -55,7 +55,7 @@ async function CollectionContent({ params }: { params: Promise<{ slug: string }>
           text={collection.answerFirst || collection.summary}
           short
           crumbs={
-            <Breadcrumbs overlay items={[{ name: collection.name, path: `/collections/${collection.slug}` }]} />
+            <Breadcrumbs bare items={[{ name: collection.name, path: `/collections/${collection.slug}` }]} />
           }
         />
       ) : (

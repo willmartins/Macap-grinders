@@ -69,6 +69,7 @@ export function GrinderModel({
   const crumbs = (
     <Breadcrumbs
       overlay
+      bare
       items={[
         { name: "Grinders", path: "/grinders" },
         { name: grinder.name, path: `/grinders/${grinder.slug}` },
@@ -94,6 +95,7 @@ export function GrinderModel({
           crumbs={crumbs}
         >
           <Enquire
+            variant="photo"
             grinder={{
               slug: grinder.slug,
               name: grinder.name,
@@ -101,7 +103,7 @@ export function GrinderModel({
               imageAlt: grinder.imageAlt,
             }}
           />
-          <a href={relatedCompare} className="btn btn-secondary">
+          <a href={relatedCompare} className="btn btn-secondary btn-on-photo">
             Compare
           </a>
         </BleedHero>

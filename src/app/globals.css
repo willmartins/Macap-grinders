@@ -683,58 +683,108 @@ details:not([open]) > :not(summary) {
 }
 
 .stage {
-  padding-block: var(--space-tight) var(--space-standard);
+  padding-block: var(--space-tight);
+  background: #ffffff;
+  color: #000000;
 }
 
 .stage-grid {
   display: grid;
   gap: var(--gap-block);
-  align-items: center;
-}
-
-.stage-copy .frame {
-  width: auto;
-  padding-top: 0;
+  align-items: start;
 }
 
 .stage-lead {
   max-width: 36rem;
-  margin-top: 1.25rem;
+  margin-top: 1rem;
   font-size: 1.125rem;
   line-height: 1.5;
 }
 
 .stage-actions {
-  margin-top: 1.75rem;
-}
-
-.stage-figures {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  margin-top: 1.75rem;
-  border-top: 1px solid var(--line);
-}
-
-.stage-figures li {
-  padding: 1rem 1rem 0 0;
+  margin-top: 1.5rem;
 }
 
 .stage-media,
 .choice-frame {
   position: relative;
-  aspect-ratio: 4 / 3;
+  width: 100%;
+  height: 18rem;
   overflow: hidden;
-  background: var(--plinth);
+  background: #e4e4e4;
 }
 
-.choice-frame {
-  aspect-ratio: 16 / 10;
-  max-height: 16rem;
-  margin-top: 0.5rem;
+.model-hero {
+  position: relative;
+  isolation: isolate;
+  display: grid;
+  align-items: end;
+  min-height: calc(100svh - var(--chrome-h));
+  overflow: hidden;
+  background: #111111;
+  color: #ffffff;
+}
+
+.model-hero-media,
+.model-hero-scrim {
+  position: absolute;
+  inset: 0;
+}
+
+.model-hero-media {
+  z-index: 0;
+}
+
+.model-hero-scrim {
+  z-index: 1;
+  background:
+    linear-gradient(180deg, rgba(0, 0, 0, 0.45) 0%, rgba(0, 0, 0, 0.08) 36%, rgba(0, 0, 0, 0.2) 58%, rgba(0, 0, 0, 0.82) 100%);
+}
+
+.model-hero-copy {
+  position: relative;
+  z-index: 2;
+  padding-top: 1.25rem;
+  padding-bottom: 1.75rem;
+}
+
+.model-hero-lead {
+  max-width: 36rem;
+  margin-top: 0.75rem;
+  color: rgba(255, 255, 255, 0.92);
+  font-size: 1.125rem;
+  line-height: 1.45;
+}
+
+.model-hero-figures {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 0.75rem 1.25rem;
+  margin-top: 1.5rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.4);
+  padding-top: 0.85rem;
+}
+
+.model-hero-figures .stat {
+  display: flex;
+  flex-wrap: nowrap;
+  align-items: baseline;
+  gap: 0.35rem;
+  margin-top: 0.35rem;
+  font-size: clamp(1.35rem, 2.4vw, 2.6rem);
+  letter-spacing: -0.03em;
+  line-height: 1;
+  white-space: nowrap;
+}
+
+.model-hero-actions {
+  margin-top: 1.25rem;
 }
 
 .home-choice {
-  padding-block: var(--space-hero) var(--space-standard);
+  padding-block: var(--space-tight) var(--space-standard);
+  background: #ffffff;
+  color: #000000;
 }
 
 .home-choice-grid {
@@ -742,20 +792,35 @@ details:not([open]) > :not(summary) {
   gap: 3px;
   margin-top: var(--gap-block);
   background: #ffc600;
+  align-items: stretch;
 }
 
 .choice-card {
   display: flex;
   flex-direction: column;
-  gap: 1rem;
+  gap: 0.75rem;
+  min-width: 0;
   background: #ffffff;
-  padding: var(--gap-block);
+  padding: 1.5rem;
   color: #000000;
   text-decoration: none;
 }
 
 .choice-card .display-sm {
-  max-width: 8ch;
+  max-width: 10ch;
+  font-size: clamp(2.4rem, 4vw, 3.6rem);
+}
+
+.choice-line {
+  max-width: 22rem;
+  min-height: 3.4rem;
+  font-size: 1.125rem;
+  line-height: 1.45;
+}
+
+.choice-frame {
+  height: 14rem;
+  margin-top: auto;
 }
 
 .hero-bleed {
@@ -820,8 +885,14 @@ html:has(.sample-banner) {
   right: 0;
   left: 0;
   z-index: var(--z-banner);
-  min-height: 2rem;
-  padding-block: 0.35rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  height: var(--banner-h);
+  overflow: hidden;
+  background: #ffffff;
+  color: #000000;
 }
 
 .site-header {
@@ -831,25 +902,9 @@ html:has(.sample-banner) {
   left: 0;
   z-index: var(--z-header);
   min-height: 4.5rem;
-  border-bottom: 1px solid var(--line);
-  background: color-mix(in srgb, var(--bg) 92%, transparent);
-  transition: background 0.2s linear, border-color 0.2s linear, color 0.2s linear;
-}
-
-/* A full-bleed hero is the only template with a transparent header. Scrolling, or opening the menu, makes it solid. */
-body:has(main [data-hero]) .site-header[data-solid="false"]:not(:has(details[open])) {
-  border-bottom-color: transparent;
-  background: transparent;
-  color: #ffffff;
-}
-
-body:has(main [data-hero]) .site-header[data-solid="false"]:not(:has(details[open])) a {
-  color: #ffffff;
-}
-
-body:has(main [data-hero]) .site-header[data-solid="false"]:not(:has(details[open])) .menu-panel,
-body:has(main [data-hero]) .site-header[data-solid="false"]:not(:has(details[open])) .menu-panel a {
-  color: var(--fg);
+  border-bottom: 1px solid #e4e4e4;
+  background: #ffffff;
+  color: #000000;
 }
 
 .site-menu {
@@ -930,13 +985,21 @@ main:has([data-hero]) {
   background: transparent;
 }
 
+.editorial,
+.feature-rail,
+.feature-card,
+.gallery-strip {
+  background: #ffffff;
+  color: #000000;
+}
+
 .editorial-media {
   position: relative;
-  aspect-ratio: 4 / 3;
+  width: 100%;
+  height: 16rem;
   min-height: 0;
-  max-height: 32rem;
   overflow: hidden;
-  background: var(--plinth);
+  background: #e4e4e4;
 }
 
 .stack-block {
@@ -1026,11 +1089,6 @@ main:has([data-hero]) {
 
   .editorial.is-flip .editorial-media {
     order: 2;
-  }
-
-  .editorial-media {
-    min-height: 0;
-    max-height: 28rem;
   }
 
   .editorial-copy {
@@ -1134,6 +1192,42 @@ main:has([data-hero]) {
     min-width: 0;
   }
 
+  .model-hero .display {
+    font-size: 2.5rem;
+  }
+
+  .model-hero-lead {
+    display: -webkit-box;
+    margin-top: 0.4rem;
+    overflow: hidden;
+    font-size: 0.95rem;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+  }
+
+  .model-hero-figures {
+    grid-template-columns: 0.7fr 0.75fr 1.45fr 0.9fr;
+    gap: 0.35rem;
+    margin-top: 0.85rem;
+  }
+
+  .model-hero-figures .stat {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0;
+    font-size: 1rem;
+  }
+
+  .model-hero-figures .stat .label {
+    margin: 0;
+    font-size: 0.65rem;
+  }
+
+  .stage-media,
+  .choice-frame {
+    height: 12rem;
+  }
+
   .product-hero {
     min-height: 0;
     align-items: start;
@@ -1209,8 +1303,8 @@ main:has([data-hero]) {
   }
 
   .feature-snap .editorial-media {
-    min-height: 11rem;
-    aspect-ratio: 4 / 3;
+    height: 12rem;
+    min-height: 0;
   }
 
   .feature-snap .editorial-copy,
