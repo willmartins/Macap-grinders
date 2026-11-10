@@ -33,7 +33,7 @@ export function SpecSection({
   return (
     <section
       id="specifications"
-      className="section border-b border-line bg-light-grey"
+      className="section border-b border-silver bg-light-grey"
       style={{ backgroundColor: "var(--light-grey, #f9f9f9)" }}
       aria-labelledby="specs-heading"
     >
@@ -59,7 +59,7 @@ export function SpecSection({
               }
             />
 
-            <table className="datasheet mt-8 border-t border-line">
+            <table className="datasheet mt-8 border-t border-silver">
               <caption className="sr-only">{grinder.name} specifications</caption>
               <tbody>
                 {rows.map((row, index) => (
@@ -102,13 +102,13 @@ export function SpecSection({
               </>
             ) : null}
 
-            <div className={`border border-line bg-surface p-5 ${questions.length ? "mt-8" : ""}`.trim()}>
-              <p className="font-semibold text-fg">Need sales or technical support?</p>
-              <p className="mt-1.5 type-body text-muted">
+            <div className={`border border-silver bg-white p-5 ${questions.length ? "mt-8" : ""}`.trim()}>
+              <p className="font-semibold text-black">Need sales or technical support?</p>
+              <p className="mt-1.5 type-body text-grey">
                 Our Venice team and regional distribution partners are here to assist with machine selection, installation requirements, and commercial quotes.
               </p>
               <div className="mt-3.5">
-                <TextLink href="/contact" className="type-body font-semibold text-fg hover:shadow-[inset_0_-1px_0_var(--accent)]">
+                <TextLink href="/contact" className="type-body font-semibold text-black link-underline">
                   Contact sales & support team
                 </TextLink>
               </div>

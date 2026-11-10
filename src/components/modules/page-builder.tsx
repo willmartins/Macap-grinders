@@ -60,7 +60,7 @@ function SectionIntro({ heading, intro, step }: { heading?: string; intro?: stri
     <div className="stack-block max-w-3xl">
       {step ? <p className="step-index mb-4">{step}</p> : null}
       {heading ? <h2 className="display-sm">{heading}</h2> : null}
-      {intro ? <p className="mt-4 max-w-xl text-lg text-muted">{intro}</p> : null}
+      {intro ? <p className="mt-4 max-w-xl text-lg text-grey">{intro}</p> : null}
     </div>
   );
 }
@@ -112,7 +112,7 @@ export function PageBuilder({ sections, journey }: { sections: Section[]; journe
           }
           return (
             <header key={section._key} id={section._key} className="frame section-tight">
-              {section.eyebrow ? <p className="label text-muted">{section.eyebrow}</p> : null}
+              {section.eyebrow ? <p className="label text-grey">{section.eyebrow}</p> : null}
               <h1 className="display mt-5 max-w-5xl">{section.heading}</h1>
               {section.text ? <p className="mt-6 max-w-xl text-lg leading-relaxed">{section.text}</p> : null}
               {section.links.length ? (
@@ -203,7 +203,7 @@ export function PageBuilder({ sections, journey }: { sections: Section[]; journe
                   {section.collections.map((collection) => {
                     const shot = collectionShot(collection.slug);
                     return (
-                      <li key={collection.slug} className="bg-bg">
+                      <li key={collection.slug} className="bg-white">
                         {shot ? (
                           <a href={`/collections/${collection.slug}`} className="block">
                             <PhotoSlot imageUrl={shot.src} alt={shot.alt} ratio="16/9" sizes="(min-width: 1024px) 30rem, 100vw" />
@@ -218,7 +218,7 @@ export function PageBuilder({ sections, journey }: { sections: Section[]; journe
                               {collection.name}
                             </TextLink>
                           </h3>
-                          <p className="mt-3 text-sm leading-relaxed text-muted">{collection.summary}</p>
+                          <p className="mt-3 text-sm leading-relaxed text-grey">{collection.summary}</p>
                         </div>
                       </li>
                     );
@@ -234,7 +234,7 @@ export function PageBuilder({ sections, journey }: { sections: Section[]; journe
                   {section.features.map((feature) => (
                     <li key={feature._key}>
                       <h3 className="text-2xl font-medium tracking-tight">{feature.title}</h3>
-                      <p className="mt-3 max-w-sm text-sm leading-relaxed text-muted">{feature.text}</p>
+                      <p className="mt-3 max-w-sm text-sm leading-relaxed text-grey">{feature.text}</p>
                     </li>
                   ))}
                 </ol>
@@ -263,11 +263,11 @@ export function PageBuilder({ sections, journey }: { sections: Section[]; journe
             {section._type === "faqAccordion" ? (
               <>
                 <h2 className="display-sm">{section.heading}</h2>
-                <div className="mt-8 max-w-3xl divide-y divide-line border-y border-line">
+                <div className="mt-8 max-w-3xl divide-y divide-silver border-y border-silver">
                   {section.faqs.map((faq) => (
                     <details key={faq._key} className="py-2">
                       <summary className="cursor-pointer text-lg font-medium">{faq.question}</summary>
-                      <p className="mt-3 max-w-2xl leading-relaxed text-muted">{faq.answer}</p>
+                      <p className="mt-3 max-w-2xl leading-relaxed text-grey">{faq.answer}</p>
                     </details>
                   ))}
                 </div>
@@ -291,7 +291,7 @@ export function PageBuilder({ sections, journey }: { sections: Section[]; journe
             {section._type === "kbPostGrid" ? (
               <>
                 <SectionIntro heading={section.heading} intro={section.intro} />
-                <ul className="divide-y divide-line border-y border-line">
+                <ul className="divide-y divide-silver border-y border-silver">
                   {section.posts.map((post) => (
                     <li key={post.slug} className="grid gap-2 py-6">
                       <div>
@@ -300,7 +300,7 @@ export function PageBuilder({ sections, journey }: { sections: Section[]; journe
                             {post.title}
                           </TextLink>
                         </h3>
-                        <p className="mt-2 max-w-2xl text-muted">{post.excerpt}</p>
+                        <p className="mt-2 max-w-2xl text-grey">{post.excerpt}</p>
                       </div>
                     </li>
                   ))}
@@ -311,7 +311,7 @@ export function PageBuilder({ sections, journey }: { sections: Section[]; journe
             {section._type === "quote" ? (
               <figure>
                 <blockquote className="display-sm max-w-4xl">{section.quote}</blockquote>
-                <figcaption className="mt-6 text-muted">
+                <figcaption className="mt-6 text-grey">
                   <span className="block">{section.attribution}</span>
                   {section.role ? <span className="block">{section.role}</span> : null}
                 </figcaption>
@@ -357,7 +357,7 @@ function VideoBlock({ url, heading, caption }: { url: string; heading?: string; 
           </TextLink>
         </p>
       ) : null}
-      {caption ? <p className="mt-3 text-sm text-muted">{caption}</p> : null}
+      {caption ? <p className="mt-3 text-sm text-grey">{caption}</p> : null}
     </div>
   );
 }

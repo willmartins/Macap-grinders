@@ -51,14 +51,14 @@ async function TopicContent({ params }: { params: Promise<{ slug: string }> }) {
       <ul className="frame section-tight grid gap-[var(--gap-inner)]">
         {related.length ? (
           related.map((post) => (
-            <li key={post.slug} className="border-b border-line py-5">
+            <li key={post.slug} className="border-b border-silver py-5">
               <h2 className="text-xl font-medium">
                 <TextLink href={`/knowledge/${post.slug}`} className="underline-offset-4 hover:underline">
                   {post.title}
                 </TextLink>
               </h2>
-              <p className="mt-2 text-sm text-muted">{post.excerpt}</p>
-              <p className="mt-2 text-sm text-muted">{formatDate(post.publishedAt)}</p>
+              <p className="mt-2 text-sm text-grey">{post.excerpt}</p>
+              <p className="mt-2 text-sm text-grey">{formatDate(post.publishedAt)}</p>
             </li>
           ))
         ) : (
@@ -71,7 +71,7 @@ async function TopicContent({ params }: { params: Promise<{ slug: string }> }) {
 
 export default function TopicPage({ params }: { params: Promise<{ slug: string }> }) {
   return (
-    <Suspense fallback={<p className="px-5 py-20 text-muted">Loading.</p>}>
+    <Suspense fallback={<p className="px-5 py-20 text-grey">Loading.</p>}>
       <TopicContent params={params} />
     </Suspense>
   );

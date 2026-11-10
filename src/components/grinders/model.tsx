@@ -92,7 +92,7 @@ export function GrinderModel({
               { name: grinder.name, path: `/grinders/${grinder.slug}` },
             ]}
           />
-          {eyebrow ? <p className="label text-muted mt-4">{eyebrow}</p> : null}
+          {eyebrow ? <p className="label text-grey mt-4">{eyebrow}</p> : null}
           <h1 className="display mt-4">{grinder.name}</h1>
           <p className="mt-6 max-w-xl text-lg leading-relaxed">{positionLine(grinder.answerFirst, grinder.name)}</p>
           <div className="mt-8 flex flex-wrap gap-3">
@@ -132,24 +132,24 @@ export function GrinderModel({
 
       {/* Optional: Related Reading */}
       {grinder.relatedArticles && grinder.relatedArticles.length > 0 ? (
-        <section className="frame section border-b border-line">
+        <section className="frame section border-b border-silver">
           <SectionHeader
             eyebrow="Knowledge"
             title="Related reading"
           />
-          <ul className="mt-8 divide-y divide-line border-y border-line">
+          <ul className="mt-8 divide-y divide-silver border-y border-silver">
             {grinder.relatedArticles.map((post) => (
               <li key={post.slug} className="grid gap-2 py-6 md:grid-cols-12 items-baseline">
                 <div className="md:col-span-9">
-                  <h3 className="type-h3 text-fg">
-                    <TextLink href={`/knowledge/${post.slug}`} className="hover:shadow-[inset_0_-1px_0_var(--accent)]">
+                  <h3 className="type-h3 text-black">
+                    <TextLink href={`/knowledge/${post.slug}`} className="link-underline">
                       {post.title}
                     </TextLink>
                   </h3>
-                  <p className="mt-2 max-w-xl type-body text-muted">{post.excerpt}</p>
+                  <p className="mt-2 max-w-xl type-body text-grey">{post.excerpt}</p>
                 </div>
                 {post.publishedAt ? (
-                  <p className="type-eyebrow text-muted md:col-span-3 md:text-right">{formatDate(post.publishedAt)}</p>
+                  <p className="type-eyebrow text-grey md:col-span-3 md:text-right">{formatDate(post.publishedAt)}</p>
                 ) : null}
               </li>
             ))}

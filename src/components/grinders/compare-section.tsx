@@ -23,42 +23,42 @@ const THEMES: ModelColorTheme[] = [
   // Model 1 (Active/Current Model): Brand Yellow
   {
     id: "yellow",
-    badgeBg: "bg-accent",
+    badgeBg: "bg-yellow",
     badgeText: "text-black",
-    badgeBorder: "border-amber-400",
-    highlightBg: "bg-accent",
+    badgeBorder: "border-yellow",
+    highlightBg: "bg-yellow",
     highlightText: "text-black",
-    cardBorder: "border-accent",
+    cardBorder: "border-yellow",
   },
   // Model 2: Sky Blue
   {
     id: "sky",
-    badgeBg: "bg-sky-100",
-    badgeText: "text-sky-800",
-    badgeBorder: "border-sky-300",
-    highlightBg: "bg-sky-100",
-    highlightText: "text-sky-900",
-    cardBorder: "border-sky-400/50",
+    badgeBg: "bg-light-sky",
+    badgeText: "text-dark-sky",
+    badgeBorder: "border-sky",
+    highlightBg: "bg-light-sky",
+    highlightText: "text-dark-sky",
+    cardBorder: "border-sky",
   },
   // Model 3: Emerald Green
   {
     id: "emerald",
-    badgeBg: "bg-emerald-100",
-    badgeText: "text-emerald-800",
-    badgeBorder: "border-emerald-300",
-    highlightBg: "bg-emerald-100",
-    highlightText: "text-emerald-900",
-    cardBorder: "border-emerald-400/50",
+    badgeBg: "bg-light-emerald",
+    badgeText: "text-dark-emerald",
+    badgeBorder: "border-emerald",
+    highlightBg: "bg-light-emerald",
+    highlightText: "text-dark-emerald",
+    cardBorder: "border-emerald",
   },
   // Model 4: Violet
   {
     id: "violet",
-    badgeBg: "bg-violet-100",
-    badgeText: "text-violet-800",
-    badgeBorder: "border-violet-300",
-    highlightBg: "bg-violet-100",
-    highlightText: "text-violet-900",
-    cardBorder: "border-violet-400/50",
+    badgeBg: "bg-light-violet",
+    badgeText: "text-dark-violet",
+    badgeBorder: "border-violet",
+    highlightBg: "bg-light-violet",
+    highlightText: "text-dark-violet",
+    cardBorder: "border-violet",
   },
 ];
 
@@ -91,7 +91,7 @@ function renderHighlightedText(
   return (
     <>
       {prefix ? (
-        <strong className="font-semibold text-fg mr-1.5">{prefix}</strong>
+        <strong className="font-semibold text-black mr-1.5">{prefix}</strong>
       ) : null}
       {parts.map((part, index) => {
         const theme = modelMap.get(part);
@@ -166,13 +166,13 @@ function TypedDifferenceCard({
   const visibleText = note.slice(0, visibleChars);
 
   return (
-    <li className="flex items-start gap-3 border border-line bg-plinth/30 p-4 min-h-[4.5rem]">
-      <span className="text-fg font-bold shrink-0 mt-0.5">→</span>
+    <li className="flex items-start gap-3 border border-silver bg-silver/30 p-4 min-h-[4.5rem]">
+      <span className="text-black font-bold shrink-0 mt-0.5">→</span>
       <div className="type-body min-h-[1.5rem] w-full">
         {visibleText ? renderHighlightedText(visibleText, modelMap) : null}
         {isTypingActive && (
           <span
-            className="inline-block w-1.5 h-4 ml-1 bg-accent animate-pulse align-middle"
+            className="inline-block w-1.5 h-4 ml-1 bg-yellow animate-pulse align-middle"
             aria-hidden="true"
           />
         )}
@@ -233,7 +233,7 @@ function PhoneCompareTable({ columns, caption }: { columns: CompareColumn[]; cap
               key={column.slug}
               scope="col"
               className={`border-t-2 px-1.5 pt-3 pb-4 align-top font-normal first:pl-0 last:pr-0 ${
-                column.current ? "border-accent" : "border-line"
+                column.current ? "border-yellow" : "border-silver"
               }`}
             >
               {column.imageUrl ? (
@@ -254,7 +254,7 @@ function PhoneCompareTable({ columns, caption }: { columns: CompareColumn[]; cap
               >
                 {column.name}
               </span>
-              <span className="mt-1.5 block type-eyebrow text-muted">{column.current ? "This model" : "\u00a0"}</span>
+              <span className="mt-1.5 block type-eyebrow text-grey">{column.current ? "This model" : "\u00a0"}</span>
             </th>
           ))}
         </tr>
@@ -262,28 +262,28 @@ function PhoneCompareTable({ columns, caption }: { columns: CompareColumn[]; cap
       <tbody>
         {rows.map(({ label, index: row }) => (
           <Fragment key={label}>
-            <tr className="border-t border-line">
-              <th scope="rowgroup" colSpan={columns.length} className="pt-3 type-eyebrow text-muted">
+            <tr className="border-t border-silver">
+              <th scope="rowgroup" colSpan={columns.length} className="pt-3 type-eyebrow text-grey">
                 {label}
               </th>
             </tr>
             <tr>
               {columns.map((column) => (
-                <td key={column.slug} className="px-1.5 pt-1 pb-3 align-top type-mono text-fg first:pl-0 last:pr-0">
+                <td key={column.slug} className="px-1.5 pt-1 pb-3 align-top type-mono text-black first:pl-0 last:pr-0">
                   {column.values[row]}
                 </td>
               ))}
             </tr>
           </Fragment>
         ))}
-        <tr className="border-y border-line">
+        <tr className="border-y border-silver">
           {columns.map((column) => (
             <td key={column.slug} className="px-1.5 py-1 align-top first:pl-0 last:pr-0">
               {column.current ? null : (
                 <TextLink
                   href={`/grinders/${column.slug}`}
                   aria-label={`View ${column.name}`}
-                  className="inline-block py-3 text-sm font-semibold text-fg"
+                  className="inline-block py-3 text-sm font-semibold text-black"
                 >
                   View
                 </TextLink>
@@ -408,7 +408,7 @@ export function CompareSection({
   ];
 
   return (
-    <section className="section border-b border-line bg-white" aria-labelledby="compare-heading">
+    <section className="section border-b border-silver bg-white" aria-labelledby="compare-heading">
       <div className="frame">
         <SectionHeader
           id="compare-heading"
@@ -429,13 +429,13 @@ export function CompareSection({
         {/* 3 to 4 cards in a grid from 640px. The phone uses the table above. */}
         <div className="hidden sm:grid gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
           {/* Card 1: Current / Active Model (Brand Yellow Label) */}
-          <div className="flex flex-col justify-between border-2 border-accent bg-surface p-5 sm:p-6">
+          <div className="flex flex-col justify-between border-2 border-yellow bg-white p-5 sm:p-6">
             <div>
               <div className="flex items-center justify-between">
-                <span className="bg-accent px-2.5 py-0.5 type-eyebrow text-black border border-amber-400">
+                <span className="bg-yellow px-2.5 py-0.5 type-eyebrow text-black border border-yellow">
                   This Model
                 </span>
-                <span className="type-eyebrow text-muted">{grinder.groupName || "Range"}</span>
+                <span className="type-eyebrow text-grey">{grinder.groupName || "Range"}</span>
               </div>
 
               {grinder.imageUrl ? (
@@ -450,41 +450,41 @@ export function CompareSection({
                 </div>
               ) : null}
 
-              <h3 className="mt-4 type-h3 text-fg">{grinder.name}</h3>
-              <p className="mt-1 text-xs text-muted line-clamp-2">{grinder.shortDescription}</p>
+              <h3 className="mt-4 type-h3 text-black">{grinder.name}</h3>
+              <p className="mt-1 text-xs text-grey line-clamp-2">{grinder.shortDescription}</p>
 
               {/* Compact 2-column Spec grid */}
-              <div className="mt-4 grid grid-cols-2 gap-2.5 border-y border-line py-3">
+              <div className="mt-4 grid grid-cols-2 gap-2.5 border-y border-silver py-3">
                 <div>
-                  <span className="type-eyebrow text-muted block">Burrs</span>
-                  <span className="mt-0.5 font-mono text-fg text-xs truncate block">
+                  <span className="type-eyebrow text-grey block">Burrs</span>
+                  <span className="mt-0.5 font-mono text-black text-xs truncate block">
                     {grinder.specs.burrDiameterMm ? `${grinder.specs.burrDiameterMm}mm ` : ""}
                     {grinder.specs.burrType || "-"}
                   </span>
                 </div>
                 <div>
-                  <span className="type-eyebrow text-muted block">Motor</span>
-                  <span className="mt-0.5 font-mono text-fg text-xs block">
+                  <span className="type-eyebrow text-grey block">Motor</span>
+                  <span className="mt-0.5 font-mono text-black text-xs block">
                     {grinder.specs.motorPowerW ? `${formatNumber(grinder.specs.motorPowerW)} W` : "-"}
                   </span>
                 </div>
                 <div>
-                  <span className="type-eyebrow text-muted block">Hopper</span>
-                  <span className="mt-0.5 font-mono text-fg text-xs block">
+                  <span className="type-eyebrow text-grey block">Hopper</span>
+                  <span className="mt-0.5 font-mono text-black text-xs block">
                     {grinder.specs.hopperCapacityG ? `${formatNumber(grinder.specs.hopperCapacityG)} g` : "-"}
                   </span>
                 </div>
                 <div>
-                  <span className="type-eyebrow text-muted block">Use</span>
-                  <span className="mt-0.5 font-mono text-fg text-xs capitalize block">
+                  <span className="type-eyebrow text-grey block">Use</span>
+                  <span className="mt-0.5 font-mono text-black text-xs capitalize block">
                     {grinder.audience === "business" ? "Commercial Bar" : "Home Counter"}
                   </span>
                 </div>
               </div>
             </div>
 
-            <div className="mt-4 pt-3 border-t border-line text-center">
-              <span className="type-eyebrow text-muted">Currently viewing</span>
+            <div className="mt-4 pt-3 border-t border-silver text-center">
+              <span className="type-eyebrow text-grey">Currently viewing</span>
             </div>
           </div>
 
@@ -494,7 +494,7 @@ export function CompareSection({
             return (
               <div
                 key={model.slug}
-                className={`flex flex-col justify-between border ${theme.cardBorder} bg-surface p-5 sm:p-6 transition-all hover:border-fg`}
+                className={`flex flex-col justify-between border ${theme.cardBorder} bg-white p-5 sm:p-6 transition-all hover:border-black`}
               >
                 <div>
                   <div className="flex items-center justify-between">
@@ -505,7 +505,7 @@ export function CompareSection({
                     >
                       {model.name}
                     </span>
-                    <span className="type-eyebrow text-muted">{model.groupName || "Range"}</span>
+                    <span className="type-eyebrow text-grey">{model.groupName || "Range"}</span>
                   </div>
 
                   {model.imageUrl ? (
@@ -520,43 +520,43 @@ export function CompareSection({
                     </div>
                   ) : null}
 
-                  <h3 className="mt-4 type-h3 text-fg">{model.name}</h3>
-                  <p className="mt-1 text-xs text-muted line-clamp-2">{model.shortDescription}</p>
+                  <h3 className="mt-4 type-h3 text-black">{model.name}</h3>
+                  <p className="mt-1 text-xs text-grey line-clamp-2">{model.shortDescription}</p>
 
                   {/* Compact 2-column Spec grid */}
-                  <div className="mt-4 grid grid-cols-2 gap-2.5 border-y border-line py-3">
+                  <div className="mt-4 grid grid-cols-2 gap-2.5 border-y border-silver py-3">
                     <div>
-                      <span className="type-eyebrow text-muted block">Burrs</span>
-                      <span className="mt-0.5 font-mono text-fg text-xs truncate block">
+                      <span className="type-eyebrow text-grey block">Burrs</span>
+                      <span className="mt-0.5 font-mono text-black text-xs truncate block">
                         {model.burrDiameterMm ? `${model.burrDiameterMm}mm ` : ""}
                         {model.burrType || "-"}
                       </span>
                     </div>
                     <div>
-                      <span className="type-eyebrow text-muted block">Motor</span>
-                      <span className="mt-0.5 font-mono text-fg text-xs block">
+                      <span className="type-eyebrow text-grey block">Motor</span>
+                      <span className="mt-0.5 font-mono text-black text-xs block">
                         {model.motorPowerW ? `${formatNumber(model.motorPowerW)} W` : "-"}
                       </span>
                     </div>
                     <div>
-                      <span className="type-eyebrow text-muted block">Grind</span>
-                      <span className="mt-0.5 font-mono text-fg text-xs capitalize block">
+                      <span className="type-eyebrow text-grey block">Grind</span>
+                      <span className="mt-0.5 font-mono text-black text-xs capitalize block">
                         {model.grindType || "Espresso"}
                       </span>
                     </div>
                     <div>
-                      <span className="type-eyebrow text-muted block">Use</span>
-                      <span className="mt-0.5 font-mono text-fg text-xs capitalize block">
+                      <span className="type-eyebrow text-grey block">Use</span>
+                      <span className="mt-0.5 font-mono text-black text-xs capitalize block">
                         {model.audience === "business" ? "Commercial Bar" : "Home Counter"}
                       </span>
                     </div>
                   </div>
                 </div>
 
-                <div className="mt-4 pt-3 border-t border-line text-center">
+                <div className="mt-4 pt-3 border-t border-silver text-center">
                   <TextLink
                     href={`/grinders/${model.slug}`}
-                    className="type-body font-semibold text-fg hover:shadow-[inset_0_-1px_0_var(--accent)]"
+                    className="type-body font-semibold text-black link-underline"
                   >
                     {`View ${model.name}`}
                   </TextLink>
@@ -570,13 +570,13 @@ export function CompareSection({
         {notes.length > 0 && (
           <div
             ref={diffSectionRef}
-            className="order-first border border-line bg-surface p-6 sm:order-none sm:p-8"
+            className="order-first border border-silver bg-white p-6 sm:order-none sm:p-8"
           >
-            <h3 className="type-h3 text-fg mb-4">
+            <h3 className="type-h3 text-black mb-4">
               Key differences at a glance
             </h3>
 
-            <ul className="grid gap-3 sm:grid-cols-2 text-muted">
+            <ul className="grid gap-3 sm:grid-cols-2 text-grey">
               {notes.map((note, idx) => {
                 let cardStatus: "waiting" | "typing" | "completed" = "waiting";
                 if (diffInView) {

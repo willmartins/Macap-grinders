@@ -18,11 +18,11 @@ export function SectionHeader({
   return (
     <div className={`flex flex-wrap items-end justify-between gap-6 ${className}`.trim()}>
       <div className="max-w-2xl">
-        {eyebrow ? <p className="type-eyebrow text-muted mb-2.5">{eyebrow}</p> : null}
-        <h2 id={id} className="type-h2 text-fg">
+        {eyebrow ? <p className="type-eyebrow text-grey mb-2.5">{eyebrow}</p> : null}
+        <h2 id={id} className="type-h2 text-black">
           {title}
         </h2>
-        {description ? <p className="type-lead mt-3 text-muted">{description}</p> : null}
+        {description ? <p className="type-lead mt-3 text-grey">{description}</p> : null}
       </div>
       {action ? <div className="shrink-0">{action}</div> : null}
     </div>

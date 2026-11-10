@@ -36,7 +36,7 @@ export function FlexibleGallery({
   const marqueeImages = [...validImages, ...validImages, ...validImages];
 
   return (
-    <section className="section border-b border-line bg-white overflow-hidden" aria-labelledby="gallery-heading">
+    <section className="section border-b border-silver bg-white overflow-hidden" aria-labelledby="gallery-heading">
       <div className="frame">
         <SectionHeader
           id="gallery-heading"
@@ -54,7 +54,7 @@ export function FlexibleGallery({
             return (
               <div
                 key={img._key}
-                className="relative h-full overflow-hidden border border-line bg-plinth flex-none group transition-colors duration-300 hover:border-fg"
+                className="relative h-full overflow-hidden border border-silver bg-silver flex-none group transition-colors duration-300 hover:border-black"
                 style={{ aspectRatio: `${ratio}` }}
               >
                 <Image
@@ -82,7 +82,7 @@ export function FlexibleGallery({
             return (
               <div
                 key={`${img._key}-${index}`}
-                className="relative h-64 flex-none overflow-hidden border border-line bg-plinth"
+                className="relative h-64 flex-none overflow-hidden border border-silver bg-silver"
                 style={{ aspectRatio: `${ratio}` }}
                 aria-hidden={repeat ? true : undefined}
               >
@@ -98,7 +98,7 @@ export function FlexibleGallery({
             );
           })}
         </GalleryDrift>
-        <p className="mt-3 text-center type-eyebrow text-muted">Swipe to see more</p>
+        <p className="mt-3 text-center type-eyebrow text-grey">Swipe to see more</p>
       </div>
     </section>
   );

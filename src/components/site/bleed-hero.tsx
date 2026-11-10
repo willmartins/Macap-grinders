@@ -77,7 +77,7 @@ export function BleedHero({
       <div className="frame stage-grid">
         <div className="stage-copy">
           {crumbs}
-          {eyebrow ? <p className="label mt-4 text-muted">{eyebrow}</p> : null}
+          {eyebrow ? <p className="label mt-4 text-grey">{eyebrow}</p> : null}
           <h1 className="display-sm mt-3 max-w-xl">{title}</h1>
           {text ? <p className="stage-lead">{text}</p> : null}
           {children ? <div className="stage-actions flex flex-wrap gap-3">{children}</div> : null}
@@ -118,7 +118,7 @@ export function SplitHero({
   return (
     <header className="home-choice">
       <div className="frame">
-        <p className="label text-muted">Macap, since 1930</p>
+        <p className="label text-grey">Macap, since 1930</p>
         <h1 className="display-sm mt-3 max-w-3xl">Coffee grinders for the counter and the bar.</h1>
       </div>
       <div className="frame home-choice-grid">

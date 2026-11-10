@@ -32,7 +32,7 @@ export function ProductOverview({
   const marqueeString = `${marqueePhrases.join("  +  ")}  +  `;
 
   return (
-    <section className="section bg-white border-b border-line overflow-hidden !pb-0" aria-labelledby="overview-heading">
+    <section className="section bg-white border-b border-silver overflow-hidden !pb-0" aria-labelledby="overview-heading">
       <div className="frame">
         <div className="grid items-center gap-10 md:grid-cols-12 md:gap-14 lg:gap-20 pb-12 sm:pb-16">
           {/* Left Column: 4:5 Aspect Ratio supporting Video with Image backup */}
@@ -56,11 +56,11 @@ export function ProductOverview({
 
               {/* Center emblem icon */}
               <div className="absolute inset-0 flex items-center justify-center">
-                <span className="text-accent text-xs font-mono font-bold tracking-tight">1930</span>
+                <span className="text-yellow text-xs font-mono font-bold tracking-tight">1930</span>
               </div>
             </div>
 
-            <div className="relative aspect-[4/5] w-full overflow-hidden border border-line bg-plinth">
+            <div className="relative aspect-[4/5] w-full overflow-hidden border border-silver bg-silver">
               {videoUrl ? (
                 <video
                   src={videoUrl}
@@ -81,7 +81,7 @@ export function ProductOverview({
                   style={{ objectPosition: focusFor(overviewImage.url) }}
                 />
               ) : (
-                <div className="flex h-full w-full items-center justify-center p-8 text-center text-muted">
+                <div className="flex h-full w-full items-center justify-center p-8 text-center text-grey">
                   Photography to follow
                 </div>
               )}
@@ -90,12 +90,12 @@ export function ProductOverview({
 
           {/* Right Column: Impact Title, Single Short Paragraph, and Spec Download Button */}
           <div className="flex flex-col justify-center md:col-span-6 lg:col-span-7">
-            <h2 id="overview-heading" className="type-h2 text-fg">
+            <h2 id="overview-heading" className="type-h2 text-black">
               Engineered in Venice for espresso consistency.
             </h2>
 
             {/* Single Short Paragraph as requested */}
-            <p className="type-lead mt-6 text-muted max-w-2xl">
+            <p className="type-lead mt-6 text-grey max-w-2xl">
               Conceived for busy bars and specialty coffee programmes, the {grinder.name} unites precision Italian
               burrs with micrometric calibration and robust thermal control. It preserves dialled-in recipes dose after dose,
               minimising waste and ensuring uniform particle distribution throughout daily service.
@@ -111,7 +111,7 @@ export function ProductOverview({
               >
                 Download spec sheet
               </a>
-              <TextLink href="#specifications" className="type-body font-semibold text-fg hover:shadow-[inset_0_-1px_0_var(--accent)]">
+              <TextLink href="#specifications" className="type-body font-semibold text-black link-underline">
                 View specifications table
               </TextLink>
             </div>
@@ -120,7 +120,7 @@ export function ProductOverview({
       </div>
 
       {/* Infinite Technical Monospace Marquee across the bottom */}
-      <div className="w-full border-t border-line bg-surface/80 py-3.5 overflow-hidden">
+      <div className="w-full border-t border-silver bg-white/80 py-3.5 overflow-hidden">
         <style
           dangerouslySetInnerHTML={{
             __html: `
@@ -144,7 +144,7 @@ export function ProductOverview({
             `,
           }}
         />
-        <div className="overview-marquee-track whitespace-nowrap font-mono text-[11px] sm:text-xs uppercase tracking-[0.22em] text-muted select-none">
+        <div className="overview-marquee-track whitespace-nowrap font-mono text-[11px] sm:text-xs uppercase tracking-[0.22em] text-grey select-none">
           <span className="px-4">{marqueeString}</span>
           <span className="px-4">{marqueeString}</span>
         </div>

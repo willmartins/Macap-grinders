@@ -99,7 +99,7 @@ export function CookieConsent() {
             role="dialog"
             aria-modal="true"
             aria-labelledby={titleId}
-            className="grid w-full max-w-lg gap-4 border border-line bg-bg p-6 text-fg"
+            className="grid w-full max-w-lg gap-4 border border-silver bg-white p-6 text-black"
           >
             <p id={titleId} className="text-base font-medium">
               Cookies

@@ -13,7 +13,7 @@ export function SpecTable({
   return (
     <div className="overflow-x-auto">
       <table className="datasheet min-w-[20rem]">
-        {caption ? <caption className="label mb-4 text-left text-muted">{caption}</caption> : null}
+        {caption ? <caption className="label mb-4 text-left text-grey">{caption}</caption> : null}
         <tbody>
           {rows.map((row) => (
             <tr key={row.label}>
@@ -32,10 +32,10 @@ export function CompareTable({ grinders }: { grinders: Grinder[] }) {
   return (
     <div className="overflow-x-auto">
       <table className="w-full min-w-[40rem] border-collapse text-left">
-        <caption className="label mb-4 text-left text-muted">Specifications side by side.</caption>
+        <caption className="label mb-4 text-left text-grey">Specifications side by side.</caption>
         <thead>
-          <tr className="border-b border-line">
-            <th scope="col" className="label py-4 pr-4 font-medium text-muted">
+          <tr className="border-b border-silver">
+            <th scope="col" className="label py-4 pr-4 font-medium text-grey">
               Specification
             </th>
             {grinders.map((grinder) => (
@@ -52,8 +52,8 @@ export function CompareTable({ grinders }: { grinders: Grinder[] }) {
         </thead>
         <tbody>
           {rows.map((row) => (
-            <tr key={row.label} className="border-b border-line">
-              <th scope="row" className="label py-4 pr-4 font-medium text-muted">
+            <tr key={row.label} className="border-b border-silver">
+              <th scope="row" className="label py-4 pr-4 font-medium text-grey">
                 {row.label}
               </th>
               {row.values.map((value, index) => (

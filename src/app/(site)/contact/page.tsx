@@ -57,7 +57,7 @@ export default function ContactPage({
   searchParams: Promise<Record<string, string | string[] | undefined>>;
 }) {
   return (
-    <Suspense fallback={<p className="px-5 py-20 text-muted">Loading.</p>}>
+    <Suspense fallback={<p className="px-5 py-20 text-grey">Loading.</p>}>
       <ContactContent searchParams={searchParams} />
     </Suspense>
   );

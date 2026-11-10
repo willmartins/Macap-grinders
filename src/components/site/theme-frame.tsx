@@ -19,7 +19,7 @@ export function ThemeFrame({ children }: { children: React.ReactNode }) {
   const theme = override ?? themeFromPath(pathname);
   return (
     <ThemeOverride.Provider value={setOverride}>
-      <div data-theme={theme} className="flex min-h-full flex-1 flex-col bg-bg text-fg">
+      <div data-theme={theme} className="flex min-h-full flex-1 flex-col bg-white text-black">
         {children}
       </div>
     </ThemeOverride.Provider>

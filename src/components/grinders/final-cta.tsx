@@ -4,7 +4,7 @@ import type { Grinder } from "@/lib/content/types";
 
 export function FinalCtaSection({ grinder }: { grinder: Grinder }) {
   return (
-    <section className="relative isolate overflow-hidden bg-surface-dark py-20 sm:py-28 text-white border-t border-line" aria-labelledby="cta-heading">
+    <section className="relative isolate overflow-hidden bg-off-black py-20 sm:py-28 text-white border-t border-silver" aria-labelledby="cta-heading">
       {/* Background radial gradient for depth */}
       <div
         className="pointer-events-none absolute inset-0 z-0 bg-[radial-gradient(circle_at_50%_40%,rgba(255,255,255,0.06)_0%,transparent_70%)]"
@@ -13,7 +13,7 @@ export function FinalCtaSection({ grinder }: { grinder: Grinder }) {
 
       <div className="frame relative z-10">
         <div className="max-w-4xl">
-          <div className="inline-flex items-center gap-2 border border-white/20 bg-white/5 px-3 py-1.5 type-eyebrow text-accent mb-6">
+          <div className="inline-flex items-center gap-2 border border-white/20 bg-white/5 px-3 py-1.5 type-eyebrow text-yellow mb-6">
             <span>Macap Venice</span>
             <span>•</span>
             <span>Est. 1930</span>

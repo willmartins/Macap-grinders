@@ -25,7 +25,7 @@ export function ProductHero({
   crumbs?: ReactNode;
 }) {
   return (
-    <header className="relative isolate flex h-[calc(100dvh-var(--chrome-h))] min-h-[calc(100dvh-var(--chrome-h))] w-full overflow-hidden bg-surface-dark text-white">
+    <header className="relative isolate flex h-[calc(100dvh-var(--chrome-h))] min-h-[calc(100dvh-var(--chrome-h))] w-full overflow-hidden bg-off-black text-white">
       {/* Background ambient lighting */}
       <div
         className="pointer-events-none absolute inset-0 z-0 bg-[radial-gradient(circle_at_75%_50%,rgba(255,255,255,0.08)_0%,transparent_65%)]"
@@ -93,7 +93,7 @@ export function ProductHero({
                   <p className="type-eyebrow text-white/60">
                     {figure.label}
                   </p>
-                  <p className="mt-0.5 text-lg font-semibold tracking-tight text-white tabular-nums whitespace-nowrap">
+                  <p className="mt-0.5 type-h3 text-white tabular-nums whitespace-nowrap">
                     {figure.value}
                     <span className="ml-0.5 text-xs font-normal text-white/70">{figure.unit}</span>
                   </p>
@@ -159,7 +159,7 @@ export function ProductHero({
                         <p className="type-eyebrow text-white/60">
                           {figure.label}
                         </p>
-                        <p className="mt-1.5 type-stat text-white whitespace-nowrap">
+                        <p className="mt-1.5 type-h3 text-white tabular-nums whitespace-nowrap">
                           {figure.value}
                           <span className="ml-1 text-sm font-normal text-white/70">{figure.unit}</span>
                         </p>

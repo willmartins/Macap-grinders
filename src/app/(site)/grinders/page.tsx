@@ -50,7 +50,7 @@ async function GrindersContent({
       </header>
       <div className="frame section-tight">
         <FilterBar groups={catalogue.groups} burrs={burrs} filters={filters} />
-        <p className="mt-8 text-sm text-muted">
+        <p className="mt-8 text-sm text-grey">
           {grinders.length} {grinders.length === 1 ? "grinder" : "grinders"}
         </p>
         <div className="mt-6">
@@ -74,7 +74,7 @@ export default function GrindersPage({
   searchParams: Promise<Record<string, string | string[] | undefined>>;
 }) {
   return (
-    <Suspense fallback={<p className="px-5 py-20 text-muted">Loading.</p>}>
+    <Suspense fallback={<p className="px-5 py-20 text-grey">Loading.</p>}>
       <GrindersContent searchParams={searchParams} />
     </Suspense>
   );

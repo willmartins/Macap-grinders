@@ -62,7 +62,7 @@ async function CompareContent({
                     ratio="16/9"
                     sizes="(min-width: 768px) 30rem, 100vw"
                   />
-                  <p className="label mt-4 text-muted">{grinder.groupName || "Macap"}</p>
+                  <p className="label mt-4 text-grey">{grinder.groupName || "Macap"}</p>
                   <h2 className="mt-2 text-3xl font-medium tracking-tight">
                     <TextLink href={`/grinders/${grinder.slug}`} className="tap underline-offset-4 hover:underline">
                       {grinder.name}
@@ -113,7 +113,7 @@ async function CompareContent({
             </ul>
           </div>
         ) : (
-          <p className="mt-8 text-sm text-muted">Remove one to add another.</p>
+          <p className="mt-8 text-sm text-grey">Remove one to add another.</p>
         )}
       </div>
     </article>
@@ -126,7 +126,7 @@ export default function ComparePage({
   searchParams: Promise<Record<string, string | string[] | undefined>>;
 }) {
   return (
-    <Suspense fallback={<p className="px-5 py-20 text-muted">Loading.</p>}>
+    <Suspense fallback={<p className="px-5 py-20 text-grey">Loading.</p>}>
       <CompareContent searchParams={searchParams} />
     </Suspense>
   );

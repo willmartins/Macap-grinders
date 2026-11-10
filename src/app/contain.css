@@ -5,18 +5,6 @@
   contract: positioned, a real height, and overflow clipped.
 */
 
-:root,
-[data-theme="home"],
-[data-theme="neutral"],
-[data-theme="professional"] {
-  --bg: #ffffff;
-  --fg: #000000;
-  --muted: #5c5c5c;
-  --line: #e4e4e4;
-  --surface: #ffffff;
-  --plinth: #e4e4e4;
-}
-
 .site-header {
   background: #ffffff;
   color: #000000;

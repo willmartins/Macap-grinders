@@ -1,39 +1,55 @@
 @import "tailwindcss";
 
-:root,
-[data-theme="home"],
-[data-theme="neutral"] {
-  --bg: #ffffff;
-  --fg: #000000;
-  --muted: #5c5c5c;
-  --line: #e4e4e4;
-  --accent: #ffc600;
-  --accent-fg: #000000;
-  --surface: #ffffff;
-  --plinth: #e4e4e4;
-  --sand: #f2ede4;
-  --sand-muted: #e5dfd2;
+/*
+  Colours, each named for what it looks like. Tailwind uses the same names,
+  as in bg-yellow or text-grey. See /design-system.
+*/
+:root {
+  --black: #000000;
+  --off-black: #0c0c0c;
+  --grey: #5c5c5c;
+  --silver: #e4e4e4;
   --light-grey: #f9f9f9;
-  --surface-dark: #0c0c0c;
-  --surface-dark-elevated: #141414;
+  --white: #ffffff;
+  --sand: #f2ede4;
+  --dark-sand: #e5dfd2;
+  --yellow: #ffc600;
   --radius: 0px;
 }
 
-[data-theme="professional"] {
-  --bg: #ffffff;
-  --fg: #000000;
-  --muted: #5c5c5c;
-  --line: #e4e4e4;
-  --accent: #ffc600;
-  --accent-fg: #000000;
-  --surface: #ffffff;
-  --plinth: #e4e4e4;
-  --sand: #f2ede4;
-  --sand-muted: #e5dfd2;
-  --light-grey: #f9f9f9;
-  --surface-dark: #0c0c0c;
-  --surface-dark-elevated: #141414;
-  --radius: 0px;
+/*
+  Special colours. For special circumstances and for tools and apps,
+  such as telling models apart in the compare tool. Not for general page design.
+  Each has a light fill, a mid tone for borders, and a dark tone for text.
+*/
+:root {
+  --light-sky: #e0f2fe;
+  --sky: #7dd3fc;
+  --dark-sky: #075985;
+  --light-emerald: #d1fae5;
+  --emerald: #6ee7b7;
+  --dark-emerald: #065f46;
+  --light-violet: #ede9fe;
+  --violet: #c4b5fd;
+  --dark-violet: #5b21b6;
+}
+
+/*
+  Type scale. Every step starts from the 15px body size.
+  On a phone each step is 1.2 times the last (minor third).
+  On a desktop each step is 1.333 times the last (perfect fourth).
+  Between 375px and 1440px wide, a step grows evenly from one to the other.
+  Steps 3 and 6 are spare. Labels (eyebrow, mono, navigation) are fixed sizes and sit off the scale.
+*/
+:root {
+  --type-0: 0.9375rem;
+  --type-1: clamp(1.1250rem, 1.0810rem + 0.1878vw, 1.2500rem);
+  --type-2: clamp(1.3500rem, 1.2385rem + 0.4757vw, 1.6667rem);
+  --type-3: clamp(1.6200rem, 1.4079rem + 0.9047vw, 2.2222rem);
+  --type-4: clamp(1.9440rem, 1.5852rem + 1.5308vw, 2.9630rem);
+  --type-5: clamp(2.3328rem, 1.7631rem + 2.4305vw, 3.9506rem);
+  --type-6: clamp(2.7994rem, 1.9303rem + 3.7080vw, 5.2675rem);
+  --type-7: clamp(3.3592rem, 2.0691rem + 5.5047vw, 7.0233rem);
 }
 
 :root {
@@ -71,31 +87,26 @@ html {
 @theme inline {
   --font-sans: var(--font-macap), "Helvetica Neue", Helvetica, Arial, sans-serif;
   --font-mono: var(--font-mono), "Space Mono", ui-monospace, monospace;
-  --color-bg: var(--bg);
-  --color-fg: var(--fg);
-  --color-muted: var(--muted);
-  --color-line: var(--line);
-  --color-accent: var(--accent);
-  --color-accent-fg: var(--accent-fg);
-  --color-surface: var(--surface);
-  --color-plinth: var(--plinth);
   --color-sand: var(--sand);
-  --color-sand-muted: var(--sand-muted);
   --color-light-grey: var(--light-grey);
-  --color-surface-dark: var(--surface-dark);
-  --color-surface-dark-elevated: var(--surface-dark-elevated);
+  --color-off-black: var(--off-black);
+  --color-grey: var(--grey);
+  --color-silver: var(--silver);
+  --color-dark-sand: var(--dark-sand);
+  --color-yellow: var(--yellow);
+  --color-light-sky: var(--light-sky);
+  --color-sky: var(--sky);
+  --color-dark-sky: var(--dark-sky);
+  --color-light-emerald: var(--light-emerald);
+  --color-emerald: var(--emerald);
+  --color-dark-emerald: var(--dark-emerald);
+  --color-light-violet: var(--light-violet);
+  --color-violet: var(--violet);
+  --color-dark-violet: var(--dark-violet);
 }
 
 .bg-sand {
   background-color: var(--sand);
-}
-
-.bg-sand-muted {
-  background-color: var(--sand-muted);
-}
-
-.border-sand-muted {
-  border-color: var(--sand-muted);
 }
 
 .bg-light-grey {
@@ -199,6 +210,13 @@ section[id],
   min-height: 44px;
 }
 
+/* A flex box drops the space before the last word of a text link, so a text link gets its height from padding. */
+.text-link.tap {
+  display: inline-block;
+  min-height: 0;
+  padding-block: 0.625rem;
+}
+
 .step-index {
   font-size: 0.95rem;
   font-variant-numeric: tabular-nums;
@@ -214,14 +232,14 @@ section[id],
 
 .display,
 .type-display {
-  font-size: clamp(3.5rem, 7.5vw, 7.5rem);
+  font-size: var(--type-7);
   font-weight: 600;
   letter-spacing: -0.04em;
   line-height: 0.92;
 }
 
 .type-h1 {
-  font-size: clamp(2.5rem, 5vw, 4.75rem);
+  font-size: var(--type-5);
   font-weight: 600;
   letter-spacing: -0.035em;
   line-height: 0.98;
@@ -229,28 +247,28 @@ section[id],
 
 .display-sm,
 .type-h2 {
-  font-size: clamp(2rem, 3.6vw, 3.25rem);
+  font-size: var(--type-4);
   font-weight: 600;
   letter-spacing: -0.03em;
   line-height: 1.06;
 }
 
 .type-h3 {
-  font-size: clamp(1.25rem, 1.8vw, 1.625rem);
+  font-size: var(--type-2);
   font-weight: 600;
   letter-spacing: -0.02em;
   line-height: 1.2;
 }
 
 .type-lead {
-  font-size: clamp(1.0625rem, 1.2vw, 1.2rem);
+  font-size: var(--type-1);
   font-weight: 400;
   letter-spacing: -0.005em;
   line-height: 1.55;
 }
 
 .type-body {
-  font-size: 0.9375rem;
+  font-size: var(--type-0);
   font-weight: 400;
   line-height: 1.6;
 }
@@ -275,14 +293,6 @@ section[id],
   font-weight: 600;
   letter-spacing: -0.05em;
   line-height: 0.86;
-}
-
-.type-stat {
-  font-size: clamp(1.75rem, 2.5vw, 2.5rem);
-  font-variant-numeric: tabular-nums;
-  font-weight: 600;
-  letter-spacing: -0.03em;
-  line-height: 0.95;
 }
 
 .hero-figures .stat {
@@ -323,35 +333,51 @@ section[id],
   gap: 0.85rem;
   min-height: 2.75rem;
   padding: 0.75rem 1.15rem;
-  border: 1px solid var(--fg);
+  border: 1px solid var(--black);
   border-radius: var(--radius);
-  background: var(--fg);
-  color: var(--bg);
+  background: var(--black);
+  color: var(--white);
   font-size: 0.9375rem;
   font-weight: 600;
   letter-spacing: 0;
   text-decoration: none;
+  transition:
+    background-color 180ms ease,
+    border-color 180ms ease,
+    color 180ms ease;
 }
 
+/* The arrow moves the way a text link arrow does. */
 .btn::after {
   content: "→";
+  display: inline-block;
   letter-spacing: 0;
   font-size: 0.95rem;
+  transition: transform 180ms ease;
 }
 
+.btn:hover::after,
+.btn:focus-visible::after {
+  transform: translateX(0.22em);
+}
+
+/*
+  Hover eases the fill one step lighter or darker. Nothing inverts,
+  so the button keeps its shape and its place in the layout.
+*/
 .btn:hover {
-  background: transparent;
-  color: var(--fg);
+  border-color: #2b2b2b;
+  background: #2b2b2b;
 }
 
 .btn-secondary {
   background: transparent;
-  color: var(--fg);
+  color: var(--black);
 }
 
 .btn-secondary:hover {
-  background: var(--fg);
-  color: var(--bg);
+  border-color: var(--black);
+  background: rgb(0 0 0 / 0.06);
 }
 
 .btn-on-photo {
@@ -361,8 +387,8 @@ section[id],
 }
 
 .btn-on-photo:hover {
-  background: transparent;
-  color: #ffffff;
+  border-color: var(--silver);
+  background: var(--silver);
 }
 
 .btn-on-photo.btn-secondary {
@@ -372,8 +398,32 @@ section[id],
 }
 
 .btn-on-photo.btn-secondary:hover {
-  background: #ffffff;
-  color: #111111;
+  border-color: #ffffff;
+  background: rgb(255 255 255 / 0.14);
+}
+
+/* Yellow with black text. For dark grounds. */
+.btn-yellow {
+  border-color: var(--yellow);
+  background: var(--yellow);
+  color: #000000;
+}
+
+.btn-yellow:hover {
+  border-color: #ffd640;
+  background: #ffd640;
+}
+
+/* An icon sits inside the button as an svg, before or after the label. */
+.btn svg {
+  flex: none;
+  width: 1.15em;
+  height: 1.15em;
+}
+
+/* For a button whose icon takes the place of the arrow. */
+.btn-no-arrow::after {
+  content: none;
 }
 
 .cookie-dialog {
@@ -390,8 +440,8 @@ section[id],
   bottom: 0;
   left: 0;
   z-index: var(--z-cookie);
-  border-top: 2px solid var(--accent);
-  background: var(--bg);
+  border-top: 2px solid var(--yellow);
+  background: var(--white);
   padding: 0.65rem 0 0.7rem;
 }
 
@@ -464,6 +514,16 @@ section[id],
   transform: translate(0.16em, -0.16em);
 }
 
+/* A yellow rule draws in under a text link on hover. */
+.link-underline {
+  box-shadow: inset 0 -1px 0 transparent;
+  transition: box-shadow 180ms ease;
+}
+
+.link-underline:hover {
+  box-shadow: inset 0 -1px 0 var(--yellow);
+}
+
 .machine-grid,
 .model-snap {
   align-items: stretch;
@@ -487,8 +547,8 @@ section[id],
   flex-direction: column;
   width: 100%;
   min-height: 100%;
-  border: 1px solid var(--line);
-  background: var(--surface);
+  border: 1px solid var(--silver);
+  background: var(--white);
   color: inherit;
   text-decoration: none;
 }
@@ -500,7 +560,7 @@ section[id],
   aspect-ratio: 1;
   margin: 0.7rem 0.7rem 0;
   overflow: hidden;
-  background: var(--plinth);
+  background: var(--silver);
 }
 
 .machine-shot {
@@ -547,7 +607,7 @@ section[id],
   font-weight: 500;
   letter-spacing: 0;
   line-height: 1.3;
-  color: var(--muted);
+  color: var(--grey);
 }
 
 .machine-specs dd {
@@ -566,8 +626,8 @@ section[id],
 
 @media (hover: hover) and (pointer: fine) {
   .machine-card:hover {
-    border-color: var(--fg);
-    background: var(--bg);
+    border-color: var(--black);
+    background: var(--white);
   }
 
   .machine-card:hover .link-arrow {
@@ -594,15 +654,15 @@ section[id],
 .field {
   width: 100%;
   min-height: 2.75rem;
-  border: 1px solid var(--line);
-  background: var(--bg);
-  color: var(--fg);
+  border: 1px solid var(--silver);
+  background: var(--white);
+  color: var(--black);
   padding: 0.65rem 0.75rem;
 }
 
 .field[aria-invalid="true"] {
-  border-color: var(--fg);
-  box-shadow: inset 3px 0 0 var(--accent);
+  border-color: var(--black);
+  box-shadow: inset 3px 0 0 var(--yellow);
 }
 
 .enquiry-form {
@@ -635,13 +695,13 @@ section[id],
 .choice {
   min-height: 3.25rem;
   padding: 0.8rem 0.9rem;
-  border: 1px solid var(--line);
+  border: 1px solid var(--silver);
   cursor: pointer;
 }
 
 .choice:has(:checked) {
-  border-color: var(--fg);
-  box-shadow: inset 0 -2px 0 var(--accent);
+  border-color: var(--black);
+  box-shadow: inset 0 -2px 0 var(--yellow);
 }
 
 .choice-check {
@@ -650,14 +710,14 @@ section[id],
 }
 
 .form-error {
-  color: var(--fg);
+  color: var(--black);
   font-size: 0.875rem;
 }
 
 .partner-note {
   display: grid;
   gap: 0.75rem;
-  border-left: 2px solid var(--accent);
+  border-left: 2px solid var(--yellow);
   padding: 0.9rem 0 0.9rem 1rem;
 }
 
@@ -670,8 +730,8 @@ section[id],
   max-height: 16rem;
   margin: 0.25rem 0 0;
   overflow: auto;
-  border: 1px solid var(--line);
-  background: var(--bg);
+  border: 1px solid var(--silver);
+  background: var(--white);
   padding: 0.25rem 0;
 }
 
@@ -681,12 +741,12 @@ section[id],
 }
 
 .country-list li.is-active {
-  background: color-mix(in srgb, var(--fg) 8%, transparent);
+  background: color-mix(in srgb, var(--black) 8%, transparent);
 }
 
 .country-empty {
   cursor: default;
-  color: var(--muted);
+  color: var(--grey);
 }
 
 .enquire-machine {
@@ -707,9 +767,9 @@ section[id],
   max-height: calc(100% - 1.5rem);
   margin: auto;
   padding: 0;
-  border: 1px solid var(--line);
-  background: var(--bg);
-  color: var(--fg);
+  border: 1px solid var(--silver);
+  background: var(--white);
+  color: var(--black);
 }
 
 .enquire-dialog::backdrop {
@@ -1021,10 +1081,10 @@ html:has(.sample-banner) {
   right: 1.25rem;
   z-index: 2;
   min-width: 14rem;
-  border: 1px solid var(--line);
-  background: var(--bg);
+  border: 1px solid var(--silver);
+  background: var(--white);
   padding: 0.5rem 1rem;
-  color: var(--fg);
+  color: var(--black);
 }
 
 main {
@@ -1135,7 +1195,7 @@ main:has([data-hero]) {
   aspect-ratio: 4 / 3;
   min-height: 0;
   overflow: hidden;
-  background: var(--plinth);
+  background: var(--silver);
 }
 
 .datasheet {
@@ -1147,8 +1207,8 @@ main:has([data-hero]) {
 .datasheet th {
   width: 34%;
   padding: 0.95rem 1rem 0.95rem 0;
-  border-bottom: 1px solid var(--line);
-  color: var(--muted);
+  border-bottom: 1px solid var(--silver);
+  color: var(--grey);
   font-size: 0.9375rem;
   font-weight: 500;
   letter-spacing: 0;
@@ -1157,7 +1217,7 @@ main:has([data-hero]) {
 
 .datasheet td {
   padding: 0.95rem 0;
-  border-bottom: 1px solid var(--line);
+  border-bottom: 1px solid var(--silver);
   font-size: 0.9375rem;
 }
 
@@ -1207,8 +1267,8 @@ main:has([data-hero]) {
 .figure-rail {
   position: relative;
   z-index: 2;
-  border-top: 1px solid var(--line);
-  background: var(--bg);
+  border-top: 1px solid var(--silver);
+  background: var(--white);
 }
 
 .figure-rail ul {
@@ -1218,8 +1278,8 @@ main:has([data-hero]) {
 
 .figure-rail li {
   padding: 1.25rem 1rem 1.4rem;
-  border-right: 1px solid var(--line);
-  border-bottom: 1px solid var(--line);
+  border-right: 1px solid var(--silver);
+  border-bottom: 1px solid var(--silver);
 }
 
 @media (min-width: 768px) {
@@ -1397,7 +1457,7 @@ main:has([data-hero]) {
   }
 
   .feature-card {
-    background: var(--bg);
+    background: var(--white);
   }
 
   .feature-snap .editorial {
@@ -1481,8 +1541,15 @@ main:has([data-hero]) {
   }
 
   .link-arrow,
-  .machine-shot {
+  .machine-shot,
+  .btn,
+  .btn::after {
     transition: none;
+  }
+
+  .btn:hover::after,
+  .btn:focus-visible::after {
+    transform: none;
   }
 
   .text-link:hover .link-arrow,

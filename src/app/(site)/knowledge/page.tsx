@@ -44,14 +44,14 @@ async function KnowledgeContent() {
                   {topic.title}
                 </TextLink>
               </h3>
-              <p className="mt-3 text-sm leading-relaxed text-muted">{topic.description}</p>
+              <p className="mt-3 text-sm leading-relaxed text-grey">{topic.description}</p>
             </li>
           ))}
         </ol>
       </section>
       <section className="frame section">
         <h2 className="display-sm">Articles</h2>
-        <ul className="mt-8 divide-y divide-line border-y border-line">
+        <ul className="mt-8 divide-y divide-silver border-y border-silver">
           {posts.posts.map((post) => {
             const shot = articleShot(post.slug);
             return (
@@ -67,9 +67,9 @@ async function KnowledgeContent() {
                       {post.title}
                     </TextLink>
                   </h3>
-                  <p className="mt-2 max-w-xl text-muted">{post.excerpt}</p>
+                  <p className="mt-2 max-w-xl text-grey">{post.excerpt}</p>
                 </div>
-                <p className="text-sm text-muted md:col-span-2 md:text-right">
+                <p className="text-sm text-grey md:col-span-2 md:text-right">
                   {post.topicTitle ? <span className="block">{post.topicTitle}</span> : null}
                   <span className="block">{formatDate(post.publishedAt)}</span>
                 </p>
@@ -85,7 +85,7 @@ async function KnowledgeContent() {
 
 export default function KnowledgePage() {
   return (
-    <Suspense fallback={<p className="px-5 py-20 text-muted">Loading.</p>}>
+    <Suspense fallback={<p className="px-5 py-20 text-grey">Loading.</p>}>
       <KnowledgeContent />
     </Suspense>
   );

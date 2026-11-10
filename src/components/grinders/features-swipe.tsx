@@ -1,70 +1,13 @@
 "use client";
 
-import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 
-import { TextLink } from "@/components/site/text-link";
+import { FeatureCard, type FeatureCardItem } from "@/components/site/feature-card";
 import type { Grinder } from "@/lib/content/types";
 import { pageShots } from "@/lib/imagery";
 
-export type ProductFeatureItem = {
-  _key: string;
-  title: string;
-  text: string;
-  imageUrl?: string | null;
-  imageAlt?: string;
-  icon?: "burrs" | "motor" | "dial" | "screen" | "scale" | "cooling" | null;
-  containerBg?: string | null;
-  buttonLabel?: string | null;
-  buttonHref?: string | null;
-};
-
-function FeatureIcon({ type }: { type: NonNullable<ProductFeatureItem["icon"]> }) {
-  switch (type) {
-    case "burrs":
-      return (
-        <svg className="h-10 w-10 text-fg" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
-          <circle cx="12" cy="12" r="9" />
-          <circle cx="12" cy="12" r="4" />
-          <path d="M12 3v5M12 16v5M3 12h5M16 12h5" />
-        </svg>
-      );
-    case "motor":
-      return (
-        <svg className="h-10 w-10 text-fg" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
-          <path d="M13 10V3L4 14h7v7l9-11h-7z" strokeLinecap="round" strokeLinejoin="round" />
-        </svg>
-      );
-    case "dial":
-      return (
-        <svg className="h-10 w-10 text-fg" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
-          <circle cx="12" cy="12" r="9" />
-          <path d="M12 7v5l3 3M8 12a4 4 0 018 0" strokeLinecap="round" />
-        </svg>
-      );
-    case "screen":
-      return (
-        <svg className="h-10 w-10 text-fg" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
-          <rect x="2" y="3" width="20" height="14" rx="2" />
-          <path d="M8 21h8M12 17v4" strokeLinecap="round" />
-        </svg>
-      );
-    case "scale":
-      return (
-        <svg className="h-10 w-10 text-fg" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
-          <path d="M12 3v18M6 8l6-3 6 3M6 8l-3 6h6L6 8zM18 8l-3 6h6l-3-6z" strokeLinecap="round" strokeLinejoin="round" />
-        </svg>
-      );
-    case "cooling":
-      return (
-        <svg className="h-10 w-10 text-fg" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
-          <path d="M12 2v20M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6" strokeLinecap="round" />
-        </svg>
-      );
-    default:
-      return null;
-  }
-}
+/** Kept for callers that used the old name. */
+export type ProductFeatureItem = FeatureCardItem;
 
 export function buildGrinderFeatures(grinder: Grinder): ProductFeatureItem[] {
   const specs = grinder.specs;
@@ -159,24 +102,24 @@ export function FeaturesSwipe({ grinder }: { grinder: Grinder }) {
   }, [features.length]);
 
   return (
-    <section className="section border-b border-line bg-white" aria-labelledby="features-heading">
+    <section className="section border-b border-silver bg-white" aria-labelledby="features-heading">
       <div className="frame">
         <div className="flex flex-wrap items-end justify-between gap-6">
           <div>
             {/* Desktop Section Heading */}
             <div className="hidden sm:block">
-              <p className="type-eyebrow text-muted mb-2.5">Engineering</p>
-              <h2 id="features-heading" className="type-h2 text-fg">
+              <p className="type-eyebrow text-grey mb-2.5">Engineering</p>
+              <h2 id="features-heading" className="type-h2 text-black">
                 Engineered features & technology
               </h2>
             </div>
 
             {/* Mobile: Eyebrow + Dynamic active card title outside the cards */}
             <div className="sm:hidden min-h-[4.25rem] flex flex-col justify-end">
-              <p className="type-eyebrow text-muted">
+              <p className="type-eyebrow text-grey">
                 Features & technology
               </p>
-              <h2 className="mt-1.5 type-h3 text-fg transition-all duration-200">
+              <h2 className="mt-1.5 type-h3 text-black transition-all duration-200">
                 {features[activeIndex]?.title}
               </h2>
             </div>
@@ -189,7 +132,7 @@ export function FeaturesSwipe({ grinder }: { grinder: Grinder }) {
               onClick={() => scroll("left")}
               disabled={activeIndex === 0}
               aria-label="Previous feature"
-              className="flex h-11 w-11 items-center justify-center border border-line bg-surface text-fg hover:border-fg transition-colors disabled:opacity-30 disabled:pointer-events-none"
+              className="flex h-11 w-11 items-center justify-center border border-silver bg-white text-black hover:border-black transition-colors disabled:opacity-30 disabled:pointer-events-none"
             >
               ←
             </button>
@@ -198,7 +141,7 @@ export function FeaturesSwipe({ grinder }: { grinder: Grinder }) {
               onClick={() => scroll("right")}
               disabled={activeIndex === features.length - 1}
               aria-label="Next feature"
-              className="flex h-11 w-11 items-center justify-center border border-line bg-surface text-fg hover:border-fg transition-colors disabled:opacity-30 disabled:pointer-events-none"
+              className="flex h-11 w-11 items-center justify-center border border-silver bg-white text-black hover:border-black transition-colors disabled:opacity-30 disabled:pointer-events-none"
             >
               →
             </button>
@@ -212,98 +155,14 @@ export function FeaturesSwipe({ grinder }: { grinder: Grinder }) {
           tabIndex={0}
           aria-label="Engineered features list"
         >
-          {features.map((feature) => {
-            const hasImage = Boolean(feature.imageUrl);
-            const hasIcon = Boolean(feature.icon);
-            const isHighImpactTypographic = !hasImage && !hasIcon;
-
-            // VARIANT 3: NO IMAGE AND NO ICON -> High Impact Architectural Design
-            if (isHighImpactTypographic) {
-              return (
-                <article
-                  key={feature._key}
-                  className="flex-none w-[85vw] sm:w-[22rem] md:w-[26rem] snap-start flex flex-col justify-between border border-line bg-surface-dark-elevated text-white p-7 md:p-8 relative overflow-hidden group hover:border-accent transition-all"
-                >
-                  <div className="absolute top-0 left-0 right-0 h-1 bg-accent" />
-
-                  <div>
-                    <div className="flex items-center">
-                      <span className="inline-block border border-white/15 bg-white/5 px-2.5 py-1 type-eyebrow text-accent">
-                        Key Technology
-                      </span>
-                    </div>
-
-                    <h3 className="hidden sm:block mt-8 type-h3 text-white">
-                      {feature.title}
-                    </h3>
-
-                    <p className="mt-4 type-body text-white/75">
-                      {feature.text}
-                    </p>
-                  </div>
-
-                  {feature.buttonHref && feature.buttonLabel ? (
-                    <div className="mt-6 pt-4 border-t border-white/10">
-                      <TextLink href={feature.buttonHref} className="type-body font-semibold text-white hover:text-accent">
-                        {feature.buttonLabel}
-                      </TextLink>
-                    </div>
-                  ) : null}
-                </article>
-              );
-            }
-
-            // VARIANT 1 (WITH REAL IMAGE) OR VARIANT 2 (WITH ICON MATCHING IMAGE CONTAINER)
-            return (
-              <article
-                key={feature._key}
-                className="flex-none w-[85vw] sm:w-[22rem] md:w-[26rem] snap-start flex flex-col justify-between border border-line bg-surface p-6 sm:p-7 transition-all hover:border-fg"
-              >
-                <div>
-                  {/* Case 1: Image provided (from media library) */}
-                  {hasImage ? (
-                    <div className="relative aspect-[16/10] w-full overflow-hidden border border-line bg-plinth mb-5">
-                      <Image
-                        src={feature.imageUrl!}
-                        alt={feature.imageAlt || feature.title}
-                        fill
-                        sizes="(min-width: 768px) 26rem, 85vw"
-                        className="object-cover"
-                      />
-                    </div>
-                  ) : null}
-
-                  {/* Case 2: Icon provided -> Matched to image container with configurable background colour */}
-                  {hasIcon ? (
-                    <div
-                      className="relative aspect-[16/10] w-full overflow-hidden border border-line mb-5 flex items-center justify-center transition-colors"
-                      style={{ backgroundColor: feature.containerBg || "rgba(0,0,0,0.04)" }}
-                    >
-                      <div className="flex h-16 w-16 items-center justify-center bg-surface border border-line">
-                        <FeatureIcon type={feature.icon!} />
-                      </div>
-                    </div>
-                  ) : null}
-
-                  <h3 className="hidden sm:block type-h3 text-fg">
-                    {feature.title}
-                  </h3>
-
-                  <p className="mt-3 type-body text-muted">
-                    {feature.text}
-                  </p>
-                </div>
-
-                {feature.buttonHref && feature.buttonLabel ? (
-                  <div className="mt-6 pt-4 border-t border-line">
-                    <TextLink href={feature.buttonHref} className="type-body font-semibold text-fg hover:shadow-[inset_0_-1px_0_var(--accent)]">
-                      {feature.buttonLabel}
-                    </TextLink>
-                  </div>
-                ) : null}
-              </article>
-            );
-          })}
+          {features.map((feature) => (
+            <FeatureCard
+              key={feature._key}
+              feature={feature}
+              titleFromSm
+              className="flex-none w-[85vw] sm:w-[22rem] md:w-[26rem] snap-start"
+            />
+          ))}
         </div>
 
         {/* Carousel Bar Indicators */}
@@ -319,7 +178,7 @@ export function FeaturesSwipe({ grinder }: { grinder: Grinder }) {
                 aria-label={`Slide ${idx + 1}`}
                 onClick={() => scrollToIndex(idx)}
                 className={`transition-all duration-300 h-1.5 ${
-                  isCurrent ? "w-8 bg-fg" : "w-3 bg-line hover:bg-muted"
+                  isCurrent ? "w-8 bg-black" : "w-3 bg-silver hover:bg-grey"
                 }`}
               />
             );

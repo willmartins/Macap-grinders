@@ -14,7 +14,7 @@ export function Breadcrumbs({
   return (
     <>
       <nav aria-label="Breadcrumb" className={bare ? "" : "frame pt-6"}>
-        <ol className={`flex flex-wrap items-center gap-1.5 text-xs sm:text-sm font-medium ${overlay ? "text-white/70" : "text-muted"}`}>
+        <ol className={`flex flex-wrap items-center gap-1.5 text-xs sm:text-sm font-medium ${overlay ? "text-white/70" : "text-grey"}`}>
           {trail.map((item, index) => {
             const last = index === trail.length - 1;
             return (
@@ -25,14 +25,14 @@ export function Breadcrumbs({
                   </span>
                 ) : null}
                 {last ? (
-                  <span aria-current="page" className={overlay ? "text-white font-semibold" : "text-fg font-semibold"}>
+                  <span aria-current="page" className={overlay ? "text-white font-semibold" : "text-black font-semibold"}>
                     {item.name}
                   </span>
                 ) : (
                   <a
                     href={item.path}
                     className={`transition-colors hover:underline underline-offset-4 ${
-                      overlay ? "hover:text-white" : "hover:text-fg"
+                      overlay ? "hover:text-white" : "hover:text-black"
                     }`}
                   >
                     {item.name}

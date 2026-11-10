@@ -221,7 +221,7 @@ export function ContactForm({ grinder: given }: { grinder?: EnquiryGrinder | nul
           aria-invalid={phoneError ? true : undefined}
           aria-describedby={phoneError ? `${base}-phone-hint ${base}-phone-error` : `${base}-phone-hint`}
         />
-        <span id={`${base}-phone-hint`} className="text-sm text-muted">
+        <span id={`${base}-phone-hint`} className="text-sm text-grey">
           Optional. Include the country code if you are outside Italy.
         </span>
         {phoneError ? (
@@ -242,7 +242,7 @@ export function ContactForm({ grinder: given }: { grinder?: EnquiryGrinder | nul
           />
           Sign up to our mailing list
         </label>
-        <p id={`${base}-mailing-hint`} className="text-sm text-muted">
+        <p id={`${base}-mailing-hint`} className="text-sm text-grey">
           Occasional notes on grinders and how to look after them. Nothing from other companies.{" "}
           <TextLink href="/legal/privacy-policy">Privacy policy</TextLink>
         </p>

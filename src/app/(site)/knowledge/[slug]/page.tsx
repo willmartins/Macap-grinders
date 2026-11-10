@@ -82,8 +82,8 @@ async function PostContent({ params }: { params: Promise<{ slug: string }> }) {
       )}
       <div className="frame section-tight">
         <p className="max-w-2xl text-xl leading-snug">{post.answerFirst}</p>
-        <p className="mt-6 max-w-2xl text-sm text-muted">
-          <span className="block font-medium text-fg">{post.author.name}</span>
+        <p className="mt-6 max-w-2xl text-sm text-grey">
+          <span className="block font-medium text-black">{post.author.name}</span>
           {post.author.role ? <span className="block">{post.author.role}</span> : null}
           {post.publishedAt ? <span className="block">{formatDate(post.publishedAt)}</span> : null}
           {post.updatedAt ? <span className="block">Updated {formatDate(post.updatedAt)}</span> : null}
@@ -96,11 +96,11 @@ async function PostContent({ params }: { params: Promise<{ slug: string }> }) {
       {post.faqs.length ? (
         <section className="frame section-tight">
           <h2 className="text-3xl font-medium tracking-tight">Questions</h2>
-          <div className="mt-6 max-w-3xl divide-y divide-line border-y border-line">
+          <div className="mt-6 max-w-3xl divide-y divide-silver border-y border-silver">
             {post.faqs.map((faq) => (
               <details key={faq._key} className="py-2">
                 <summary className="cursor-pointer font-medium">{faq.question}</summary>
-                <p className="mt-3 text-sm leading-relaxed text-muted">{faq.answer}</p>
+                <p className="mt-3 text-sm leading-relaxed text-grey">{faq.answer}</p>
               </details>
             ))}
           </div>
@@ -140,7 +140,7 @@ async function PostContent({ params }: { params: Promise<{ slug: string }> }) {
 
 export default function PostPage({ params }: { params: Promise<{ slug: string }> }) {
   return (
-    <Suspense fallback={<p className="px-5 py-20 text-muted">Loading.</p>}>
+    <Suspense fallback={<p className="px-5 py-20 text-grey">Loading.</p>}>
       <PostContent params={params} />
     </Suspense>
   );

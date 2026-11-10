@@ -17,7 +17,7 @@ const components: PortableTextComponents = {
       const href = safeHref(typeof value?.href === "string" ? value.href : "");
       if (!href) return <>{children}</>;
       return (
-        <TextLink href={href} className="underline decoration-line underline-offset-4">
+        <TextLink href={href} className="underline decoration-silver underline-offset-4">
           {children}
         </TextLink>
       );

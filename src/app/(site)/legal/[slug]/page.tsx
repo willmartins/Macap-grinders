@@ -46,10 +46,10 @@ async function LegalContent({ params }: { params: Promise<{ slug: string }> }) {
       <header className="frame section-tight">
         <h1 className="display">{page.title}</h1>
         {page.effectiveDate ? (
-          <p className="label mt-6 text-muted">Effective {formatDate(page.effectiveDate)}</p>
+          <p className="label mt-6 text-grey">Effective {formatDate(page.effectiveDate)}</p>
         ) : null}
         {placeholder ? (
-          <p className="mt-6 max-w-2xl border border-line p-4 text-sm">Placeholder for legal review.</p>
+          <p className="mt-6 max-w-2xl border border-silver p-4 text-sm">Placeholder for legal review.</p>
         ) : null}
       </header>
       <div className="frame section-tight">
@@ -66,7 +66,7 @@ async function LegalContent({ params }: { params: Promise<{ slug: string }> }) {
 
 export default function LegalPage({ params }: { params: Promise<{ slug: string }> }) {
   return (
-    <Suspense fallback={<p className="px-5 py-20 text-muted">Loading.</p>}>
+    <Suspense fallback={<p className="px-5 py-20 text-grey">Loading.</p>}>
       <LegalContent params={params} />
     </Suspense>
   );

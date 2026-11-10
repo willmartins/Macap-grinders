@@ -64,7 +64,7 @@ export function Header({ links: _links }: { links?: LinkItem[] }) {
                 <Link
                   href="/home-grinders"
                   aria-current={pathname === "/home-grinders" || pathname.startsWith("/home-grinders/") ? "page" : undefined}
-                  className="nav-link block py-2.5 aria-[current=page]:shadow-[inset_0_-2px_0_var(--accent)]"
+                  className="nav-link block py-2.5 aria-[current=page]:shadow-[inset_0_-2px_0_var(--yellow)]"
                 >
                   Home
                 </Link>
@@ -73,17 +73,17 @@ export function Header({ links: _links }: { links?: LinkItem[] }) {
                 <Link
                   href="/professional"
                   aria-current={pathname === "/professional" || pathname.startsWith("/professional/") ? "page" : undefined}
-                  className="nav-link block py-2.5 aria-[current=page]:shadow-[inset_0_-2px_0_var(--accent)]"
+                  className="nav-link block py-2.5 aria-[current=page]:shadow-[inset_0_-2px_0_var(--yellow)]"
                 >
                   Professional
                 </Link>
               </li>
-              <li className="my-2 border-t border-line" aria-hidden="true" />
+              <li className="my-2 border-t border-silver" aria-hidden="true" />
               <li>
                 <Link
                   href="/about"
                   aria-current={pathname === "/about" || pathname.startsWith("/about/") ? "page" : undefined}
-                  className="nav-link block py-2.5 aria-[current=page]:shadow-[inset_0_-2px_0_var(--accent)]"
+                  className="nav-link block py-2.5 aria-[current=page]:shadow-[inset_0_-2px_0_var(--yellow)]"
                 >
                   About
                 </Link>
@@ -92,7 +92,7 @@ export function Header({ links: _links }: { links?: LinkItem[] }) {
                 <Link
                   href="/knowledge"
                   aria-current={pathname.startsWith("/knowledge") ? "page" : undefined}
-                  className="nav-link block py-2.5 aria-[current=page]:shadow-[inset_0_-2px_0_var(--accent)]"
+                  className="nav-link block py-2.5 aria-[current=page]:shadow-[inset_0_-2px_0_var(--yellow)]"
                 >
                   Knowledge hub
                 </Link>
@@ -113,21 +113,21 @@ export function Header({ links: _links }: { links?: LinkItem[] }) {
             <Link
               href="/home-grinders"
               aria-current={pathname === "/home-grinders" || pathname.startsWith("/home-grinders/") ? "page" : undefined}
-              className="nav-link aria-[current=page]:shadow-[inset_0_-2px_0_var(--accent)] hover:shadow-[inset_0_-2px_0_var(--accent)]"
+              className="nav-link aria-[current=page]:shadow-[inset_0_-2px_0_var(--yellow)] hover:shadow-[inset_0_-2px_0_var(--yellow)]"
             >
               Home
             </Link>
             <Link
               href="/professional"
               aria-current={pathname === "/professional" || pathname.startsWith("/professional/") ? "page" : undefined}
-              className="nav-link aria-[current=page]:shadow-[inset_0_-2px_0_var(--accent)] hover:shadow-[inset_0_-2px_0_var(--accent)]"
+              className="nav-link aria-[current=page]:shadow-[inset_0_-2px_0_var(--yellow)] hover:shadow-[inset_0_-2px_0_var(--yellow)]"
             >
               Professional
             </Link>
           </div>
 
           {/* Vertical Divider Pipe */}
-          <span className="text-muted/40 font-light select-none text-base" aria-hidden="true">
+          <span className="text-grey/40 font-light select-none text-base" aria-hidden="true">
             |
           </span>
 
@@ -136,14 +136,14 @@ export function Header({ links: _links }: { links?: LinkItem[] }) {
             <Link
               href="/about"
               aria-current={pathname === "/about" || pathname.startsWith("/about/") ? "page" : undefined}
-              className="nav-link aria-[current=page]:shadow-[inset_0_-2px_0_var(--accent)] hover:shadow-[inset_0_-2px_0_var(--accent)]"
+              className="nav-link aria-[current=page]:shadow-[inset_0_-2px_0_var(--yellow)] hover:shadow-[inset_0_-2px_0_var(--yellow)]"
             >
               About
             </Link>
             <Link
               href="/knowledge"
               aria-current={pathname.startsWith("/knowledge") ? "page" : undefined}
-              className="nav-link aria-[current=page]:shadow-[inset_0_-2px_0_var(--accent)] hover:shadow-[inset_0_-2px_0_var(--accent)]"
+              className="nav-link aria-[current=page]:shadow-[inset_0_-2px_0_var(--yellow)] hover:shadow-[inset_0_-2px_0_var(--yellow)]"
             >
               Knowledge hub
             </Link>
