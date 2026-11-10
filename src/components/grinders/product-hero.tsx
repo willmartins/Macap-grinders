@@ -13,7 +13,6 @@ export function ProductHero({
   priority = true,
   figures,
   crumbs,
-  blur = null,
 }: {
   imageUrl: string;
   alt: string;
@@ -24,10 +23,9 @@ export function ProductHero({
   priority?: boolean;
   figures?: Figure[];
   crumbs?: ReactNode;
-  blur?: string | null;
 }) {
   return (
-    <header className="relative isolate flex h-[calc(100dvh-var(--chrome-h))] min-h-[calc(100dvh-var(--chrome-h))] w-full overflow-hidden bg-[#0c0c0c] text-white">
+    <header className="relative isolate flex h-[calc(100dvh-var(--chrome-h))] min-h-[calc(100dvh-var(--chrome-h))] w-full overflow-hidden bg-surface-dark text-white">
       {/* Background ambient lighting */}
       <div
         className="pointer-events-none absolute inset-0 z-0 bg-[radial-gradient(circle_at_75%_50%,rgba(255,255,255,0.08)_0%,transparent_65%)]"
@@ -42,7 +40,7 @@ export function ProductHero({
         <div className="relative z-30 flex items-center justify-between gap-3 px-5 pt-4">
           {crumbs}
           {eyebrow ? (
-            <span className="shrink-0 rounded-full border border-white/20 bg-black/40 px-2.5 py-0.5 text-[11px] font-medium tracking-wider uppercase text-white/90 backdrop-blur-sm">
+            <span className="shrink-0 border border-white/20 bg-black/40 px-2.5 py-1 type-eyebrow text-white/90 backdrop-blur-sm">
               {eyebrow}
             </span>
           ) : null}
@@ -57,8 +55,6 @@ export function ProductHero({
               fill
               priority={priority}
               sizes="100vw"
-              placeholder={blur ? "blur" : "empty"}
-              blurDataURL={blur || undefined}
               className="object-contain object-center"
             />
           </div>
@@ -72,12 +68,12 @@ export function ProductHero({
 
         {/* Bottom Content Area on Mobile (Overlapping the lower part of the grinder) */}
         <div className="relative z-20 px-5 pb-6 pt-16">
-          <h1 className="text-4xl font-semibold tracking-tight text-white leading-tight drop-shadow-[0_2px_12px_rgba(0,0,0,0.8)]">
+          <h1 className="type-display text-white drop-shadow-[0_2px_12px_rgba(0,0,0,0.8)]">
             {title}
           </h1>
 
           {text ? (
-            <p className="mt-2 text-sm leading-snug text-white/85 line-clamp-2 drop-shadow-[0_1px_8px_rgba(0,0,0,0.7)]">
+            <p className="mt-2 type-body text-white/85 line-clamp-2 drop-shadow-[0_1px_8px_rgba(0,0,0,0.7)]">
               {text}
             </p>
           ) : null}
@@ -90,12 +86,12 @@ export function ProductHero({
             >
               {figures.map((figure) => (
                 <li key={figure.label}>
-                  <p className="text-[10px] font-medium uppercase tracking-wider text-white/60">
+                  <p className="type-eyebrow text-white/60">
                     {figure.label}
                   </p>
-                  <p className="mt-0.5 text-base font-semibold tracking-tight text-white whitespace-nowrap">
+                  <p className="mt-0.5 text-lg font-semibold tracking-tight text-white tabular-nums whitespace-nowrap">
                     {figure.value}
-                    <span className="ml-0.5 text-[10px] font-normal text-white/70">{figure.unit}</span>
+                    <span className="ml-0.5 text-xs font-normal text-white/70">{figure.unit}</span>
                   </p>
                 </li>
               ))}
@@ -119,7 +115,7 @@ export function ProductHero({
         <div className="frame relative z-30 flex items-center justify-between gap-4">
           {crumbs}
           {eyebrow ? (
-            <span className="rounded-full border border-white/20 bg-white/5 px-3.5 py-1 text-xs font-medium tracking-wider uppercase text-white/80">
+            <span className="border border-white/20 bg-white/5 px-3.5 py-1.5 type-eyebrow text-white/80">
               {eyebrow}
             </span>
           ) : null}
@@ -134,8 +130,6 @@ export function ProductHero({
               fill
               priority={priority}
               sizes="50vw"
-              placeholder={blur ? "blur" : "empty"}
-              blurDataURL={blur || undefined}
               className="object-contain drop-shadow-[0_25px_60px_rgba(0,0,0,0.85)]"
             />
           </div>
@@ -145,7 +139,7 @@ export function ProductHero({
         <div className="relative z-10 mt-auto flex flex-col justify-end">
           {/* Massive Expressive Title (Dynamic clamp scale) */}
           <div className="frame">
-            <h1 className="text-[clamp(3.5rem,7vw,7.5rem)] font-semibold tracking-tight leading-[0.92] text-white">
+            <h1 className="type-display text-white">
               {title}
             </h1>
           </div>
@@ -159,7 +153,7 @@ export function ProductHero({
               {/* Left Column: Lead and Buttons */}
               <div className="col-span-7 lg:col-span-6 flex flex-col justify-between pr-4">
                 {text ? (
-                  <p className="text-lg md:text-xl font-normal leading-relaxed text-white/85 max-w-xl">
+                  <p className="type-lead text-white/85 max-w-xl">
                     {text}
                   </p>
                 ) : null}
@@ -172,10 +166,10 @@ export function ProductHero({
                   >
                     {figures.map((figure) => (
                       <li key={figure.label}>
-                        <p className="text-xs font-medium uppercase tracking-wider text-white/60">
+                        <p className="type-eyebrow text-white/60">
                           {figure.label}
                         </p>
-                        <p className="mt-1 text-2xl lg:text-3xl font-semibold tracking-tight text-white whitespace-nowrap">
+                        <p className="mt-1.5 type-stat text-white whitespace-nowrap">
                           {figure.value}
                           <span className="ml-1 text-sm font-normal text-white/70">{figure.unit}</span>
                         </p>

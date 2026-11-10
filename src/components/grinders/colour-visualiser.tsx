@@ -3,6 +3,7 @@
 import Image from "next/image";
 import { useState } from "react";
 
+import { SectionHeader } from "@/components/site/section-header";
 import type { Grinder } from "@/lib/content/types";
 
 type ColourOption = {
@@ -77,18 +78,16 @@ export function ColourVisualiser({ grinder }: { grinder: Grinder }) {
   return (
     <section className="section border-b border-line bg-sand" aria-labelledby="colours-heading">
       <div className="frame">
-        <div className="max-w-3xl">
-          <h2 id="colours-heading" className="text-3xl font-semibold tracking-tight md:text-4xl lg:text-5xl">
-            Colour options & finishes
-          </h2>
-          <p className="mt-2 text-muted text-base md:text-lg">
-            Choose a finish to complement your espresso machine and counter architecture.
-          </p>
-        </div>
+        <SectionHeader
+          id="colours-heading"
+          eyebrow="Finishes"
+          title="Colour options & finishes"
+          description="Choose a finish to complement your espresso machine and counter architecture."
+        />
 
-        <div className="mt-10 grid gap-8 rounded-2xl border border-line bg-surface p-6 sm:p-8 md:grid-cols-12 md:gap-12 md:p-10 shadow-sm">
+        <div className="mt-10 grid gap-8 border border-line bg-surface p-6 sm:p-8 md:grid-cols-12 md:gap-12 md:p-10">
           {/* Visualiser Stage */}
-          <div className="relative flex flex-col items-center justify-center rounded-xl bg-[#0e0e0e] p-3 sm:p-8 md:p-10 md:col-span-7 overflow-hidden min-h-[24rem] sm:min-h-[28rem]">
+          <div className="relative flex flex-col items-center justify-center bg-surface-dark p-3 sm:p-8 md:p-10 md:col-span-7 overflow-hidden min-h-[24rem] sm:min-h-[28rem]">
             {/* Dynamic ambient backlight reflecting the chosen colour */}
             <div
               className="pointer-events-none absolute inset-0 transition-all duration-500 ease-out"
@@ -118,12 +117,12 @@ export function ColourVisualiser({ grinder }: { grinder: Grinder }) {
               </div>
             ) : (
               <div className="relative z-10 text-center text-white/60">
-                Machine visualizer preview
+                Machine visualiser preview
               </div>
             )}
 
-            {/* Current Colour Pill Badge */}
-            <div className="absolute top-4 left-4 z-20 flex items-center gap-2 rounded-full bg-black/60 backdrop-blur-md border border-white/10 px-3 py-1 text-xs text-white">
+            {/* Current Colour Badge */}
+            <div className="absolute top-4 left-4 z-20 flex items-center gap-2 bg-black/70 backdrop-blur-md border border-white/15 px-3 py-1.5 type-eyebrow text-white">
               <span
                 className="h-2.5 w-2.5 rounded-full border border-white/30"
                 style={{ backgroundColor: selectedColour.hex }}
@@ -135,7 +134,7 @@ export function ColourVisualiser({ grinder }: { grinder: Grinder }) {
           {/* Selector & Details Panel */}
           <div className="flex flex-col justify-between md:col-span-5">
             <div>
-              <p className="label text-muted">Select finish</p>
+              <p className="type-eyebrow text-muted">Select finish</p>
 
               {/* Swatches Grid */}
               <div className="mt-4 flex flex-wrap gap-3" role="radiogroup" aria-label="Available colours">
@@ -173,41 +172,41 @@ export function ColourVisualiser({ grinder }: { grinder: Grinder }) {
               </div>
 
               {/* Finish Details */}
-              <div className="mt-8 rounded-lg border border-line bg-plinth/50 p-5">
+              <div className="mt-8 border border-line bg-plinth/50 p-5">
                 <div className="flex items-baseline justify-between">
-                  <h3 className="text-xl font-medium tracking-tight">
+                  <h3 className="type-h3 text-fg">
                     {selectedColour.name}
                   </h3>
-                  <span className="text-xs font-mono text-muted">{selectedColour.code}</span>
+                  <span className="type-mono text-muted">{selectedColour.code}</span>
                 </div>
-                <p className="mt-1 text-xs text-muted italic">
+                <p className="mt-1 text-xs text-muted">
                   {selectedColour.italianName}
                 </p>
-                <p className="mt-3 text-sm leading-relaxed text-muted">
+                <p className="mt-3 type-body text-muted">
                   {selectedColour.description}
                 </p>
               </div>
 
               {/* Material Assurance */}
-              <ul className="mt-6 space-y-2 text-xs text-muted">
-                <li className="flex items-center gap-2">
-                  <span className="font-bold text-fg">✓</span>
+              <ul className="mt-6 space-y-2.5 text-sm text-muted">
+                <li className="flex items-center gap-2.5">
+                  <span className="font-semibold text-fg">✓</span>
                   <span>Electrostatically applied powder coat cured at 200°C</span>
                 </li>
-                <li className="flex items-center gap-2">
-                  <span className="font-bold text-fg">✓</span>
+                <li className="flex items-center gap-2.5">
+                  <span className="font-semibold text-fg">✓</span>
                   <span>UV and chemical resistant against espresso cleaning agents</span>
                 </li>
-                <li className="flex items-center gap-2">
-                  <span className="font-bold text-fg">✓</span>
+                <li className="flex items-center gap-2.5">
+                  <span className="font-semibold text-fg">✓</span>
                   <span>Cast aluminium body for thermal mass and stability</span>
                 </li>
               </ul>
             </div>
 
             {/* Custom Fleet Note */}
-            <div className="mt-8 pt-5 border-t border-line text-xs leading-relaxed text-muted">
-              <strong className="text-fg block font-medium mb-1">Custom fleet orders</strong>
+            <div className="mt-8 pt-5 border-t border-line type-body text-muted">
+              <strong className="text-fg block font-semibold mb-1">Custom fleet orders</strong>
               Custom RAL colour matching and laser-etched branding are available on volume orders for roasters and cafe groups.
             </div>
           </div>

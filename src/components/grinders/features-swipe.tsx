@@ -3,6 +3,7 @@
 import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 
+import { TextLink } from "@/components/site/text-link";
 import type { Grinder } from "@/lib/content/types";
 import { pageShots } from "@/lib/imagery";
 
@@ -159,21 +160,22 @@ export function FeaturesSwipe({ grinder }: { grinder: Grinder }) {
   return (
     <section className="section border-b border-line bg-white" aria-labelledby="features-heading">
       <div className="frame">
-        <div className="flex flex-wrap items-end justify-between gap-4">
+        <div className="flex flex-wrap items-end justify-between gap-6">
           <div>
             {/* Desktop Section Heading */}
             <div className="hidden sm:block">
-              <h2 id="features-heading" className="text-3xl font-semibold tracking-tight md:text-4xl lg:text-5xl">
+              <p className="type-eyebrow text-muted mb-2.5">Engineering</p>
+              <h2 id="features-heading" className="type-h2 text-fg">
                 Engineered features & technology
               </h2>
             </div>
 
             {/* Mobile: Eyebrow + Dynamic active card title outside the cards */}
             <div className="sm:hidden min-h-[4.25rem] flex flex-col justify-end">
-              <p className="text-xs font-semibold uppercase tracking-widest text-muted">
+              <p className="type-eyebrow text-muted">
                 Features & technology
               </p>
-              <h2 className="mt-1 text-2xl font-semibold tracking-tight text-fg transition-all duration-200">
+              <h2 className="mt-1.5 type-h3 text-fg transition-all duration-200">
                 {features[activeIndex]?.title}
               </h2>
             </div>
@@ -186,7 +188,7 @@ export function FeaturesSwipe({ grinder }: { grinder: Grinder }) {
               onClick={() => scroll("left")}
               disabled={activeIndex === 0}
               aria-label="Previous feature"
-              className="flex h-10 w-10 items-center justify-center rounded-full border border-line bg-surface text-fg hover:border-fg transition-colors disabled:opacity-30 disabled:pointer-events-none"
+              className="flex h-11 w-11 items-center justify-center border border-line bg-surface text-fg hover:border-fg transition-colors disabled:opacity-30 disabled:pointer-events-none"
             >
               ←
             </button>
@@ -195,7 +197,7 @@ export function FeaturesSwipe({ grinder }: { grinder: Grinder }) {
               onClick={() => scroll("right")}
               disabled={activeIndex === features.length - 1}
               aria-label="Next feature"
-              className="flex h-10 w-10 items-center justify-center rounded-full border border-line bg-surface text-fg hover:border-fg transition-colors disabled:opacity-30 disabled:pointer-events-none"
+              className="flex h-11 w-11 items-center justify-center border border-line bg-surface text-fg hover:border-fg transition-colors disabled:opacity-30 disabled:pointer-events-none"
             >
               →
             </button>
@@ -214,37 +216,36 @@ export function FeaturesSwipe({ grinder }: { grinder: Grinder }) {
             const hasIcon = Boolean(feature.icon);
             const isHighImpactTypographic = !hasImage && !hasIcon;
 
-            // VARIANT 3: NO IMAGE AND NO ICON -> High Impact Architectural Design (04 removed!)
+            // VARIANT 3: NO IMAGE AND NO ICON -> High Impact Architectural Design
             if (isHighImpactTypographic) {
               return (
                 <article
                   key={feature._key}
-                  className="flex-none w-[85vw] sm:w-[22rem] md:w-[26rem] snap-start flex flex-col justify-between rounded-2xl border-2 border-line bg-[#131313] text-white p-7 md:p-8 shadow-md relative overflow-hidden group hover:border-accent transition-all"
+                  className="flex-none w-[85vw] sm:w-[22rem] md:w-[26rem] snap-start flex flex-col justify-between border border-line bg-surface-dark-elevated text-white p-7 md:p-8 relative overflow-hidden group hover:border-accent transition-all"
                 >
-                  <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-accent via-white/50 to-transparent" />
+                  <div className="absolute top-0 left-0 right-0 h-1 bg-accent" />
 
                   <div>
-                    {/* Clean badge without the pointless 04 counter */}
                     <div className="flex items-center">
-                      <span className="inline-block rounded-full bg-white/10 px-3 py-1 text-[11px] font-medium tracking-wider uppercase text-accent">
+                      <span className="inline-block border border-white/15 bg-white/5 px-2.5 py-1 type-eyebrow text-accent">
                         Key Technology
                       </span>
                     </div>
 
-                    <h3 className="hidden sm:block mt-8 text-2xl md:text-3xl font-medium tracking-tight text-white leading-tight">
+                    <h3 className="hidden sm:block mt-8 type-h3 text-white">
                       {feature.title}
                     </h3>
 
-                    <p className="mt-4 text-sm md:text-base leading-relaxed text-white/70">
+                    <p className="mt-4 type-body text-white/75">
                       {feature.text}
                     </p>
                   </div>
 
                   {feature.buttonHref && feature.buttonLabel ? (
                     <div className="mt-6 pt-4 border-t border-white/10">
-                      <a href={feature.buttonHref} className="text-sm font-medium text-white hover:text-accent underline-offset-4 hover:underline">
-                        {feature.buttonLabel} →
-                      </a>
+                      <TextLink href={feature.buttonHref} className="type-body font-semibold text-white hover:text-accent">
+                        {feature.buttonLabel}
+                      </TextLink>
                     </div>
                   ) : null}
                 </article>
@@ -255,12 +256,12 @@ export function FeaturesSwipe({ grinder }: { grinder: Grinder }) {
             return (
               <article
                 key={feature._key}
-                className="flex-none w-[85vw] sm:w-[22rem] md:w-[26rem] snap-start flex flex-col justify-between rounded-2xl border border-line bg-surface p-6 sm:p-7 shadow-sm transition-all hover:border-fg/40"
+                className="flex-none w-[85vw] sm:w-[22rem] md:w-[26rem] snap-start flex flex-col justify-between border border-line bg-surface p-6 sm:p-7 transition-all hover:border-fg"
               >
                 <div>
                   {/* Case 1: Image provided (from media library) */}
                   {hasImage ? (
-                    <div className="relative aspect-[16/10] w-full overflow-hidden rounded-xl border border-line bg-plinth mb-5">
+                    <div className="relative aspect-[16/10] w-full overflow-hidden border border-line bg-plinth mb-5">
                       <Image
                         src={feature.imageUrl!}
                         alt={feature.imageAlt || feature.title}
@@ -274,29 +275,29 @@ export function FeaturesSwipe({ grinder }: { grinder: Grinder }) {
                   {/* Case 2: Icon provided -> Matched to image container with configurable background colour */}
                   {hasIcon ? (
                     <div
-                      className="relative aspect-[16/10] w-full overflow-hidden rounded-xl border border-line mb-5 flex items-center justify-center transition-colors shadow-inner"
+                      className="relative aspect-[16/10] w-full overflow-hidden border border-line mb-5 flex items-center justify-center transition-colors"
                       style={{ backgroundColor: feature.containerBg || "rgba(0,0,0,0.04)" }}
                     >
-                      <div className="flex h-16 w-16 items-center justify-center rounded-2xl bg-surface/80 border border-line shadow-sm backdrop-blur-sm">
+                      <div className="flex h-16 w-16 items-center justify-center bg-surface border border-line">
                         <FeatureIcon type={feature.icon!} />
                       </div>
                     </div>
                   ) : null}
 
-                  <h3 className="hidden sm:block text-xl md:text-2xl font-medium tracking-tight">
+                  <h3 className="hidden sm:block type-h3 text-fg">
                     {feature.title}
                   </h3>
 
-                  <p className="mt-3 text-sm md:text-base leading-relaxed text-muted">
+                  <p className="mt-3 type-body text-muted">
                     {feature.text}
                   </p>
                 </div>
 
                 {feature.buttonHref && feature.buttonLabel ? (
                   <div className="mt-6 pt-4 border-t border-line">
-                    <a href={feature.buttonHref} className="text-sm font-medium text-fg hover:text-accent underline-offset-4 hover:underline">
-                      {feature.buttonLabel} →
-                    </a>
+                    <TextLink href={feature.buttonHref} className="type-body font-semibold text-fg hover:shadow-[inset_0_-1px_0_var(--accent)]">
+                      {feature.buttonLabel}
+                    </TextLink>
                   </div>
                 ) : null}
               </article>
@@ -304,7 +305,7 @@ export function FeaturesSwipe({ grinder }: { grinder: Grinder }) {
           })}
         </div>
 
-        {/* Carousel Dot Indicators */}
+        {/* Carousel Bar Indicators */}
         <div className="mt-6 flex justify-center items-center gap-2" role="tablist" aria-label="Feature slides">
           {features.map((feature, idx) => {
             const isCurrent = idx === activeIndex;
@@ -316,8 +317,8 @@ export function FeaturesSwipe({ grinder }: { grinder: Grinder }) {
                 aria-selected={isCurrent}
                 aria-label={`Slide ${idx + 1}`}
                 onClick={() => scrollToIndex(idx)}
-                className={`transition-all duration-300 rounded-full h-2 ${
-                  isCurrent ? "w-6 bg-fg" : "w-2 bg-line hover:bg-muted"
+                className={`transition-all duration-300 h-1.5 ${
+                  isCurrent ? "w-8 bg-fg" : "w-3 bg-line hover:bg-muted"
                 }`}
               />
             );

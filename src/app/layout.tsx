@@ -25,6 +25,11 @@ const macap = localFont({
     },
     {
       path: "../../public/fonts/elza/Elza-Semibold.woff2",
+      weight: "500",
+      style: "normal",
+    },
+    {
+      path: "../../public/fonts/elza/Elza-Semibold.woff2",
       weight: "600",
       style: "normal",
     },

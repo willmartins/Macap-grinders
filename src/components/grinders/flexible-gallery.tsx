@@ -1,5 +1,6 @@
 import Image from "next/image";
 
+import { SectionHeader } from "@/components/site/section-header";
 import type { GalleryImage } from "@/lib/content/types";
 import { focusFor } from "@/lib/imagery";
 
@@ -58,14 +59,12 @@ export function FlexibleGallery({
       />
 
       <div className="frame">
-        <div className="max-w-2xl">
-          <h2 id="gallery-heading" className="text-3xl font-semibold tracking-tight md:text-4xl">
-            Workshop & detail photography
-          </h2>
-          <p className="mt-2 text-muted text-sm sm:text-base">
-            Craftsmanship and materials of the {modelName}, photographed in Venice.
-          </p>
-        </div>
+        <SectionHeader
+          id="gallery-heading"
+          eyebrow="Gallery"
+          title="Workshop & detail photography"
+          description={`Craftsmanship and materials of the ${modelName}, photographed in Venice.`}
+        />
 
         {/* ========================================================================= */}
         {/* DESKTOP LAYOUT (>= md): Consistent height, real image aspect ratios       */}
@@ -76,7 +75,7 @@ export function FlexibleGallery({
             return (
               <div
                 key={img._key}
-                className="relative h-full overflow-hidden rounded-2xl border border-line bg-plinth shadow-sm flex-none group transition-transform duration-300 hover:border-fg/40"
+                className="relative h-full overflow-hidden border border-line bg-plinth flex-none group transition-colors duration-300 hover:border-fg"
                 style={{ aspectRatio: `${ratio}` }}
               >
                 <Image
@@ -103,7 +102,7 @@ export function FlexibleGallery({
             return (
               <div
                 key={`${img._key}-${index}`}
-                className="relative h-64 flex-none overflow-hidden rounded-xl border border-line bg-plinth shadow-sm"
+                className="relative h-64 flex-none overflow-hidden border border-line bg-plinth"
                 style={{ aspectRatio: `${ratio}` }}
               >
                 <Image
@@ -118,7 +117,7 @@ export function FlexibleGallery({
             );
           })}
         </div>
-        <p className="mt-3 text-center text-[11px] text-muted">Touch to pause and explore</p>
+        <p className="mt-3 text-center type-eyebrow text-muted">Touch to pause and explore</p>
       </div>
     </section>
   );

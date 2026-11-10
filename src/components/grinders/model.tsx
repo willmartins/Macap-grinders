@@ -8,6 +8,7 @@ import { ProductHero } from "@/components/grinders/product-hero";
 import { ProductOverview } from "@/components/grinders/product-overview";
 import { SpecSection } from "@/components/grinders/spec-section";
 import { Breadcrumbs } from "@/components/site/breadcrumbs";
+import { SectionHeader } from "@/components/site/section-header";
 import { TextLink } from "@/components/site/text-link";
 import { compareHref } from "@/lib/compare";
 import type { FaqItem, Grinder, GrinderCard } from "@/lib/content/types";
@@ -54,7 +55,6 @@ export function GrinderModel({
         <ProductHero
           imageUrl={grinder.imageUrl}
           alt={grinder.imageAlt || grinder.name}
-          blur={grinder.imageLqip}
           eyebrow={eyebrow}
           title={grinder.name}
           text={positionLine(grinder.answerFirst)}
@@ -123,20 +123,23 @@ export function GrinderModel({
       {/* Optional: Related Reading */}
       {grinder.relatedArticles && grinder.relatedArticles.length > 0 ? (
         <section className="frame section border-b border-line">
-          <h2 className="text-3xl font-medium tracking-tight md:text-4xl">Related reading</h2>
+          <SectionHeader
+            eyebrow="Knowledge"
+            title="Related reading"
+          />
           <ul className="mt-8 divide-y divide-line border-y border-line">
             {grinder.relatedArticles.map((post) => (
-              <li key={post.slug} className="grid gap-2 py-6 md:grid-cols-12">
+              <li key={post.slug} className="grid gap-2 py-6 md:grid-cols-12 items-baseline">
                 <div className="md:col-span-9">
-                  <h3 className="text-2xl font-medium tracking-tight">
-                    <TextLink href={`/knowledge/${post.slug}`} className="underline-offset-4 hover:underline">
+                  <h3 className="type-h3 text-fg">
+                    <TextLink href={`/knowledge/${post.slug}`} className="hover:shadow-[inset_0_-1px_0_var(--accent)]">
                       {post.title}
                     </TextLink>
                   </h3>
-                  <p className="mt-2 max-w-xl text-muted">{post.excerpt}</p>
+                  <p className="mt-2 max-w-xl type-body text-muted">{post.excerpt}</p>
                 </div>
                 {post.publishedAt ? (
-                  <p className="label text-muted md:col-span-3 md:text-right">{formatDate(post.publishedAt)}</p>
+                  <p className="type-eyebrow text-muted md:col-span-3 md:text-right">{formatDate(post.publishedAt)}</p>
                 ) : null}
               </li>
             ))}

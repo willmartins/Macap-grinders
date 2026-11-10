@@ -14,6 +14,9 @@
   --sand: #f2ede4;
   --sand-muted: #e5dfd2;
   --light-grey: #f9f9f9;
+  --surface-dark: #0c0c0c;
+  --surface-dark-elevated: #141414;
+  --radius: 0px;
 }
 
 [data-theme="professional"] {
@@ -28,6 +31,9 @@
   --sand: #f2ede4;
   --sand-muted: #e5dfd2;
   --light-grey: #f9f9f9;
+  --surface-dark: #0c0c0c;
+  --surface-dark-elevated: #141414;
+  --radius: 0px;
 }
 
 :root {
@@ -76,6 +82,8 @@ html {
   --color-sand: var(--sand);
   --color-sand-muted: var(--sand-muted);
   --color-light-grey: var(--light-grey);
+  --color-surface-dark: var(--surface-dark);
+  --color-surface-dark-elevated: var(--surface-dark-elevated);
 }
 
 .bg-sand {
@@ -134,8 +142,16 @@ section[id],
 
 .label {
   font-size: 0.8125rem;
-  font-weight: 500;
+  font-weight: 600;
   letter-spacing: 0;
+  line-height: 1.35;
+}
+
+.type-eyebrow {
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
   line-height: 1.35;
 }
 
@@ -164,11 +180,10 @@ section[id],
   width: 100%;
 }
 
-.site-footer a,
+.site-footer a:not(.brand-lockup),
 .site-footer button {
-  display: inline-flex;
-  align-items: center;
-  min-height: 44px;
+  display: inline-block;
+  padding-block: 0.25rem;
 }
 
 .tap {
@@ -180,36 +195,87 @@ section[id],
 .step-index {
   font-size: 0.95rem;
   font-variant-numeric: tabular-nums;
-  font-weight: 500;
+  font-weight: 600;
   letter-spacing: 0;
   line-height: 1;
 }
 
 .index-title {
   font-size: 0.9375rem;
-  font-weight: 500;
+  font-weight: 600;
 }
 
-.display {
-  font-size: clamp(4.25rem, 11vw, 9.5rem);
-  font-weight: 500;
-  letter-spacing: -0.05em;
-  line-height: 0.84;
-}
-
-.display-sm {
-  font-size: clamp(2.35rem, 4.8vw, 4.4rem);
-  font-weight: 500;
+.display,
+.type-display {
+  font-size: clamp(3.5rem, 7.5vw, 7.5rem);
+  font-weight: 600;
   letter-spacing: -0.04em;
   line-height: 0.92;
+}
+
+.type-h1 {
+  font-size: clamp(2.5rem, 5vw, 4.75rem);
+  font-weight: 600;
+  letter-spacing: -0.035em;
+  line-height: 0.98;
+}
+
+.display-sm,
+.type-h2 {
+  font-size: clamp(2rem, 3.6vw, 3.25rem);
+  font-weight: 600;
+  letter-spacing: -0.03em;
+  line-height: 1.06;
+}
+
+.type-h3 {
+  font-size: clamp(1.25rem, 1.8vw, 1.625rem);
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  line-height: 1.2;
+}
+
+.type-lead {
+  font-size: clamp(1.0625rem, 1.2vw, 1.2rem);
+  font-weight: 400;
+  letter-spacing: -0.005em;
+  line-height: 1.55;
+}
+
+.type-body {
+  font-size: 0.9375rem;
+  font-weight: 400;
+  line-height: 1.6;
+}
+
+.type-mono {
+  font-family: var(--font-mono);
+  font-size: 0.8125rem;
+  font-weight: 400;
+  letter-spacing: -0.01em;
+  line-height: 1.45;
+}
+
+@media (min-width: 640px) {
+  .type-mono {
+    font-size: 0.875rem;
+  }
 }
 
 .stat {
   font-size: clamp(3.25rem, 6vw, 6.5rem);
   font-variant-numeric: tabular-nums;
-  font-weight: 500;
+  font-weight: 600;
   letter-spacing: -0.05em;
   line-height: 0.86;
+}
+
+.type-stat {
+  font-size: clamp(1.75rem, 2.5vw, 2.5rem);
+  font-variant-numeric: tabular-nums;
+  font-weight: 600;
+  letter-spacing: -0.03em;
+  line-height: 0.95;
 }
 
 .hero-figures .stat {
@@ -251,10 +317,11 @@ section[id],
   min-height: 2.75rem;
   padding: 0.75rem 1.15rem;
   border: 1px solid var(--fg);
+  border-radius: var(--radius);
   background: var(--fg);
   color: var(--bg);
   font-size: 0.9375rem;
-  font-weight: 500;
+  font-weight: 600;
   letter-spacing: 0;
   text-decoration: none;
 }
@@ -1084,7 +1151,7 @@ main:has([data-hero]) {
 .datasheet td {
   padding: 0.95rem 0;
   border-bottom: 1px solid var(--line);
-  font-size: 1.05rem;
+  font-size: 0.9375rem;
 }
 
 @media (min-width: 768px) {

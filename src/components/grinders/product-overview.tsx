@@ -1,5 +1,6 @@
 import Image from "next/image";
 
+import { TextLink } from "@/components/site/text-link";
 import type { Grinder } from "@/lib/content/types";
 import { focusFor } from "@/lib/imagery";
 
@@ -55,11 +56,11 @@ export function ProductOverview({
 
               {/* Center emblem icon */}
               <div className="absolute inset-0 flex items-center justify-center">
-                <span className="text-accent text-xs font-serif font-bold">1930</span>
+                <span className="text-accent text-xs font-mono font-bold tracking-tight">1930</span>
               </div>
             </div>
 
-            <div className="relative aspect-[4/5] w-full overflow-hidden rounded-2xl border border-line bg-plinth shadow-sm">
+            <div className="relative aspect-[4/5] w-full overflow-hidden border border-line bg-plinth">
               {videoUrl ? (
                 <video
                   src={videoUrl}
@@ -88,20 +89,19 @@ export function ProductOverview({
           </div>
 
           {/* Right Column: Impact Title, Single Short Paragraph, and Spec Download Button */}
-          {/* Eyebrow removed per user feedback */}
           <div className="flex flex-col justify-center md:col-span-6 lg:col-span-7">
-            <h2 id="overview-heading" className="text-3xl font-semibold tracking-tight md:text-4xl lg:text-5xl leading-tight">
-              Engineered in Venice for relentless espresso consistency.
+            <h2 id="overview-heading" className="type-h2 text-fg">
+              Engineered in Venice for espresso consistency.
             </h2>
 
             {/* Single Short Paragraph as requested */}
-            <p className="mt-6 text-base sm:text-lg leading-relaxed text-muted max-w-2xl">
+            <p className="type-lead mt-6 text-muted max-w-2xl">
               Conceived for busy bars and specialty coffee programmes, the {grinder.name} unites precision Italian
               burrs with micrometric calibration and robust thermal control. It preserves dialled-in recipes dose after dose,
-              minimising waste and ensuring uniform particle distribution throughout intense daily service.
+              minimising waste and ensuring uniform particle distribution throughout daily service.
             </p>
 
-            <div className="mt-8 flex flex-wrap items-center gap-4">
+            <div className="mt-8 flex flex-wrap items-center gap-6">
               <a
                 href={downloadHref}
                 className="btn"
@@ -111,9 +111,9 @@ export function ProductOverview({
               >
                 Download spec sheet
               </a>
-              <a href="#specifications" className="text-sm font-medium text-muted underline-offset-4 hover:underline">
+              <TextLink href="#specifications" className="type-body font-semibold text-fg hover:shadow-[inset_0_-1px_0_var(--accent)]">
                 View specifications table
-              </a>
+              </TextLink>
             </div>
           </div>
         </div>

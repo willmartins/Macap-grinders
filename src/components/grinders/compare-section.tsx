@@ -3,6 +3,8 @@
 import Image from "next/image";
 import { useEffect, useRef, useState, type ReactNode } from "react";
 
+import { SectionHeader } from "@/components/site/section-header";
+import { TextLink } from "@/components/site/text-link";
 import { compareHref, explainDifferences } from "@/lib/compare";
 import type { Grinder, GrinderCard } from "@/lib/content/types";
 import { formatNumber } from "@/lib/format";
@@ -97,7 +99,7 @@ function renderHighlightedText(
           return (
             <span
               key={index}
-              className={`inline-block rounded px-1.5 py-0.5 text-xs font-semibold mx-1 border ${
+              className={`inline-block px-1.5 py-0.5 text-xs font-semibold mx-1 border ${
                 theme.badgeBorder || "border-transparent"
               } ${theme.highlightBg} ${theme.highlightText} whitespace-nowrap align-baseline`}
             >
@@ -164,9 +166,9 @@ function TypedDifferenceCard({
   const visibleText = note.slice(0, visibleChars);
 
   return (
-    <li className="flex items-start gap-3 rounded-xl border border-line/60 bg-plinth/30 p-4 min-h-[4.5rem]">
+    <li className="flex items-start gap-3 border border-line bg-plinth/30 p-4 min-h-[4.5rem]">
       <span className="text-fg font-bold shrink-0 mt-0.5">→</span>
-      <div className="leading-relaxed min-h-[1.5rem] w-full">
+      <div className="type-body min-h-[1.5rem] w-full">
         {visibleText ? renderHighlightedText(visibleText, modelMap) : null}
         {isTypingActive && (
           <span
@@ -271,35 +273,32 @@ export function CompareSection({
   return (
     <section className="section border-b border-line bg-white" aria-labelledby="compare-heading">
       <div className="frame">
-        <div className="flex flex-wrap items-end justify-between gap-4">
-          <div>
-            <h2 id="compare-heading" className="text-3xl font-semibold tracking-tight md:text-4xl">
-              Compare with other models
-            </h2>
-            <p className="mt-2 text-muted text-sm sm:text-base">
-              Evaluate key burr geometries and motor ratings across the Macap range.
-            </p>
-          </div>
-
-          <a href={fullCompareHref} className="btn btn-secondary text-xs">
-            Open full comparison tool
-          </a>
-        </div>
+        <SectionHeader
+          id="compare-heading"
+          eyebrow="Comparison"
+          title="Compare with other models"
+          description="Evaluate key burr geometries and motor ratings across the Macap range."
+          action={
+            <a href={fullCompareHref} className="btn btn-secondary">
+              Open full comparison tool
+            </a>
+          }
+        />
 
         {/* 3 to 4 cards: horizontal snap swipe on mobile, grid on desktop */}
         <div className="mt-8 flex sm:grid gap-4 sm:gap-5 overflow-x-auto sm:overflow-visible snap-x snap-mandatory sm:snap-none pb-2 sm:pb-0 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden -mx-4 px-4 sm:mx-0 sm:px-0 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
           {/* Card 1: Current / Active Model (Brand Yellow Label) */}
-          <div className="flex-none w-[78vw] sm:w-auto snap-start flex flex-col justify-between rounded-2xl border-2 border-accent bg-surface p-4 sm:p-6 shadow-sm">
+          <div className="flex-none w-[78vw] sm:w-auto snap-start flex flex-col justify-between border-2 border-accent bg-surface p-5 sm:p-6">
             <div>
               <div className="flex items-center justify-between">
-                <span className="rounded-full bg-accent px-2.5 py-0.5 text-[11px] font-semibold text-black border border-amber-400">
+                <span className="bg-accent px-2.5 py-0.5 type-eyebrow text-black border border-amber-400">
                   This Model
                 </span>
-                <span className="text-[11px] text-muted">{grinder.groupName || "Range"}</span>
+                <span className="type-eyebrow text-muted">{grinder.groupName || "Range"}</span>
               </div>
 
               {grinder.imageUrl ? (
-                <div className="relative mt-3 h-28 sm:h-36 w-full">
+                <div className="relative mt-4 h-28 sm:h-36 w-full">
                   <Image
                     src={grinder.imageUrl}
                     alt={grinder.imageAlt || grinder.name}
@@ -310,41 +309,41 @@ export function CompareSection({
                 </div>
               ) : null}
 
-              <h3 className="mt-3 text-lg sm:text-xl font-semibold tracking-tight">{grinder.name}</h3>
+              <h3 className="mt-4 type-h3 text-fg">{grinder.name}</h3>
               <p className="mt-1 text-xs text-muted line-clamp-2">{grinder.shortDescription}</p>
 
               {/* Compact 2-column Spec grid */}
-              <div className="mt-3 grid grid-cols-2 gap-2 border-y border-line py-2.5 text-xs">
+              <div className="mt-4 grid grid-cols-2 gap-2.5 border-y border-line py-3">
                 <div>
-                  <span className="text-[10px] uppercase text-muted block">Burrs</span>
-                  <span className="font-medium text-fg text-xs truncate block">
+                  <span className="type-eyebrow text-muted block">Burrs</span>
+                  <span className="mt-0.5 font-mono text-fg text-xs truncate block">
                     {grinder.specs.burrDiameterMm ? `${grinder.specs.burrDiameterMm}mm ` : ""}
                     {grinder.specs.burrType || "-"}
                   </span>
                 </div>
                 <div>
-                  <span className="text-[10px] uppercase text-muted block">Motor</span>
-                  <span className="font-medium text-fg text-xs block">
+                  <span className="type-eyebrow text-muted block">Motor</span>
+                  <span className="mt-0.5 font-mono text-fg text-xs block">
                     {grinder.specs.motorPowerW ? `${formatNumber(grinder.specs.motorPowerW)} W` : "-"}
                   </span>
                 </div>
                 <div>
-                  <span className="text-[10px] uppercase text-muted block">Hopper</span>
-                  <span className="font-medium text-fg text-xs block">
+                  <span className="type-eyebrow text-muted block">Hopper</span>
+                  <span className="mt-0.5 font-mono text-fg text-xs block">
                     {grinder.specs.hopperCapacityG ? `${formatNumber(grinder.specs.hopperCapacityG)} g` : "-"}
                   </span>
                 </div>
                 <div>
-                  <span className="text-[10px] uppercase text-muted block">Use</span>
-                  <span className="font-medium text-fg text-xs capitalize block">
+                  <span className="type-eyebrow text-muted block">Use</span>
+                  <span className="mt-0.5 font-mono text-fg text-xs capitalize block">
                     {grinder.audience === "business" ? "Commercial Bar" : "Home Counter"}
                   </span>
                 </div>
               </div>
             </div>
 
-            <div className="mt-3 pt-2 border-t border-line text-center">
-              <span className="text-xs font-semibold text-muted">Currently viewing</span>
+            <div className="mt-4 pt-3 border-t border-line text-center">
+              <span className="type-eyebrow text-muted">Currently viewing</span>
             </div>
           </div>
 
@@ -354,22 +353,22 @@ export function CompareSection({
             return (
               <div
                 key={model.slug}
-                className={`flex-none w-[78vw] sm:w-auto snap-start flex flex-col justify-between rounded-2xl border ${theme.cardBorder} bg-surface p-4 sm:p-6 shadow-sm transition-all hover:border-fg/40`}
+                className={`flex-none w-[78vw] sm:w-auto snap-start flex flex-col justify-between border ${theme.cardBorder} bg-surface p-5 sm:p-6 transition-all hover:border-fg`}
               >
                 <div>
                   <div className="flex items-center justify-between">
                     <span
-                      className={`rounded-full px-2.5 py-0.5 text-[11px] font-semibold border ${
+                      className={`px-2.5 py-0.5 type-eyebrow border ${
                         theme.badgeBorder || ""
                       } ${theme.badgeBg} ${theme.badgeText}`}
                     >
                       {model.name}
                     </span>
-                    <span className="text-[11px] text-muted">{model.groupName || "Range"}</span>
+                    <span className="type-eyebrow text-muted">{model.groupName || "Range"}</span>
                   </div>
 
                   {model.imageUrl ? (
-                    <div className="relative mt-3 h-28 sm:h-36 w-full">
+                    <div className="relative mt-4 h-28 sm:h-36 w-full">
                       <Image
                         src={model.imageUrl}
                         alt={model.imageAlt || model.name}
@@ -380,46 +379,46 @@ export function CompareSection({
                     </div>
                   ) : null}
 
-                  <h3 className="mt-3 text-lg sm:text-xl font-semibold tracking-tight">{model.name}</h3>
+                  <h3 className="mt-4 type-h3 text-fg">{model.name}</h3>
                   <p className="mt-1 text-xs text-muted line-clamp-2">{model.shortDescription}</p>
 
                   {/* Compact 2-column Spec grid */}
-                  <div className="mt-3 grid grid-cols-2 gap-2 border-y border-line py-2.5 text-xs">
+                  <div className="mt-4 grid grid-cols-2 gap-2.5 border-y border-line py-3">
                     <div>
-                      <span className="text-[10px] uppercase text-muted block">Burrs</span>
-                      <span className="font-medium text-fg text-xs truncate block">
+                      <span className="type-eyebrow text-muted block">Burrs</span>
+                      <span className="mt-0.5 font-mono text-fg text-xs truncate block">
                         {model.burrDiameterMm ? `${model.burrDiameterMm}mm ` : ""}
                         {model.burrType || "-"}
                       </span>
                     </div>
                     <div>
-                      <span className="text-[10px] uppercase text-muted block">Motor</span>
-                      <span className="font-medium text-fg text-xs block">
+                      <span className="type-eyebrow text-muted block">Motor</span>
+                      <span className="mt-0.5 font-mono text-fg text-xs block">
                         {model.motorPowerW ? `${formatNumber(model.motorPowerW)} W` : "-"}
                       </span>
                     </div>
                     <div>
-                      <span className="text-[10px] uppercase text-muted block">Grind</span>
-                      <span className="font-medium text-fg text-xs capitalize block">
+                      <span className="type-eyebrow text-muted block">Grind</span>
+                      <span className="mt-0.5 font-mono text-fg text-xs capitalize block">
                         {model.grindType || "Espresso"}
                       </span>
                     </div>
                     <div>
-                      <span className="text-[10px] uppercase text-muted block">Use</span>
-                      <span className="font-medium text-fg text-xs capitalize block">
+                      <span className="type-eyebrow text-muted block">Use</span>
+                      <span className="mt-0.5 font-mono text-fg text-xs capitalize block">
                         {model.audience === "business" ? "Commercial Bar" : "Home Counter"}
                       </span>
                     </div>
                   </div>
                 </div>
 
-                <div className="mt-3 pt-2 border-t border-line">
-                  <a
+                <div className="mt-4 pt-3 border-t border-line text-center">
+                  <TextLink
                     href={`/grinders/${model.slug}`}
-                    className="block text-center text-xs font-medium text-fg hover:text-accent underline underline-offset-4"
+                    className="type-body font-semibold text-fg hover:shadow-[inset_0_-1px_0_var(--accent)]"
                   >
-                    View {model.name} →
-                  </a>
+                    {`View ${model.name}`}
+                  </TextLink>
                 </div>
               </div>
             );
@@ -430,13 +429,13 @@ export function CompareSection({
         {notes.length > 0 && (
           <div
             ref={diffSectionRef}
-            className="mt-10 rounded-2xl border-2 border-line bg-surface p-6 sm:p-8 shadow-sm"
+            className="mt-10 border border-line bg-surface p-6 sm:p-8"
           >
-            <h3 className="text-lg sm:text-xl font-medium tracking-tight text-fg mb-4">
+            <h3 className="type-h3 text-fg mb-4">
               Key differences at a glance
             </h3>
 
-            <ul className="grid gap-3 sm:grid-cols-2 text-sm sm:text-base text-muted leading-relaxed">
+            <ul className="grid gap-3 sm:grid-cols-2 text-muted">
               {notes.map((note, idx) => {
                 let cardStatus: "waiting" | "typing" | "completed" = "waiting";
                 if (diffInView) {
