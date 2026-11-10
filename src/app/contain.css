@@ -23,7 +23,8 @@
   border-bottom: 1px solid #e4e4e4;
 }
 
-.site-header a {
+/* A button keeps its own colour, or its label disappears into its ground. */
+.site-header a:not(.btn) {
   color: #000000;
 }
 

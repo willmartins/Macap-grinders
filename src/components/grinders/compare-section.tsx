@@ -33,31 +33,31 @@ const THEMES: ModelColorTheme[] = [
   // Model 2: Sky Blue
   {
     id: "sky",
-    badgeBg: "bg-sky-100 dark:bg-sky-950/80",
-    badgeText: "text-sky-800 dark:text-sky-200",
-    badgeBorder: "border-sky-300 dark:border-sky-700",
-    highlightBg: "bg-sky-100 dark:bg-sky-900/60",
-    highlightText: "text-sky-900 dark:text-sky-100",
+    badgeBg: "bg-sky-100",
+    badgeText: "text-sky-800",
+    badgeBorder: "border-sky-300",
+    highlightBg: "bg-sky-100",
+    highlightText: "text-sky-900",
     cardBorder: "border-sky-400/50",
   },
   // Model 3: Emerald Green
   {
     id: "emerald",
-    badgeBg: "bg-emerald-100 dark:bg-emerald-950/80",
-    badgeText: "text-emerald-800 dark:text-emerald-200",
-    badgeBorder: "border-emerald-300 dark:border-emerald-700",
-    highlightBg: "bg-emerald-100 dark:bg-emerald-900/60",
-    highlightText: "text-emerald-900 dark:text-emerald-100",
+    badgeBg: "bg-emerald-100",
+    badgeText: "text-emerald-800",
+    badgeBorder: "border-emerald-300",
+    highlightBg: "bg-emerald-100",
+    highlightText: "text-emerald-900",
     cardBorder: "border-emerald-400/50",
   },
   // Model 4: Violet
   {
     id: "violet",
-    badgeBg: "bg-violet-100 dark:bg-violet-950/80",
-    badgeText: "text-violet-800 dark:text-violet-200",
-    badgeBorder: "border-violet-300 dark:border-violet-700",
-    highlightBg: "bg-violet-100 dark:bg-violet-900/60",
-    highlightText: "text-violet-900 dark:text-violet-100",
+    badgeBg: "bg-violet-100",
+    badgeText: "text-violet-800",
+    badgeBorder: "border-violet-300",
+    highlightBg: "bg-violet-100",
+    highlightText: "text-violet-900",
     cardBorder: "border-violet-400/50",
   },
 ];
@@ -286,7 +286,7 @@ export function CompareSection({
         />
 
         {/* 3 to 4 cards: horizontal snap swipe on mobile, grid on desktop */}
-        <div className="mt-8 flex sm:grid gap-4 sm:gap-5 overflow-x-auto sm:overflow-visible snap-x snap-mandatory sm:snap-none pb-2 sm:pb-0 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden -mx-4 px-4 sm:mx-0 sm:px-0 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+        <div className="mt-8 flex sm:grid gap-4 sm:gap-5 overflow-x-auto sm:overflow-visible snap-x snap-mandatory sm:snap-none pb-2 sm:pb-0 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden -mx-[var(--frame-inset)] px-[var(--frame-inset)] scroll-px-[var(--frame-inset)] sm:mx-0 sm:px-0 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
           {/* Card 1: Current / Active Model (Brand Yellow Label) */}
           <div className="flex-none w-[78vw] sm:w-auto snap-start flex flex-col justify-between border-2 border-accent bg-surface p-5 sm:p-6">
             <div>

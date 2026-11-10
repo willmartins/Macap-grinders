@@ -70,7 +70,7 @@ export function buildGrinderFeatures(grinder: Grinder): ProductFeatureItem[] {
   const specs = grinder.specs;
   const items: ProductFeatureItem[] = [];
 
-  // Card 1: Adjustment Mechanism (WITH REAL MEDIA LIBRARY IMAGE)
+  // Card 1: Adjustment mechanism. Image card (image, title, body, optional link).
   items.push({
     _key: "feat-adjustment",
     title: "Micrometric Adjustment & Fast Opening",
@@ -81,7 +81,7 @@ export function buildGrinderFeatures(grinder: Grinder): ProductFeatureItem[] {
     buttonHref: "/knowledge/dialling-in-with-less-waste",
   });
 
-  // Card 2: Burrs and Grind Quality (WITH REAL MEDIA LIBRARY IMAGE)
+  // Card 2: Burrs. Image card (image, title, body, optional link).
   items.push({
     _key: "feat-burrs",
     title: `${specs.burrDiameterMm || 68} mm Precision Burrs`,
@@ -132,9 +132,10 @@ export function FeaturesSwipe({ grinder }: { grinder: Grinder }) {
     if (!scrollRef.current) return;
     const cardWidth = scrollRef.current.firstElementChild?.clientWidth || 320;
     const gap = 24;
+    const still = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     scrollRef.current.scrollTo({
       left: index * (cardWidth + gap),
-      behavior: "smooth",
+      behavior: still ? "auto" : "smooth",
     });
     setActiveIndex(index);
   };
@@ -207,7 +208,7 @@ export function FeaturesSwipe({ grinder }: { grinder: Grinder }) {
         {/* Swiping track - NO HORIZONTAL SCROLLBAR */}
         <div
           ref={scrollRef}
-          className="mt-8 flex gap-6 overflow-x-auto pb-2 pt-2 snap-x snap-mandatory scroll-smooth focus:outline-none [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden"
+          className="mt-8 flex gap-6 overflow-x-auto pb-2 pt-2 snap-x snap-mandatory scroll-smooth motion-reduce:scroll-auto focus:outline-none [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden"
           tabIndex={0}
           aria-label="Engineered features list"
         >

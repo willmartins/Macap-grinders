@@ -1,5 +1,6 @@
 import Image from "next/image";
 
+import { GalleryDrift } from "@/components/grinders/gallery-drift";
 import { SectionHeader } from "@/components/site/section-header";
 import type { GalleryImage } from "@/lib/content/types";
 import { focusFor } from "@/lib/imagery";
@@ -31,33 +32,11 @@ export function FlexibleGallery({
     return null;
   }
 
-  // Duplicate images for infinite seamless loop on mobile
+  // Repeat the set so the phone row can drift and wrap without a jump
   const marqueeImages = [...validImages, ...validImages, ...validImages];
 
   return (
     <section className="section border-b border-line bg-white overflow-hidden" aria-labelledby="gallery-heading">
-      {/* Inline styles for slow infinite auto-scrolling mobile marquee */}
-      <style
-        dangerouslySetInnerHTML={{
-          __html: `
-            @keyframes gallery-marquee {
-              0% { transform: translateX(0%); }
-              100% { transform: translateX(-33.333333%); }
-            }
-            .mobile-gallery-marquee {
-              display: flex;
-              gap: 1rem;
-              width: max-content;
-              animation: gallery-marquee 75s linear infinite;
-            }
-            .mobile-gallery-marquee:hover,
-            .mobile-gallery-marquee:active {
-              animation-play-state: paused;
-            }
-          `,
-        }}
-      />
-
       <div className="frame">
         <SectionHeader
           id="gallery-heading"
@@ -95,19 +74,21 @@ export function FlexibleGallery({
       {/* ========================================================================= */}
       {/* MOBILE LAYOUT (< md): Consistent height, real aspect ratios, slower scroll */}
       {/* ========================================================================= */}
-      <div className="mt-6 md:hidden overflow-hidden py-2" aria-label="Photo carousel">
-        <div className="mobile-gallery-marquee cursor-grab active:cursor-grabbing px-4">
+      <div className="mt-6 py-2 md:hidden">
+        <GalleryDrift setSize={validImages.length} label={`${modelName} photographs`}>
           {marqueeImages.map((img, index) => {
             const ratio = parseSanityRatio(img.url);
+            const repeat = index >= validImages.length;
             return (
               <div
                 key={`${img._key}-${index}`}
                 className="relative h-64 flex-none overflow-hidden border border-line bg-plinth"
                 style={{ aspectRatio: `${ratio}` }}
+                aria-hidden={repeat ? true : undefined}
               >
                 <Image
                   src={img.url!}
-                  alt={img.alt || modelName}
+                  alt={repeat ? "" : img.alt || modelName}
                   fill
                   sizes="75vw"
                   className="object-cover"
@@ -116,8 +97,8 @@ export function FlexibleGallery({
               </div>
             );
           })}
-        </div>
-        <p className="mt-3 text-center type-eyebrow text-muted">Touch to pause and explore</p>
+        </GalleryDrift>
+        <p className="mt-3 text-center type-eyebrow text-muted">Swipe to see more</p>
       </div>
     </section>
   );

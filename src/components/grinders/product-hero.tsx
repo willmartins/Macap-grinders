@@ -32,6 +32,24 @@ export function ProductHero({
         aria-hidden="true"
       />
 
+      {/*
+        One photograph for both layouts, so the browser fetches it once.
+        Phone: centred behind the copy, under the scrim.
+        Desktop: on the right, in front of the divider line.
+      */}
+      <div className="pointer-events-none absolute inset-x-0 top-12 bottom-20 z-0 flex items-center justify-center p-4 md:inset-x-auto md:right-[max(1.5rem,calc((100vw-90rem)/2))] md:top-10 md:bottom-8 md:z-20 md:w-[46vw] md:max-w-[42rem] md:p-0">
+        <div className="relative h-full max-h-[58vh] w-full md:max-h-none">
+          <Image
+            src={imageUrl}
+            alt={alt}
+            fill
+            priority={priority}
+            sizes="(min-width: 768px) 46vw, 100vw"
+            className="object-contain object-center md:drop-shadow-[0_25px_60px_rgba(0,0,0,0.85)]"
+          />
+        </div>
+      </div>
+
       {/* ========================================================================= */}
       {/* MOBILE LAYOUT (< md): Centered grinder, soft scrim, title overlaps grinder */}
       {/* ========================================================================= */}
@@ -46,28 +64,14 @@ export function ProductHero({
           ) : null}
         </div>
 
-        {/* Centered Grinder Image on Mobile */}
-        <div className="absolute inset-x-0 top-12 bottom-20 z-0 flex items-center justify-center p-4">
-          <div className="relative h-full w-full max-h-[58vh]">
-            <Image
-              src={imageUrl}
-              alt={alt}
-              fill
-              priority={priority}
-              sizes="100vw"
-              className="object-contain object-center"
-            />
-          </div>
-        </div>
-
         {/* Softened Gradient Scrim on Mobile (Gentle fade, not harsh black) */}
         <div
           className="pointer-events-none absolute inset-0 z-10 bg-gradient-to-t from-black/85 via-black/30 to-transparent"
           aria-hidden="true"
         />
 
-        {/* Bottom Content Area on Mobile (Overlapping the lower part of the grinder) */}
-        <div className="relative z-20 px-5 pb-6 pt-16">
+        {/* Bottom Content Area on Mobile (Overlapping the lower part of the grinder). Clears the cookie banner while it shows. */}
+        <div className="relative z-20 px-5 pb-[calc(1.5rem+var(--consent-banner,0px))] pt-16">
           <h1 className="type-display text-white drop-shadow-[0_2px_12px_rgba(0,0,0,0.8)]">
             {title}
           </h1>
@@ -78,10 +82,10 @@ export function ProductHero({
             </p>
           ) : null}
 
-          {/* Key Figures Row on Mobile */}
+          {/* Key Figures Row on Mobile. Columns take the width of their figure, so a range does not run into its neighbour. */}
           {figures && figures.length > 0 ? (
             <ul
-              className="mt-3 grid grid-cols-4 gap-2 border-t border-white/20 pt-2.5"
+              className="mt-3 flex flex-wrap justify-between gap-x-4 gap-y-2 border-t border-white/20 pt-2.5"
               aria-label="Key figures"
             >
               {figures.map((figure) => (
@@ -110,7 +114,7 @@ export function ProductHero({
       {/* ========================================================================= */}
       {/* DESKTOP LAYOUT (>= md): Grinder sits ON TOP of the grounding divider line */}
       {/* ========================================================================= */}
-      <div className="relative hidden h-full w-full flex-col justify-between py-6 md:flex lg:py-8">
+      <div className="relative hidden h-full w-full flex-col justify-between pt-6 pb-[calc(1.5rem+var(--consent-banner,0px))] md:flex lg:pt-8 lg:pb-[calc(2rem+var(--consent-banner,0px))]">
         {/* Top bar: Breadcrumbs and Eyebrow */}
         <div className="frame relative z-30 flex items-center justify-between gap-4">
           {crumbs}
@@ -119,20 +123,6 @@ export function ProductHero({
               {eyebrow}
             </span>
           ) : null}
-        </div>
-
-        {/* Grinder Showcase Image (Sitting ON TOP of the horizon divider line at z-20) */}
-        <div className="pointer-events-none absolute right-[max(1.5rem,calc((100vw-90rem)/2))] top-10 bottom-8 z-20 w-[46vw] max-w-[42rem] flex items-center justify-center">
-          <div className="relative h-full w-full">
-            <Image
-              src={imageUrl}
-              alt={alt}
-              fill
-              priority={priority}
-              sizes="50vw"
-              className="object-contain drop-shadow-[0_25px_60px_rgba(0,0,0,0.85)]"
-            />
-          </div>
         </div>
 
         {/* Lower Aligned Content Area */}
@@ -158,10 +148,10 @@ export function ProductHero({
                   </p>
                 ) : null}
 
-                {/* Performance Figures Bar */}
+                {/* Performance Figures Bar. Columns take the width of their figure, so a range does not run into its neighbour. */}
                 {figures && figures.length > 0 ? (
                   <ul
-                    className="mt-6 grid grid-cols-4 gap-4 border-t border-white/20 pt-4"
+                    className="mt-6 flex flex-wrap gap-x-10 gap-y-4 border-t border-white/20 pt-4 lg:gap-x-12"
                     aria-label="Key figures"
                   >
                     {figures.map((figure) => (

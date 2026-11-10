@@ -1,7 +1,22 @@
+import { FaqList } from "@/components/grinders/faq-list";
 import { SectionHeader } from "@/components/site/section-header";
 import { TextLink } from "@/components/site/text-link";
 import type { FaqItem, Grinder } from "@/lib/content/types";
-import { specEntries } from "@/lib/specs";
+import { specEntries, type SpecRow } from "@/lib/specs";
+
+/** Audience and status are not specifications. Features get their own row with a list. */
+const leftOut = new Set(["Audience", "Status", "Features"]);
+
+/** Rows for the product page table. An output range joins the output row, so the figure appears once. */
+function tableRows(grinder: Grinder): SpecRow[] {
+  const rows = specEntries(grinder).filter((row) => !leftOut.has(row.label));
+  const output = rows.find((row) => row.label === "Output");
+  const range = rows.find((row) => /^output range$/i.test(row.label));
+  if (!output || !range) return rows;
+  return rows
+    .filter((row) => row !== range)
+    .map((row) => (row === output ? { label: "Output", value: `${output.value}, range ${range.value}` } : row));
+}
 
 export function SpecSection({
   grinder,
@@ -11,34 +26,9 @@ export function SpecSection({
   faqs?: FaqItem[];
 }) {
   const downloadHref = grinder.catalogueUrl || null;
-  const rows = specEntries(grinder);
-
-  const displayFaqs: FaqItem[] =
-    faqs && faqs.length > 0
-      ? faqs
-      : [
-          {
-            _key: "faq-audience",
-            question: `Is the ${grinder.name} designed for home or commercial bar use?`,
-            answer:
-              grinder.audience === "business"
-                ? `The ${grinder.name} is a dedicated commercial espresso grinder engineered for continuous café service and intense rush-hour throughput.`
-                : `The ${grinder.name} is built for home baristas who demand commercial-grade grind consistency on a domestic kitchen counter.`,
-          },
-          {
-            _key: "faq-calibration",
-            question: "How do I maintain my grind setting during burr cleaning?",
-            answer:
-              "Macap grinders feature a fast-opening micrometric collar. You can inspect or brush the burr chamber and return the collar to your exact dialled-in setting without losing recipe calibration.",
-          },
-          {
-            _key: "faq-burrs",
-            question: `What burr set comes installed in the ${grinder.name}?`,
-            answer: `It is fitted with ${grinder.specs.burrDiameterMm || 68} mm Italian ${
-              grinder.specs.burrType || "flat"
-            } burrs machined from hardened steel for prolonged edge retention and uniform extraction.`,
-          },
-        ];
+  const rows = tableRows(grinder);
+  const features = grinder.specs.features;
+  const questions = faqs || [];
 
   return (
     <section
@@ -49,7 +39,7 @@ export function SpecSection({
     >
       <div className="frame">
         <div className="grid gap-12 lg:grid-cols-12 lg:gap-16 items-start">
-          {/* Left Column: High-Density Technical Spec Grid */}
+          {/* Left column: one specification table, hairline rows */}
           <div className="lg:col-span-7">
             <SectionHeader
               id="specs-heading"
@@ -69,49 +59,50 @@ export function SpecSection({
               }
             />
 
-            {/* 2-column architectural spec grid */}
-            <div className="mt-8 grid grid-cols-2 sm:grid-cols-2 gap-3">
-              {rows.map((row) => (
-                <div
-                  key={row.label}
-                  className="flex flex-col justify-between border border-line bg-surface p-4"
-                >
-                  <span className="type-eyebrow text-muted">
-                    {row.label}
-                  </span>
-                  <span className="mt-2 type-mono text-fg">
-                    {row.value}
-                  </span>
-                </div>
-              ))}
-            </div>
+            <table className="datasheet mt-8 border-t border-line">
+              <caption className="sr-only">{grinder.name} specifications</caption>
+              <tbody>
+                {rows.map((row, index) => (
+                  <tr key={`${row.label}-${index}`}>
+                    <th scope="row">{row.label}</th>
+                    <td className="type-mono">{row.value}</td>
+                  </tr>
+                ))}
+                {features.length ? (
+                  <tr>
+                    <th scope="row" className="align-top">
+                      Features
+                    </th>
+                    <td>
+                      <ul className="grid gap-1.5">
+                        {features.map((feature) => (
+                          <li key={feature}>{feature}</li>
+                        ))}
+                      </ul>
+                    </td>
+                  </tr>
+                ) : null}
+              </tbody>
+            </table>
           </div>
 
-          {/* Right Column: Open FAQs & Support Card */}
-          <div className="lg:col-span-5" aria-labelledby="faq-heading">
-            <SectionHeader
-              id="faq-heading"
-              eyebrow="Support"
-              title="Frequently asked questions"
-              description="Operational advice, routine maintenance, and counter installation."
-            />
-
-            {/* All FAQs permanently open (no accordion) */}
-            <div className="mt-8 divide-y divide-line border border-line bg-surface px-6">
-              {displayFaqs.map((faq) => (
-                <div key={faq._key} className="py-5">
-                  <h3 className="text-base font-semibold text-fg leading-snug">
-                    {faq.question}
-                  </h3>
-                  <p className="mt-2 type-body text-muted">
-                    {faq.answer}
-                  </p>
+          {/* Right column: questions on hairlines, then the one boxed call-out */}
+          <div className="lg:col-span-5">
+            {questions.length ? (
+              <>
+                <SectionHeader
+                  id="faq-heading"
+                  eyebrow="Support"
+                  title="Frequently asked questions"
+                  description="Operational advice, routine maintenance, and counter installation."
+                />
+                <div className="mt-8">
+                  <FaqList faqs={questions} />
                 </div>
-              ))}
-            </div>
+              </>
+            ) : null}
 
-            {/* Generic Sales & Technical Support Card */}
-            <div className="mt-6 border border-line bg-surface p-5">
+            <div className={`border border-line bg-surface p-5 ${questions.length ? "mt-8" : ""}`.trim()}>
               <p className="font-semibold text-fg">Need sales or technical support?</p>
               <p className="mt-1.5 type-body text-muted">
                 Our Venice team and regional distribution partners are here to assist with machine selection, installation requirements, and commercial quotes.

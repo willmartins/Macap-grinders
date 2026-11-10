@@ -39,7 +39,7 @@ export function ProductOverview({
           <div className="md:col-span-6 lg:col-span-5 relative">
             {/* Spinning Circular Text Emblem: "Made in Venice - Shaping Coffee" */}
             <div className="absolute -top-4 -right-4 sm:-top-6 sm:-right-6 z-20 h-24 w-24 sm:h-28 sm:w-28 rounded-full bg-black/90 text-white backdrop-blur-md border border-white/20 shadow-2xl flex items-center justify-center p-1.5 select-none pointer-events-none">
-              <svg viewBox="0 0 100 100" className="h-full w-full animate-[spin_60s_linear_infinite]">
+              <svg viewBox="0 0 100 100" className="h-full w-full motion-safe:animate-[spin_60s_linear_infinite]">
                 <defs>
                   <path
                     id="circleTextPath"
@@ -135,6 +135,11 @@ export function ProductOverview({
               }
               .overview-marquee-track:hover {
                 animation-play-state: paused;
+              }
+              @media (prefers-reduced-motion: reduce) {
+                .overview-marquee-track {
+                  animation: none;
+                }
               }
             `,
           }}

@@ -15,9 +15,19 @@ import type { FaqItem, Grinder, GrinderCard } from "@/lib/content/types";
 import { formatDate } from "@/lib/format";
 import { performanceFigures } from "@/lib/specs";
 
-function positionLine(text: string): string {
+function firstSentence(text: string): string {
   const match = text.match(/^.*?[.!?](?:\s|$)/);
   return (match ? match[0] : text).trim();
+}
+
+/** The first full sentence. Migrated copy often opens with the model name alone ("Supra 68."), which is skipped. */
+function positionLine(text: string, name: string): string {
+  const plain = (value: string) => value.replace(/[^\p{L}\p{N}]+/gu, "").toLowerCase();
+  const trimmed = text.trim();
+  const first = firstSentence(trimmed);
+  const rest = trimmed.slice(first.length).trim();
+  if (rest && plain(first) === plain(name)) return firstSentence(rest);
+  return first;
 }
 
 export function GrinderModel({
@@ -57,7 +67,7 @@ export function GrinderModel({
           alt={grinder.imageAlt || grinder.name}
           eyebrow={eyebrow}
           title={grinder.name}
-          text={positionLine(grinder.answerFirst)}
+          text={positionLine(grinder.answerFirst, grinder.name)}
           figures={figures}
           crumbs={crumbs}
         >
@@ -84,7 +94,7 @@ export function GrinderModel({
           />
           {eyebrow ? <p className="label text-muted mt-4">{eyebrow}</p> : null}
           <h1 className="display mt-4">{grinder.name}</h1>
-          <p className="mt-6 max-w-xl text-lg leading-relaxed">{positionLine(grinder.answerFirst)}</p>
+          <p className="mt-6 max-w-xl text-lg leading-relaxed">{positionLine(grinder.answerFirst, grinder.name)}</p>
           <div className="mt-8 flex flex-wrap gap-3">
             <Enquire
               variant="plain"
