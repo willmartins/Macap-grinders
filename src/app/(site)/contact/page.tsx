@@ -43,8 +43,10 @@ async function ContactContent({
     <EnquiryGrinderProvider grinder={grinder}>
       <ContentPage page={page} />
       {hasForm ? null : (
-        <div className="frame section-tight">
-          <ContactForm />
+        <div className="section">
+          <div className="frame">
+            <ContactForm />
+          </div>
         </div>
       )}
     </EnquiryGrinderProvider>
@@ -57,7 +59,7 @@ export default function ContactPage({
   searchParams: Promise<Record<string, string | string[] | undefined>>;
 }) {
   return (
-    <Suspense fallback={<p className="px-5 py-20 text-muted">Loading.</p>}>
+    <Suspense fallback={<p className="frame section type-body text-grey">Loading.</p>}>
       <ContactContent searchParams={searchParams} />
     </Suspense>
   );

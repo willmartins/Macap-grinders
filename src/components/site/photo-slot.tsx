@@ -25,7 +25,7 @@ export function PhotoSlot({
   blur?: string | null;
 }) {
   return (
-    <div className={`relative overflow-hidden bg-surface ${ratioClass[ratio]}`}>
+    <div className={`relative overflow-hidden bg-white ${ratioClass[ratio]}`}>
       {imageUrl ? (
         <Image
           src={imageUrl}
@@ -35,7 +35,7 @@ export function PhotoSlot({
           sizes={sizes}
           placeholder={blur ? "blur" : "empty"}
           blurDataURL={blur || undefined}
-          className={fit === "contain" ? "object-contain media-img" : "object-cover media-img"}
+          className={fit === "contain" ? "object-contain" : "object-cover"}
         />
       ) : null}
     </div>

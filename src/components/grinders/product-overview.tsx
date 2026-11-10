@@ -1,5 +1,7 @@
 import Image from "next/image";
 
+import { DownloadIcon } from "@/components/site/icons";
+import { SectionHeader } from "@/components/site/section-header";
 import { TextLink } from "@/components/site/text-link";
 import type { Grinder } from "@/lib/content/types";
 import { focusFor } from "@/lib/imagery";
@@ -32,14 +34,14 @@ export function ProductOverview({
   const marqueeString = `${marqueePhrases.join("  +  ")}  +  `;
 
   return (
-    <section className="section bg-white border-b border-line overflow-hidden !pb-0" aria-labelledby="overview-heading">
+    <section className="section bg-white border-b border-silver overflow-hidden !pb-0" aria-labelledby="overview-heading">
       <div className="frame">
         <div className="grid items-center gap-10 md:grid-cols-12 md:gap-14 lg:gap-20 pb-12 sm:pb-16">
           {/* Left Column: 4:5 Aspect Ratio supporting Video with Image backup */}
           <div className="md:col-span-6 lg:col-span-5 relative">
             {/* Spinning Circular Text Emblem: "Made in Venice - Shaping Coffee" */}
-            <div className="absolute -top-4 -right-4 sm:-top-6 sm:-right-6 z-20 h-24 w-24 sm:h-28 sm:w-28 rounded-full bg-black/90 text-white backdrop-blur-md border border-white/20 shadow-2xl flex items-center justify-center p-1.5 select-none pointer-events-none">
-              <svg viewBox="0 0 100 100" className="h-full w-full animate-[spin_60s_linear_infinite]">
+            <div className="absolute -top-4 -right-4 sm:-top-6 sm:-right-6 z-20 h-24 w-24 sm:h-28 sm:w-28 rounded-full bg-off-black text-white border border-white/20 shadow-2xl flex items-center justify-center p-1.5 select-none pointer-events-none">
+              <svg viewBox="0 0 100 100" className="h-full w-full motion-safe:animate-[spin_60s_linear_infinite]">
                 <defs>
                   <path
                     id="circleTextPath"
@@ -56,11 +58,11 @@ export function ProductOverview({
 
               {/* Center emblem icon */}
               <div className="absolute inset-0 flex items-center justify-center">
-                <span className="text-accent text-xs font-mono font-bold tracking-tight">1930</span>
+                <span className="type-eyebrow text-yellow">1930</span>
               </div>
             </div>
 
-            <div className="relative aspect-[4/5] w-full overflow-hidden border border-line bg-plinth">
+            <div className="relative aspect-[4/5] w-full overflow-hidden border border-silver bg-silver">
               {videoUrl ? (
                 <video
                   src={videoUrl}
@@ -81,37 +83,33 @@ export function ProductOverview({
                   style={{ objectPosition: focusFor(overviewImage.url) }}
                 />
               ) : (
-                <div className="flex h-full w-full items-center justify-center p-8 text-center text-muted">
+                <div className="flex h-full w-full items-center justify-center p-8 text-center type-body text-grey">
                   Photography to follow
                 </div>
               )}
             </div>
           </div>
 
-          {/* Right Column: Impact Title, Single Short Paragraph, and Spec Download Button */}
+          {/* Right Column: Title, one short paragraph, and the spec sheet download */}
           <div className="flex flex-col justify-center md:col-span-6 lg:col-span-7">
-            <h2 id="overview-heading" className="type-h2 text-fg">
-              Engineered in Venice for espresso consistency.
-            </h2>
-
-            {/* Single Short Paragraph as requested */}
-            <p className="type-lead mt-6 text-muted max-w-2xl">
-              Conceived for busy bars and specialty coffee programmes, the {grinder.name} unites precision Italian
-              burrs with micrometric calibration and robust thermal control. It preserves dialled-in recipes dose after dose,
-              minimising waste and ensuring uniform particle distribution throughout daily service.
-            </p>
+            <SectionHeader
+              id="overview-heading"
+              title="Engineered in Venice for espresso consistency."
+              description={`Conceived for busy bars and specialty coffee programmes, the ${grinder.name} unites precision Italian burrs with micrometric calibration and robust thermal control. It preserves dialled-in recipes dose after dose, minimising waste and ensuring uniform particle distribution throughout daily service.`}
+            />
 
             <div className="mt-8 flex flex-wrap items-center gap-6">
               <a
                 href={downloadHref}
-                className="btn"
+                className="btn btn-no-arrow"
                 data-analytics="download"
                 data-slug={grinder.slug}
                 {...(grinder.catalogueUrl ? { target: "_blank", rel: "noopener noreferrer" } : {})}
               >
                 Download spec sheet
+                <DownloadIcon />
               </a>
-              <TextLink href="#specifications" className="type-body font-semibold text-fg hover:shadow-[inset_0_-1px_0_var(--accent)]">
+              <TextLink href="#specifications" className="type-body font-semibold text-black link-underline">
                 View specifications table
               </TextLink>
             </div>
@@ -120,7 +118,7 @@ export function ProductOverview({
       </div>
 
       {/* Infinite Technical Monospace Marquee across the bottom */}
-      <div className="w-full border-t border-line bg-surface/80 py-3.5 overflow-hidden">
+      <div className="w-full border-t border-silver bg-white py-3.5 overflow-hidden">
         <style
           dangerouslySetInnerHTML={{
             __html: `
@@ -136,10 +134,15 @@ export function ProductOverview({
               .overview-marquee-track:hover {
                 animation-play-state: paused;
               }
+              @media (prefers-reduced-motion: reduce) {
+                .overview-marquee-track {
+                  animation: none;
+                }
+              }
             `,
           }}
         />
-        <div className="overview-marquee-track whitespace-nowrap font-mono text-[11px] sm:text-xs uppercase tracking-[0.22em] text-muted select-none">
+        <div className="overview-marquee-track whitespace-nowrap type-eyebrow text-grey select-none">
           <span className="px-4">{marqueeString}</span>
           <span className="px-4">{marqueeString}</span>
         </div>

@@ -57,7 +57,7 @@ export function ContactForm({ grinder: given }: { grinder?: EnquiryGrinder | nul
 
   if (state.ok) {
     return (
-      <p role="status" className="text-lg">
+      <p role="status" className="type-lead text-black">
         {state.message}
       </p>
     );
@@ -115,12 +115,12 @@ export function ContactForm({ grinder: given }: { grinder?: EnquiryGrinder | nul
               className="enquire-thumb"
             />
           ) : null}
-          <p className="text-xl font-medium tracking-tight">{grinder.name}</p>
+          <p className="type-h3 text-black">{grinder.name}</p>
         </div>
       ) : null}
 
       <fieldset aria-describedby={roleError ? `${base}-role-error` : undefined} aria-invalid={roleError ? true : undefined}>
-        <legend className="text-sm">What do you do?</legend>
+        <legend className="type-eyebrow text-black">What do you do?</legend>
         <div className="choice-grid">
           {enquiryRoles.map((item) => (
             <label key={item.value} className="choice">
@@ -143,7 +143,7 @@ export function ContactForm({ grinder: given }: { grinder?: EnquiryGrinder | nul
       </fieldset>
 
       <div className="grid gap-2">
-        <label className="text-sm" id={`${base}-country-label`} htmlFor={`${base}-country`}>
+        <label className="type-eyebrow text-black" id={`${base}-country-label`} htmlFor={`${base}-country`}>
           Where are you based?
         </label>
         <CountryField
@@ -162,7 +162,7 @@ export function ContactForm({ grinder: given }: { grinder?: EnquiryGrinder | nul
       <div aria-live="polite" aria-atomic="true">
         {showPartner ? (
           <div className="partner-note">
-            <p>
+            <p className="type-body">
               We have a partner in your country: {partnerName}. Your message below will be shared with both of us.
             </p>
             <label className="choice-check" htmlFor={`${base}-macap-only`}>
@@ -173,8 +173,8 @@ export function ContactForm({ grinder: given }: { grinder?: EnquiryGrinder | nul
         ) : null}
       </div>
 
-      <label className="grid gap-2 text-sm" htmlFor={`${base}-message`}>
-        Message
+      <label className="grid gap-2" htmlFor={`${base}-message`}>
+        <span className="type-eyebrow text-black">Message</span>
         <textarea
           id={`${base}-message`}
           name="message"
@@ -190,8 +190,8 @@ export function ContactForm({ grinder: given }: { grinder?: EnquiryGrinder | nul
         ) : null}
       </label>
 
-      <label className="grid gap-2 text-sm" htmlFor={`${base}-email`}>
-        Email address
+      <label className="grid gap-2" htmlFor={`${base}-email`}>
+        <span className="type-eyebrow text-black">Email address</span>
         <input
           id={`${base}-email`}
           name="email"
@@ -209,8 +209,8 @@ export function ContactForm({ grinder: given }: { grinder?: EnquiryGrinder | nul
         ) : null}
       </label>
 
-      <label className="grid gap-2 text-sm" htmlFor={`${base}-phone`}>
-        Phone number
+      <label className="grid gap-2" htmlFor={`${base}-phone`}>
+        <span className="type-eyebrow text-black">Phone number</span>
         <input
           id={`${base}-phone`}
           name="phone"
@@ -221,7 +221,7 @@ export function ContactForm({ grinder: given }: { grinder?: EnquiryGrinder | nul
           aria-invalid={phoneError ? true : undefined}
           aria-describedby={phoneError ? `${base}-phone-hint ${base}-phone-error` : `${base}-phone-hint`}
         />
-        <span id={`${base}-phone-hint`} className="text-sm text-muted">
+        <span id={`${base}-phone-hint`} className="type-body text-grey">
           Optional. Include the country code if you are outside Italy.
         </span>
         {phoneError ? (
@@ -242,9 +242,11 @@ export function ContactForm({ grinder: given }: { grinder?: EnquiryGrinder | nul
           />
           Sign up to our mailing list
         </label>
-        <p id={`${base}-mailing-hint`} className="text-sm text-muted">
+        <p id={`${base}-mailing-hint`} className="type-body text-grey">
           Occasional notes on grinders and how to look after them. Nothing from other companies.{" "}
-          <TextLink href="/legal/privacy-policy">Privacy policy</TextLink>
+          <TextLink href="/legal/privacy-policy" className="font-semibold text-black link-underline">
+            Privacy policy
+          </TextLink>
         </p>
       </div>
 
@@ -262,7 +264,7 @@ export function ContactForm({ grinder: given }: { grinder?: EnquiryGrinder | nul
         {pending ? "Sending." : "Send"}
       </button>
       {state.message && !state.ok ? (
-        <p role="alert" className="text-sm">
+        <p role="alert" className="type-body text-black">
           {state.message}
         </p>
       ) : null}

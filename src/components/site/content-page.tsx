@@ -14,9 +14,11 @@ export function ContentPage({
     <article>
       {page.sample ? <SampleBanner /> : null}
       {hero ? null : (
-        <header className="frame section-tight">
-          <h1 className="display max-w-5xl">{page.title}</h1>
-          {page.introduction ? <p className="mt-6 max-w-2xl text-lg leading-relaxed">{page.introduction}</p> : null}
+        <header className="section-tight border-b border-silver">
+          <div className="frame">
+            <h1 className="type-h1 max-w-4xl text-black">{page.title}</h1>
+            {page.introduction ? <p className="type-lead mt-5 max-w-2xl text-grey">{page.introduction}</p> : null}
+          </div>
         </header>
       )}
       <PageBuilder sections={page.sections} journey={journey} />

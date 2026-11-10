@@ -62,7 +62,7 @@ async function GrinderContent({ params }: { params: Promise<{ slug: string }> })
 
 export default function GrinderPage({ params }: { params: Promise<{ slug: string }> }) {
   return (
-    <Suspense fallback={<p className="px-5 py-20 text-muted">Loading.</p>}>
+    <Suspense fallback={<p className="px-5 py-20 text-grey">Loading.</p>}>
       <GrinderContent params={params} />
     </Suspense>
   );

@@ -6,6 +6,10 @@ import { useState } from "react";
 import { SectionHeader } from "@/components/site/section-header";
 import type { Grinder } from "@/lib/content/types";
 
+/**
+ * Finish colours are product data: they show the real powder coat, so they keep their own values
+ * and are not part of the site palette.
+ */
 type ColourOption = {
   id: string;
   name: string;
@@ -76,7 +80,7 @@ export function ColourVisualiser({ grinder }: { grinder: Grinder }) {
   const displayImage = grinder.imageUrl;
 
   return (
-    <section className="section border-b border-line bg-sand" aria-labelledby="colours-heading">
+    <section className="section border-b border-silver bg-sand" aria-labelledby="colours-heading">
       <div className="frame">
         <SectionHeader
           id="colours-heading"
@@ -85,9 +89,9 @@ export function ColourVisualiser({ grinder }: { grinder: Grinder }) {
           description="Choose a finish to complement your espresso machine and counter architecture."
         />
 
-        <div className="mt-10 grid gap-8 border border-line bg-surface p-6 sm:p-8 md:grid-cols-12 md:gap-12 md:p-10">
+        <div className="mt-10 grid gap-8 border border-silver bg-white p-6 sm:p-8 md:grid-cols-12 md:gap-12 md:p-10">
           {/* Visualiser Stage */}
-          <div className="relative flex flex-col items-center justify-center bg-surface-dark p-3 sm:p-8 md:p-10 md:col-span-7 overflow-hidden min-h-[24rem] sm:min-h-[28rem]">
+          <div className="relative flex flex-col items-center justify-center bg-off-black p-3 sm:p-8 md:p-10 md:col-span-7 overflow-hidden min-h-[24rem] sm:min-h-[28rem]">
             {/* Dynamic ambient backlight reflecting the chosen colour */}
             <div
               className="pointer-events-none absolute inset-0 transition-all duration-500 ease-out"
@@ -112,11 +116,11 @@ export function ColourVisualiser({ grinder }: { grinder: Grinder }) {
                   alt={`${grinder.name} in ${selectedColour.name}`}
                   fill
                   sizes="(min-width: 768px) 35vw, 90vw"
-                  className="object-contain drop-shadow-[0_20px_40px_rgba(0,0,0,0.8)] select-none"
+                  className="object-contain drop-shadow-[0_20px_40px_var(--tw-drop-shadow-color)] drop-shadow-black/80 select-none"
                 />
               </div>
             ) : (
-              <div className="relative z-10 text-center text-white/60">
+              <div className="relative z-10 text-center type-body text-white/60">
                 Machine visualiser preview
               </div>
             )}
@@ -134,7 +138,7 @@ export function ColourVisualiser({ grinder }: { grinder: Grinder }) {
           {/* Selector & Details Panel */}
           <div className="flex flex-col justify-between md:col-span-5">
             <div>
-              <p className="type-eyebrow text-muted">Select finish</p>
+              <p className="type-eyebrow text-grey">Select finish</p>
 
               {/* Swatches Grid */}
               <div className="mt-4 flex flex-wrap gap-3" role="radiogroup" aria-label="Available colours">
@@ -149,12 +153,12 @@ export function ColourVisualiser({ grinder }: { grinder: Grinder }) {
                       onClick={() => setSelectedColour(colour)}
                       className={`group relative flex h-12 w-12 items-center justify-center rounded-full transition-all focus:outline-none ${
                         isSelected
-                          ? "ring-2 ring-accent ring-offset-2 ring-offset-surface scale-105"
+                          ? "ring-2 ring-yellow ring-offset-2 ring-offset-white scale-105"
                           : "hover:scale-105 opacity-80 hover:opacity-100"
                       }`}
                       style={{
                         backgroundColor: colour.hex,
-                        border: `1.5px solid ${colour.borderHex || "rgba(255,255,255,0.2)"}`,
+                        border: `1.5px solid ${colour.borderHex || colour.hex}`,
                       }}
                       title={`${colour.name} (${colour.code})`}
                     >
@@ -172,41 +176,41 @@ export function ColourVisualiser({ grinder }: { grinder: Grinder }) {
               </div>
 
               {/* Finish Details */}
-              <div className="mt-8 border border-line bg-plinth/50 p-5">
+              <div className="mt-8 border border-silver bg-light-grey p-5">
                 <div className="flex items-baseline justify-between">
-                  <h3 className="type-h3 text-fg">
+                  <h3 className="type-h3 text-black">
                     {selectedColour.name}
                   </h3>
-                  <span className="type-mono text-muted">{selectedColour.code}</span>
+                  <span className="type-mono text-grey">{selectedColour.code}</span>
                 </div>
-                <p className="mt-1 text-xs text-muted">
+                <p className="mt-1 type-body text-grey">
                   {selectedColour.italianName}
                 </p>
-                <p className="mt-3 type-body text-muted">
+                <p className="mt-3 type-body text-grey">
                   {selectedColour.description}
                 </p>
               </div>
 
               {/* Material Assurance */}
-              <ul className="mt-6 space-y-2.5 text-sm text-muted">
+              <ul className="mt-6 space-y-2.5 type-body text-grey">
                 <li className="flex items-center gap-2.5">
-                  <span className="font-semibold text-fg">✓</span>
+                  <span className="font-semibold text-black">✓</span>
                   <span>Electrostatically applied powder coat cured at 200°C</span>
                 </li>
                 <li className="flex items-center gap-2.5">
-                  <span className="font-semibold text-fg">✓</span>
+                  <span className="font-semibold text-black">✓</span>
                   <span>UV and chemical resistant against espresso cleaning agents</span>
                 </li>
                 <li className="flex items-center gap-2.5">
-                  <span className="font-semibold text-fg">✓</span>
+                  <span className="font-semibold text-black">✓</span>
                   <span>Cast aluminium body for thermal mass and stability</span>
                 </li>
               </ul>
             </div>
 
             {/* Custom Fleet Note */}
-            <div className="mt-8 pt-5 border-t border-line type-body text-muted">
-              <strong className="text-fg block font-semibold mb-1">Custom fleet orders</strong>
+            <div className="mt-8 pt-5 border-t border-silver type-body text-grey">
+              <strong className="text-black block font-semibold mb-1">Custom fleet orders</strong>
               Custom RAL colour matching and laser-etched branding are available on volume orders for roasters and cafe groups.
             </div>
           </div>

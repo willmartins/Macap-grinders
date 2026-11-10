@@ -46,11 +46,11 @@ export function GrinderCardView({ grinder }: { grinder: GrinderCard }) {
             />
           </div>
         ) : (
-          <p className="label text-muted">Photography to follow</p>
+          <p className="type-eyebrow text-grey">Photography to follow</p>
         )}
       </div>
       <div className="machine-foot">
-        <p className="label text-muted">
+        <p className="type-eyebrow text-grey">
           <span>{line}</span>
           {status ? <span className="ml-3">{status}</span> : null}
         </p>
@@ -61,7 +61,7 @@ export function GrinderCardView({ grinder }: { grinder: GrinderCard }) {
               {specs.map((spec) => (
                 <div key={spec.label}>
                   <dt>{spec.label}</dt>
-                  <dd>{spec.value}</dd>
+                  <dd className="type-mono">{spec.value}</dd>
                 </div>
               ))}
             </dl>
@@ -80,9 +80,9 @@ export function GrinderCardView({ grinder }: { grinder: GrinderCard }) {
 export function GrinderGrid({ grinders, snap = false }: { grinders: GrinderCard[]; snap?: boolean }) {
   if (!grinders.length) {
     return (
-      <p className="text-sm">
+      <p className="type-body">
         No grinders match these filters.{" "}
-        <TextLink href="/grinders" className="underline underline-offset-4">
+        <TextLink href="/grinders" className="font-semibold link-underline">
           Clear filters
         </TextLink>
       </p>

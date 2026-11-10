@@ -21,6 +21,20 @@ Page sections share one name in code and in Sanity Studio. They are rendered by 
 
 Document types that are not page sections: `siteSettings`, `homePage`, `aboutPage`, `contactPage`, `knowledgeHubPage`, `grindersIndexPage`, `journeyPage`, `grinderGroup`, `grinder`, `grinderCollection`, `author`, `kbTopic`, `kbPost`, `legalPage`, `redirect`, `distributor`. Shared objects: `seo`, `link`, `faq`, `blockContent`, `grinderSpecs`.
 
+## Design system
+
+`/design-system` is the internal reference for the agreed parts of the site: colour, type, spacing, surfaces, buttons and links, and voice. It is `noindex`, and it is not in the sitemap or the navigation. Its examples render the real styles, so it cannot drift from the site. Sample text on that page is labelled. A part is added once it is settled.
+
+Colours are named for what they look like: `black`, `off-black`, `grey`, `silver`, `light-grey`, `white`, `sand`, `dark-sand`, `yellow`. They are set once in `src/app/globals.css` and used as Tailwind names, such as `bg-yellow` or `text-grey`, or as `var(--yellow)` in CSS. There are no role names such as `fg` or `muted`.
+
+Special colours sit outside that palette: `sky`, `emerald` and `violet`, each with a `light-` fill and a `dark-` text tone. They are for special circumstances and for tools and apps, such as telling models apart in the compare tool. Do not use them in general page design.
+
+Type sizes sit on one scale that starts from the 15px body size: a minor third (1.2) on a phone and a perfect fourth (1.333) on a desktop, set as `--type-0` to `--type-7` in `src/app/globals.css`. Display is step 7, Heading 1 step 5, Heading 2 step 4, Heading 3 step 2, Lead step 1 and Body step 0. Steps 3 and 6 are spare. Navigation, mono and eyebrow are fixed label sizes off the scale. A new size takes a spare step. Do not set a font size by hand.
+
+Buttons use `.btn`, with `.btn-secondary`, `.btn-on-photo` and `.btn-yellow`. An icon is an `svg` inside the button, from `src/components/site/icons.tsx`. `.btn-no-arrow` removes the arrow when a trailing icon takes its place. A text link that stands on its own can add `.link-underline`.
+
+Shared components that are not yet on that page: `SectionHeader` (src/components/site/section-header.tsx), `FeatureCard` (src/components/site/feature-card.tsx, three versions chosen by the content: image, icon on a colour ground, or text only), `FaqList` (src/components/grinders/faq-list.tsx).
+
 ## Enquiries
 
 The form lives in `src/components/contact/contact-form.tsx`. The contact page shows it inline and has no product field. A grinder page uses `Enquire` (`src/components/contact/enquire.tsx`): Enquire is the primary action, Compare stays secondary. Enquire opens the same form in a native dialog. Escape closes it, focus stays inside while it is open, and focus returns to Enquire. On a phone the dialog is a full-screen sheet. Without JavaScript, Enquire is a link to `/contact?grinder=<slug>`. That page shows the grinder and submits its slug. There is no product picker.

@@ -61,22 +61,30 @@ async function CollectionContent({ params }: { params: Promise<{ slug: string }>
       ) : (
         <>
           <Breadcrumbs items={[{ name: collection.name, path: `/collections/${collection.slug}` }]} />
-          <header className="frame section-tight">
-            <h1 className="display">{collection.name}</h1>
-            <p className="mt-6 max-w-2xl text-lg leading-relaxed">{collection.answerFirst || collection.summary}</p>
+          <header className="section-tight border-b border-silver">
+            <div className="frame">
+              <p className="type-eyebrow text-grey">Collection</p>
+              <h1 className="type-h1 mt-3 text-black">{collection.name}</h1>
+              <p className="type-lead mt-5 max-w-2xl text-grey">{collection.answerFirst || collection.summary}</p>
+            </div>
           </header>
         </>
       )}
-      <div className="frame section">
-        <GrinderGrid grinders={collection.grinders} />
-        {collection.grinders.length > 1 ? (
-          <p className="mt-10">
-            <TextLink href={compareHref(collection.grinders.slice(0, 3).map((grinder) => grinder.slug))} className="tap">
-              Compare these grinders
-            </TextLink>
-          </p>
-        ) : null}
-      </div>
+      <section className="section border-b border-silver" aria-label={`${collection.name} grinders`}>
+        <div className="frame">
+          <GrinderGrid grinders={collection.grinders} />
+          {collection.grinders.length > 1 ? (
+            <p className="mt-8">
+              <TextLink
+                href={compareHref(collection.grinders.slice(0, 3).map((grinder) => grinder.slug))}
+                className="tap type-body font-semibold text-black link-underline"
+              >
+                Compare these grinders
+              </TextLink>
+            </p>
+          ) : null}
+        </div>
+      </section>
       <PageBuilder sections={collection.sections} />
       <JsonLd
         data={collectionJsonLd({
@@ -92,7 +100,7 @@ async function CollectionContent({ params }: { params: Promise<{ slug: string }>
 
 export default function CollectionPage({ params }: { params: Promise<{ slug: string }> }) {
   return (
-    <Suspense fallback={<p className="px-5 py-20 text-muted">Loading.</p>}>
+    <Suspense fallback={<p className="frame section type-body text-grey">Loading.</p>}>
       <CollectionContent params={params} />
     </Suspense>
   );

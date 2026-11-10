@@ -50,17 +50,17 @@ export function BleedHero({
         <div className="model-hero-scrim" aria-hidden="true" />
         <div className="model-hero-copy frame">
           {crumbs}
-          {eyebrow ? <p className="label text-white/80">{eyebrow}</p> : null}
-          <h1 className="display mt-3 max-w-5xl text-white">{title}</h1>
-          {text ? <p className="model-hero-lead">{text}</p> : null}
+          {eyebrow ? <p className="type-eyebrow text-white/80">{eyebrow}</p> : null}
+          <h1 className="type-display mt-3 max-w-5xl text-white">{title}</h1>
+          {text ? <p className="type-lead mt-3 max-w-xl text-white/85">{text}</p> : null}
           {figures && figures.length ? (
             <ul className="model-hero-figures" aria-label="Key figures">
               {figures.map((figure) => (
                 <li key={figure.label}>
-                  <p className="label text-white/75">{figure.label}</p>
-                  <p className="stat">
+                  <p className="type-eyebrow text-white/60">{figure.label}</p>
+                  <p className="type-h3 mt-1.5 whitespace-nowrap text-white tabular-nums">
                     {figure.value}
-                    <span className="label">{figure.unit}</span>
+                    <span className="ml-1 text-sm font-normal text-white/70">{figure.unit}</span>
                   </p>
                 </li>
               ))}
@@ -73,14 +73,14 @@ export function BleedHero({
   }
 
   return (
-    <header className="stage">
+    <header className="stage border-b border-silver">
       <div className="frame stage-grid">
         <div className="stage-copy">
           {crumbs}
-          {eyebrow ? <p className="label mt-4 text-muted">{eyebrow}</p> : null}
-          <h1 className="display-sm mt-3 max-w-xl">{title}</h1>
-          {text ? <p className="stage-lead">{text}</p> : null}
-          {children ? <div className="stage-actions flex flex-wrap gap-3">{children}</div> : null}
+          {eyebrow ? <p className="type-eyebrow mt-4 text-grey">{eyebrow}</p> : null}
+          <h1 className="type-h1 mt-3 max-w-xl text-black">{title}</h1>
+          {text ? <p className="type-lead mt-5 max-w-xl text-grey">{text}</p> : null}
+          {children ? <div className="mt-8 flex flex-wrap gap-3">{children}</div> : null}
         </div>
         <figure className="stage-media">
           <Image
@@ -116,15 +116,16 @@ export function SplitHero({
   proFocus: string;
 }) {
   return (
-    <header className="home-choice">
+    <header className="home-choice border-b border-silver">
       <div className="frame">
-        <p className="label text-muted">Macap, since 1930</p>
-        <h1 className="display-sm mt-3 max-w-3xl">Coffee grinders for the counter and the bar.</h1>
+        <p className="type-eyebrow text-grey">Macap, since 1930</p>
+        <h1 className="type-h1 mt-3 max-w-3xl text-black">Coffee grinders for the counter and the bar.</h1>
       </div>
-      <div className="frame home-choice-grid">
+      {/* Two choices on one hairline grid. The silver gap draws the rule between them. */}
+      <div className="frame mt-[var(--gap-block)] grid items-stretch gap-px border border-silver bg-silver md:grid-cols-2">
         <a href="/home-grinders" className="choice-card">
-          <p className="display-sm">For the home.</p>
-          <p className="choice-line">Studio grinders for a domestic counter.</p>
+          <p className="type-h2 max-w-[10ch] text-black">For the home.</p>
+          <p className="type-lead max-w-[22rem] text-grey md:min-h-[3.4rem]">Studio grinders for a domestic counter.</p>
           <p className="btn w-fit">Home grinders</p>
           <figure className="choice-frame">
             <Image
@@ -139,8 +140,8 @@ export function SplitHero({
           </figure>
         </a>
         <a href="/professional" className="choice-card">
-          <p className="display-sm">For the bar.</p>
-          <p className="choice-line">Supra, Supra G, Pro and Leo.</p>
+          <p className="type-h2 max-w-[10ch] text-black">For the bar.</p>
+          <p className="type-lead max-w-[22rem] text-grey md:min-h-[3.4rem]">Supra, Supra G, Pro and Leo.</p>
           <p className="btn btn-secondary w-fit">Professional</p>
           <figure className="choice-frame">
             <Image

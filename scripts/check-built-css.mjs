@@ -19,15 +19,13 @@ if (!css.includes(".model-hero")) failures.push("built CSS has no .model-hero ru
 if (!css.includes(".choice-frame")) failures.push("built CSS has no .choice-frame rule");
 if (!css.includes(".model-hero-figures")) failures.push("built CSS has no horizontal figure row");
 
-const blocks = [...css.matchAll(/\[data-theme=professional\]\{([^}]*)\}/g)].map((match) => match[1]);
-const professional = blocks.at(-1) || "";
-if (!/--bg:#fff/.test(professional)) {
-  failures.push("last professional theme block is not white");
-}
+// The named colours are the ground for every page. White must still be white.
+if (!/--white:#fff/.test(css)) failures.push("built CSS has no white colour token");
+if (!/--yellow:#ffc600/.test(css)) failures.push("built CSS has no yellow colour token");
 
 if (failures.length) {
   console.error(failures.join("\n"));
   process.exit(1);
 }
 
-console.log("built CSS contains the photo frames and a white professional ground");
+console.log("built CSS contains the photo frames and the named colours");
