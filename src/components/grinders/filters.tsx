@@ -42,9 +42,9 @@ export function FilterBar({
   }
 
   return (
-    <form action="/grinders" method="get" onSubmit={onSubmit} className="grid gap-4 md:grid-cols-5">
+    <form action="/grinders" method="get" onSubmit={onSubmit} className="grid grid-cols-2 gap-x-3 gap-y-4 sm:gap-x-[var(--gap-inner)] md:grid-cols-5">
       <label className="grid gap-2">
-        <span className="label">Use</span>
+        <span className="type-eyebrow text-grey">Use</span>
         <select name="audience" className="field" defaultValue={filters.audience}>
           <option value="">All</option>
           <option value="home">Home</option>
@@ -52,7 +52,7 @@ export function FilterBar({
         </select>
       </label>
       <label className="grid gap-2">
-        <span className="label">Line</span>
+        <span className="type-eyebrow text-grey">Line</span>
         <select name="group" className="field" defaultValue={filters.group}>
           <option value="">All</option>
           {groups.map((group) => (
@@ -63,7 +63,7 @@ export function FilterBar({
         </select>
       </label>
       <label className="grid gap-2">
-        <span className="label">Burr size</span>
+        <span className="type-eyebrow text-grey">Burr size</span>
         <select name="burr" className="field" defaultValue={filters.burr}>
           <option value="">All</option>
           {burrs.map((size) => (
@@ -74,7 +74,7 @@ export function FilterBar({
         </select>
       </label>
       <label className="grid gap-2">
-        <span className="label">Grind</span>
+        <span className="type-eyebrow text-grey">Grind</span>
         <select name="grind" className="field" defaultValue={filters.grind}>
           <option value="">All</option>
           <option value="espresso">Espresso</option>
@@ -83,7 +83,7 @@ export function FilterBar({
         </select>
       </label>
       <label className="grid gap-2">
-        <span className="label">Status</span>
+        <span className="type-eyebrow text-grey">Status</span>
         <select name="status" className="field" defaultValue={filters.status}>
           <option value="">Current and new</option>
           <option value="all">All</option>
@@ -92,7 +92,7 @@ export function FilterBar({
           <option value="discontinued">Discontinued</option>
         </select>
       </label>
-      <div className="md:col-span-5">
+      <div className="col-span-2 md:col-span-5">
         <button type="submit" className="btn">
           Show grinders
         </button>

@@ -6,18 +6,19 @@ import type { RichText } from "@/lib/content/types";
 import { safeHref } from "@/lib/security";
 import { imageUrl } from "@/sanity/lib/image";
 
+/* Long reading is set at the Lead step, with a measure of about 65 characters. Headings in the body step down to Heading 3 and Lead weight 600. */
 const components: PortableTextComponents = {
   block: {
-    normal: ({ children }) => <p className="mt-4 max-w-2xl text-base leading-relaxed">{children}</p>,
-    h2: ({ children }) => <h2 className="mt-10 max-w-2xl text-2xl font-medium tracking-tight">{children}</h2>,
-    h3: ({ children }) => <h3 className="mt-8 max-w-2xl text-xl font-medium">{children}</h3>,
+    normal: ({ children }) => <p className="type-lead mt-5 max-w-prose text-black">{children}</p>,
+    h2: ({ children }) => <h2 className="type-h3 mt-12 max-w-prose text-black">{children}</h2>,
+    h3: ({ children }) => <h3 className="type-lead mt-8 max-w-prose font-semibold text-black">{children}</h3>,
   },
   marks: {
     link: ({ children, value }) => {
       const href = safeHref(typeof value?.href === "string" ? value.href : "");
       if (!href) return <>{children}</>;
       return (
-        <TextLink href={href} className="underline decoration-silver underline-offset-4">
+        <TextLink href={href} className="underline decoration-silver underline-offset-4 hover:decoration-yellow">
           {children}
         </TextLink>
       );
@@ -29,8 +30,8 @@ const components: PortableTextComponents = {
       const url = imageUrl(source, 1600);
       if (!url) return null;
       return (
-        <figure className="mt-8 max-w-3xl">
-          <div className="relative aspect-[16/10]">
+        <figure className="mt-10 max-w-3xl">
+          <div className="relative aspect-[16/10] bg-silver">
             <Image src={url} alt={source?.alt || ""} fill sizes="(min-width: 768px) 48rem, 100vw" className="object-cover" />
           </div>
         </figure>
@@ -42,7 +43,7 @@ const components: PortableTextComponents = {
 export function RichTextBody({ value }: { value: RichText }) {
   if (!value.length) return null;
   return (
-    <div className="prose-macap">
+    <div className="prose-macap [&>:first-child]:mt-0">
       <PortableText value={value as PortableTextBlock[]} components={components} />
     </div>
   );

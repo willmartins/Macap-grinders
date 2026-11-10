@@ -23,7 +23,7 @@ async function JourneyContent() {
 
 export default function HomeGrindersPage() {
   return (
-    <Suspense fallback={<p className="px-5 py-20 text-grey">Loading.</p>}>
+    <Suspense fallback={<p className="frame section type-body text-grey">Loading.</p>}>
       <JourneyContent />
     </Suspense>
   );

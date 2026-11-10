@@ -36,7 +36,7 @@ export function Enquire({
           <button type="button" className="enquire-dismiss" onClick={() => dialog.current?.close()}>
             Close
           </button>
-          <h2 id={titleId} ref={title} tabIndex={-1} className="text-3xl font-medium tracking-tight">
+          <h2 id={titleId} ref={title} tabIndex={-1} className="type-h3 text-black">
             Enquire about {grinder.name}
           </h2>
           <ContactForm grinder={grinder} />

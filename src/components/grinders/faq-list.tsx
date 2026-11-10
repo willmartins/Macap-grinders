@@ -24,8 +24,8 @@ export function FaqList({ faqs }: { faqs: FaqItem[] }) {
       {faqs.map((faq) => (
         <details key={faq._key} open className="group">
           <summary className="cursor-pointer justify-between gap-6 py-4">
-            <h3 className="text-base font-semibold leading-snug text-black">{faq.question}</h3>
-            <span className="shrink-0 text-xl font-normal leading-none text-grey" aria-hidden="true">
+            <h3 className="type-body font-semibold text-black">{faq.question}</h3>
+            <span className="shrink-0 type-lead leading-none text-grey" aria-hidden="true">
               <span className="group-open:hidden">+</span>
               <span className="hidden group-open:inline">−</span>
             </span>

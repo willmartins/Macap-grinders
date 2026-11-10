@@ -6,6 +6,7 @@ import { CompareTable, SpecTable } from "@/components/grinders/spec-table";
 import { BleedHero, SplitHero } from "@/components/site/bleed-hero";
 import { PhotoSlot } from "@/components/site/photo-slot";
 import { RichTextBody } from "@/components/site/rich-text";
+import { SectionHeader } from "@/components/site/section-header";
 import { TextLink } from "@/components/site/text-link";
 import { explainDifferences } from "@/lib/compare";
 import type { Section } from "@/lib/content/types";
@@ -54,18 +55,28 @@ function ButtonLink({
   );
 }
 
+/** A section opening. The journey step number, when there is one, sits in the eyebrow. */
 function SectionIntro({ heading, intro, step }: { heading?: string; intro?: string; step?: string | null }) {
-  if (!heading && !intro) return null;
-  return (
-    <div className="stack-block max-w-3xl">
-      {step ? <p className="step-index mb-4">{step}</p> : null}
-      {heading ? <h2 className="display-sm">{heading}</h2> : null}
-      {intro ? <p className="mt-4 max-w-xl text-lg text-grey">{intro}</p> : null}
-    </div>
-  );
+  if (heading) {
+    return <SectionHeader eyebrow={step || undefined} title={heading} description={intro} className="mb-8" />;
+  }
+  if (intro) return <p className="type-lead mb-8 max-w-2xl text-grey">{intro}</p>;
+  return null;
+}
+
+/**
+ * The ground a module sits on, from the design system: white by default,
+ * light grey for reference content, off-black for the closing banner.
+ */
+function groundFor(section: Section, isLast: boolean): string {
+  if (section._type === "specTable" || section._type === "comparisonTable") return "bg-light-grey";
+  if (section._type === "ctaBanner" && isLast) return "bg-off-black text-white";
+  return "bg-white";
 }
 
 export function PageBuilder({ sections, journey }: { sections: Section[]; journey?: string }) {
+  // A hairline closes each module. The last one has none, because the footer draws its own.
+  const rule = (index: number) => (index === sections.length - 1 ? "" : "border-b border-silver");
   return (
     <div>
       {sections.map((section, sectionIndex) => {
@@ -111,24 +122,13 @@ export function PageBuilder({ sections, journey }: { sections: Section[]; journe
             );
           }
           return (
-            <header key={section._key} id={section._key} className="frame section-tight">
-              {section.eyebrow ? <p className="label text-grey">{section.eyebrow}</p> : null}
-              <h1 className="display mt-5 max-w-5xl">{section.heading}</h1>
-              {section.text ? <p className="mt-6 max-w-xl text-lg leading-relaxed">{section.text}</p> : null}
-              {section.links.length ? (
-                <div className="mt-8 flex flex-wrap gap-3">
-                  {section.links.map((link, index) => (
-                    <ButtonLink
-                      key={link._key}
-                      href={link.href}
-                      label={link.label}
-                      journey={journey}
-                      step={link.label}
-                      className={index === 0 ? "btn" : "btn btn-secondary"}
-                    />
-                  ))}
-                </div>
-              ) : null}
+            <header key={section._key} id={section._key} className="section-tight border-b border-silver">
+              <div className="frame">
+                {section.eyebrow ? <p className="type-eyebrow mb-3 text-grey">{section.eyebrow}</p> : null}
+                <h1 className="type-h1 max-w-5xl text-black">{section.heading}</h1>
+                {section.text ? <p className="type-lead mt-5 max-w-2xl text-grey">{section.text}</p> : null}
+                {section.links.length ? <div className="mt-8 flex flex-wrap gap-3">{links}</div> : null}
+              </div>
             </header>
           );
         }
@@ -142,191 +142,224 @@ export function PageBuilder({ sections, journey }: { sections: Section[]; journe
                 .slice(sectionIndex + 1)
                 .find((item) => item._type === "imageText" || item._type === "grinderGrid")
             : undefined;
+          const flip = section.imagePosition === "right";
           return (
-            <section key={section._key} id={section._key} className={`editorial ${section.imagePosition === "right" ? "is-flip" : ""}`}>
-              {section.imageUrl ? (
-                <div className="editorial-media">
-                  <Image
-                    src={section.imageUrl}
-                    alt={section.imageAlt}
-                    fill
-                    sizes="(min-width: 768px) 58vw, 100vw"
-                    placeholder={section.imageLqip ? "blur" : "empty"}
-                    blurDataURL={section.imageLqip || undefined}
-                    className="object-cover"
-                    style={{ objectPosition: focusFor(section.imageUrl) }}
-                  />
-                </div>
-              ) : null}
-              <div className="editorial-copy">
-                {step ? <p className="step-index">{step}</p> : null}
-                <h2 className="display-sm mt-4 max-w-xl">{section.heading}</h2>
-                <p className="mt-5 max-w-md text-lg leading-relaxed">{section.text}</p>
-                {section.link ? (
-                  <p className="mt-8">
-                    <ButtonLink href={section.link.href} label={section.link.label} journey={journey} />
-                  </p>
-                ) : next ? (
-                  <p className="mt-8">
-                    <TextLink href={`#${next._key}`}>{next.heading}</TextLink>
-                  </p>
+            <section key={section._key} id={section._key} className={`section bg-white ${rule(sectionIndex)}`.trim()}>
+              <div
+                className={`frame grid items-center gap-[var(--gap-block)] ${
+                  flip ? "md:grid-cols-[0.85fr_1.15fr]" : "md:grid-cols-[1.15fr_0.85fr]"
+                }`}
+              >
+                {section.imageUrl ? (
+                  <div className={flip ? "editorial-media md:order-2" : "editorial-media"}>
+                    <Image
+                      src={section.imageUrl}
+                      alt={section.imageAlt}
+                      fill
+                      sizes="(min-width: 768px) 58vw, 100vw"
+                      placeholder={section.imageLqip ? "blur" : "empty"}
+                      blurDataURL={section.imageLqip || undefined}
+                      className="object-cover"
+                      style={{ objectPosition: focusFor(section.imageUrl) }}
+                    />
+                  </div>
                 ) : null}
+                <div className="flex flex-col justify-center">
+                  {step ? <p className="type-eyebrow mb-2.5 tabular-nums text-grey">{step}</p> : null}
+                  <h2 className="type-h2 max-w-xl text-black">{section.heading}</h2>
+                  <p className="type-lead mt-5 max-w-md text-grey">{section.text}</p>
+                  {section.link ? (
+                    <p className="mt-8">
+                      <ButtonLink href={section.link.href} label={section.link.label} journey={journey} />
+                    </p>
+                  ) : next ? (
+                    <p className="mt-8">
+                      <TextLink href={`#${next._key}`} className="type-body font-semibold text-black link-underline">
+                        {next.heading}
+                      </TextLink>
+                    </p>
+                  ) : null}
+                </div>
               </div>
             </section>
           );
         }
 
+        const isLast = sectionIndex === sections.length - 1;
+        const dark = section._type === "ctaBanner" && isLast;
         return (
-          <section key={section._key} id={section._key} className="frame section">
-            {section._type === "richText" ? (
-              <>
-                {section.heading ? <h2 className="display-sm">{section.heading}</h2> : null}
-                <RichTextBody value={section.body} />
-              </>
-            ) : null}
+          <section
+            key={section._key}
+            id={section._key}
+            className={`section ${groundFor(section, isLast)} ${rule(sectionIndex)}`.trim()}
+          >
+            <div className="frame">
+              {section._type === "richText" ? (
+                <>
+                  {section.heading ? <h2 className="type-h2 max-w-3xl text-black">{section.heading}</h2> : null}
+                  <RichTextBody value={section.body} />
+                </>
+              ) : null}
 
-            {section._type === "grinderGrid" ? (
-              <>
-                <SectionIntro
-                  heading={section.heading}
-                  intro={section.intro}
-                  step={journey && section.heading === "Find your grinder" ? "03" : null}
-                />
-                <GrinderGrid grinders={section.grinders} />
-              </>
-            ) : null}
+              {section._type === "grinderGrid" ? (
+                <>
+                  <SectionIntro
+                    heading={section.heading}
+                    intro={section.intro}
+                    step={journey && section.heading === "Find your grinder" ? "03" : null}
+                  />
+                  <GrinderGrid grinders={section.grinders} />
+                </>
+              ) : null}
 
-            {section._type === "collectionCarousel" ? (
-              <>
-                <SectionIntro heading={section.heading} intro={section.intro} />
-                <ul className="grid gap-[var(--gap-block)] sm:grid-cols-2 lg:grid-cols-3">
-                  {section.collections.map((collection) => {
-                    const shot = collectionShot(collection.slug);
-                    return (
-                      <li key={collection.slug} className="bg-white">
-                        {shot ? (
-                          <a href={`/collections/${collection.slug}`} className="block">
-                            <PhotoSlot imageUrl={shot.src} alt={shot.alt} ratio="16/9" sizes="(min-width: 1024px) 30rem, 100vw" />
-                          </a>
-                        ) : null}
-                        <div className="p-5">
-                          <h3 className="text-2xl font-medium tracking-tight">
-                            <TextLink
-                              href={`/collections/${collection.slug}`}
-                              className="underline-offset-4 hover:underline"
-                            >
-                              {collection.name}
+              {section._type === "collectionCarousel" ? (
+                <>
+                  <SectionIntro heading={section.heading} intro={section.intro} />
+                  <ul className="grid gap-[var(--gap-block)] sm:grid-cols-2 lg:grid-cols-3">
+                    {section.collections.map((collection) => {
+                      const shot = collectionShot(collection.slug);
+                      return (
+                        <li key={collection.slug} className="border border-silver bg-white">
+                          {shot ? (
+                            <a href={`/collections/${collection.slug}`} className="block">
+                              <PhotoSlot
+                                imageUrl={shot.src}
+                                alt={shot.alt}
+                                ratio="16/9"
+                                sizes="(min-width: 1024px) 30rem, 100vw"
+                              />
+                            </a>
+                          ) : null}
+                          <div className="p-5">
+                            <h3 className="type-h3 text-black">
+                              <TextLink href={`/collections/${collection.slug}`} className="link-underline">
+                                {collection.name}
+                              </TextLink>
+                            </h3>
+                            <p className="type-body mt-2 text-grey">{collection.summary}</p>
+                          </div>
+                        </li>
+                      );
+                    })}
+                  </ul>
+                </>
+              ) : null}
+
+              {section._type === "featureList" ? (
+                <>
+                  <SectionIntro heading={section.heading} intro={section.intro} />
+                  <ol className="module-grid">
+                    {section.features.map((feature) => (
+                      <li key={feature._key} className="border-t border-silver pt-5">
+                        <h3 className="type-h3 text-black">{feature.title}</h3>
+                        <p className="type-body mt-3 max-w-sm text-grey">{feature.text}</p>
+                      </li>
+                    ))}
+                  </ol>
+                </>
+              ) : null}
+
+              {section._type === "specTable" && section.grinder ? (
+                <>
+                  {section.heading ? <SectionHeader title={section.heading} className="mb-8" /> : null}
+                  <SpecTable grinder={section.grinder} />
+                </>
+              ) : null}
+
+              {section._type === "comparisonTable" ? (
+                <>
+                  <SectionIntro heading={section.heading} intro={section.intro} />
+                  <CompareTable grinders={section.grinders} />
+                  <ul className="type-body mt-10 grid max-w-3xl gap-4 text-black">
+                    {explainDifferences(section.grinders).map((note) => (
+                      <li key={note}>{note}</li>
+                    ))}
+                  </ul>
+                </>
+              ) : null}
+
+              {section._type === "faqAccordion" ? (
+                <>
+                  <SectionHeader title={section.heading} className="mb-8" />
+                  <div className="max-w-3xl divide-y divide-silver border-y border-silver">
+                    {section.faqs.map((faq) => (
+                      <details key={faq._key} className="group">
+                        <summary className="cursor-pointer justify-between gap-6 py-4">
+                          <h3 className="type-body font-semibold text-black">{faq.question}</h3>
+                          <span className="type-h3 shrink-0 font-normal text-grey" aria-hidden="true">
+                            <span className="group-open:hidden">+</span>
+                            <span className="hidden group-open:inline">−</span>
+                          </span>
+                        </summary>
+                        <p className="type-body max-w-prose pb-5 text-grey">{faq.answer}</p>
+                      </details>
+                    ))}
+                  </div>
+                </>
+              ) : null}
+
+              {section._type === "ctaBanner" ? (
+                <div className="max-w-3xl">
+                  <h2 className={`type-h2 ${dark ? "text-white" : "text-black"}`}>{section.heading}</h2>
+                  {section.text ? (
+                    <p className={`type-lead mt-5 max-w-2xl ${dark ? "text-white/80" : "text-grey"}`}>{section.text}</p>
+                  ) : null}
+                  <p className="mt-8">
+                    <ButtonLink
+                      href={section.link.href}
+                      label={section.link.label}
+                      journey={journey}
+                      step={section.step}
+                      className={dark ? "btn btn-on-photo" : "btn"}
+                    />
+                  </p>
+                </div>
+              ) : null}
+
+              {section._type === "videoEmbed" ? (
+                <VideoBlock url={section.url} heading={section.heading} caption={section.caption} />
+              ) : null}
+
+              {section._type === "kbPostGrid" ? (
+                <>
+                  <SectionIntro heading={section.heading} intro={section.intro} />
+                  <ul className="divide-y divide-silver border-y border-silver">
+                    {section.posts.map((post) => (
+                      <li key={post.slug} className="grid gap-2 py-6">
+                        <div>
+                          <h3 className="type-h3 text-black">
+                            <TextLink href={`/knowledge/${post.slug}`} className="link-underline">
+                              {post.title}
                             </TextLink>
                           </h3>
-                          <p className="mt-3 text-sm leading-relaxed text-grey">{collection.summary}</p>
+                          <p className="type-body mt-2 max-w-xl text-grey">{post.excerpt}</p>
                         </div>
                       </li>
-                    );
-                  })}
-                </ul>
-              </>
-            ) : null}
+                    ))}
+                  </ul>
+                </>
+              ) : null}
 
-            {section._type === "featureList" ? (
-              <>
-                <SectionIntro heading={section.heading} intro={section.intro} />
-                <ol className="module-grid">
-                  {section.features.map((feature) => (
-                    <li key={feature._key}>
-                      <h3 className="text-2xl font-medium tracking-tight">{feature.title}</h3>
-                      <p className="mt-3 max-w-sm text-sm leading-relaxed text-grey">{feature.text}</p>
-                    </li>
-                  ))}
-                </ol>
-              </>
-            ) : null}
+              {section._type === "quote" ? (
+                <figure>
+                  <blockquote className="type-h2 max-w-4xl text-black">{section.quote}</blockquote>
+                  <figcaption className="type-body mt-6 text-grey">
+                    <span className="block">{section.attribution}</span>
+                    {section.role ? <span className="block">{section.role}</span> : null}
+                  </figcaption>
+                </figure>
+              ) : null}
 
-            {section._type === "specTable" && section.grinder ? (
-              <>
-                {section.heading ? <h2 className="display-sm mb-8">{section.heading}</h2> : null}
-                <SpecTable grinder={section.grinder} />
-              </>
-            ) : null}
-
-            {section._type === "comparisonTable" ? (
-              <>
-                <SectionIntro heading={section.heading} intro={section.intro} />
-                <CompareTable grinders={section.grinders} />
-                <ul className="mt-10 grid max-w-3xl gap-4 text-sm leading-relaxed">
-                  {explainDifferences(section.grinders).map((note) => (
-                    <li key={note}>{note}</li>
-                  ))}
-                </ul>
-              </>
-            ) : null}
-
-            {section._type === "faqAccordion" ? (
-              <>
-                <h2 className="display-sm">{section.heading}</h2>
-                <div className="mt-8 max-w-3xl divide-y divide-silver border-y border-silver">
-                  {section.faqs.map((faq) => (
-                    <details key={faq._key} className="py-2">
-                      <summary className="cursor-pointer text-lg font-medium">{faq.question}</summary>
-                      <p className="mt-3 max-w-2xl leading-relaxed text-grey">{faq.answer}</p>
-                    </details>
-                  ))}
+              {section._type === "contactBlock" ? (
+                <div className="grid gap-12 md:grid-cols-2">
+                  <div>
+                    <h2 className="type-h2 text-black">{section.heading}</h2>
+                    {section.text ? <p className="type-lead mt-5 max-w-md text-grey">{section.text}</p> : null}
+                  </div>
+                  <ContactForm />
                 </div>
-              </>
-            ) : null}
-
-            {section._type === "ctaBanner" ? (
-              <div>
-                <h2 className="display-sm max-w-3xl">{section.heading}</h2>
-                {section.text ? <p className="mt-5 max-w-xl text-lg">{section.text}</p> : null}
-                <p className="mt-8">
-                  <ButtonLink href={section.link.href} label={section.link.label} journey={journey} step={section.step} />
-                </p>
-              </div>
-            ) : null}
-
-            {section._type === "videoEmbed" ? (
-              <VideoBlock url={section.url} heading={section.heading} caption={section.caption} />
-            ) : null}
-
-            {section._type === "kbPostGrid" ? (
-              <>
-                <SectionIntro heading={section.heading} intro={section.intro} />
-                <ul className="divide-y divide-silver border-y border-silver">
-                  {section.posts.map((post) => (
-                    <li key={post.slug} className="grid gap-2 py-6">
-                      <div>
-                        <h3 className="text-2xl font-medium tracking-tight">
-                          <TextLink href={`/knowledge/${post.slug}`} className="underline-offset-4 hover:underline">
-                            {post.title}
-                          </TextLink>
-                        </h3>
-                        <p className="mt-2 max-w-2xl text-grey">{post.excerpt}</p>
-                      </div>
-                    </li>
-                  ))}
-                </ul>
-              </>
-            ) : null}
-
-            {section._type === "quote" ? (
-              <figure>
-                <blockquote className="display-sm max-w-4xl">{section.quote}</blockquote>
-                <figcaption className="mt-6 text-grey">
-                  <span className="block">{section.attribution}</span>
-                  {section.role ? <span className="block">{section.role}</span> : null}
-                </figcaption>
-              </figure>
-            ) : null}
-
-            {section._type === "contactBlock" ? (
-              <div className="grid gap-12 md:grid-cols-2">
-                <div>
-                  <h2 className="display-sm">{section.heading}</h2>
-                  {section.text ? <p className="mt-5 max-w-md text-lg">{section.text}</p> : null}
-                </div>
-                <ContactForm />
-              </div>
-            ) : null}
+              ) : null}
+            </div>
           </section>
         );
       })}
@@ -339,9 +372,9 @@ function VideoBlock({ url, heading, caption }: { url: string; heading?: string; 
   const safe = safeHref(url);
   return (
     <div>
-      {heading ? <h2 className="display-sm mb-8">{heading}</h2> : null}
+      {heading ? <SectionHeader title={heading} className="mb-8" /> : null}
       {id ? (
-        <div className="relative aspect-video max-w-4xl">
+        <div className="relative aspect-video max-w-4xl bg-silver">
           <iframe
             className="absolute inset-0 h-full w-full"
             src={`https://www.youtube-nocookie.com/embed/${encodeURIComponent(id)}`}
@@ -352,12 +385,12 @@ function VideoBlock({ url, heading, caption }: { url: string; heading?: string; 
         </div>
       ) : safe ? (
         <p>
-          <TextLink href={safe} className="underline underline-offset-4">
+          <TextLink href={safe} className="type-body font-semibold text-black link-underline">
             Watch the video
           </TextLink>
         </p>
       ) : null}
-      {caption ? <p className="mt-3 text-sm text-grey">{caption}</p> : null}
+      {caption ? <p className="type-body mt-3 text-grey">{caption}</p> : null}
     </div>
   );
 }

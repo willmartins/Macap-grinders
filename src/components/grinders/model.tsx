@@ -92,9 +92,9 @@ export function GrinderModel({
               { name: grinder.name, path: `/grinders/${grinder.slug}` },
             ]}
           />
-          {eyebrow ? <p className="label text-grey mt-4">{eyebrow}</p> : null}
-          <h1 className="display mt-4">{grinder.name}</h1>
-          <p className="mt-6 max-w-xl text-lg leading-relaxed">{positionLine(grinder.answerFirst, grinder.name)}</p>
+          {eyebrow ? <p className="type-eyebrow text-grey mt-4">{eyebrow}</p> : null}
+          <h1 className="type-display text-black mt-4">{grinder.name}</h1>
+          <p className="mt-6 max-w-xl type-lead">{positionLine(grinder.answerFirst, grinder.name)}</p>
           <div className="mt-8 flex flex-wrap gap-3">
             <Enquire
               variant="plain"

@@ -22,12 +22,12 @@ async function AboutContent() {
   return (
     <>
       <ContentPage page={page} />
-      <nav className="frame pb-[var(--space-standard)]" aria-label="Ranges">
+      <nav className="frame section-tight" aria-label="Ranges">
         <p className="flex flex-wrap gap-x-8">
-          <TextLink href="/home-grinders" className="tap">
+          <TextLink href="/home-grinders" className="tap link-underline font-semibold">
             Home grinders
           </TextLink>
-          <TextLink href="/professional" className="tap">
+          <TextLink href="/professional" className="tap link-underline font-semibold">
             Professional
           </TextLink>
         </p>
@@ -38,7 +38,7 @@ async function AboutContent() {
 
 export default function AboutPage() {
   return (
-    <Suspense fallback={<p className="px-5 py-20 text-grey">Loading.</p>}>
+    <Suspense fallback={<p className="frame section type-body text-grey">Loading.</p>}>
       <AboutContent />
     </Suspense>
   );

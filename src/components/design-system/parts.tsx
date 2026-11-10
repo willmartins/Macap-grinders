@@ -26,7 +26,7 @@ export function Chapter({
           </h2>
           {intro ? <p className="type-lead mt-3 text-grey">{intro}</p> : null}
         </div>
-        <div className="mt-10 grid gap-12">{children}</div>
+        <div className="mt-10 grid grid-cols-[minmax(0,1fr)] gap-12">{children}</div>
       </div>
     </section>
   );

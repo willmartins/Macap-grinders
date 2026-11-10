@@ -35,7 +35,7 @@ export function PhotoSlot({
           sizes={sizes}
           placeholder={blur ? "blur" : "empty"}
           blurDataURL={blur || undefined}
-          className={fit === "contain" ? "object-contain media-img" : "object-cover media-img"}
+          className={fit === "contain" ? "object-contain" : "object-cover"}
         />
       ) : null}
     </div>

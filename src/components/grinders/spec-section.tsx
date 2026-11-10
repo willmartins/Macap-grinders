@@ -1,4 +1,5 @@
 import { FaqList } from "@/components/grinders/faq-list";
+import { DownloadIcon } from "@/components/site/icons";
 import { SectionHeader } from "@/components/site/section-header";
 import { TextLink } from "@/components/site/text-link";
 import type { FaqItem, Grinder } from "@/lib/content/types";
@@ -34,7 +35,6 @@ export function SpecSection({
     <section
       id="specifications"
       className="section border-b border-silver bg-light-grey"
-      style={{ backgroundColor: "var(--light-grey, #f9f9f9)" }}
       aria-labelledby="specs-heading"
     >
       <div className="frame">
@@ -49,12 +49,13 @@ export function SpecSection({
               action={
                 <a
                   href={downloadHref || `/contact?subject=Specification+Sheet+Request+-+${encodeURIComponent(grinder.name)}`}
-                  className="btn btn-secondary"
+                  className="btn btn-secondary btn-no-arrow"
                   data-analytics="download"
                   data-slug={grinder.slug}
                   {...(downloadHref ? { target: "_blank", rel: "noopener noreferrer" } : {})}
                 >
-                  Download brochure & specs
+                  Download spec sheet
+                  <DownloadIcon />
                 </a>
               }
             />
@@ -103,7 +104,7 @@ export function SpecSection({
             ) : null}
 
             <div className={`border border-silver bg-white p-5 ${questions.length ? "mt-8" : ""}`.trim()}>
-              <p className="font-semibold text-black">Need sales or technical support?</p>
+              <p className="type-body font-semibold text-black">Need sales or technical support?</p>
               <p className="mt-1.5 type-body text-grey">
                 Our Venice team and regional distribution partners are here to assist with machine selection, installation requirements, and commercial quotes.
               </p>

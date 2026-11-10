@@ -6,6 +6,10 @@ import { useState } from "react";
 import { SectionHeader } from "@/components/site/section-header";
 import type { Grinder } from "@/lib/content/types";
 
+/**
+ * Finish colours are product data: they show the real powder coat, so they keep their own values
+ * and are not part of the site palette.
+ */
 type ColourOption = {
   id: string;
   name: string;
@@ -112,11 +116,11 @@ export function ColourVisualiser({ grinder }: { grinder: Grinder }) {
                   alt={`${grinder.name} in ${selectedColour.name}`}
                   fill
                   sizes="(min-width: 768px) 35vw, 90vw"
-                  className="object-contain drop-shadow-[0_20px_40px_rgba(0,0,0,0.8)] select-none"
+                  className="object-contain drop-shadow-[0_20px_40px_var(--tw-drop-shadow-color)] drop-shadow-black/80 select-none"
                 />
               </div>
             ) : (
-              <div className="relative z-10 text-center text-white/60">
+              <div className="relative z-10 text-center type-body text-white/60">
                 Machine visualiser preview
               </div>
             )}
@@ -154,7 +158,7 @@ export function ColourVisualiser({ grinder }: { grinder: Grinder }) {
                       }`}
                       style={{
                         backgroundColor: colour.hex,
-                        border: `1.5px solid ${colour.borderHex || "rgba(255,255,255,0.2)"}`,
+                        border: `1.5px solid ${colour.borderHex || colour.hex}`,
                       }}
                       title={`${colour.name} (${colour.code})`}
                     >
@@ -172,14 +176,14 @@ export function ColourVisualiser({ grinder }: { grinder: Grinder }) {
               </div>
 
               {/* Finish Details */}
-              <div className="mt-8 border border-silver bg-silver/50 p-5">
+              <div className="mt-8 border border-silver bg-light-grey p-5">
                 <div className="flex items-baseline justify-between">
                   <h3 className="type-h3 text-black">
                     {selectedColour.name}
                   </h3>
                   <span className="type-mono text-grey">{selectedColour.code}</span>
                 </div>
-                <p className="mt-1 text-xs text-grey">
+                <p className="mt-1 type-body text-grey">
                   {selectedColour.italianName}
                 </p>
                 <p className="mt-3 type-body text-grey">
@@ -188,7 +192,7 @@ export function ColourVisualiser({ grinder }: { grinder: Grinder }) {
               </div>
 
               {/* Material Assurance */}
-              <ul className="mt-6 space-y-2.5 text-sm text-grey">
+              <ul className="mt-6 space-y-2.5 type-body text-grey">
                 <li className="flex items-center gap-2.5">
                   <span className="font-semibold text-black">✓</span>
                   <span>Electrostatically applied powder coat cured at 200°C</span>

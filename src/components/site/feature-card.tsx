@@ -4,6 +4,17 @@ import { TextLink } from "@/components/site/text-link";
 
 export type FeatureIconName = "burrs" | "motor" | "dial" | "screen" | "scale" | "cooling";
 
+/** Named grounds for the icon card. See /design-system. */
+export type FeatureGround = "light-grey" | "sand" | "dark-sand" | "silver" | "off-black";
+
+const groundClass: Record<FeatureGround, string> = {
+  "light-grey": "bg-light-grey",
+  sand: "bg-sand",
+  "dark-sand": "bg-dark-sand",
+  silver: "bg-silver",
+  "off-black": "bg-off-black",
+};
+
 export type FeatureCardItem = {
   _key: string;
   title: string;
@@ -11,8 +22,8 @@ export type FeatureCardItem = {
   imageUrl?: string | null;
   imageAlt?: string;
   icon?: FeatureIconName | null;
-  /** Ground behind the icon. Defaults to a light tint. */
-  containerBg?: string | null;
+  /** Ground behind the icon, by colour name. Defaults to light grey. */
+  containerBg?: FeatureGround | null;
   buttonLabel?: string | null;
   buttonHref?: string | null;
 };
@@ -107,7 +118,7 @@ export function FeatureCard({
 
         {feature.buttonHref && feature.buttonLabel ? (
           <div className="mt-6 border-t border-white/10 pt-4">
-            <TextLink href={feature.buttonHref} className="type-body font-semibold text-white hover:text-yellow">
+            <TextLink href={feature.buttonHref} className="type-body font-semibold text-white link-underline">
               {feature.buttonLabel}
             </TextLink>
           </div>
@@ -133,8 +144,7 @@ export function FeatureCard({
           </div>
         ) : (
           <div
-            className="relative mb-5 flex aspect-[16/10] w-full items-center justify-center overflow-hidden border border-silver transition-colors"
-            style={{ backgroundColor: feature.containerBg || "rgba(0,0,0,0.04)" }}
+            className={`relative mb-5 flex aspect-[16/10] w-full items-center justify-center overflow-hidden border border-silver transition-colors ${groundClass[feature.containerBg || "light-grey"]}`}
           >
             <div className="flex h-16 w-16 items-center justify-center border border-silver bg-white">
               <FeatureIcon type={feature.icon!} />

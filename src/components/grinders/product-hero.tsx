@@ -28,7 +28,7 @@ export function ProductHero({
     <header className="relative isolate flex h-[calc(100dvh-var(--chrome-h))] min-h-[calc(100dvh-var(--chrome-h))] w-full overflow-hidden bg-off-black text-white">
       {/* Background ambient lighting */}
       <div
-        className="pointer-events-none absolute inset-0 z-0 bg-[radial-gradient(circle_at_75%_50%,rgba(255,255,255,0.08)_0%,transparent_65%)]"
+        className="pointer-events-none absolute inset-0 z-0 bg-radial-[circle_at_75%_50%] from-white/8 to-transparent to-65%"
         aria-hidden="true"
       />
 
@@ -45,7 +45,7 @@ export function ProductHero({
             fill
             priority={priority}
             sizes="(min-width: 768px) 46vw, 100vw"
-            className="object-contain object-center md:drop-shadow-[0_25px_60px_rgba(0,0,0,0.85)]"
+            className="object-contain object-center md:drop-shadow-[0_25px_60px_var(--tw-drop-shadow-color)] md:drop-shadow-black/85"
           />
         </div>
       </div>
@@ -72,12 +72,12 @@ export function ProductHero({
 
         {/* Bottom Content Area on Mobile (Overlapping the lower part of the grinder). Clears the cookie banner while it shows. */}
         <div className="relative z-20 px-5 pb-[calc(1.5rem+var(--consent-banner,0px))] pt-16">
-          <h1 className="type-display text-white drop-shadow-[0_2px_12px_rgba(0,0,0,0.8)]">
+          <h1 className="type-display text-white drop-shadow-[0_2px_12px_var(--tw-drop-shadow-color)] drop-shadow-black/80">
             {title}
           </h1>
 
           {text ? (
-            <p className="mt-2 type-body text-white/85 line-clamp-2 drop-shadow-[0_1px_8px_rgba(0,0,0,0.7)]">
+            <p className="mt-2 type-body text-white/85 line-clamp-2 drop-shadow-[0_1px_8px_var(--tw-drop-shadow-color)] drop-shadow-black/70">
               {text}
             </p>
           ) : null}
@@ -95,7 +95,7 @@ export function ProductHero({
                   </p>
                   <p className="mt-0.5 type-h3 text-white tabular-nums whitespace-nowrap">
                     {figure.value}
-                    <span className="ml-0.5 text-xs font-normal text-white/70">{figure.unit}</span>
+                    <span className="ml-0.5 text-[0.55em] font-normal text-white/70">{figure.unit}</span>
                   </p>
                 </li>
               ))}
@@ -161,7 +161,7 @@ export function ProductHero({
                         </p>
                         <p className="mt-1.5 type-h3 text-white tabular-nums whitespace-nowrap">
                           {figure.value}
-                          <span className="ml-1 text-sm font-normal text-white/70">{figure.unit}</span>
+                          <span className="ml-1 text-[0.55em] font-normal text-white/70">{figure.unit}</span>
                         </p>
                       </li>
                     ))}

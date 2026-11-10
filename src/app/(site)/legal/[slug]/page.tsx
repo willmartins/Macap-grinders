@@ -43,22 +43,28 @@ async function LegalContent({ params }: { params: Promise<{ slug: string }> }) {
   return (
     <article>
       <Breadcrumbs items={[{ name: page.title, path: `/legal/${page.slug}` }]} />
-      <header className="frame section-tight">
-        <h1 className="display">{page.title}</h1>
-        {page.effectiveDate ? (
-          <p className="label mt-6 text-grey">Effective {formatDate(page.effectiveDate)}</p>
-        ) : null}
-        {placeholder ? (
-          <p className="mt-6 max-w-2xl border border-silver p-4 text-sm">Placeholder for legal review.</p>
-        ) : null}
+      <header className="section-tight border-b border-silver">
+        <div className="frame">
+          <h1 className="type-h1 max-w-4xl text-black">{page.title}</h1>
+          {page.effectiveDate ? (
+            <p className="type-eyebrow mt-5 text-grey">Effective {formatDate(page.effectiveDate)}</p>
+          ) : null}
+          {placeholder ? (
+            <p className="type-body mt-6 max-w-2xl border border-silver bg-white p-5 text-black">
+              Placeholder for legal review.
+            </p>
+          ) : null}
+        </div>
       </header>
-      <div className="frame section-tight">
-        <RichTextBody value={page.body} />
-        <p className="mt-10">
-          <TextLink href="/contact" className="tap">
-            Contact us
-          </TextLink>
-        </p>
+      <div className="section">
+        <div className="frame">
+          <RichTextBody value={page.body} />
+          <p className="mt-10">
+            <TextLink href="/contact" className="tap link-underline font-semibold">
+              Contact us
+            </TextLink>
+          </p>
+        </div>
       </div>
     </article>
   );
@@ -66,7 +72,7 @@ async function LegalContent({ params }: { params: Promise<{ slug: string }> }) {
 
 export default function LegalPage({ params }: { params: Promise<{ slug: string }> }) {
   return (
-    <Suspense fallback={<p className="px-5 py-20 text-grey">Loading.</p>}>
+    <Suspense fallback={<p className="frame section type-body text-grey">Loading.</p>}>
       <LegalContent params={params} />
     </Suspense>
   );

@@ -1,6 +1,7 @@
 import { Suspense } from "react";
 
 import { PhotoSlot } from "@/components/site/photo-slot";
+import { SectionHeader } from "@/components/site/section-header";
 import { TextLink } from "@/components/site/text-link";
 import { ContentPage } from "@/components/site/content-page";
 import { articleShot } from "@/lib/imagery";
@@ -34,49 +35,53 @@ async function KnowledgeContent() {
     <>
       {posts.sample && !page.sample ? <SampleBanner /> : null}
       <ContentPage page={page} />
-      <section className="frame section">
-        <h2 className="display-sm">Topics</h2>
-        <ol className="module-grid mt-8">
-          {topics.topics.map((topic) => (
-            <li key={topic.slug}>
-              <h3 className="text-2xl font-medium tracking-tight">
-                <TextLink href={`/knowledge/topic/${topic.slug}`} className="underline-offset-4 hover:underline">
-                  {topic.title}
-                </TextLink>
-              </h3>
-              <p className="mt-3 text-sm leading-relaxed text-grey">{topic.description}</p>
-            </li>
-          ))}
-        </ol>
-      </section>
-      <section className="frame section">
-        <h2 className="display-sm">Articles</h2>
-        <ul className="mt-8 divide-y divide-silver border-y border-silver">
-          {posts.posts.map((post) => {
-            const shot = articleShot(post.slug);
-            return (
-              <li key={post.slug} className="grid items-center gap-6 py-6 md:grid-cols-12">
-                {shot ? (
-                  <a href={`/knowledge/${post.slug}`} className="md:col-span-3">
-                    <PhotoSlot imageUrl={shot.src} alt={shot.alt} ratio="16/9" sizes="(min-width: 768px) 18rem, 100vw" />
-                  </a>
-                ) : null}
-                <div className={shot ? "md:col-span-7" : "md:col-span-10"}>
-                  <h3 className="text-2xl font-medium tracking-tight">
-                    <TextLink href={`/knowledge/${post.slug}`} className="underline-offset-4 hover:underline">
-                      {post.title}
-                    </TextLink>
-                  </h3>
-                  <p className="mt-2 max-w-xl text-grey">{post.excerpt}</p>
-                </div>
-                <p className="text-sm text-grey md:col-span-2 md:text-right">
-                  {post.topicTitle ? <span className="block">{post.topicTitle}</span> : null}
-                  <span className="block">{formatDate(post.publishedAt)}</span>
-                </p>
+      <section className="section border-b border-silver">
+        <div className="frame">
+          <SectionHeader title="Topics" />
+          <ol className="module-grid mt-8">
+            {topics.topics.map((topic) => (
+              <li key={topic.slug} className="border-t border-silver pt-5">
+                <h3 className="type-h3 text-black">
+                  <TextLink href={`/knowledge/topic/${topic.slug}`} className="link-underline">
+                    {topic.title}
+                  </TextLink>
+                </h3>
+                <p className="type-body mt-2 max-w-prose text-grey">{topic.description}</p>
               </li>
-            );
-          })}
-        </ul>
+            ))}
+          </ol>
+        </div>
+      </section>
+      <section className="section border-b border-silver">
+        <div className="frame">
+          <SectionHeader title="Articles" />
+          <ul className="mt-8 divide-y divide-silver border-y border-silver">
+            {posts.posts.map((post) => {
+              const shot = articleShot(post.slug);
+              return (
+                <li key={post.slug} className="grid items-center gap-6 py-6 md:grid-cols-12">
+                  {shot ? (
+                    <a href={`/knowledge/${post.slug}`} className="md:col-span-3">
+                      <PhotoSlot imageUrl={shot.src} alt={shot.alt} ratio="16/9" sizes="(min-width: 768px) 18rem, 100vw" />
+                    </a>
+                  ) : null}
+                  <div className={shot ? "md:col-span-7" : "md:col-span-10"}>
+                    <h3 className="type-h3 text-black">
+                      <TextLink href={`/knowledge/${post.slug}`} className="link-underline">
+                        {post.title}
+                      </TextLink>
+                    </h3>
+                    <p className="type-body mt-2 max-w-xl text-grey">{post.excerpt}</p>
+                  </div>
+                  <p className="type-eyebrow text-grey md:col-span-2 md:text-right">
+                    {post.topicTitle ? <span className="block">{post.topicTitle}</span> : null}
+                    <span className="mt-1 block">{formatDate(post.publishedAt)}</span>
+                  </p>
+                </li>
+              );
+            })}
+          </ul>
+        </div>
       </section>
       <JsonLd data={articleCardsJsonLd(posts.posts, "/knowledge")} />
     </>
@@ -85,7 +90,7 @@ async function KnowledgeContent() {
 
 export default function KnowledgePage() {
   return (
-    <Suspense fallback={<p className="px-5 py-20 text-grey">Loading.</p>}>
+    <Suspense fallback={<p className="frame section type-body text-grey">Loading.</p>}>
       <KnowledgeContent />
     </Suspense>
   );

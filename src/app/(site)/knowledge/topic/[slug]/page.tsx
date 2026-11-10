@@ -44,34 +44,42 @@ async function TopicContent({ params }: { params: Promise<{ slug: string }> }) {
           { name: topic.title, path: `/knowledge/topic/${topic.slug}` },
         ]}
       />
-      <header className="frame section-tight">
-        <h1 className="display">{topic.title}</h1>
-        <p className="mt-6 max-w-2xl text-lg">{topic.description}</p>
+      <header className="section-tight border-b border-silver">
+        <div className="frame">
+          <h1 className="type-h1 max-w-4xl text-black">{topic.title}</h1>
+          <p className="type-lead mt-5 max-w-2xl text-grey">{topic.description}</p>
+        </div>
       </header>
-      <ul className="frame section-tight grid gap-[var(--gap-inner)]">
-        {related.length ? (
-          related.map((post) => (
-            <li key={post.slug} className="border-b border-silver py-5">
-              <h2 className="text-xl font-medium">
-                <TextLink href={`/knowledge/${post.slug}`} className="underline-offset-4 hover:underline">
-                  {post.title}
-                </TextLink>
-              </h2>
-              <p className="mt-2 text-sm text-grey">{post.excerpt}</p>
-              <p className="mt-2 text-sm text-grey">{formatDate(post.publishedAt)}</p>
-            </li>
-          ))
-        ) : (
-          <li>No articles in this topic yet.</li>
-        )}
-      </ul>
+      <div className="section border-b border-silver">
+        <div className="frame">
+          <ul className="divide-y divide-silver border-y border-silver">
+            {related.length ? (
+              related.map((post) => (
+                <li key={post.slug} className="grid items-baseline gap-2 py-6 md:grid-cols-12">
+                  <div className="md:col-span-9">
+                    <h2 className="type-h3 text-black">
+                      <TextLink href={`/knowledge/${post.slug}`} className="link-underline">
+                        {post.title}
+                      </TextLink>
+                    </h2>
+                    <p className="type-body mt-2 max-w-xl text-grey">{post.excerpt}</p>
+                  </div>
+                  <p className="type-eyebrow text-grey md:col-span-3 md:text-right">{formatDate(post.publishedAt)}</p>
+                </li>
+              ))
+            ) : (
+              <li className="type-body py-6 text-grey">No articles in this topic yet.</li>
+            )}
+          </ul>
+        </div>
+      </div>
     </article>
   );
 }
 
 export default function TopicPage({ params }: { params: Promise<{ slug: string }> }) {
   return (
-    <Suspense fallback={<p className="px-5 py-20 text-grey">Loading.</p>}>
+    <Suspense fallback={<p className="frame section type-body text-grey">Loading.</p>}>
       <TopicContent params={params} />
     </Suspense>
   );

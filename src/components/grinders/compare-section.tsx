@@ -99,7 +99,7 @@ function renderHighlightedText(
           return (
             <span
               key={index}
-              className={`inline-block px-1.5 py-0.5 text-xs font-semibold mx-1 border ${
+              className={`inline-block px-1.5 py-0.5 font-semibold mx-1 border ${
                 theme.badgeBorder || "border-transparent"
               } ${theme.highlightBg} ${theme.highlightText} whitespace-nowrap align-baseline`}
             >
@@ -166,7 +166,7 @@ function TypedDifferenceCard({
   const visibleText = note.slice(0, visibleChars);
 
   return (
-    <li className="flex items-start gap-3 border border-silver bg-silver/30 p-4 min-h-[4.5rem]">
+    <li className="flex items-start gap-3 border border-silver bg-light-grey p-4 min-h-[4.5rem]">
       <span className="text-black font-bold shrink-0 mt-0.5">→</span>
       <div className="type-body min-h-[1.5rem] w-full">
         {visibleText ? renderHighlightedText(visibleText, modelMap) : null}
@@ -248,7 +248,7 @@ function PhoneCompareTable({ columns, caption }: { columns: CompareColumn[]; cap
                 </div>
               ) : null}
               <span
-                className={`mt-3 inline-block border px-1.5 py-0.5 text-xs font-semibold ${
+                className={`mt-3 inline-block border px-1.5 py-0.5 type-eyebrow ${
                   column.theme.badgeBorder || "border-transparent"
                 } ${column.theme.highlightBg} ${column.theme.highlightText}`}
               >
@@ -283,7 +283,7 @@ function PhoneCompareTable({ columns, caption }: { columns: CompareColumn[]; cap
                 <TextLink
                   href={`/grinders/${column.slug}`}
                   aria-label={`View ${column.name}`}
-                  className="inline-block py-3 text-sm font-semibold text-black"
+                  className="inline-block py-3 type-body font-semibold text-black link-underline"
                 >
                   View
                 </TextLink>
@@ -451,32 +451,32 @@ export function CompareSection({
               ) : null}
 
               <h3 className="mt-4 type-h3 text-black">{grinder.name}</h3>
-              <p className="mt-1 text-xs text-grey line-clamp-2">{grinder.shortDescription}</p>
+              <p className="mt-1 type-body text-grey line-clamp-2">{grinder.shortDescription}</p>
 
               {/* Compact 2-column Spec grid */}
               <div className="mt-4 grid grid-cols-2 gap-2.5 border-y border-silver py-3">
                 <div>
                   <span className="type-eyebrow text-grey block">Burrs</span>
-                  <span className="mt-0.5 font-mono text-black text-xs truncate block">
+                  <span className="mt-0.5 type-mono text-black truncate block">
                     {grinder.specs.burrDiameterMm ? `${grinder.specs.burrDiameterMm}mm ` : ""}
                     {grinder.specs.burrType || "-"}
                   </span>
                 </div>
                 <div>
                   <span className="type-eyebrow text-grey block">Motor</span>
-                  <span className="mt-0.5 font-mono text-black text-xs block">
+                  <span className="mt-0.5 type-mono text-black block">
                     {grinder.specs.motorPowerW ? `${formatNumber(grinder.specs.motorPowerW)} W` : "-"}
                   </span>
                 </div>
                 <div>
                   <span className="type-eyebrow text-grey block">Hopper</span>
-                  <span className="mt-0.5 font-mono text-black text-xs block">
+                  <span className="mt-0.5 type-mono text-black block">
                     {grinder.specs.hopperCapacityG ? `${formatNumber(grinder.specs.hopperCapacityG)} g` : "-"}
                   </span>
                 </div>
                 <div>
                   <span className="type-eyebrow text-grey block">Use</span>
-                  <span className="mt-0.5 font-mono text-black text-xs capitalize block">
+                  <span className="mt-0.5 type-mono text-black capitalize block">
                     {grinder.audience === "business" ? "Commercial Bar" : "Home Counter"}
                   </span>
                 </div>
@@ -521,32 +521,32 @@ export function CompareSection({
                   ) : null}
 
                   <h3 className="mt-4 type-h3 text-black">{model.name}</h3>
-                  <p className="mt-1 text-xs text-grey line-clamp-2">{model.shortDescription}</p>
+                  <p className="mt-1 type-body text-grey line-clamp-2">{model.shortDescription}</p>
 
                   {/* Compact 2-column Spec grid */}
                   <div className="mt-4 grid grid-cols-2 gap-2.5 border-y border-silver py-3">
                     <div>
                       <span className="type-eyebrow text-grey block">Burrs</span>
-                      <span className="mt-0.5 font-mono text-black text-xs truncate block">
+                      <span className="mt-0.5 type-mono text-black truncate block">
                         {model.burrDiameterMm ? `${model.burrDiameterMm}mm ` : ""}
                         {model.burrType || "-"}
                       </span>
                     </div>
                     <div>
                       <span className="type-eyebrow text-grey block">Motor</span>
-                      <span className="mt-0.5 font-mono text-black text-xs block">
+                      <span className="mt-0.5 type-mono text-black block">
                         {model.motorPowerW ? `${formatNumber(model.motorPowerW)} W` : "-"}
                       </span>
                     </div>
                     <div>
                       <span className="type-eyebrow text-grey block">Grind</span>
-                      <span className="mt-0.5 font-mono text-black text-xs capitalize block">
+                      <span className="mt-0.5 type-mono text-black capitalize block">
                         {model.grindType || "Espresso"}
                       </span>
                     </div>
                     <div>
                       <span className="type-eyebrow text-grey block">Use</span>
-                      <span className="mt-0.5 font-mono text-black text-xs capitalize block">
+                      <span className="mt-0.5 type-mono text-black capitalize block">
                         {model.audience === "business" ? "Commercial Bar" : "Home Counter"}
                       </span>
                     </div>

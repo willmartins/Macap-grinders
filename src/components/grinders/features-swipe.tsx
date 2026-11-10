@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 
 import { FeatureCard, type FeatureCardItem } from "@/components/site/feature-card";
+import { SectionHeader } from "@/components/site/section-header";
 import type { Grinder } from "@/lib/content/types";
 import { pageShots } from "@/lib/imagery";
 
@@ -42,7 +43,7 @@ export function buildGrinderFeatures(grinder: Grinder): ProductFeatureItem[] {
       title: `${specs.motorPowerW} W Commercial Drive`,
       text: "Direct-drive induction motor engineered for constant rotational speed and thermal resistance under relentless continuous café service.",
       icon: "motor",
-      containerBg: "#171719", // Customizable container background colour
+      containerBg: "off-black",
     });
   } else {
     items.push({
@@ -50,7 +51,7 @@ export function buildGrinderFeatures(grinder: Grinder): ProductFeatureItem[] {
       title: "High-Torque Induction Motor",
       text: "Low-RPM drive engineered to eliminate thermal bean expansion and preserve delicate aromatics during extended service rushes.",
       icon: "motor",
-      containerBg: "#171719",
+      containerBg: "off-black",
     });
   }
 
@@ -108,10 +109,7 @@ export function FeaturesSwipe({ grinder }: { grinder: Grinder }) {
           <div>
             {/* Desktop Section Heading */}
             <div className="hidden sm:block">
-              <p className="type-eyebrow text-grey mb-2.5">Engineering</p>
-              <h2 id="features-heading" className="type-h2 text-black">
-                Engineered features & technology
-              </h2>
+              <SectionHeader id="features-heading" eyebrow="Engineering" title="Engineered features & technology" />
             </div>
 
             {/* Mobile: Eyebrow + Dynamic active card title outside the cards */}
@@ -119,7 +117,7 @@ export function FeaturesSwipe({ grinder }: { grinder: Grinder }) {
               <p className="type-eyebrow text-grey">
                 Features & technology
               </p>
-              <h2 className="mt-1.5 type-h3 text-black transition-all duration-200">
+              <h2 className="mt-2.5 type-h3 text-black">
                 {features[activeIndex]?.title}
               </h2>
             </div>
@@ -151,7 +149,7 @@ export function FeaturesSwipe({ grinder }: { grinder: Grinder }) {
         {/* Swiping track - NO HORIZONTAL SCROLLBAR */}
         <div
           ref={scrollRef}
-          className="mt-8 flex gap-6 overflow-x-auto pb-2 pt-2 snap-x snap-mandatory scroll-smooth motion-reduce:scroll-auto focus:outline-none [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden"
+          className="mt-8 flex gap-6 overflow-x-auto pb-2 pt-2 snap-x snap-mandatory scroll-smooth motion-reduce:scroll-auto focus:outline-none focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-yellow [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden"
           tabIndex={0}
           aria-label="Engineered features list"
         >

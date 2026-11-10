@@ -453,7 +453,7 @@ section[id],
 
 .cookie-line {
   margin: 0;
-  font-size: 0.875rem;
+  font-size: var(--type-0);
   line-height: 1.35;
 }
 
@@ -524,6 +524,32 @@ section[id],
   box-shadow: inset 0 -1px 0 var(--yellow);
 }
 
+/* Lists inside article and legal text. */
+.prose-macap ul,
+.prose-macap ol {
+  max-width: 65ch;
+  margin-top: 1.25rem;
+  padding-left: 1.25rem;
+  font-size: var(--type-1);
+  line-height: 1.55;
+}
+
+.prose-macap ul {
+  list-style: disc;
+}
+
+.prose-macap ol {
+  list-style: decimal;
+}
+
+.prose-macap li + li {
+  margin-top: 0.4rem;
+}
+
+.prose-macap li::marker {
+  color: var(--grey);
+}
+
 .machine-grid,
 .model-snap {
   align-items: stretch;
@@ -577,12 +603,13 @@ section[id],
   padding: 0.95rem 1rem 1rem;
 }
 
+/* Heading 3 on the type scale. */
 .machine-name {
-  min-height: 2.15em;
-  font-size: 1.65rem;
-  font-weight: 500;
-  letter-spacing: -0.03em;
-  line-height: 1.05;
+  min-height: 2.4em;
+  font-size: var(--type-2);
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  line-height: 1.2;
 }
 
 .machine-end {
@@ -602,26 +629,26 @@ section[id],
   gap: 0.85rem 1.15rem;
 }
 
+/* Eyebrow style, as on every other label above a figure. */
 .machine-specs dt {
-  font-size: 0.8125rem;
-  font-weight: 500;
-  letter-spacing: 0;
-  line-height: 1.3;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  line-height: 1.35;
+  text-transform: uppercase;
   color: var(--grey);
 }
 
 .machine-specs dd {
   margin-top: 0.15rem;
   font-variant-numeric: tabular-nums;
-  font-weight: 500;
-  letter-spacing: -0.02em;
 }
 
 .machine-go {
   flex: 0 0 auto;
   margin-left: auto;
-  font-size: 0.9375rem;
-  font-weight: 500;
+  font-size: var(--type-0);
+  font-weight: 600;
 }
 
 @media (hover: hover) and (pointer: fine) {
@@ -711,7 +738,7 @@ section[id],
 
 .form-error {
   color: var(--black);
-  font-size: 0.875rem;
+  font-size: var(--type-0);
 }
 
 .partner-note {
@@ -759,7 +786,7 @@ section[id],
   width: 4.5rem;
   height: 4.5rem;
   object-fit: contain;
-  background: #e4e4e4;
+  background: var(--silver);
 }
 
 .enquire-dialog {
@@ -1055,8 +1082,8 @@ html:has(.sample-banner) {
   box-sizing: border-box;
   height: var(--banner-h);
   overflow: hidden;
-  background: #ffffff;
-  color: #000000;
+  background: var(--white);
+  color: var(--black);
 }
 
 .site-header {

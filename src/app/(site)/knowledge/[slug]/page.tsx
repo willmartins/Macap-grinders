@@ -1,11 +1,13 @@
 import { notFound } from "next/navigation";
 import { Suspense } from "react";
 
+import { FaqList } from "@/components/grinders/faq-list";
 import { GrinderGrid } from "@/components/grinders/grinder-card";
 import { Breadcrumbs } from "@/components/site/breadcrumbs";
 import { JsonLd } from "@/components/site/json-ld";
 import { BleedHero } from "@/components/site/bleed-hero";
 import { RichTextBody } from "@/components/site/rich-text";
+import { SectionHeader } from "@/components/site/section-header";
 import { TextLink } from "@/components/site/text-link";
 import { SampleBanner } from "@/components/site/sample-banner";
 import { formatDate } from "@/lib/format";
@@ -75,45 +77,54 @@ async function PostContent({ params }: { params: Promise<{ slug: string }> }) {
               { name: post.title, path: `/knowledge/${post.slug}` },
             ]}
           />
-          <header className="frame section-tight">
-            <h1 className="display-sm max-w-4xl">{post.title}</h1>
+          <header className="pt-[var(--space-tight)]">
+            <div className="frame">
+              {post.topicTitle ? <p className="type-eyebrow mb-3 text-grey">{post.topicTitle}</p> : null}
+              <h1 className="type-h1 max-w-4xl text-black">{post.title}</h1>
+            </div>
           </header>
         </>
       )}
-      <div className="frame section-tight">
-        <p className="max-w-2xl text-xl leading-snug">{post.answerFirst}</p>
-        <p className="mt-6 max-w-2xl text-sm text-grey">
-          <span className="block font-medium text-black">{post.author.name}</span>
-          {post.author.role ? <span className="block">{post.author.role}</span> : null}
-          {post.publishedAt ? <span className="block">{formatDate(post.publishedAt)}</span> : null}
-          {post.updatedAt ? <span className="block">Updated {formatDate(post.updatedAt)}</span> : null}
-        </p>
-        {post.author.bio ? <p className="mt-4 max-w-2xl leading-relaxed">{post.author.bio}</p> : null}
+      {/* Without a photograph the introduction sits under the title as one opening. */}
+      <div className={`border-b border-silver ${post.imageUrl ? "section-tight" : "pt-5 pb-[var(--space-tight)]"}`}>
+        <div className="frame">
+          <p className="type-lead max-w-2xl text-black">{post.answerFirst}</p>
+          <p className="type-body mt-6 max-w-2xl text-grey">
+            <span className="block font-semibold text-black">{post.author.name}</span>
+            {post.author.role ? <span className="block">{post.author.role}</span> : null}
+            {post.publishedAt ? <span className="block">{formatDate(post.publishedAt)}</span> : null}
+            {post.updatedAt ? <span className="block">Updated {formatDate(post.updatedAt)}</span> : null}
+          </p>
+          {post.author.bio ? <p className="type-body mt-4 max-w-prose text-grey">{post.author.bio}</p> : null}
+        </div>
       </div>
-      <div className="frame section-tight">
-        <RichTextBody value={post.body} />
+      <div className="section border-b border-silver">
+        <div className="frame">
+          <RichTextBody value={post.body} />
+        </div>
       </div>
       {post.faqs.length ? (
-        <section className="frame section-tight">
-          <h2 className="text-3xl font-medium tracking-tight">Questions</h2>
-          <div className="mt-6 max-w-3xl divide-y divide-silver border-y border-silver">
-            {post.faqs.map((faq) => (
-              <details key={faq._key} className="py-2">
-                <summary className="cursor-pointer font-medium">{faq.question}</summary>
-                <p className="mt-3 text-sm leading-relaxed text-grey">{faq.answer}</p>
-              </details>
-            ))}
+        <section className="section border-b border-silver">
+          <div className="frame">
+            <SectionHeader title="Questions" />
+            <div className="mt-8 max-w-3xl">
+              <FaqList faqs={post.faqs} />
+            </div>
           </div>
         </section>
       ) : null}
       {post.relatedGrinders.length ? (
-        <section className="frame section">
-          <h2 className="mb-6 text-3xl font-medium tracking-tight">Grinders in this note</h2>
-          <GrinderGrid grinders={post.relatedGrinders} />
+        <section className="section border-b border-silver">
+          <div className="frame">
+            <SectionHeader title="Grinders in this note" />
+            <div className="mt-8">
+              <GrinderGrid grinders={post.relatedGrinders} />
+            </div>
+          </div>
         </section>
       ) : null}
-      <p className="frame pb-[var(--space-standard)]">
-        <TextLink href="/knowledge" className="tap">
+      <p className="frame section-tight">
+        <TextLink href="/knowledge" className="tap link-underline font-semibold">
           All articles
         </TextLink>
       </p>
@@ -140,7 +151,7 @@ async function PostContent({ params }: { params: Promise<{ slug: string }> }) {
 
 export default function PostPage({ params }: { params: Promise<{ slug: string }> }) {
   return (
-    <Suspense fallback={<p className="px-5 py-20 text-grey">Loading.</p>}>
+    <Suspense fallback={<p className="frame section type-body text-grey">Loading.</p>}>
       <PostContent params={params} />
     </Suspense>
   );
