@@ -1,5 +1,8 @@
 @import "tailwindcss";
 
+/* Landscape screens from 768px wide. The grinder hero goes side by side here; portrait screens stack. */
+@custom-variant wide (@media (min-width: 48rem) and (orientation: landscape));
+
 /*
   Colours, each named for what it looks like. Tailwind uses the same names,
   as in bg-yellow or text-grey. See /design-system.

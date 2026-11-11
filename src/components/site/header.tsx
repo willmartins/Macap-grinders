@@ -54,7 +54,7 @@ export function Header({ links: _links }: { links?: LinkItem[] }) {
         <Link href="/" className="brand-lockup shrink-0" aria-label="Macap">
           <MacapLogo className="brand-logo" />
         </Link>
-        <details className="site-menu md:hidden">
+        <details className="site-menu lg:hidden">
           <summary className="nav-link cursor-pointer border border-current px-3 py-2 text-sm font-semibold">
             Menu
           </summary>
@@ -107,7 +107,7 @@ export function Header({ links: _links }: { links?: LinkItem[] }) {
         </details>
 
         {/* Desktop Primary Nav Bar */}
-        <nav aria-label="Primary" className="hidden md:flex items-center gap-6 lg:gap-8">
+        <nav aria-label="Primary" className="hidden lg:flex items-center gap-6 lg:gap-8">
           {/* Primary Journey links */}
           <div className="flex items-center gap-6 lg:gap-8">
             <Link
