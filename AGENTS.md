@@ -18,7 +18,8 @@ Nizatto policy for this repository. Version 1.1, October 2026. British English i
 - pnpm only.
 - Sanity, with typed GROQ via Sanity TypeGen. Run `pnpm typegen` after a schema or query change and commit `src/sanity/types.ts`.
 - English (`en-GB`) only in v1. Documents already have `language`. Italian later is document-level internationalisation and routes under `/it`. Do not add Italian content or routes now.
-- Primary navigation is Home, Professional and Contact us. The logo links to `/`. Catalogue, collections, knowledge, about and legal stay in the footer and in the journeys.
+- Primary navigation is Home grinders, Professional grinders, Knowledge, About and the Contact button. The logo links to `/`. The grinders index, ranges, collections and legal stay in the footer and in the pages.
+- Site structure is in `MODULES.md` under Site structure. Grinders sit under their range: `/grinders/<range>/<model>`. Build addresses with `src/lib/paths.ts`.
 - Leo stays. Labo, Barline and tampers do not.
 - Page sections are registered in `MODULES.md`. One name in code and in Studio.
 - Sample content is allowed so pages render without Sanity. Label it. Do not present sample specifications as final.

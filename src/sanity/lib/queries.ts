@@ -70,7 +70,10 @@ export const SHELL_QUERY = defineQuery(`{
     "seoDescription": seo.description
   },
   "collections": *[_type == "grinderCollection" && language == "en-GB"]|order(name asc){
-    name, "slug": slug.current, summary, audience
+    name, "slug": slug.current, summary, audience, "imageAlt": image.alt, "image": image${sanityImage}
+  },
+  "ranges": *[_type == "grinderGroup" && language == "en-GB"]|order(coalesce(position, 999) asc, name asc){
+    name, "slug": slug.current
   },
   "legal": *[_type == "legalPage" && language == "en-GB"]|order(title asc){
     title, "slug": slug.current
@@ -214,7 +217,7 @@ export const GRINDER_QUERY = defineQuery(`*[_type == "grinder" && slug.current =
 }`);
 
 export const COLLECTION_QUERY = defineQuery(`*[_type == "grinderCollection" && slug.current == $slug && language == "en-GB"][0]{
-  _id, name, "slug": slug.current, summary, answerFirst, audience,
+  _id, name, "slug": slug.current, summary, answerFirst, audience, "imageAlt": image.alt, "image": image${sanityImage},
   grinders[]->${card},
   sections[]{
     _key, _type, eyebrow, heading, text, intro, quote, attribution, role, caption, url, step,
@@ -245,6 +248,58 @@ export const COLLECTION_QUERY = defineQuery(`*[_type == "grinderCollection" && s
     posts[]->${articleCard}
   },
   ${seoFields}
+}`);
+
+/** A range on a card. The picture falls back to the first current model's photograph. */
+const rangeCard = `{
+  _id,
+  name,
+  "slug": slug.current,
+  summary,
+  audience,
+  position,
+  "imageAlt": image.alt,
+  "image": image${sanityImage},
+  "fallback": *[_type == "grinder" && language == "en-GB" && group._ref == ^._id && status != "discontinued" && defined(heroImage.asset)]|order(name asc)[0]{
+    "imageAlt": heroImage.alt, "image": heroImage${sanityImage}
+  },
+  "modelCount": count(*[_type == "grinder" && language == "en-GB" && group._ref == ^._id && status != "discontinued"])
+}`;
+
+export const RANGES_QUERY = defineQuery(`*[_type == "grinderGroup" && language == "en-GB"]|order(coalesce(position, 999) asc, name asc)${rangeCard}`);
+
+export const RANGE_QUERY = defineQuery(`*[_type == "grinderGroup" && slug.current == $slug && language == "en-GB"][0]{
+  _id,
+  name,
+  "slug": slug.current,
+  summary,
+  answerFirst,
+  audience,
+  position,
+  "imageAlt": image.alt,
+  "image": image${sanityImage},
+  "fallback": *[_type == "grinder" && language == "en-GB" && group._ref == ^._id && status != "discontinued" && defined(heroImage.asset)]|order(name asc)[0]{
+    "imageAlt": heroImage.alt, "image": heroImage${sanityImage}
+  },
+  story,
+  features[]{
+    _key, title, text, icon, ground,
+    "imageAlt": image.alt, "image": image${sanityImage},
+    "linkLabel": link.label, "linkHref": link.href
+  },
+  "grinders": *[_type == "grinder" && language == "en-GB" && group._ref == ^._id]|order(name asc)${card},
+  "collections": *[_type == "grinderCollection" && language == "en-GB"]{
+    name, "slug": slug.current, summary, audience, "imageAlt": image.alt, "image": image${sanityImage},
+    "grinderIds": grinders[]._ref
+  },
+  ${seoFields}
+}`);
+
+/** Which kind of page owns /grinders/<slug>. A range wins over a collection with the same slug. */
+export const GRINDER_PATH_QUERY = defineQuery(`{
+  "range": *[_type == "grinderGroup" && slug.current == $slug && language == "en-GB"][0]._id,
+  "collection": *[_type == "grinderCollection" && slug.current == $slug && language == "en-GB"][0]._id,
+  "grinder": *[_type == "grinder" && slug.current == $slug && language == "en-GB"][0]{ "groupSlug": group->slug.current }
 }`);
 
 export const POSTS_QUERY = defineQuery(`*[_type == "kbPost" && language == "en-GB"]|order(publishedAt desc)${articleCard}`);
@@ -281,14 +336,19 @@ export const SITEMAP_QUERY = defineQuery(`{
       _id == "contactPage" => "/contact",
       _id == "knowledgeHubPage" => "/knowledge",
       _id == "grindersIndexPage" => "/grinders",
-      _type == "journeyPage" => "/" + slug.current
+      _type == "journeyPage" && slug.current == "home-grinders" => "/grinders/home",
+      _type == "journeyPage" && slug.current == "professional" => "/grinders/professional"
     ),
     _updatedAt
   },
   "grinders": *[_type == "grinder" && language == "en-GB" && status != "discontinued" && seo.noIndex != true]{
     "slug": slug.current,
+    "groupSlug": group->slug.current,
     _updatedAt,
     "image": coalesce(seo.image.asset->url, heroImage.asset->url)
+  },
+  "ranges": *[_type == "grinderGroup" && language == "en-GB" && seo.noIndex != true]{
+    "slug": slug.current, _updatedAt
   },
   "collections": *[_type == "grinderCollection" && language == "en-GB" && seo.noIndex != true]{
     "slug": slug.current, _updatedAt

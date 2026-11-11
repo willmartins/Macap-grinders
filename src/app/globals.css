@@ -598,6 +598,7 @@ section[id],
   transition: transform 220ms ease;
 }
 
+
 .machine-foot {
   display: flex;
   flex: 1 1 auto;

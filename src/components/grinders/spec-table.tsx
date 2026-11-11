@@ -1,6 +1,7 @@
 import { TextLink } from "@/components/site/text-link";
 import type { Grinder } from "@/lib/content/types";
 import { compareRows, specEntries } from "@/lib/specs";
+import { grinderPath } from "@/lib/paths";
 
 /**
  * Colours that tell models apart in a comparison, in column order.
@@ -59,7 +60,7 @@ export function CompareTable({ grinders }: { grinders: Grinder[] }) {
                 scope="col"
                 className={`border-t-2 ${modelColour(index).border} pt-3 pb-4 pr-6 text-left align-bottom font-normal`}
               >
-                <TextLink href={`/grinders/${grinder.slug}`} className="type-h3 text-black link-underline">
+                <TextLink href={grinderPath(grinder)} className="type-h3 text-black link-underline">
                   {grinder.name}
                 </TextLink>
               </th>

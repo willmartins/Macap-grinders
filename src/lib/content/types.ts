@@ -1,3 +1,5 @@
+import type { FeatureCardItem } from "@/components/site/feature-card";
+
 export type Audience = "home" | "business";
 export type AudienceFilter = Audience | "both";
 export type GrinderStatus = "new" | "current" | "discontinued";
@@ -124,6 +126,35 @@ export type CollectionCard = {
   slug: string;
   summary: string;
   audience: AudienceFilter;
+  imageUrl?: string | null;
+  imageAlt?: string;
+};
+
+/** A range on a card: the audience pages and the grinders index list these. */
+export type RangeCard = {
+  id: string;
+  name: string;
+  slug: string;
+  summary: string;
+  audience: AudienceFilter;
+  position: number | null;
+  imageUrl: string | null;
+  imageAlt: string;
+  /** The range's own picture is a photograph. Without one, the first model's cut-out stands in. */
+  imageKind: "photo" | "cutout";
+  /** Current and new models. Discontinued models are not counted. */
+  modelCount: number;
+};
+
+/** A range page. The layout is fixed; these are the fields that fill it. */
+export type Range = RangeCard & {
+  answerFirst: string;
+  story: RichText;
+  features: FeatureCardItem[];
+  grinders: GrinderCard[];
+  /** Collections that hold at least one of this range's models. */
+  collections: CollectionCard[];
+  seo: SeoFields;
 };
 
 export type Collection = CollectionCard & {
@@ -259,7 +290,11 @@ export type Section =
       attribution: string;
       role?: string;
     }
-  | { _key: string; _type: "contactBlock"; heading: string; text?: string };
+  | { _key: string; _type: "contactBlock"; heading: string; text?: string }
+  /** Filled from the page's ranges and collections, passed to the page builder. */
+  | { _key: string; _type: "rangeGrid"; heading: string; intro?: string }
+  /** Filled from the collection's grinders, passed to the page builder. */
+  | { _key: string; _type: "collectionModels"; heading: string; intro?: string };
 
 export type SiteSettings = {
   siteName: string;
@@ -285,6 +320,7 @@ export type Shell = {
   sample: boolean;
   settings: SiteSettings;
   collections: CollectionCard[];
+  ranges: Array<{ name: string; slug: string }>;
   legal: Array<{ title: string; slug: string }>;
 };
 

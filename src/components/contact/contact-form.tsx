@@ -11,6 +11,7 @@ import { useEnquiryGrinder } from "@/components/contact/enquiry-context";
 import { TextLink } from "@/components/site/text-link";
 import { trackEvent } from "@/lib/analytics";
 import { enquiryFieldErrors, enquiryRoles, readEnquiry, roleSharesWithPartner, type EnquiryGrinder } from "@/lib/enquiry";
+import { grinderPath } from "@/lib/paths";
 
 const initial: ContactState = { ok: false, message: "" };
 
@@ -101,7 +102,7 @@ export function ContactForm({ grinder: given }: { grinder?: EnquiryGrinder | nul
         <label htmlFor={`${base}-company`}>Company website</label>
         <input id={`${base}-company`} name="companyWebsite" type="text" tabIndex={-1} autoComplete="off" />
       </div>
-      <input type="hidden" name="source" value={grinder ? `/grinders/${grinder.slug}` : pathname} />
+      <input type="hidden" name="source" value={grinder ? grinderPath(grinder) : pathname} />
       {grinder ? <input type="hidden" name="grinder" value={grinder.slug} /> : null}
 
       {grinder ? (

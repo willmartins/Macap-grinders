@@ -8,8 +8,8 @@ import type { ThemeName } from "@/lib/content/types";
 const ThemeOverride = createContext<(theme: ThemeName | null) => void>(() => {});
 
 function themeFromPath(pathname: string): ThemeName {
-  if (pathname === "/professional" || pathname.startsWith("/professional/")) return "professional";
-  if (pathname === "/home-grinders" || pathname.startsWith("/home-grinders/")) return "home";
+  if (pathname === "/grinders/professional") return "professional";
+  if (pathname === "/grinders/home") return "home";
   return "neutral";
 }
 

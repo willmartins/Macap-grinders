@@ -1,6 +1,7 @@
 import type { ArticleCard, FaqItem, Grinder, Shell } from "@/lib/content/types";
 import { specEntries } from "@/lib/specs";
 import { getSiteUrl, siteName } from "@/lib/site";
+import { grinderPath } from "@/lib/paths";
 
 function organisationLogo(): JsonLdNode {
   return {
@@ -83,7 +84,7 @@ export function productJsonLd(grinder: Grinder): JsonLdNode {
     brand: { "@type": "Brand", name: siteName },
     category: grinder.groupName || "Coffee grinder",
     image: grinder.imageUrl || undefined,
-    url: new URL(`/grinders/${grinder.slug}`, getSiteUrl()).toString(),
+    url: new URL(grinderPath(grinder), getSiteUrl()).toString(),
     model: grinder.name,
     additionalProperty: specEntries(grinder).map((row) => ({
       "@type": "PropertyValue",
@@ -133,14 +134,14 @@ export function collectionJsonLd(input: {
   name: string;
   description: string;
   slug: string;
-  grinders: Array<{ name: string; slug: string }>;
+  grinders: Array<{ name: string; slug: string; groupSlug?: string | null }>;
 }): JsonLdNode {
   return {
     "@context": "https://schema.org",
     "@type": "CollectionPage",
     name: input.name,
     description: input.description,
-    url: new URL(`/collections/${input.slug}`, getSiteUrl()).toString(),
+    url: new URL(`/grinders/${input.slug}`, getSiteUrl()).toString(),
     inLanguage: "en-GB",
     mainEntity: {
       "@type": "ItemList",
@@ -148,7 +149,7 @@ export function collectionJsonLd(input: {
         "@type": "ListItem",
         position: index + 1,
         name: grinder.name,
-        url: new URL(`/grinders/${grinder.slug}`, getSiteUrl()).toString(),
+        url: new URL(grinderPath(grinder), getSiteUrl()).toString(),
       })),
     },
   };

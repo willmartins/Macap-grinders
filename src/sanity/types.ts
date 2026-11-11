@@ -258,11 +258,19 @@ export type GrinderCollection = {
   summary: string;
   answerFirst?: string;
   audience: "home" | "business" | "both";
-  grinders?: Array<
+  grinders: Array<
     {
       _key: string;
     } & GrinderReference
   >;
+  image?: {
+    asset?: SanityImageAssetReference;
+    media?: unknown;
+    hotspot?: SanityImageHotspot;
+    crop?: SanityImageCrop;
+    alt?: string;
+    _type: "image";
+  };
   sections?: Array<
     | ({
         _key: string;
@@ -306,6 +314,9 @@ export type GrinderCollection = {
     | ({
         _key: string;
       } & ContactBlock)
+    | ({
+        _key: string;
+      } & CollectionModels)
   >;
   seo?: Seo;
 };
@@ -364,6 +375,9 @@ export type JourneyPage = {
     | ({
         _key: string;
       } & ContactBlock)
+    | ({
+        _key: string;
+      } & RangeGrid)
   >;
   seo?: Seo;
 };
@@ -688,6 +702,18 @@ export type SiteSettings = {
   seo?: Seo;
 };
 
+export type CollectionModels = {
+  _type: "collectionModels";
+  heading: string;
+  intro?: string;
+};
+
+export type RangeGrid = {
+  _type: "rangeGrid";
+  heading: string;
+  intro?: string;
+};
+
 export type ContactBlock = {
   _type: "contactBlock";
   heading: string;
@@ -869,6 +895,8 @@ export type GrinderGroup = {
   name: string;
   slug: Slug;
   summary: string;
+  answerFirst: string;
+  position?: number;
   audience: "home" | "business" | "both";
   image?: {
     asset?: SanityImageAssetReference;
@@ -878,6 +906,24 @@ export type GrinderGroup = {
     alt?: string;
     _type: "image";
   };
+  story?: BlockContent;
+  features?: Array<{
+    title: string;
+    text: string;
+    image?: {
+      asset?: SanityImageAssetReference;
+      media?: unknown;
+      hotspot?: SanityImageHotspot;
+      crop?: SanityImageCrop;
+      alt?: string;
+      _type: "image";
+    };
+    icon?: "burrs" | "motor" | "dial" | "screen" | "scale" | "cooling";
+    ground?: "light-grey" | "sand" | "dark-sand" | "silver" | "off-black";
+    link?: Link;
+    _type: "rangeFeature";
+    _key: string;
+  }>;
   seo?: Seo;
 };
 
@@ -1092,6 +1138,8 @@ export type AllSanitySchemaTypes =
   | AboutPage
   | HomePage
   | SiteSettings
+  | CollectionModels
+  | RangeGrid
   | ContactBlock
   | Quote
   | KbPostReference
@@ -1126,7 +1174,7 @@ export type AllSanitySchemaTypes =
 
 // Source: src/sanity/lib/queries.ts
 // Variable: SHELL_QUERY
-// Query: {  "settings": *[_id == "siteSettings"][0]{    siteName,    navigation[]{ _key, label, href },    footerNavigation[]{ _key, label, href },    socials[]{ _key, label, href },    email,    phone,    address,    organisation{ name, legalName, url, email, telephone, address, sameAs },    "seoTitle": seo.title,    "seoDescription": seo.description  },  "collections": *[_type == "grinderCollection" && language == "en-GB"]|order(name asc){    name, "slug": slug.current, summary, audience  },  "legal": *[_type == "legalPage" && language == "en-GB"]|order(title asc){    title, "slug": slug.current  }}
+// Query: {  "settings": *[_id == "siteSettings"][0]{    siteName,    navigation[]{ _key, label, href },    footerNavigation[]{ _key, label, href },    socials[]{ _key, label, href },    email,    phone,    address,    organisation{ name, legalName, url, email, telephone, address, sameAs },    "seoTitle": seo.title,    "seoDescription": seo.description  },  "collections": *[_type == "grinderCollection" && language == "en-GB"]|order(name asc){    name, "slug": slug.current, summary, audience, "imageAlt": image.alt, "image": image{ alt, asset, crop, hotspot, "lqip": asset->metadata.lqip }  },  "legal": *[_type == "legalPage" && language == "en-GB"]|order(title asc){    title, "slug": slug.current  }}
 export type SHELL_QUERY_RESULT = {
   settings:
     | {
@@ -1191,6 +1239,14 @@ export type SHELL_QUERY_RESULT = {
     slug: string;
     summary: string;
     audience: "both" | "business" | "home";
+    imageAlt: string | null;
+    image: {
+      alt: string | null;
+      asset: SanityImageAssetReference | null;
+      crop: SanityImageCrop | null;
+      hotspot: SanityImageHotspot | null;
+      lqip: string | null;
+    } | null;
   }>;
   legal: Array<{
     title: string;
@@ -1257,6 +1313,653 @@ export type HOME_QUERY_RESULT =
   | {
       title: null;
       introduction: null;
+      sections: Array<
+        | {
+            _key: string;
+            _type: "collectionCarousel";
+            eyebrow: null;
+            heading: string;
+            text: null;
+            intro: string | null;
+            quote: null;
+            attribution: null;
+            role: null;
+            caption: null;
+            url: null;
+            step: null;
+            imageAlt: null;
+            imagePosition: null;
+            image: null;
+            links: null;
+            link: null;
+            body: null;
+            features: null;
+            faqs: null;
+            grinders: null;
+            detailGrinders: null;
+            specGrinder: null;
+            collections: Array<{
+              name: string;
+              slug: string;
+              summary: string;
+              audience: "both" | "business" | "home";
+            }>;
+            posts: null;
+          }
+        | {
+            _key: string;
+            _type: "collectionModels";
+            eyebrow: null;
+            heading: string;
+            text: null;
+            intro: string | null;
+            quote: null;
+            attribution: null;
+            role: null;
+            caption: null;
+            url: null;
+            step: null;
+            imageAlt: null;
+            imagePosition: null;
+            image: null;
+            links: null;
+            link: null;
+            body: null;
+            features: null;
+            faqs: null;
+            grinders: null;
+            detailGrinders: null;
+            specGrinder: null;
+            collections: null;
+            posts: null;
+          }
+        | {
+            _key: string;
+            _type: "comparisonTable";
+            eyebrow: null;
+            heading: string;
+            text: null;
+            intro: string | null;
+            quote: null;
+            attribution: null;
+            role: null;
+            caption: null;
+            url: null;
+            step: null;
+            imageAlt: null;
+            imagePosition: null;
+            image: null;
+            links: null;
+            link: null;
+            body: null;
+            features: null;
+            faqs: null;
+            grinders: Array<{
+              _id: string;
+              name: string;
+              slug: string;
+              audience: "business" | "home";
+              status: "current" | "discontinued" | "new";
+              shortDescription: string;
+              groupName: string;
+              groupSlug: string;
+              burrDiameterMm: number | null;
+              burrType: "conical" | "flat" | null;
+              grindType: "both" | "espresso" | "filter" | null;
+              motorPowerW: number | null;
+              imageAlt: string | null;
+              heroImage: {
+                alt: string | null;
+                asset: SanityImageAssetReference | null;
+                crop: SanityImageCrop | null;
+                hotspot: SanityImageHotspot | null;
+                lqip: string | null;
+              } | null;
+            }>;
+            detailGrinders: Array<{
+              _id: string;
+              name: string;
+              slug: string;
+              audience: "business" | "home";
+              status: "current" | "discontinued" | "new";
+              shortDescription: string;
+              groupName: string;
+              groupSlug: string;
+              burrDiameterMm: number | null;
+              burrType: "conical" | "flat" | null;
+              grindType: "both" | "espresso" | "filter" | null;
+              imageAlt: string | null;
+              heroImage: {
+                alt: string | null;
+                asset: SanityImageAssetReference | null;
+                crop: SanityImageCrop | null;
+                hotspot: SanityImageHotspot | null;
+                lqip: string | null;
+              } | null;
+              answerFirst: string;
+              specs: {
+                burrType: "conical" | "flat" | null;
+                burrDiameterMm: number | null;
+                grindType: "both" | "espresso" | "filter" | null;
+                motorPowerW: number | null;
+                rpm: number | null;
+                hopperCapacityG: number | null;
+                outputGPerS: number | null;
+                adjustment: string | null;
+                widthMm: number | null;
+                depthMm: number | null;
+                heightMm: number | null;
+                weightKg: number | null;
+                voltage: string | null;
+                display: string | null;
+                features: Array<string> | null;
+              } | null;
+              extraSpecs: Array<{
+                _key: string;
+                label: string;
+                value: string;
+              }> | null;
+              faqs: Array<{
+                _key: string;
+                question: string;
+                answer: string;
+              }> | null;
+            }>;
+            specGrinder: null;
+            collections: null;
+            posts: null;
+          }
+        | {
+            _key: string;
+            _type: "contactBlock";
+            eyebrow: null;
+            heading: string;
+            text: string | null;
+            intro: null;
+            quote: null;
+            attribution: null;
+            role: null;
+            caption: null;
+            url: null;
+            step: null;
+            imageAlt: null;
+            imagePosition: null;
+            image: null;
+            links: null;
+            link: null;
+            body: null;
+            features: null;
+            faqs: null;
+            grinders: null;
+            detailGrinders: null;
+            specGrinder: null;
+            collections: null;
+            posts: null;
+          }
+        | {
+            _key: string;
+            _type: "ctaBanner";
+            eyebrow: null;
+            heading: string;
+            text: string | null;
+            intro: null;
+            quote: null;
+            attribution: null;
+            role: null;
+            caption: null;
+            url: null;
+            step: string | null;
+            imageAlt: null;
+            imagePosition: null;
+            image: null;
+            links: null;
+            link: {
+              _key: null;
+              label: string;
+              href: string;
+            };
+            body: null;
+            features: null;
+            faqs: null;
+            grinders: null;
+            detailGrinders: null;
+            specGrinder: null;
+            collections: null;
+            posts: null;
+          }
+        | {
+            _key: string;
+            _type: "faqAccordion";
+            eyebrow: null;
+            heading: string;
+            text: null;
+            intro: null;
+            quote: null;
+            attribution: null;
+            role: null;
+            caption: null;
+            url: null;
+            step: null;
+            imageAlt: null;
+            imagePosition: null;
+            image: null;
+            links: null;
+            link: null;
+            body: null;
+            features: null;
+            faqs: Array<{
+              _key: string;
+              question: string;
+              answer: string;
+            }>;
+            grinders: null;
+            detailGrinders: null;
+            specGrinder: null;
+            collections: null;
+            posts: null;
+          }
+        | {
+            _key: string;
+            _type: "featureList";
+            eyebrow: null;
+            heading: string;
+            text: null;
+            intro: string | null;
+            quote: null;
+            attribution: null;
+            role: null;
+            caption: null;
+            url: null;
+            step: null;
+            imageAlt: null;
+            imagePosition: null;
+            image: null;
+            links: null;
+            link: null;
+            body: null;
+            features: Array<{
+              _key: string;
+              title: string;
+              text: string;
+            }>;
+            faqs: null;
+            grinders: null;
+            detailGrinders: null;
+            specGrinder: null;
+            collections: null;
+            posts: null;
+          }
+        | {
+            _key: string;
+            _type: "grinderGrid";
+            eyebrow: null;
+            heading: string;
+            text: null;
+            intro: string | null;
+            quote: null;
+            attribution: null;
+            role: null;
+            caption: null;
+            url: null;
+            step: null;
+            imageAlt: null;
+            imagePosition: null;
+            image: null;
+            links: null;
+            link: null;
+            body: null;
+            features: null;
+            faqs: null;
+            grinders: Array<{
+              _id: string;
+              name: string;
+              slug: string;
+              audience: "business" | "home";
+              status: "current" | "discontinued" | "new";
+              shortDescription: string;
+              groupName: string;
+              groupSlug: string;
+              burrDiameterMm: number | null;
+              burrType: "conical" | "flat" | null;
+              grindType: "both" | "espresso" | "filter" | null;
+              motorPowerW: number | null;
+              imageAlt: string | null;
+              heroImage: {
+                alt: string | null;
+                asset: SanityImageAssetReference | null;
+                crop: SanityImageCrop | null;
+                hotspot: SanityImageHotspot | null;
+                lqip: string | null;
+              } | null;
+            }>;
+            detailGrinders: Array<{
+              _id: string;
+              name: string;
+              slug: string;
+              audience: "business" | "home";
+              status: "current" | "discontinued" | "new";
+              shortDescription: string;
+              groupName: string;
+              groupSlug: string;
+              burrDiameterMm: number | null;
+              burrType: "conical" | "flat" | null;
+              grindType: "both" | "espresso" | "filter" | null;
+              imageAlt: string | null;
+              heroImage: {
+                alt: string | null;
+                asset: SanityImageAssetReference | null;
+                crop: SanityImageCrop | null;
+                hotspot: SanityImageHotspot | null;
+                lqip: string | null;
+              } | null;
+              answerFirst: string;
+              specs: {
+                burrType: "conical" | "flat" | null;
+                burrDiameterMm: number | null;
+                grindType: "both" | "espresso" | "filter" | null;
+                motorPowerW: number | null;
+                rpm: number | null;
+                hopperCapacityG: number | null;
+                outputGPerS: number | null;
+                adjustment: string | null;
+                widthMm: number | null;
+                depthMm: number | null;
+                heightMm: number | null;
+                weightKg: number | null;
+                voltage: string | null;
+                display: string | null;
+                features: Array<string> | null;
+              } | null;
+              extraSpecs: Array<{
+                _key: string;
+                label: string;
+                value: string;
+              }> | null;
+              faqs: Array<{
+                _key: string;
+                question: string;
+                answer: string;
+              }> | null;
+            }>;
+            specGrinder: null;
+            collections: null;
+            posts: null;
+          }
+        | {
+            _key: string;
+            _type: "heroBanner";
+            eyebrow: string | null;
+            heading: string;
+            text: string | null;
+            intro: null;
+            quote: null;
+            attribution: null;
+            role: null;
+            caption: null;
+            url: null;
+            step: null;
+            imageAlt: string | null;
+            imagePosition: null;
+            image: {
+              alt: string | null;
+              asset: SanityImageAssetReference | null;
+              crop: SanityImageCrop | null;
+              hotspot: SanityImageHotspot | null;
+              lqip: string | null;
+            } | null;
+            links: Array<{
+              _key: string;
+              label: string;
+              href: string;
+            }> | null;
+            link: null;
+            body: null;
+            features: null;
+            faqs: null;
+            grinders: null;
+            detailGrinders: null;
+            specGrinder: null;
+            collections: null;
+            posts: null;
+          }
+        | {
+            _key: string;
+            _type: "imageText";
+            eyebrow: null;
+            heading: string;
+            text: string;
+            intro: null;
+            quote: null;
+            attribution: null;
+            role: null;
+            caption: null;
+            url: null;
+            step: null;
+            imageAlt: string;
+            imagePosition: "left" | "right" | null;
+            image: {
+              alt: string;
+              asset: SanityImageAssetReference | null;
+              crop: SanityImageCrop | null;
+              hotspot: SanityImageHotspot | null;
+              lqip: string | null;
+            };
+            links: null;
+            link: {
+              _key: null;
+              label: string;
+              href: string;
+            } | null;
+            body: null;
+            features: null;
+            faqs: null;
+            grinders: null;
+            detailGrinders: null;
+            specGrinder: null;
+            collections: null;
+            posts: null;
+          }
+        | {
+            _key: string;
+            _type: "kbPostGrid";
+            eyebrow: null;
+            heading: string;
+            text: null;
+            intro: string | null;
+            quote: null;
+            attribution: null;
+            role: null;
+            caption: null;
+            url: null;
+            step: null;
+            imageAlt: null;
+            imagePosition: null;
+            image: null;
+            links: null;
+            link: null;
+            body: null;
+            features: null;
+            faqs: null;
+            grinders: null;
+            detailGrinders: null;
+            specGrinder: null;
+            collections: null;
+            posts: Array<{
+              title: string;
+              slug: string;
+              excerpt: string;
+              publishedAt: string;
+              topicTitle: string;
+              topicSlug: string;
+            }>;
+          }
+        | {
+            _key: string;
+            _type: "quote";
+            eyebrow: null;
+            heading: null;
+            text: null;
+            intro: null;
+            quote: string;
+            attribution: string;
+            role: string | null;
+            caption: null;
+            url: null;
+            step: null;
+            imageAlt: null;
+            imagePosition: null;
+            image: null;
+            links: null;
+            link: null;
+            body: null;
+            features: null;
+            faqs: null;
+            grinders: null;
+            detailGrinders: null;
+            specGrinder: null;
+            collections: null;
+            posts: null;
+          }
+        | {
+            _key: string;
+            _type: "richText";
+            eyebrow: null;
+            heading: string | null;
+            text: null;
+            intro: null;
+            quote: null;
+            attribution: null;
+            role: null;
+            caption: null;
+            url: null;
+            step: null;
+            imageAlt: null;
+            imagePosition: null;
+            image: null;
+            links: null;
+            link: null;
+            body: BlockContent;
+            features: null;
+            faqs: null;
+            grinders: null;
+            detailGrinders: null;
+            specGrinder: null;
+            collections: null;
+            posts: null;
+          }
+        | {
+            _key: string;
+            _type: "specTable";
+            eyebrow: null;
+            heading: string | null;
+            text: null;
+            intro: null;
+            quote: null;
+            attribution: null;
+            role: null;
+            caption: null;
+            url: null;
+            step: null;
+            imageAlt: null;
+            imagePosition: null;
+            image: null;
+            links: null;
+            link: null;
+            body: null;
+            features: null;
+            faqs: null;
+            grinders: null;
+            detailGrinders: null;
+            specGrinder: {
+              _id: string;
+              name: string;
+              slug: string;
+              audience: "business" | "home";
+              status: "current" | "discontinued" | "new";
+              shortDescription: string;
+              groupName: string;
+              groupSlug: string;
+              burrDiameterMm: number | null;
+              burrType: "conical" | "flat" | null;
+              grindType: "both" | "espresso" | "filter" | null;
+              imageAlt: string | null;
+              heroImage: {
+                alt: string | null;
+                asset: SanityImageAssetReference | null;
+                crop: SanityImageCrop | null;
+                hotspot: SanityImageHotspot | null;
+                lqip: string | null;
+              } | null;
+              answerFirst: string;
+              specs: {
+                burrType: "conical" | "flat" | null;
+                burrDiameterMm: number | null;
+                grindType: "both" | "espresso" | "filter" | null;
+                motorPowerW: number | null;
+                rpm: number | null;
+                hopperCapacityG: number | null;
+                outputGPerS: number | null;
+                adjustment: string | null;
+                widthMm: number | null;
+                depthMm: number | null;
+                heightMm: number | null;
+                weightKg: number | null;
+                voltage: string | null;
+                display: string | null;
+                features: Array<string> | null;
+              } | null;
+              extraSpecs: Array<{
+                _key: string;
+                label: string;
+                value: string;
+              }> | null;
+            };
+            collections: null;
+            posts: null;
+          }
+        | {
+            _key: string;
+            _type: "videoEmbed";
+            eyebrow: null;
+            heading: string | null;
+            text: null;
+            intro: null;
+            quote: null;
+            attribution: null;
+            role: null;
+            caption: string | null;
+            url: string;
+            step: null;
+            imageAlt: null;
+            imagePosition: null;
+            image: null;
+            links: null;
+            link: null;
+            body: null;
+            features: null;
+            faqs: null;
+            grinders: null;
+            detailGrinders: null;
+            specGrinder: null;
+            collections: null;
+            posts: null;
+          }
+      > | null;
+      seoTitle: string | null;
+      seoDescription: string | null;
+      noIndex: boolean | false;
+      canonical: string | null;
+      seoImage: {
+        alt: string | null;
+        asset: SanityImageAssetReference | null;
+        crop: SanityImageCrop | null;
+        hotspot: SanityImageHotspot | null;
+        lqip: string | null;
+      } | null;
+    }
+  | {
+      title: string;
+      introduction: string | null;
       sections: Array<
         | {
             _key: string;
@@ -1720,6 +2423,33 @@ export type HOME_QUERY_RESULT =
             quote: string;
             attribution: string;
             role: string | null;
+            caption: null;
+            url: null;
+            step: null;
+            imageAlt: null;
+            imagePosition: null;
+            image: null;
+            links: null;
+            link: null;
+            body: null;
+            features: null;
+            faqs: null;
+            grinders: null;
+            detailGrinders: null;
+            specGrinder: null;
+            collections: null;
+            posts: null;
+          }
+        | {
+            _key: string;
+            _type: "rangeGrid";
+            eyebrow: null;
+            heading: string;
+            text: null;
+            intro: string | null;
+            quote: null;
+            attribution: null;
+            role: null;
             caption: null;
             url: null;
             step: null;
@@ -2986,6 +3716,33 @@ export type JOURNEY_QUERY_RESULT = {
       }
     | {
         _key: string;
+        _type: "rangeGrid";
+        eyebrow: null;
+        heading: string;
+        text: null;
+        intro: string | null;
+        quote: null;
+        attribution: null;
+        role: null;
+        caption: null;
+        url: null;
+        step: null;
+        imageAlt: null;
+        imagePosition: null;
+        image: null;
+        links: null;
+        link: null;
+        body: null;
+        features: null;
+        faqs: null;
+        grinders: null;
+        detailGrinders: null;
+        specGrinder: null;
+        collections: null;
+        posts: null;
+      }
+    | {
+        _key: string;
         _type: "richText";
         eyebrow: null;
         heading: string | null;
@@ -3212,6 +3969,33 @@ export type SIMPLE_PAGE_QUERY_RESULT =
               summary: string;
               audience: "both" | "business" | "home";
             }>;
+            posts: null;
+          }
+        | {
+            _key: string;
+            _type: "collectionModels";
+            eyebrow: null;
+            heading: string;
+            text: null;
+            intro: string | null;
+            quote: null;
+            attribution: null;
+            role: null;
+            caption: null;
+            url: null;
+            step: null;
+            imageAlt: null;
+            imagePosition: null;
+            image: null;
+            links: null;
+            link: null;
+            body: null;
+            features: null;
+            faqs: null;
+            grinders: null;
+            detailGrinders: null;
+            specGrinder: null;
+            collections: null;
             posts: null;
           }
         | {
@@ -4288,6 +5072,658 @@ export type SIMPLE_PAGE_QUERY_RESULT =
           }
         | {
             _key: string;
+            _type: "rangeGrid";
+            eyebrow: null;
+            heading: string;
+            text: null;
+            intro: string | null;
+            quote: null;
+            attribution: null;
+            role: null;
+            caption: null;
+            url: null;
+            step: null;
+            imageAlt: null;
+            imagePosition: null;
+            image: null;
+            links: null;
+            link: null;
+            body: null;
+            features: null;
+            faqs: null;
+            grinders: null;
+            detailGrinders: null;
+            specGrinder: null;
+            collections: null;
+            posts: null;
+          }
+        | {
+            _key: string;
+            _type: "richText";
+            eyebrow: null;
+            heading: string | null;
+            text: null;
+            intro: null;
+            quote: null;
+            attribution: null;
+            role: null;
+            caption: null;
+            url: null;
+            step: null;
+            imageAlt: null;
+            imagePosition: null;
+            image: null;
+            links: null;
+            link: null;
+            body: BlockContent;
+            features: null;
+            faqs: null;
+            grinders: null;
+            detailGrinders: null;
+            specGrinder: null;
+            collections: null;
+            posts: null;
+          }
+        | {
+            _key: string;
+            _type: "specTable";
+            eyebrow: null;
+            heading: string | null;
+            text: null;
+            intro: null;
+            quote: null;
+            attribution: null;
+            role: null;
+            caption: null;
+            url: null;
+            step: null;
+            imageAlt: null;
+            imagePosition: null;
+            image: null;
+            links: null;
+            link: null;
+            body: null;
+            features: null;
+            faqs: null;
+            grinders: null;
+            detailGrinders: null;
+            specGrinder: {
+              _id: string;
+              name: string;
+              slug: string;
+              audience: "business" | "home";
+              status: "current" | "discontinued" | "new";
+              shortDescription: string;
+              answerFirst: string;
+              groupName: string;
+              groupSlug: string;
+              burrDiameterMm: number | null;
+              burrType: "conical" | "flat" | null;
+              grindType: "both" | "espresso" | "filter" | null;
+              imageAlt: string | null;
+              heroImage: {
+                alt: string | null;
+                asset: SanityImageAssetReference | null;
+                crop: SanityImageCrop | null;
+                hotspot: SanityImageHotspot | null;
+                lqip: string | null;
+              } | null;
+              specs: {
+                burrType: "conical" | "flat" | null;
+                burrDiameterMm: number | null;
+                grindType: "both" | "espresso" | "filter" | null;
+                motorPowerW: number | null;
+                rpm: number | null;
+                hopperCapacityG: number | null;
+                outputGPerS: number | null;
+                adjustment: string | null;
+                widthMm: number | null;
+                depthMm: number | null;
+                heightMm: number | null;
+                weightKg: number | null;
+                voltage: string | null;
+                display: string | null;
+                features: Array<string> | null;
+              } | null;
+              extraSpecs: Array<{
+                _key: string;
+                label: string;
+                value: string;
+              }> | null;
+              faqs: Array<{
+                _key: string;
+                question: string;
+                answer: string;
+              }> | null;
+            };
+            collections: null;
+            posts: null;
+          }
+        | {
+            _key: string;
+            _type: "videoEmbed";
+            eyebrow: null;
+            heading: string | null;
+            text: null;
+            intro: null;
+            quote: null;
+            attribution: null;
+            role: null;
+            caption: string | null;
+            url: string;
+            step: null;
+            imageAlt: null;
+            imagePosition: null;
+            image: null;
+            links: null;
+            link: null;
+            body: null;
+            features: null;
+            faqs: null;
+            grinders: null;
+            detailGrinders: null;
+            specGrinder: null;
+            collections: null;
+            posts: null;
+          }
+      > | null;
+      seoTitle: string | null;
+      seoDescription: string | null;
+      noIndex: boolean | false;
+      canonical: string | null;
+      seoImage: {
+        alt: string | null;
+        asset: SanityImageAssetReference | null;
+        crop: SanityImageCrop | null;
+        hotspot: SanityImageHotspot | null;
+        lqip: string | null;
+      } | null;
+    }
+  | {
+      title: string;
+      introduction: string | null;
+      sections: Array<
+        | {
+            _key: string;
+            _type: "collectionCarousel";
+            eyebrow: null;
+            heading: string;
+            text: null;
+            intro: string | null;
+            quote: null;
+            attribution: null;
+            role: null;
+            caption: null;
+            url: null;
+            step: null;
+            imageAlt: null;
+            imagePosition: null;
+            image: null;
+            links: null;
+            link: null;
+            body: null;
+            features: null;
+            faqs: null;
+            grinders: null;
+            detailGrinders: null;
+            specGrinder: null;
+            collections: Array<{
+              name: string;
+              slug: string;
+              summary: string;
+              audience: "both" | "business" | "home";
+            }>;
+            posts: null;
+          }
+        | {
+            _key: string;
+            _type: "comparisonTable";
+            eyebrow: null;
+            heading: string;
+            text: null;
+            intro: string | null;
+            quote: null;
+            attribution: null;
+            role: null;
+            caption: null;
+            url: null;
+            step: null;
+            imageAlt: null;
+            imagePosition: null;
+            image: null;
+            links: null;
+            link: null;
+            body: null;
+            features: null;
+            faqs: null;
+            grinders: Array<{
+              _id: string;
+              name: string;
+              slug: string;
+              audience: "business" | "home";
+              status: "current" | "discontinued" | "new";
+              shortDescription: string;
+              groupName: string;
+              groupSlug: string;
+              burrDiameterMm: number | null;
+              burrType: "conical" | "flat" | null;
+              grindType: "both" | "espresso" | "filter" | null;
+              motorPowerW: number | null;
+              imageAlt: string | null;
+              heroImage: {
+                alt: string | null;
+                asset: SanityImageAssetReference | null;
+                crop: SanityImageCrop | null;
+                hotspot: SanityImageHotspot | null;
+                lqip: string | null;
+              } | null;
+            }>;
+            detailGrinders: Array<{
+              _id: string;
+              name: string;
+              slug: string;
+              audience: "business" | "home";
+              status: "current" | "discontinued" | "new";
+              shortDescription: string;
+              answerFirst: string;
+              groupName: string;
+              groupSlug: string;
+              burrDiameterMm: number | null;
+              burrType: "conical" | "flat" | null;
+              grindType: "both" | "espresso" | "filter" | null;
+              imageAlt: string | null;
+              heroImage: {
+                alt: string | null;
+                asset: SanityImageAssetReference | null;
+                crop: SanityImageCrop | null;
+                hotspot: SanityImageHotspot | null;
+                lqip: string | null;
+              } | null;
+              specs: {
+                burrType: "conical" | "flat" | null;
+                burrDiameterMm: number | null;
+                grindType: "both" | "espresso" | "filter" | null;
+                motorPowerW: number | null;
+                rpm: number | null;
+                hopperCapacityG: number | null;
+                outputGPerS: number | null;
+                adjustment: string | null;
+                widthMm: number | null;
+                depthMm: number | null;
+                heightMm: number | null;
+                weightKg: number | null;
+                voltage: string | null;
+                display: string | null;
+                features: Array<string> | null;
+              } | null;
+              extraSpecs: Array<{
+                _key: string;
+                label: string;
+                value: string;
+              }> | null;
+              faqs: Array<{
+                _key: string;
+                question: string;
+                answer: string;
+              }> | null;
+            }>;
+            specGrinder: null;
+            collections: null;
+            posts: null;
+          }
+        | {
+            _key: string;
+            _type: "contactBlock";
+            eyebrow: null;
+            heading: string;
+            text: string | null;
+            intro: null;
+            quote: null;
+            attribution: null;
+            role: null;
+            caption: null;
+            url: null;
+            step: null;
+            imageAlt: null;
+            imagePosition: null;
+            image: null;
+            links: null;
+            link: null;
+            body: null;
+            features: null;
+            faqs: null;
+            grinders: null;
+            detailGrinders: null;
+            specGrinder: null;
+            collections: null;
+            posts: null;
+          }
+        | {
+            _key: string;
+            _type: "ctaBanner";
+            eyebrow: null;
+            heading: string;
+            text: string | null;
+            intro: null;
+            quote: null;
+            attribution: null;
+            role: null;
+            caption: null;
+            url: null;
+            step: string | null;
+            imageAlt: null;
+            imagePosition: null;
+            image: null;
+            links: null;
+            link: {
+              _key: null;
+              label: string;
+              href: string;
+            };
+            body: null;
+            features: null;
+            faqs: null;
+            grinders: null;
+            detailGrinders: null;
+            specGrinder: null;
+            collections: null;
+            posts: null;
+          }
+        | {
+            _key: string;
+            _type: "faqAccordion";
+            eyebrow: null;
+            heading: string;
+            text: null;
+            intro: null;
+            quote: null;
+            attribution: null;
+            role: null;
+            caption: null;
+            url: null;
+            step: null;
+            imageAlt: null;
+            imagePosition: null;
+            image: null;
+            links: null;
+            link: null;
+            body: null;
+            features: null;
+            faqs: Array<{
+              _key: string;
+              question: string;
+              answer: string;
+            }>;
+            grinders: null;
+            detailGrinders: null;
+            specGrinder: null;
+            collections: null;
+            posts: null;
+          }
+        | {
+            _key: string;
+            _type: "featureList";
+            eyebrow: null;
+            heading: string;
+            text: null;
+            intro: string | null;
+            quote: null;
+            attribution: null;
+            role: null;
+            caption: null;
+            url: null;
+            step: null;
+            imageAlt: null;
+            imagePosition: null;
+            image: null;
+            links: null;
+            link: null;
+            body: null;
+            features: Array<{
+              _key: string;
+              title: string;
+              text: string;
+            }>;
+            faqs: null;
+            grinders: null;
+            detailGrinders: null;
+            specGrinder: null;
+            collections: null;
+            posts: null;
+          }
+        | {
+            _key: string;
+            _type: "grinderGrid";
+            eyebrow: null;
+            heading: string;
+            text: null;
+            intro: string | null;
+            quote: null;
+            attribution: null;
+            role: null;
+            caption: null;
+            url: null;
+            step: null;
+            imageAlt: null;
+            imagePosition: null;
+            image: null;
+            links: null;
+            link: null;
+            body: null;
+            features: null;
+            faqs: null;
+            grinders: Array<{
+              _id: string;
+              name: string;
+              slug: string;
+              audience: "business" | "home";
+              status: "current" | "discontinued" | "new";
+              shortDescription: string;
+              groupName: string;
+              groupSlug: string;
+              burrDiameterMm: number | null;
+              burrType: "conical" | "flat" | null;
+              grindType: "both" | "espresso" | "filter" | null;
+              motorPowerW: number | null;
+              imageAlt: string | null;
+              heroImage: {
+                alt: string | null;
+                asset: SanityImageAssetReference | null;
+                crop: SanityImageCrop | null;
+                hotspot: SanityImageHotspot | null;
+                lqip: string | null;
+              } | null;
+            }>;
+            detailGrinders: Array<{
+              _id: string;
+              name: string;
+              slug: string;
+              audience: "business" | "home";
+              status: "current" | "discontinued" | "new";
+              shortDescription: string;
+              answerFirst: string;
+              groupName: string;
+              groupSlug: string;
+              burrDiameterMm: number | null;
+              burrType: "conical" | "flat" | null;
+              grindType: "both" | "espresso" | "filter" | null;
+              imageAlt: string | null;
+              heroImage: {
+                alt: string | null;
+                asset: SanityImageAssetReference | null;
+                crop: SanityImageCrop | null;
+                hotspot: SanityImageHotspot | null;
+                lqip: string | null;
+              } | null;
+              specs: {
+                burrType: "conical" | "flat" | null;
+                burrDiameterMm: number | null;
+                grindType: "both" | "espresso" | "filter" | null;
+                motorPowerW: number | null;
+                rpm: number | null;
+                hopperCapacityG: number | null;
+                outputGPerS: number | null;
+                adjustment: string | null;
+                widthMm: number | null;
+                depthMm: number | null;
+                heightMm: number | null;
+                weightKg: number | null;
+                voltage: string | null;
+                display: string | null;
+                features: Array<string> | null;
+              } | null;
+              extraSpecs: Array<{
+                _key: string;
+                label: string;
+                value: string;
+              }> | null;
+              faqs: Array<{
+                _key: string;
+                question: string;
+                answer: string;
+              }> | null;
+            }>;
+            specGrinder: null;
+            collections: null;
+            posts: null;
+          }
+        | {
+            _key: string;
+            _type: "heroBanner";
+            eyebrow: string | null;
+            heading: string;
+            text: string | null;
+            intro: null;
+            quote: null;
+            attribution: null;
+            role: null;
+            caption: null;
+            url: null;
+            step: null;
+            imageAlt: string | null;
+            imagePosition: null;
+            image: {
+              alt: string | null;
+              asset: SanityImageAssetReference | null;
+              crop: SanityImageCrop | null;
+              hotspot: SanityImageHotspot | null;
+              lqip: string | null;
+            } | null;
+            links: Array<{
+              _key: string;
+              label: string;
+              href: string;
+            }> | null;
+            link: null;
+            body: null;
+            features: null;
+            faqs: null;
+            grinders: null;
+            detailGrinders: null;
+            specGrinder: null;
+            collections: null;
+            posts: null;
+          }
+        | {
+            _key: string;
+            _type: "imageText";
+            eyebrow: null;
+            heading: string;
+            text: string;
+            intro: null;
+            quote: null;
+            attribution: null;
+            role: null;
+            caption: null;
+            url: null;
+            step: null;
+            imageAlt: string;
+            imagePosition: "left" | "right" | null;
+            image: {
+              alt: string;
+              asset: SanityImageAssetReference | null;
+              crop: SanityImageCrop | null;
+              hotspot: SanityImageHotspot | null;
+              lqip: string | null;
+            };
+            links: null;
+            link: {
+              _key: null;
+              label: string;
+              href: string;
+            } | null;
+            body: null;
+            features: null;
+            faqs: null;
+            grinders: null;
+            detailGrinders: null;
+            specGrinder: null;
+            collections: null;
+            posts: null;
+          }
+        | {
+            _key: string;
+            _type: "kbPostGrid";
+            eyebrow: null;
+            heading: string;
+            text: null;
+            intro: string | null;
+            quote: null;
+            attribution: null;
+            role: null;
+            caption: null;
+            url: null;
+            step: null;
+            imageAlt: null;
+            imagePosition: null;
+            image: null;
+            links: null;
+            link: null;
+            body: null;
+            features: null;
+            faqs: null;
+            grinders: null;
+            detailGrinders: null;
+            specGrinder: null;
+            collections: null;
+            posts: Array<{
+              title: string;
+              slug: string;
+              excerpt: string;
+              publishedAt: string;
+              topicTitle: string;
+              topicSlug: string;
+            }>;
+          }
+        | {
+            _key: string;
+            _type: "quote";
+            eyebrow: null;
+            heading: null;
+            text: null;
+            intro: null;
+            quote: string;
+            attribution: string;
+            role: string | null;
+            caption: null;
+            url: null;
+            step: null;
+            imageAlt: null;
+            imagePosition: null;
+            image: null;
+            links: null;
+            link: null;
+            body: null;
+            features: null;
+            faqs: null;
+            grinders: null;
+            detailGrinders: null;
+            specGrinder: null;
+            collections: null;
+            posts: null;
+          }
+        | {
+            _key: string;
             _type: "richText";
             eyebrow: null;
             heading: string | null;
@@ -4562,7 +5998,7 @@ export type GRINDER_QUERY_RESULT = {
 
 // Source: src/sanity/lib/queries.ts
 // Variable: COLLECTION_QUERY
-// Query: *[_type == "grinderCollection" && slug.current == $slug && language == "en-GB"][0]{  _id, name, "slug": slug.current, summary, answerFirst, audience,  grinders[]->{  _id,  name,  "slug": slug.current,  audience,  status,  shortDescription,  "groupName": group->name,  "groupSlug": group->slug.current,  "burrDiameterMm": specs.burrDiameterMm,  "burrType": specs.burrType,  "grindType": specs.grindType,  "motorPowerW": specs.motorPowerW,  "imageAlt": heroImage.alt,  "heroImage": heroImage{ alt, asset, crop, hotspot, "lqip": asset->metadata.lqip }},  sections[]{    _key, _type, eyebrow, heading, text, intro, quote, attribution, role, caption, url, step,    "imageAlt": image.alt, imagePosition, "image": image{ alt, asset, crop, hotspot, "lqip": asset->metadata.lqip },    links[]{ _key, label, href }, link{ _key, label, href }, body,    features[]{ _key, title, text },    faqs[]{ _key, question, answer },    grinders[]->{  _id,  name,  "slug": slug.current,  audience,  status,  shortDescription,  "groupName": group->name,  "groupSlug": group->slug.current,  "burrDiameterMm": specs.burrDiameterMm,  "burrType": specs.burrType,  "grindType": specs.grindType,  "motorPowerW": specs.motorPowerW,  "imageAlt": heroImage.alt,  "heroImage": heroImage{ alt, asset, crop, hotspot, "lqip": asset->metadata.lqip }},    "detailGrinders": grinders[]->{      _id, name, "slug": slug.current, audience, status, shortDescription, answerFirst,      "groupName": group->name, "groupSlug": group->slug.current,      "burrDiameterMm": specs.burrDiameterMm, "burrType": specs.burrType, "grindType": specs.grindType,      "imageAlt": heroImage.alt, "heroImage": heroImage{ alt, asset, crop, hotspot, "lqip": asset->metadata.lqip },      specs{  burrType,  burrDiameterMm,  grindType,  motorPowerW,  rpm,  hopperCapacityG,  outputGPerS,  adjustment,  "widthMm": dimensions.widthMm,  "depthMm": dimensions.depthMm,  "heightMm": dimensions.heightMm,  weightKg,  voltage,  display,  features},      extraSpecs[]{ _key, label, value },      faqs[]{ _key, question, answer }    },    "specGrinder": grinder->{      _id, name, "slug": slug.current, audience, status, shortDescription, answerFirst,      "groupName": group->name, "groupSlug": group->slug.current,      "burrDiameterMm": specs.burrDiameterMm, "burrType": specs.burrType, "grindType": specs.grindType,      "imageAlt": heroImage.alt, "heroImage": heroImage{ alt, asset, crop, hotspot, "lqip": asset->metadata.lqip },      specs{  burrType,  burrDiameterMm,  grindType,  motorPowerW,  rpm,  hopperCapacityG,  outputGPerS,  adjustment,  "widthMm": dimensions.widthMm,  "depthMm": dimensions.depthMm,  "heightMm": dimensions.heightMm,  weightKg,  voltage,  display,  features},      extraSpecs[]{ _key, label, value },      faqs[]{ _key, question, answer }    },    collections[]->{ name, "slug": slug.current, summary, audience },    posts[]->{  title,  "slug": slug.current,  excerpt,  publishedAt,  "topicTitle": topic->title,  "topicSlug": topic->slug.current}  },    "seoTitle": seo.title,  "seoDescription": seo.description,  "noIndex": seo.noIndex == true,  "canonical": seo.canonical,  "seoImage": seo.image{ alt, asset, crop, hotspot, "lqip": asset->metadata.lqip }}
+// Query: *[_type == "grinderCollection" && slug.current == $slug && language == "en-GB"][0]{  _id, name, "slug": slug.current, summary, answerFirst, audience, "imageAlt": image.alt, "image": image{ alt, asset, crop, hotspot, "lqip": asset->metadata.lqip },  grinders[]->{  _id,  name,  "slug": slug.current,  audience,  status,  shortDescription,  "groupName": group->name,  "groupSlug": group->slug.current,  "burrDiameterMm": specs.burrDiameterMm,  "burrType": specs.burrType,  "grindType": specs.grindType,  "motorPowerW": specs.motorPowerW,  "imageAlt": heroImage.alt,  "heroImage": heroImage{ alt, asset, crop, hotspot, "lqip": asset->metadata.lqip }},  sections[]{    _key, _type, eyebrow, heading, text, intro, quote, attribution, role, caption, url, step,    "imageAlt": image.alt, imagePosition, "image": image{ alt, asset, crop, hotspot, "lqip": asset->metadata.lqip },    links[]{ _key, label, href }, link{ _key, label, href }, body,    features[]{ _key, title, text },    faqs[]{ _key, question, answer },    grinders[]->{  _id,  name,  "slug": slug.current,  audience,  status,  shortDescription,  "groupName": group->name,  "groupSlug": group->slug.current,  "burrDiameterMm": specs.burrDiameterMm,  "burrType": specs.burrType,  "grindType": specs.grindType,  "motorPowerW": specs.motorPowerW,  "imageAlt": heroImage.alt,  "heroImage": heroImage{ alt, asset, crop, hotspot, "lqip": asset->metadata.lqip }},    "detailGrinders": grinders[]->{      _id, name, "slug": slug.current, audience, status, shortDescription, answerFirst,      "groupName": group->name, "groupSlug": group->slug.current,      "burrDiameterMm": specs.burrDiameterMm, "burrType": specs.burrType, "grindType": specs.grindType,      "imageAlt": heroImage.alt, "heroImage": heroImage{ alt, asset, crop, hotspot, "lqip": asset->metadata.lqip },      specs{  burrType,  burrDiameterMm,  grindType,  motorPowerW,  rpm,  hopperCapacityG,  outputGPerS,  adjustment,  "widthMm": dimensions.widthMm,  "depthMm": dimensions.depthMm,  "heightMm": dimensions.heightMm,  weightKg,  voltage,  display,  features},      extraSpecs[]{ _key, label, value },      faqs[]{ _key, question, answer }    },    "specGrinder": grinder->{      _id, name, "slug": slug.current, audience, status, shortDescription, answerFirst,      "groupName": group->name, "groupSlug": group->slug.current,      "burrDiameterMm": specs.burrDiameterMm, "burrType": specs.burrType, "grindType": specs.grindType,      "imageAlt": heroImage.alt, "heroImage": heroImage{ alt, asset, crop, hotspot, "lqip": asset->metadata.lqip },      specs{  burrType,  burrDiameterMm,  grindType,  motorPowerW,  rpm,  hopperCapacityG,  outputGPerS,  adjustment,  "widthMm": dimensions.widthMm,  "depthMm": dimensions.depthMm,  "heightMm": dimensions.heightMm,  weightKg,  voltage,  display,  features},      extraSpecs[]{ _key, label, value },      faqs[]{ _key, question, answer }    },    collections[]->{ name, "slug": slug.current, summary, audience },    posts[]->{  title,  "slug": slug.current,  excerpt,  publishedAt,  "topicTitle": topic->title,  "topicSlug": topic->slug.current}  },    "seoTitle": seo.title,  "seoDescription": seo.description,  "noIndex": seo.noIndex == true,  "canonical": seo.canonical,  "seoImage": seo.image{ alt, asset, crop, hotspot, "lqip": asset->metadata.lqip }}
 export type COLLECTION_QUERY_RESULT = {
   _id: string;
   name: string;
@@ -4570,6 +6006,14 @@ export type COLLECTION_QUERY_RESULT = {
   summary: string;
   answerFirst: string | null;
   audience: "both" | "business" | "home";
+  imageAlt: string | null;
+  image: {
+    alt: string | null;
+    asset: SanityImageAssetReference | null;
+    crop: SanityImageCrop | null;
+    hotspot: SanityImageHotspot | null;
+    lqip: string | null;
+  } | null;
   grinders: Array<{
     _id: string;
     name: string;
@@ -4591,7 +6035,7 @@ export type COLLECTION_QUERY_RESULT = {
       hotspot: SanityImageHotspot | null;
       lqip: string | null;
     } | null;
-  }> | null;
+  }>;
   sections: Array<
     | {
         _key: string;
@@ -4623,6 +6067,33 @@ export type COLLECTION_QUERY_RESULT = {
           summary: string;
           audience: "both" | "business" | "home";
         }>;
+        posts: null;
+      }
+    | {
+        _key: string;
+        _type: "collectionModels";
+        eyebrow: null;
+        heading: string;
+        text: null;
+        intro: string | null;
+        quote: null;
+        attribution: null;
+        role: null;
+        caption: null;
+        url: null;
+        step: null;
+        imageAlt: null;
+        imagePosition: null;
+        image: null;
+        links: null;
+        link: null;
+        body: null;
+        features: null;
+        faqs: null;
+        grinders: null;
+        detailGrinders: null;
+        specGrinder: null;
+        collections: null;
         posts: null;
       }
     | {
@@ -5216,6 +6687,145 @@ export type COLLECTION_QUERY_RESULT = {
 } | null;
 
 // Source: src/sanity/lib/queries.ts
+// Variable: RANGES_QUERY
+// Query: *[_type == "grinderGroup" && language == "en-GB"]|order(coalesce(position, 999) asc, name asc){  _id,  name,  "slug": slug.current,  summary,  audience,  position,  "imageAlt": image.alt,  "image": image{ alt, asset, crop, hotspot, "lqip": asset->metadata.lqip },  "fallback": *[_type == "grinder" && language == "en-GB" && group._ref == ^._id && status != "discontinued" && defined(heroImage.asset)]|order(name asc)[0]{    "imageAlt": heroImage.alt, "image": heroImage{ alt, asset, crop, hotspot, "lqip": asset->metadata.lqip }  },  "modelCount": count(*[_type == "grinder" && language == "en-GB" && group._ref == ^._id && status != "discontinued"])}
+export type RANGES_QUERY_RESULT = Array<{
+  _id: string;
+  name: string;
+  slug: string;
+  summary: string;
+  audience: "both" | "business" | "home";
+  position: number | null;
+  imageAlt: string | null;
+  image: {
+    alt: string | null;
+    asset: SanityImageAssetReference | null;
+    crop: SanityImageCrop | null;
+    hotspot: SanityImageHotspot | null;
+    lqip: string | null;
+  } | null;
+  fallback: {
+    imageAlt: string | null;
+    image: {
+      alt: string | null;
+      asset: SanityImageAssetReference | null;
+      crop: SanityImageCrop | null;
+      hotspot: SanityImageHotspot | null;
+      lqip: string | null;
+    } | null;
+  } | null;
+  modelCount: number;
+}>;
+
+// Source: src/sanity/lib/queries.ts
+// Variable: RANGE_QUERY
+// Query: *[_type == "grinderGroup" && slug.current == $slug && language == "en-GB"][0]{  _id,  name,  "slug": slug.current,  summary,  answerFirst,  audience,  position,  "imageAlt": image.alt,  "image": image{ alt, asset, crop, hotspot, "lqip": asset->metadata.lqip },  "fallback": *[_type == "grinder" && language == "en-GB" && group._ref == ^._id && status != "discontinued" && defined(heroImage.asset)]|order(name asc)[0]{    "imageAlt": heroImage.alt, "image": heroImage{ alt, asset, crop, hotspot, "lqip": asset->metadata.lqip }  },  story,  features[]{    _key, title, text, icon, ground,    "imageAlt": image.alt, "image": image{ alt, asset, crop, hotspot, "lqip": asset->metadata.lqip },    "linkLabel": link.label, "linkHref": link.href  },  "grinders": *[_type == "grinder" && language == "en-GB" && group._ref == ^._id]|order(name asc){  _id,  name,  "slug": slug.current,  audience,  status,  shortDescription,  "groupName": group->name,  "groupSlug": group->slug.current,  "burrDiameterMm": specs.burrDiameterMm,  "burrType": specs.burrType,  "grindType": specs.grindType,  "motorPowerW": specs.motorPowerW,  "imageAlt": heroImage.alt,  "heroImage": heroImage{ alt, asset, crop, hotspot, "lqip": asset->metadata.lqip }},  "collections": *[_type == "grinderCollection" && language == "en-GB"]{    name, "slug": slug.current, summary, audience, "imageAlt": image.alt, "image": image{ alt, asset, crop, hotspot, "lqip": asset->metadata.lqip },    "grinderIds": grinders[]._ref  },    "seoTitle": seo.title,  "seoDescription": seo.description,  "noIndex": seo.noIndex == true,  "canonical": seo.canonical,  "seoImage": seo.image{ alt, asset, crop, hotspot, "lqip": asset->metadata.lqip }}
+export type RANGE_QUERY_RESULT = {
+  _id: string;
+  name: string;
+  slug: string;
+  summary: string;
+  answerFirst: string;
+  audience: "both" | "business" | "home";
+  position: number | null;
+  imageAlt: string | null;
+  image: {
+    alt: string | null;
+    asset: SanityImageAssetReference | null;
+    crop: SanityImageCrop | null;
+    hotspot: SanityImageHotspot | null;
+    lqip: string | null;
+  } | null;
+  fallback: {
+    imageAlt: string | null;
+    image: {
+      alt: string | null;
+      asset: SanityImageAssetReference | null;
+      crop: SanityImageCrop | null;
+      hotspot: SanityImageHotspot | null;
+      lqip: string | null;
+    } | null;
+  } | null;
+  story: BlockContent | null;
+  features: Array<{
+    _key: string;
+    title: string;
+    text: string;
+    icon: "burrs" | "cooling" | "dial" | "motor" | "scale" | "screen" | null;
+    ground: "dark-sand" | "light-grey" | "off-black" | "sand" | "silver" | null;
+    imageAlt: string | null;
+    image: {
+      alt: string | null;
+      asset: SanityImageAssetReference | null;
+      crop: SanityImageCrop | null;
+      hotspot: SanityImageHotspot | null;
+      lqip: string | null;
+    } | null;
+    linkLabel: string | null;
+    linkHref: string | null;
+  }> | null;
+  grinders: Array<{
+    _id: string;
+    name: string;
+    slug: string;
+    audience: "business" | "home";
+    status: "current" | "discontinued" | "new";
+    shortDescription: string;
+    groupName: string;
+    groupSlug: string;
+    burrDiameterMm: number | null;
+    burrType: "conical" | "flat" | null;
+    grindType: "both" | "espresso" | "filter" | null;
+    motorPowerW: number | null;
+    imageAlt: string | null;
+    heroImage: {
+      alt: string | null;
+      asset: SanityImageAssetReference | null;
+      crop: SanityImageCrop | null;
+      hotspot: SanityImageHotspot | null;
+      lqip: string | null;
+    } | null;
+  }>;
+  collections: Array<{
+    name: string;
+    slug: string;
+    summary: string;
+    audience: "both" | "business" | "home";
+    imageAlt: string | null;
+    image: {
+      alt: string | null;
+      asset: SanityImageAssetReference | null;
+      crop: SanityImageCrop | null;
+      hotspot: SanityImageHotspot | null;
+      lqip: string | null;
+    } | null;
+    grinderIds: Array<string>;
+  }>;
+  seoTitle: string | null;
+  seoDescription: string | null;
+  noIndex: boolean | false;
+  canonical: string | null;
+  seoImage: {
+    alt: string | null;
+    asset: SanityImageAssetReference | null;
+    crop: SanityImageCrop | null;
+    hotspot: SanityImageHotspot | null;
+    lqip: string | null;
+  } | null;
+} | null;
+
+// Source: src/sanity/lib/queries.ts
+// Variable: GRINDER_PATH_QUERY
+// Query: {  "range": *[_type == "grinderGroup" && slug.current == $slug && language == "en-GB"][0]._id,  "collection": *[_type == "grinderCollection" && slug.current == $slug && language == "en-GB"][0]._id,  "grinder": *[_type == "grinder" && slug.current == $slug && language == "en-GB"][0]{ "groupSlug": group->slug.current }}
+export type GRINDER_PATH_QUERY_RESULT = {
+  range: string | null;
+  collection: string | null;
+  grinder: {
+    groupSlug: string;
+  } | null;
+};
+
+// Source: src/sanity/lib/queries.ts
 // Variable: POSTS_QUERY
 // Query: *[_type == "kbPost" && language == "en-GB"]|order(publishedAt desc){  title,  "slug": slug.current,  excerpt,  publishedAt,  "topicTitle": topic->title,  "topicSlug": topic->slug.current}
 export type POSTS_QUERY_RESULT = Array<{
@@ -5336,11 +6946,18 @@ export type LEGAL_QUERY_RESULT = {
 
 // Source: src/sanity/lib/queries.ts
 // Variable: SITEMAP_QUERY
-// Query: {  "pages": *[    _id in ["homePage", "aboutPage", "contactPage", "knowledgeHubPage", "grindersIndexPage"]    || (_type == "journeyPage" && slug.current in ["home-grinders", "professional"] && language == "en-GB")  ]{    "path": select(      _id == "homePage" => "/",      _id == "aboutPage" => "/about",      _id == "contactPage" => "/contact",      _id == "knowledgeHubPage" => "/knowledge",      _id == "grindersIndexPage" => "/grinders",      _type == "journeyPage" => "/" + slug.current    ),    _updatedAt  },  "grinders": *[_type == "grinder" && language == "en-GB" && status != "discontinued" && seo.noIndex != true]{    "slug": slug.current,    _updatedAt,    "image": coalesce(seo.image.asset->url, heroImage.asset->url)  },  "collections": *[_type == "grinderCollection" && language == "en-GB" && seo.noIndex != true]{    "slug": slug.current, _updatedAt  },  "posts": *[_type == "kbPost" && language == "en-GB" && seo.noIndex != true]{    "slug": slug.current,    _updatedAt,    "image": coalesce(seo.image.asset->url, image.asset->url)  },  "topics": *[_type == "kbTopic" && language == "en-GB" && seo.noIndex != true]{    "slug": slug.current, _updatedAt  },  "legal": *[_type == "legalPage" && language == "en-GB" && seo.noIndex != true]{    "slug": slug.current, _updatedAt  }}
+// Query: {  "pages": *[    _id in ["homePage", "aboutPage", "contactPage", "knowledgeHubPage", "grindersIndexPage"]    || (_type == "journeyPage" && slug.current in ["home-grinders", "professional"] && language == "en-GB")  ]{    "path": select(      _id == "homePage" => "/",      _id == "aboutPage" => "/about",      _id == "contactPage" => "/contact",      _id == "knowledgeHubPage" => "/knowledge",      _id == "grindersIndexPage" => "/grinders",      _type == "journeyPage" && slug.current == "home-grinders" => "/grinders/home",      _type == "journeyPage" && slug.current == "professional" => "/grinders/professional"    ),    _updatedAt  },  "grinders": *[_type == "grinder" && language == "en-GB" && status != "discontinued" && seo.noIndex != true]{    "slug": slug.current,    "groupSlug": group->slug.current,    _updatedAt,    "image": coalesce(seo.image.asset->url, heroImage.asset->url)  },  "ranges": *[_type == "grinderGroup" && language == "en-GB" && seo.noIndex != true]{    "slug": slug.current, _updatedAt  },  "collections": *[_type == "grinderCollection" && language == "en-GB" && seo.noIndex != true]{    "slug": slug.current, _updatedAt  },  "posts": *[_type == "kbPost" && language == "en-GB" && seo.noIndex != true]{    "slug": slug.current,    _updatedAt,    "image": coalesce(seo.image.asset->url, image.asset->url)  },  "topics": *[_type == "kbTopic" && language == "en-GB" && seo.noIndex != true]{    "slug": slug.current, _updatedAt  },  "legal": *[_type == "legalPage" && language == "en-GB" && seo.noIndex != true]{    "slug": slug.current, _updatedAt  }}
 export type SITEMAP_QUERY_RESULT = {
   pages: Array<
     | {
-        path: string | "/" | "/about" | "/contact" | "/grinders" | "/knowledge";
+        path:
+          | "/"
+          | "/about"
+          | "/contact"
+          | "/grinders"
+          | "/grinders/home"
+          | "/grinders/professional"
+          | "/knowledge";
         _updatedAt: string;
       }
     | {
@@ -5350,8 +6967,13 @@ export type SITEMAP_QUERY_RESULT = {
   >;
   grinders: Array<{
     slug: string;
+    groupSlug: string;
     _updatedAt: string;
     image: string | null;
+  }>;
+  ranges: Array<{
+    slug: string;
+    _updatedAt: string;
   }>;
   collections: Array<{
     slug: string;

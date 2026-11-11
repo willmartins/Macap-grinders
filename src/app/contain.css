@@ -50,6 +50,19 @@
   overflow: hidden;
 }
 
+/* Range and collection cards. Set here, after the rules above, so they win. */
+.machine-plinth.machine-plinth-wide {
+  aspect-ratio: 4 / 3;
+}
+
+.machine-shot.machine-shot-cover {
+  inset: 0;
+}
+
+.machine-shot.machine-shot-cover img {
+  object-fit: cover;
+}
+
 .model-hero {
   position: relative;
   isolation: isolate;

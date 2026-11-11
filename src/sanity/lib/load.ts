@@ -11,6 +11,8 @@ import {
   sampleLegal,
   samplePosts,
   sampleProfessionalJourney,
+  sampleRange,
+  sampleRanges,
   sampleShell,
   sampleTopics,
 } from "@/lib/content/sample";
@@ -24,6 +26,8 @@ import type {
   LegalPage,
   PageDocument,
   Post,
+  Range,
+  RangeCard,
   Shell,
   Topic,
 } from "@/lib/content/types";
@@ -39,6 +43,8 @@ import {
   mapLegal,
   mapPage,
   mapPost,
+  mapRange,
+  mapRangeCards,
   mapShell,
   mapSitemap,
   mapTopic,
@@ -47,6 +53,7 @@ import {
 } from "@/sanity/lib/map";
 import {
   COLLECTION_QUERY,
+  GRINDER_PATH_QUERY,
   GRINDER_QUERY,
   GRINDERS_QUERY,
   HOME_QUERY,
@@ -54,6 +61,8 @@ import {
   LEGAL_QUERY,
   POST_QUERY,
   POSTS_QUERY,
+  RANGE_QUERY,
+  RANGES_QUERY,
   SHELL_QUERY,
   SIMPLE_PAGE_QUERY,
   SITEMAP_QUERY,
@@ -82,7 +91,7 @@ export async function loadShell(perspective: Perspective): Promise<Shell> {
     const data = await read({
       query: SHELL_QUERY,
       perspective,
-      tags: ["siteSettings", "grinderCollection", "legalPage"],
+      tags: ["siteSettings", "grinderGroup", "grinderCollection", "legalPage"],
     });
     return mapShell(data, sampleShell) ?? sampleShell;
   } catch (error) {
@@ -223,6 +232,71 @@ export async function loadCollection(
   return sample ? { sample: true, collection: sample } : null;
 }
 
+export async function loadRanges(perspective: Perspective): Promise<{ sample: boolean; ranges: RangeCard[] }> {
+  "use cache";
+  try {
+    const data = await read({ query: RANGES_QUERY, perspective, tags: ["grinderGroup", "grinder"] });
+    const ranges = mapRangeCards(data);
+    if (ranges.length) return { sample: false, ranges };
+  } catch (error) {
+    console.error("Macap content: ranges", error);
+  }
+  return { sample: true, ranges: sampleRanges };
+}
+
+export async function loadRange(
+  slug: string,
+  perspective: Perspective,
+): Promise<{ sample: boolean; range: Range } | null> {
+  "use cache";
+  try {
+    const data = await read({
+      query: RANGE_QUERY,
+      params: { slug },
+      perspective,
+      tags: ["grinderGroup", `grinderGroup:${slug}`, "grinder", "grinderCollection"],
+    });
+    const range = mapRange(data);
+    if (range) return { sample: false, range };
+  } catch (error) {
+    console.error("Macap content: range", error);
+  }
+  const sample = sampleRange(slug);
+  return sample ? { sample: true, range: sample } : null;
+}
+
+export type GrinderPathOwner =
+  | { kind: "range" }
+  | { kind: "collection" }
+  | { kind: "grinder"; groupSlug: string | null }
+  | null;
+
+/**
+ * Who owns /grinders/<slug>: a range, a collection, or (an old short address) a grinder.
+ * A range wins over a collection with the same slug.
+ */
+export async function loadGrinderPathOwner(slug: string, perspective: Perspective): Promise<GrinderPathOwner> {
+  "use cache";
+  try {
+    const data = (await read({
+      query: GRINDER_PATH_QUERY,
+      params: { slug },
+      perspective,
+      tags: ["grinderGroup", "grinderCollection", "grinder"],
+    })) as { range?: string | null; collection?: string | null; grinder?: { groupSlug?: string | null } | null } | null;
+    if (data?.range) return { kind: "range" };
+    if (data?.collection) return { kind: "collection" };
+    if (data?.grinder) return { kind: "grinder", groupSlug: data.grinder.groupSlug || null };
+    if (data) return null;
+  } catch (error) {
+    console.error("Macap content: grinder path", error);
+  }
+  if (sampleRanges.some((item) => item.slug === slug)) return { kind: "range" };
+  if (sampleCollections.some((item) => item.slug === slug)) return { kind: "collection" };
+  const grinder = sampleGrinders.find((item) => item.slug === slug);
+  return grinder ? { kind: "grinder", groupSlug: grinder.groupSlug } : null;
+}
+
 export async function loadPosts(
   perspective: Perspective,
 ): Promise<{ sample: boolean; posts: ArticleCard[] }> {
@@ -305,6 +379,7 @@ export async function loadSitemap(): Promise<{
   sample: boolean;
   pages: SitemapPage[];
   grinders: SitemapEntry[];
+  ranges: SitemapEntry[];
   collections: SitemapEntry[];
   posts: SitemapEntry[];
   topics: SitemapEntry[];
@@ -316,8 +391,8 @@ export async function loadSitemap(): Promise<{
     sample: true,
     pages: [
       { path: "/", updatedAt: stamped },
-      { path: "/home-grinders", updatedAt: stamped },
-      { path: "/professional", updatedAt: stamped },
+      { path: "/grinders/home", updatedAt: stamped },
+      { path: "/grinders/professional", updatedAt: stamped },
       { path: "/grinders", updatedAt: stamped },
       { path: "/knowledge", updatedAt: stamped },
       { path: "/about", updatedAt: stamped },
@@ -325,7 +400,8 @@ export async function loadSitemap(): Promise<{
     ],
     grinders: sampleGrinders
       .filter((item) => item.status !== "discontinued")
-      .map((item) => ({ slug: item.slug, updatedAt: stamped, image: item.imageUrl })),
+      .map((item) => ({ slug: item.slug, groupSlug: item.groupSlug, updatedAt: stamped, image: item.imageUrl })),
+    ranges: sampleRanges.map((item) => ({ slug: item.slug, updatedAt: stamped })),
     collections: sampleCollections.map((item) => ({ slug: item.slug, updatedAt: stamped })),
     posts: samplePosts.map((item) => ({
       slug: item.slug,
@@ -339,7 +415,7 @@ export async function loadSitemap(): Promise<{
     const data = await read({
       query: SITEMAP_QUERY,
       perspective: "published",
-      tags: ["grinder", "grinderCollection", "kbPost", "kbTopic", "legalPage"],
+      tags: ["grinder", "grinderGroup", "grinderCollection", "kbPost", "kbTopic", "legalPage", "journeyPage"],
     });
     const mapped = mapSitemap(data);
     const count =
@@ -353,6 +429,7 @@ export async function loadSitemap(): Promise<{
       sample: false,
       pages: mapped.pages.length ? mapped.pages : sample.pages,
       grinders: mapped.grinders,
+      ranges: mapped.ranges,
       collections: mapped.collections,
       posts: mapped.posts,
       topics: mapped.topics,

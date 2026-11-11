@@ -1,6 +1,7 @@
 import Image from "next/image";
 import type { ReactNode } from "react";
 
+import { audiencePages } from "@/lib/paths";
 import type { Figure } from "@/lib/specs";
 
 export function BleedHero({
@@ -107,7 +108,16 @@ export function SplitHero({
   proImage,
   proAlt,
   proFocus,
+  eyebrow = "Macap, since 1930",
+  title = "Coffee grinders for the counter and the bar.",
+  crumbs,
+  headingLevel = "h1",
 }: {
+  eyebrow?: string;
+  title?: string;
+  crumbs?: ReactNode;
+  /** The front page and the grinders index both open with this. Each has one h1. */
+  headingLevel?: "h1" | "h2";
   homeImage: string;
   homeAlt: string;
   homeFocus: string;
@@ -115,15 +125,17 @@ export function SplitHero({
   proAlt: string;
   proFocus: string;
 }) {
+  const Heading = headingLevel;
   return (
     <header className="home-choice border-b border-silver">
       <div className="frame">
-        <p className="type-eyebrow text-grey">Macap, since 1930</p>
-        <h1 className="type-h1 mt-3 max-w-3xl text-black">Coffee grinders for the counter and the bar.</h1>
+        {crumbs ? <div className="mb-6">{crumbs}</div> : null}
+        <p className="type-eyebrow text-grey">{eyebrow}</p>
+        <Heading className="type-h1 mt-3 max-w-3xl text-black">{title}</Heading>
       </div>
       {/* Two choices on one hairline grid. The silver gap draws the rule between them. */}
       <div className="frame mt-[var(--gap-block)] grid items-stretch gap-px border border-silver bg-silver md:grid-cols-2">
-        <a href="/home-grinders" className="choice-card">
+        <a href={audiencePages.home.path} className="choice-card">
           <p className="type-h2 max-w-[10ch] text-black">For the home.</p>
           <p className="type-lead max-w-[22rem] text-grey md:min-h-[3.4rem]">Studio grinders for a domestic counter.</p>
           <p className="btn w-fit">Home grinders</p>
@@ -139,10 +151,10 @@ export function SplitHero({
             />
           </figure>
         </a>
-        <a href="/professional" className="choice-card">
+        <a href={audiencePages.business.path} className="choice-card">
           <p className="type-h2 max-w-[10ch] text-black">For the bar.</p>
           <p className="type-lead max-w-[22rem] text-grey md:min-h-[3.4rem]">Supra, Supra G, Pro and Leo.</p>
-          <p className="btn btn-secondary w-fit">Professional</p>
+          <p className="btn btn-secondary w-fit">Professional grinders</p>
           <figure className="choice-frame">
             <Image
               src={proImage}

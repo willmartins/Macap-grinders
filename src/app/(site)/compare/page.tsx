@@ -12,6 +12,7 @@ import { readCompareSlugs } from "@/lib/filters";
 import { buildMetadata } from "@/lib/metadata";
 import { draftPerspective } from "@/sanity/lib/draft";
 import { loadGrinder, loadGrinderCards } from "@/sanity/lib/load";
+import { grinderPath } from "@/lib/paths";
 
 export async function generateMetadata() {
   return buildMetadata({
@@ -72,7 +73,7 @@ async function CompareContent({
                     />
                     <p className="type-eyebrow mt-4 text-grey">{grinder.groupName || "Macap"}</p>
                     <h2 className="type-h3 mt-2 text-black">
-                      <TextLink href={`/grinders/${grinder.slug}`} className="tap link-underline">
+                      <TextLink href={grinderPath(grinder)} className="tap link-underline">
                         {grinder.name}
                       </TextLink>
                     </h2>

@@ -24,10 +24,10 @@ async function AboutContent() {
       <ContentPage page={page} />
       <nav className="frame section-tight" aria-label="Ranges">
         <p className="flex flex-wrap gap-x-8">
-          <TextLink href="/home-grinders" className="tap link-underline font-semibold">
+          <TextLink href="/grinders/home" className="tap link-underline font-semibold">
             Home grinders
           </TextLink>
-          <TextLink href="/professional" className="tap link-underline font-semibold">
+          <TextLink href="/grinders/professional" className="tap link-underline font-semibold">
             Professional
           </TextLink>
         </p>

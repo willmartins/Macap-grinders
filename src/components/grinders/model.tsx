@@ -14,6 +14,7 @@ import { compareHref } from "@/lib/compare";
 import type { FaqItem, Grinder, GrinderCard } from "@/lib/content/types";
 import { formatDate } from "@/lib/format";
 import { performanceFigures } from "@/lib/specs";
+import { grinderPath, rangePath } from "@/lib/paths";
 
 function firstSentence(text: string): string {
   const match = text.match(/^.*?[.!?](?:\s|$)/);
@@ -53,7 +54,8 @@ export function GrinderModel({
       bare
       items={[
         { name: "Grinders", path: "/grinders" },
-        { name: grinder.name, path: `/grinders/${grinder.slug}` },
+        ...(grinder.groupSlug ? [{ name: grinder.groupName || grinder.groupSlug, path: rangePath(grinder.groupSlug) }] : []),
+        { name: grinder.name, path: grinderPath(grinder) },
       ]}
     />
   );
@@ -75,6 +77,7 @@ export function GrinderModel({
             variant="photo"
             grinder={{
               slug: grinder.slug,
+              groupSlug: grinder.groupSlug,
               name: grinder.name,
               imageUrl: grinder.imageUrl,
               imageAlt: grinder.imageAlt,
@@ -89,7 +92,8 @@ export function GrinderModel({
           <Breadcrumbs
             items={[
               { name: "Grinders", path: "/grinders" },
-              { name: grinder.name, path: `/grinders/${grinder.slug}` },
+              ...(grinder.groupSlug ? [{ name: grinder.groupName || grinder.groupSlug, path: rangePath(grinder.groupSlug) }] : []),
+              { name: grinder.name, path: grinderPath(grinder) },
             ]}
           />
           {eyebrow ? <p className="type-eyebrow text-grey mt-4">{eyebrow}</p> : null}
@@ -100,6 +104,7 @@ export function GrinderModel({
               variant="plain"
               grinder={{
                 slug: grinder.slug,
+              groupSlug: grinder.groupSlug,
                 name: grinder.name,
                 imageUrl: grinder.imageUrl,
                 imageAlt: grinder.imageAlt,

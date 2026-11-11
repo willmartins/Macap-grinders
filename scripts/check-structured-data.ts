@@ -123,7 +123,8 @@ check((collection.mainEntity as { "@type"?: string })["@type"] === "ItemList", "
 
 const crumbs = breadcrumbJsonLd([
   { name: "Grinders", path: "/grinders" },
-  { name: "Supra 68", path: "/grinders/supra-68" },
+  { name: "Supra", path: "/grinders/supra" },
+  { name: "Supra 68", path: "/grinders/supra/supra-68" },
 ]);
 check(crumbs["@type"] === "BreadcrumbList", "BreadcrumbList");
 
@@ -149,6 +150,7 @@ const shell = {
     seo: { title: "", description: "", noIndex: false, canonical: null },
   },
   collections: [],
+  ranges: [],
   legal: [],
 } satisfies Shell;
 

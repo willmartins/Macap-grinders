@@ -2,6 +2,7 @@ import Image from "next/image";
 
 import { ContactForm } from "@/components/contact/contact-form";
 import { GrinderGrid } from "@/components/grinders/grinder-card";
+import { CollectionGrid, RangeGrid } from "@/components/grinders/range-card";
 import { CompareTable, SpecTable } from "@/components/grinders/spec-table";
 import { BleedHero, SplitHero } from "@/components/site/bleed-hero";
 import { PhotoSlot } from "@/components/site/photo-slot";
@@ -9,9 +10,20 @@ import { RichTextBody } from "@/components/site/rich-text";
 import { SectionHeader } from "@/components/site/section-header";
 import { TextLink } from "@/components/site/text-link";
 import { explainDifferences } from "@/lib/compare";
-import type { Section } from "@/lib/content/types";
+import type { CollectionCard, GrinderCard, RangeCard, Section } from "@/lib/content/types";
 import { collectionShot, focusFor, pageShots } from "@/lib/imagery";
+import { audiencePages, collectionPath } from "@/lib/paths";
 import { safeHref } from "@/lib/security";
+
+/**
+ * Data a section takes from its page rather than from its own fields:
+ * the range grid lists the page's ranges and collections, and collection models lists the collection's grinders.
+ */
+export type PageBuilderContext = {
+  ranges?: RangeCard[];
+  collections?: CollectionCard[];
+  grinders?: GrinderCard[];
+};
 
 function youtubeId(url: string): string | null {
   try {
@@ -74,7 +86,15 @@ function groundFor(section: Section, isLast: boolean): string {
   return "bg-white";
 }
 
-export function PageBuilder({ sections, journey }: { sections: Section[]; journey?: string }) {
+export function PageBuilder({
+  sections,
+  journey,
+  context = {},
+}: {
+  sections: Section[];
+  journey?: string;
+  context?: PageBuilderContext;
+}) {
   // A hairline closes each module. The last one has none, because the footer draws its own.
   const rule = (index: number) => (index === sections.length - 1 ? "" : "border-b border-silver");
   return (
@@ -82,7 +102,10 @@ export function PageBuilder({ sections, journey }: { sections: Section[]; journe
       {sections.map((section, sectionIndex) => {
         if (section._type === "heroBanner") {
           const hrefs = section.links.map((link) => link.href);
-          if (hrefs.includes("/home-grinders") && hrefs.includes("/professional")) {
+          // Links to both audience pages make the front page's two-door hero. Old addresses still count.
+          const home = hrefs.includes(audiencePages.home.path) || hrefs.includes("/home-grinders");
+          const professional = hrefs.includes(audiencePages.business.path) || hrefs.includes("/professional");
+          if (home && professional) {
             return (
               <SplitHero
                 key={section._key}
@@ -140,7 +163,7 @@ export function PageBuilder({ sections, journey }: { sections: Section[]; journe
           const next = journey
             ? sections
                 .slice(sectionIndex + 1)
-                .find((item) => item._type === "imageText" || item._type === "grinderGrid")
+                .find((item) => item._type === "imageText" || item._type === "grinderGrid" || item._type === "rangeGrid")
             : undefined;
           const flip = section.imagePosition === "right";
           return (
@@ -221,7 +244,7 @@ export function PageBuilder({ sections, journey }: { sections: Section[]; journe
                       return (
                         <li key={collection.slug} className="border border-silver bg-white">
                           {shot ? (
-                            <a href={`/collections/${collection.slug}`} className="block">
+                            <a href={collectionPath(collection.slug)} className="block">
                               <PhotoSlot
                                 imageUrl={shot.src}
                                 alt={shot.alt}
@@ -232,7 +255,7 @@ export function PageBuilder({ sections, journey }: { sections: Section[]; journe
                           ) : null}
                           <div className="p-5">
                             <h3 className="type-h3 text-black">
-                              <TextLink href={`/collections/${collection.slug}`} className="link-underline">
+                              <TextLink href={collectionPath(collection.slug)} className="link-underline">
                                 {collection.name}
                               </TextLink>
                             </h3>
@@ -242,6 +265,35 @@ export function PageBuilder({ sections, journey }: { sections: Section[]; journe
                       );
                     })}
                   </ul>
+                </>
+              ) : null}
+
+              {section._type === "rangeGrid" ? (
+                <>
+                  <SectionIntro heading={section.heading} intro={section.intro} />
+                  {context.ranges?.length ? (
+                    <RangeGrid ranges={context.ranges} />
+                  ) : (
+                    <p className="type-body text-grey">Ranges to follow.</p>
+                  )}
+                  {context.collections?.length ? (
+                    <div className="mt-[var(--space-tight)]">
+                      <SectionHeader eyebrow="Collections" title="Across the ranges" className="mb-8" />
+                      <CollectionGrid collections={context.collections} />
+                    </div>
+                  ) : null}
+                  <p className="mt-10">
+                    <TextLink href="/grinders#all-models" className="tap type-body font-semibold text-black link-underline">
+                      See every model
+                    </TextLink>
+                  </p>
+                </>
+              ) : null}
+
+              {section._type === "collectionModels" ? (
+                <>
+                  <SectionIntro heading={section.heading} intro={section.intro} />
+                  <GrinderGrid grinders={context.grinders || []} />
                 </>
               ) : null}
 

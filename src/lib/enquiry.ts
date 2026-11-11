@@ -82,6 +82,8 @@ export function readEnquiry(formData: FormData) {
 
 export type EnquiryGrinder = {
   slug: string;
+  /** The grinder's range. Its page address sits under it. */
+  groupSlug?: string | null;
   name: string;
   imageUrl?: string | null;
   imageAlt?: string | null;

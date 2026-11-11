@@ -3,6 +3,7 @@ import Image from "next/image";
 import { ArrowText, TextLink } from "@/components/site/text-link";
 import type { GrindType, GrinderCard } from "@/lib/content/types";
 import { formatNumber } from "@/lib/format";
+import { grinderPath } from "@/lib/paths";
 
 const statusLabel = { new: "New", current: "", discontinued: "Discontinued" };
 const grindLabel: Record<GrindType, string> = {
@@ -33,7 +34,7 @@ export function GrinderCardView({ grinder }: { grinder: GrinderCard }) {
     .join(", ");
 
   return (
-    <a className="machine-card" href={`/grinders/${grinder.slug}`} aria-label={accessible}>
+    <a className="machine-card" href={grinderPath(grinder)} aria-label={accessible}>
       <div className="machine-plinth">
         {grinder.imageUrl ? (
           <div className="machine-shot">
@@ -82,7 +83,7 @@ export function GrinderGrid({ grinders, snap = false }: { grinders: GrinderCard[
     return (
       <p className="type-body">
         No grinders match these filters.{" "}
-        <TextLink href="/grinders" className="font-semibold link-underline">
+        <TextLink href="/grinders#all-models" className="font-semibold link-underline">
           Clear filters
         </TextLink>
       </p>

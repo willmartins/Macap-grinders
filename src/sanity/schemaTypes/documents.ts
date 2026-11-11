@@ -17,12 +17,41 @@ import { defineArrayMember, defineField, defineType } from "sanity";
 
 import { countries, isCountryCode } from "@/lib/countries";
 import { languageField, seoField } from "@/sanity/schemaTypes/objects";
-import { sectionsField } from "@/sanity/schemaTypes/blocks";
+import { audienceSectionsField, collectionSectionsField, sectionsField } from "@/sanity/schemaTypes/blocks";
 
 const audienceOptions = [
   { title: "Home", value: "home" },
   { title: "Professional", value: "business" },
 ];
+
+/** Addresses under /grinders that a range or collection cannot take. */
+const reservedGrinderSlugs = new Set(["home", "professional"]);
+
+/**
+ * Ranges and collections share /grinders/<slug>, so a slug must be unique across both,
+ * and must not be one of the audience pages.
+ */
+const grinderPathSlug = defineField({
+  name: "slug",
+  title: "Slug",
+  type: "slug",
+  description: "The page address, /grinders/<slug>. Unique across ranges and collections.",
+  options: { source: "name", maxLength: 96 },
+  validation: (rule) =>
+    rule.required().custom(async (slug, context) => {
+      const current = slug?.current;
+      if (!current) return true;
+      if (!/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(current)) return "Use lower case letters, numbers and hyphens.";
+      if (reservedGrinderSlugs.has(current)) return `/grinders/${current} is an audience page. Choose another slug.`;
+      const id = (context.document?._id || "").replace(/^drafts\./, "");
+      const client = context.getClient({ apiVersion: "2026-02-01" });
+      const taken = await client.fetch<number>(
+        `count(*[_type in ["grinderGroup", "grinderCollection"] && slug.current == $slug && !(_id in [$id, "drafts." + $id])])`,
+        { slug: current, id },
+      );
+      return taken === 0 || "A range or collection already uses this slug.";
+    }),
+});
 
 const imageWithAlt = (name: string, title: string, description?: string, group?: string) =>
   defineField({
@@ -66,7 +95,7 @@ export const siteSettings = defineType({
       name: "navigation",
       title: "Main navigation",
       type: "array",
-      description: "The approved menu is Home, Professional and Contact us. The logo always links to the front page.",
+      description: "The approved menu is Home grinders, Professional grinders, Knowledge, About and Contact. The logo always links to the front page.",
       of: [defineArrayMember({ type: "link" })],
       validation: (rule) => rule.required().min(1).max(5),
     }),
@@ -244,7 +273,8 @@ export const grindersIndexPage = defineType({
 
 export const journeyPage = defineType({
   name: "journeyPage",
-  title: "Journey",
+  title: "Audience page",
+  description: "The Home grinders and Professional grinders pages, at /grinders/home and /grinders/professional.",
   type: "document",
   icon: TransferIconSafe(),
   fields: [
@@ -259,7 +289,7 @@ export const journeyPage = defineType({
       name: "slug",
       title: "Slug",
       type: "slug",
-      description: "Use home-grinders or professional. Those are the live routes.",
+      description: "home-grinders is the page at /grinders/home. professional is the page at /grinders/professional.",
       options: { source: "title", maxLength: 96 },
       validation: (rule) =>
         rule.required().custom((slug) => {
@@ -273,7 +303,7 @@ export const journeyPage = defineType({
       name: "audience",
       title: "Audience",
       type: "string",
-      description: "Home uses the light layout and yellow accent. Professional uses black and white.",
+      description: "Sets which ranges and collections the range grid lists.",
       options: { list: audienceOptions, layout: "radio" },
       validation: (rule) => rule.required(),
     }),
@@ -283,7 +313,7 @@ export const journeyPage = defineType({
       type: "text",
       rows: 3,
     }),
-    sectionsField,
+    audienceSectionsField,
     seoField,
   ],
   preview: {
@@ -297,7 +327,8 @@ function TransferIconSafe() {
 
 export const grinderGroup = defineType({
   name: "grinderGroup",
-  title: "Grinder group",
+  title: "Range",
+  description: "A product line, such as Supra or Leo. Every grinder belongs to one range, and its address sits under it.",
   type: "document",
   icon: TagIcon,
   fields: [
@@ -306,27 +337,39 @@ export const grinderGroup = defineType({
       name: "name",
       title: "Name",
       type: "string",
-      description: "The product line, for example Supra, Pro, Leo or Studio.",
+      description: "The range name as written in copy, for example Supra or Leo. Not in capitals.",
       validation: (rule) => rule.required(),
     }),
-    defineField({
-      name: "slug",
-      title: "Slug",
-      type: "slug",
-      options: { source: "name", maxLength: 96 },
-      validation: (rule) => rule.required(),
-    }),
+    grinderPathSlug,
     defineField({
       name: "summary",
       title: "Summary",
       type: "text",
       rows: 3,
+      description: "One short line for range cards, for example on the Professional grinders page.",
+      validation: (rule) => rule.required().max(160),
+    }),
+    defineField({
+      name: "answerFirst",
+      title: "Answer-first introduction",
+      type: "text",
+      rows: 4,
+      description:
+        "One or two sentences that say what the range is and who it is for. Shown at the top of the range page and used by search and answer engines.",
       validation: (rule) => rule.required(),
+    }),
+    defineField({
+      name: "position",
+      title: "Position",
+      type: "number",
+      description: "Sets the order of ranges on the audience pages. Lower comes first.",
+      validation: (rule) => rule.integer().min(0),
     }),
     defineField({
       name: "audience",
       title: "Audience",
       type: "string",
+      description: "Which audience page lists this range. Both lists it on Home grinders and Professional grinders.",
       options: {
         list: [
           ...audienceOptions,
@@ -336,10 +379,90 @@ export const grinderGroup = defineType({
       },
       validation: (rule) => rule.required(),
     }),
-    imageWithAlt("image", "Image"),
+    imageWithAlt(
+      "image",
+      "Main image",
+      "The picture at the top of the range page and on its card. If empty, the first model's photograph is used.",
+    ),
+    defineField({
+      name: "story",
+      title: "About the range",
+      type: "blockContent",
+      description: "A few short paragraphs on what the models share. Optional.",
+    }),
+    defineField({
+      name: "features",
+      title: "Feature cards",
+      type: "array",
+      description:
+        "Optional. Up to six cards. A card with an image is an image card. A card with an icon and no image is an icon card. A card with neither is a text card.",
+      validation: (rule) => rule.max(6),
+      of: [
+        defineArrayMember({
+          type: "object",
+          name: "rangeFeature",
+          title: "Feature card",
+          fields: [
+            defineField({ name: "title", title: "Title", type: "string", validation: (rule) => rule.required() }),
+            defineField({
+              name: "text",
+              title: "Text",
+              type: "text",
+              rows: 3,
+              validation: (rule) => rule.required().max(240),
+            }),
+            imageWithAlt("image", "Image"),
+            defineField({
+              name: "icon",
+              title: "Icon",
+              type: "string",
+              description: "Used when there is no image.",
+              options: {
+                list: [
+                  { title: "Burrs", value: "burrs" },
+                  { title: "Motor", value: "motor" },
+                  { title: "Dial", value: "dial" },
+                  { title: "Screen", value: "screen" },
+                  { title: "Scale", value: "scale" },
+                  { title: "Cooling", value: "cooling" },
+                ],
+              },
+            }),
+            defineField({
+              name: "ground",
+              title: "Icon ground",
+              type: "string",
+              description: "The colour behind the icon. Light grey if empty.",
+              hidden: ({ parent }) => !(parent as { icon?: string } | undefined)?.icon,
+              options: {
+                list: [
+                  { title: "Light grey", value: "light-grey" },
+                  { title: "Sand", value: "sand" },
+                  { title: "Dark sand", value: "dark-sand" },
+                  { title: "Silver", value: "silver" },
+                  { title: "Off-black", value: "off-black" },
+                ],
+              },
+            }),
+            defineField({ name: "link", title: "Link", type: "link", description: "Optional." }),
+          ],
+          preview: { select: { title: "title", subtitle: "text", media: "image" } },
+        }),
+      ],
+    }),
     seoField,
   ],
-  preview: { select: { title: "name", subtitle: "audience" } },
+  orderings: [
+    {
+      title: "Position",
+      name: "position",
+      by: [
+        { field: "position", direction: "asc" },
+        { field: "name", direction: "asc" },
+      ],
+    },
+  ],
+  preview: { select: { title: "name", subtitle: "audience", media: "image" } },
 });
 
 export const grinder = defineType({
@@ -376,10 +499,10 @@ export const grinder = defineType({
     defineField({
       name: "group",
       group: "content",
-      title: "Group",
+      title: "Range",
       type: "reference",
       to: [{ type: "grinderGroup" }],
-      description: "The product line this grinder belongs to. A grinder has one group.",
+      description: "The range this grinder belongs to. It sets the page address: /grinders/<range>/<model>.",
       validation: (rule) => rule.required(),
     }),
     defineField({
@@ -527,6 +650,8 @@ export const grinder = defineType({
 export const grinderCollection = defineType({
   name: "grinderCollection",
   title: "Collection",
+  description:
+    "A landing page for grinders that share something, such as a technology, across ranges. A grinder can be in several collections. Its address stays under its range.",
   type: "document",
   icon: StackIconSafe(),
   fields: [
@@ -535,15 +660,10 @@ export const grinderCollection = defineType({
       name: "name",
       title: "Name",
       type: "string",
+      description: "For example G Series.",
       validation: (rule) => rule.required(),
     }),
-    defineField({
-      name: "slug",
-      title: "Slug",
-      type: "slug",
-      options: { source: "name", maxLength: 96 },
-      validation: (rule) => rule.required(),
-    }),
+    grinderPathSlug,
     defineField({
       name: "summary",
       title: "Summary",
@@ -565,6 +685,7 @@ export const grinderCollection = defineType({
         list: [...audienceOptions, { title: "Both", value: "both" }],
         layout: "radio",
       },
+      description: "Which audience page features this collection. Both features it on Home grinders and Professional grinders.",
       validation: (rule) => rule.required(),
     }),
     defineField({
@@ -573,8 +694,10 @@ export const grinderCollection = defineType({
       type: "array",
       description: "The order here is the order on the page. A grinder can sit in more than one collection.",
       of: [defineArrayMember({ type: "reference", to: [{ type: "grinder" }] })],
+      validation: (rule) => rule.required().min(1).unique(),
     }),
-    sectionsField,
+    imageWithAlt("image", "Card image", "The picture on the collection's card on the audience pages. Optional."),
+    collectionSectionsField,
     seoField,
   ],
   preview: { select: { title: "name", subtitle: "audience" } },

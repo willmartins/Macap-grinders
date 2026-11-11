@@ -5,9 +5,13 @@ import { TextLink } from "@/components/site/text-link";
 import type { Shell } from "@/lib/content/types";
 import { telHref } from "@/lib/security";
 import { publicOffice } from "@/lib/site";
+import { audiencePages, collectionPath, rangePath } from "@/lib/paths";
 
 export function Footer({ shell }: { shell: Shell }) {
-  const { settings, collections, legal } = shell;
+  const { settings, collections, ranges, legal } = shell;
+  const rangeSlugs = new Set(ranges.map((range) => range.slug));
+  // A collection that shares a range's slug is shadowed by the range, so it is not listed twice.
+  const ownCollections = collections.filter((collection) => !rangeSlugs.has(collection.slug));
   return (
     <footer className="site-footer mt-auto border-t border-silver">
       <div className="frame py-16 md:py-20 grid gap-10 sm:grid-cols-2 lg:grid-cols-4">
@@ -53,15 +57,29 @@ export function Footer({ shell }: { shell: Shell }) {
           </ul>
         </nav>
 
-        <nav aria-label="Collections">
-          <p className="index-title font-medium text-black">Collections</p>
+        <nav aria-label="Grinders">
+          <p className="index-title font-medium text-black">Grinders</p>
           <ul className="mt-4 flex flex-col gap-2.5 text-sm">
-            {collections.map((collection) => (
+            <li>
+              <TextLink href={audiencePages.home.path} className="link-underline">
+                {audiencePages.home.label}
+              </TextLink>
+            </li>
+            <li>
+              <TextLink href={audiencePages.business.path} className="link-underline">
+                {audiencePages.business.label}
+              </TextLink>
+            </li>
+            {ranges.map((range) => (
+              <li key={range.slug}>
+                <TextLink href={rangePath(range.slug)} className="link-underline">
+                  {range.name}
+                </TextLink>
+              </li>
+            ))}
+            {ownCollections.map((collection) => (
               <li key={collection.slug}>
-                <TextLink
-                  href={`/collections/${collection.slug}`}
-                  className="link-underline"
-                >
+                <TextLink href={collectionPath(collection.slug)} className="link-underline">
                   {collection.name}
                 </TextLink>
               </li>

@@ -8,6 +8,7 @@ import { TextLink } from "@/components/site/text-link";
 import { compareHref, explainDifferences } from "@/lib/compare";
 import type { Grinder, GrinderCard } from "@/lib/content/types";
 import { formatNumber } from "@/lib/format";
+import { grinderPath } from "@/lib/paths";
 
 type ModelColorTheme = {
   id: string;
@@ -183,6 +184,7 @@ function TypedDifferenceCard({
 
 type CompareColumn = {
   slug: string;
+  groupSlug?: string | null;
   name: string;
   imageUrl?: string | null;
   imageAlt?: string | null;
@@ -281,7 +283,7 @@ function PhoneCompareTable({ columns, caption }: { columns: CompareColumn[]; cap
             <td key={column.slug} className="px-1.5 py-1 align-top first:pl-0 last:pr-0">
               {column.current ? null : (
                 <TextLink
-                  href={`/grinders/${column.slug}`}
+                  href={grinderPath(column)}
                   aria-label={`View ${column.name}`}
                   className="inline-block py-3 type-body font-semibold text-black link-underline"
                 >
@@ -389,6 +391,7 @@ export function CompareSection({
   const phoneColumns: CompareColumn[] = [
     {
       slug: grinder.slug,
+      groupSlug: grinder.groupSlug,
       name: grinder.name,
       imageUrl: grinder.imageUrl,
       imageAlt: grinder.imageAlt,
@@ -398,6 +401,7 @@ export function CompareSection({
     },
     ...comparisonModels.slice(0, 2).map((model, idx) => ({
       slug: model.slug,
+      groupSlug: model.groupSlug,
       name: model.name,
       imageUrl: model.imageUrl,
       imageAlt: model.imageAlt,
@@ -555,7 +559,7 @@ export function CompareSection({
 
                 <div className="mt-4 pt-3 border-t border-silver text-center">
                   <TextLink
-                    href={`/grinders/${model.slug}`}
+                    href={grinderPath(model)}
                     className="type-body font-semibold text-black link-underline"
                   >
                     {`View ${model.name}`}

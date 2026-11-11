@@ -1,13 +1,15 @@
-import { PageBuilder } from "@/components/modules/page-builder";
+import { PageBuilder, type PageBuilderContext } from "@/components/modules/page-builder";
 import { SampleBanner } from "@/components/site/sample-banner";
 import type { PageDocument } from "@/lib/content/types";
 
 export function ContentPage({
   page,
   journey,
+  context,
 }: {
   page: PageDocument;
   journey?: string;
+  context?: PageBuilderContext;
 }) {
   const hero = page.sections[0]?._type === "heroBanner";
   return (
@@ -21,7 +23,7 @@ export function ContentPage({
           </div>
         </header>
       )}
-      <PageBuilder sections={page.sections} journey={journey} />
+      <PageBuilder sections={page.sections} journey={journey} context={context} />
     </article>
   );
 }

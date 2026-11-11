@@ -1,6 +1,7 @@
 import type { CollectionCard, Grinder, Post } from "@/lib/content/types";
 import { specEntries } from "@/lib/specs";
 import { getSiteUrl } from "@/lib/site";
+import { audiencePages, collectionPath, grinderPath } from "@/lib/paths";
 
 function abs(path: string): string {
   return new URL(path, getSiteUrl()).toString();
@@ -20,8 +21,8 @@ export function buildLlmsIndex(input: {
     "",
     "## Journeys",
     "",
-    `- [Home grinders](${abs("/home-grinders")}): Studio grinders for a domestic counter.`,
-    `- [Professional](${abs("/professional")}): Supra, Supra G, Pro and Leo for the bar.`,
+    `- [Home grinders](${abs(audiencePages.home.path)}): grinders for a domestic counter.`,
+    `- [Professional grinders](${abs(audiencePages.business.path)}): grinders for the bar.`,
     `- [All grinders](${abs("/grinders")}): filter the range.`,
     `- [Compare](${abs("/compare")}): two or three grinders, side by side.`,
     `- [Knowledge](${abs("/knowledge")}): notes on choosing, dialling in and care.`,
@@ -30,14 +31,14 @@ export function buildLlmsIndex(input: {
     "## Grinders",
     "",
     ...input.grinders.map(
-      (grinder) => `- [${grinder.name}](${abs(`/grinders/${grinder.slug}`)}): ${grinder.shortDescription}`,
+      (grinder) => `- [${grinder.name}](${abs(grinderPath(grinder))}): ${grinder.shortDescription}`,
     ),
     "",
     "## Collections",
     "",
     ...input.collections.map(
       (collection) =>
-        `- [${collection.name}](${abs(`/collections/${collection.slug}`)}): ${collection.summary}`,
+        `- [${collection.name}](${abs(collectionPath(collection.slug))}): ${collection.summary}`,
     ),
     "",
     "## Knowledge",
@@ -60,7 +61,7 @@ export function buildLlmsFull(grinders: Grinder[], posts: Post[]): string {
     for (const row of specEntries(grinder)) {
       blocks.push(`- ${row.label}: ${row.value}`);
     }
-    blocks.push("", `Page: ${abs(`/grinders/${grinder.slug}`)}`, "");
+    blocks.push("", `Page: ${abs(grinderPath(grinder))}`, "");
   }
   for (const post of posts) {
     blocks.push(`## ${post.title}`, "", post.answerFirst, "", post.excerpt, "");

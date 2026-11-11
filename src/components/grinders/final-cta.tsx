@@ -31,6 +31,7 @@ export function FinalCtaSection({ grinder }: { grinder: Grinder }) {
               variant="photo"
               grinder={{
                 slug: grinder.slug,
+              groupSlug: grinder.groupSlug,
                 name: grinder.name,
                 imageUrl: grinder.imageUrl,
                 imageAlt: grinder.imageAlt,

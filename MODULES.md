@@ -7,8 +7,10 @@ Page sections share one name in code and in Sanity Studio. They are rendered by 
 | heroBanner | src/components/modules/page-builder.tsx | heroBanner | Home, journeys, about, knowledge | Full-bleed photograph, large headline, short line, up to two links. |
 | richText | src/components/modules/page-builder.tsx | richText | About, legal, any page | Heading plus portable text. |
 | imageText | src/components/modules/page-builder.tsx | imageText | Home, about | Full-width photograph beside a short explanation and an optional link. |
-| grinderGrid | src/components/modules/page-builder.tsx | grinderGrid | Journeys, collections, groups, related models | A grid of grinder cards. Each card is one link. |
-| collectionCarousel | src/components/modules/page-builder.tsx | collectionCarousel | Journeys | A sideways list of collections. |
+| grinderGrid | src/components/modules/page-builder.tsx | grinderGrid | Audience pages, collections, related models | A grid of grinder cards. Each card is one link. |
+| collectionCarousel | src/components/modules/page-builder.tsx | collectionCarousel | Audience pages | A sideways list of collections. |
+| rangeGrid | src/components/modules/page-builder.tsx | rangeGrid | Home grinders and Professional grinders only, required | The page audience's ranges as cards, then its collections. Filled from the ranges, so it has no list to pick. |
+| collectionModels | src/components/modules/page-builder.tsx | collectionModels | Collections only, required | The collection's grinders as cards, in the collection's order. |
 | featureList | src/components/modules/page-builder.tsx | featureList | Journeys | Three or more short points, such as brew, burr and noise. |
 | specTable | src/components/modules/page-builder.tsx | specTable | Any page section | A real HTML specification table for one grinder. |
 | comparisonTable | src/components/modules/page-builder.tsx | comparisonTable | Journeys | Side-by-side specifications and plain-language differences. |
@@ -19,7 +21,30 @@ Page sections share one name in code and in Sanity Studio. They are rendered by 
 | quote | src/components/modules/page-builder.tsx | quote | Home | A short quotation with an attribution. |
 | contactBlock | src/components/modules/page-builder.tsx | contactBlock | Contact, professional journey | The enquiry form, inline. |
 
-Document types that are not page sections: `siteSettings`, `homePage`, `aboutPage`, `contactPage`, `knowledgeHubPage`, `grindersIndexPage`, `journeyPage`, `grinderGroup`, `grinder`, `grinderCollection`, `author`, `kbTopic`, `kbPost`, `legalPage`, `redirect`, `distributor`. Shared objects: `seo`, `link`, `faq`, `blockContent`, `grinderSpecs`.
+Document types that are not page sections: `siteSettings`, `homePage`, `aboutPage`, `contactPage`, `knowledgeHubPage`, `grindersIndexPage`, `journeyPage` (Audience page), `grinderGroup` (Range), `grinder`, `grinderCollection`, `author`, `kbTopic`, `kbPost`, `legalPage`, `redirect`, `distributor`. Shared objects: `seo`, `link`, `faq`, `blockContent`, `grinderSpecs`.
+
+## Site structure
+
+Addresses are built in `src/lib/paths.ts`. Do not write a grinder, range or collection address by hand.
+
+| Address | Page | Content | Layout |
+| --- | --- | --- | --- |
+| `/grinders` | Grinders index | `grindersIndexPage` | Two doors to the audience pages, every range by audience, every model with filters. |
+| `/grinders/home` | Home grinders | `journeyPage` with slug `home-grinders` | Page builder. A `rangeGrid` is required. |
+| `/grinders/professional` | Professional grinders | `journeyPage` with slug `professional` | Page builder. A `rangeGrid` is required. |
+| `/grinders/<range>` | Range, such as Supra | `grinderGroup` | Fixed: header, models, about the range, feature cards, collections, other ranges. Empty parts are left out. |
+| `/grinders/<collection>` | Collection, such as G Series | `grinderCollection` | Page builder. A `collectionModels` section is required. |
+| `/grinders/<range>/<model>` | Grinder | `grinder` | Fixed. |
+
+A grinder belongs to exactly one range, and its address sits under that range. A grinder can be in any number of collections. A collection is a landing page about something models share, such as a technology, and can span ranges and audiences.
+
+Ranges and collections share `/grinders/<slug>`. Studio keeps their slugs unique across both and keeps `home` and `professional` free. If a clash reaches the site anyway, the range wins.
+
+A range's or collection's audience (Home, Professional or Both) sets which audience page lists it. It does not change its address.
+
+Old addresses redirect in `src/proxy.ts`: `/home-grinders`, `/professional`, `/collections/<slug>` and `/grinders/<model>`. The old-site table in `src/lib/redirects/legacy.ts` points straight at the new addresses.
+
+Primary navigation: Home grinders, Professional grinders, then Knowledge and About, then the Contact button. The logo links to `/`.
 
 ## Design system
 
@@ -57,7 +82,7 @@ Leave these without `TextLink`: buttons (`.btn` already has an arrow), the heade
 
 ## Grinder cards
 
-`GrinderCardView` in `src/components/grinders/grinder-card.tsx` is the shared card for the catalogue, collections, groups, home and professional journeys, related models, and knowledge articles.
+`GrinderCardView` in `src/components/grinders/grinder-card.tsx` is the shared card for the catalogue, collections, ranges, audience pages, related models, and knowledge articles. `RangeCardView` and `CollectionCardView` in `src/components/grinders/range-card.tsx` use the same frame, plinth and foot, with `View range` and `View collection`. A range's own picture is a photograph and fills the plinth. Without one, the first current model's cut-out stands in.
 
 The whole card is one link to the model. There is no second link inside it. The photograph sits on a neutral plinth inside a hairline frame. The footer shows the line, the model name, up to two figures from that grinder (burr size, then motor power, or grind type when the motor is not set), and `View model` with the button arrow. That arrow is the card's arrow.
 

@@ -433,6 +433,57 @@ export const contactBlock = defineType({
   preview: previewText("Contact block"),
 });
 
+/** The ranges for the page's audience, and the collections that sit with them. Filled from the ranges, so it has no list to pick. */
+export const rangeGrid = defineType({
+  name: "rangeGrid",
+  title: "Range grid",
+  type: "object",
+  icon: StackCompactIcon,
+  description: "Lists every range for this audience, then the collections for it. Required on the Home grinders and Professional grinders pages.",
+  fields: [
+    defineField({
+      name: "heading",
+      title: "Heading",
+      type: "string",
+      initialValue: "Ranges",
+      validation: (rule) => rule.required(),
+    }),
+    defineField({ name: "intro", title: "Introduction", type: "text", rows: 2 }),
+  ],
+  preview: previewText("Range grid"),
+});
+
+/** The grinders chosen on the collection, as cards. */
+export const collectionModels = defineType({
+  name: "collectionModels",
+  title: "Collection models",
+  type: "object",
+  icon: ThListIcon,
+  description: "Shows the grinders listed on this collection, in that order. Required on a collection.",
+  fields: [
+    defineField({
+      name: "heading",
+      title: "Heading",
+      type: "string",
+      initialValue: "The models",
+      validation: (rule) => rule.required(),
+    }),
+    defineField({ name: "intro", title: "Introduction", type: "text", rows: 2 }),
+  ],
+  preview: previewText("Collection models"),
+});
+
+/** Checks that a page builder array holds one section of the given type. */
+function requiresSection(type: string, message: string) {
+  return (sections: unknown) => {
+    const items = Array.isArray(sections) ? (sections as Array<{ _type?: string }>) : [];
+    const count = items.filter((item) => item._type === type).length;
+    if (count === 0) return message;
+    if (count > 1) return "Use this section once.";
+    return true;
+  };
+}
+
 export const pageBuilderMembers = [
   defineArrayMember({ type: "heroBanner" }),
   defineArrayMember({ type: "richText" }),
@@ -458,6 +509,27 @@ export const sectionsField = defineField({
   description: "Add, remove and reorder the sections on this page.",
 });
 
+/** Page sections for the Home grinders and Professional grinders pages. A range grid is required. */
+export const audienceSectionsField = defineField({
+  name: "sections",
+  title: "Page sections",
+  type: "array",
+  of: [...pageBuilderMembers, defineArrayMember({ type: "rangeGrid" })],
+  description: "Add, remove and reorder the sections on this page. The range grid is required.",
+  validation: (rule) => rule.custom(requiresSection("rangeGrid", "Add a range grid, so the page lists its ranges.")),
+});
+
+/** Page sections for a collection. A collection models section is required. */
+export const collectionSectionsField = defineField({
+  name: "sections",
+  title: "Page sections",
+  type: "array",
+  of: [...pageBuilderMembers, defineArrayMember({ type: "collectionModels" })],
+  description: "Build the landing page. The collection models section is required, so the page always shows the grinders.",
+  validation: (rule) =>
+    rule.custom(requiresSection("collectionModels", "Add a collection models section, so the page shows the grinders.")),
+});
+
 export const blockTypes = [
   heroBanner,
   richText,
@@ -473,4 +545,6 @@ export const blockTypes = [
   kbPostGrid,
   quote,
   contactBlock,
+  rangeGrid,
+  collectionModels,
 ];

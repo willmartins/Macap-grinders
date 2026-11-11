@@ -21,6 +21,8 @@ import type {
   LinkItem,
   PageDocument,
   Post,
+  Range,
+  RangeCard,
   RichText,
   Section,
   SeoFields,
@@ -29,6 +31,7 @@ import type {
   Specs,
   Topic,
 } from "@/lib/content/types";
+import type { FeatureCardItem, FeatureGround, FeatureIconName } from "@/components/site/feature-card";
 import { safeHref } from "@/lib/security";
 import { imageUrl } from "@/sanity/lib/image";
 
@@ -272,15 +275,97 @@ function mapCollectionCards(value: unknown): CollectionCard[] {
     const slug = logic(item.slug);
     const name = display(item.name).trim();
     if (!slug || !name) return [];
+    const image = picture(item.image, 1200);
     return [
       {
         name,
         slug,
         summary: display(item.summary),
         audience: audienceFilter(item.audience),
+        imageUrl: image.url,
+        imageAlt: image.alt,
       },
     ];
   });
+}
+
+export function mapRangeCard(value: unknown): RangeCard | null {
+  if (!isRecord(value)) return null;
+  const slug = logic(value.slug);
+  const name = display(value.name).trim();
+  if (!slug || !name) return null;
+  const own = picture(value.image, 1400);
+  const fallback = isRecord(value.fallback) ? picture(value.fallback.image, 1400) : { url: null, alt: "" };
+  const useOwn = Boolean(own.url);
+  return {
+    id: logic(value._id) || slug,
+    name,
+    slug,
+    summary: display(value.summary),
+    audience: audienceFilter(value.audience),
+    position: numberValue(value.position),
+    imageUrl: useOwn ? own.url : fallback.url,
+    imageAlt: (useOwn ? own.alt : fallback.alt) || name,
+    imageKind: useOwn ? "photo" : "cutout",
+    modelCount: numberValue(value.modelCount) ?? 0,
+  };
+}
+
+export function mapRangeCards(value: unknown): RangeCard[] {
+  return list(value).flatMap((item) => {
+    const card = mapRangeCard(item);
+    return card ? [card] : [];
+  });
+}
+
+const featureIcons = new Set<FeatureIconName>(["burrs", "motor", "dial", "screen", "scale", "cooling"]);
+const featureGrounds = new Set<FeatureGround>(["light-grey", "sand", "dark-sand", "silver", "off-black"]);
+
+function mapRangeFeatures(value: unknown): FeatureCardItem[] {
+  return list(value).flatMap((item) => {
+    if (!isRecord(item)) return [];
+    const title = display(item.title).trim();
+    const text = display(item.text).trim();
+    if (!title || !text) return [];
+    const image = picture(item.image, 1200);
+    const icon = logic(item.icon) as FeatureIconName;
+    const ground = logic(item.ground) as FeatureGround;
+    const href = safeHref(logic(item.linkHref));
+    const label = display(item.linkLabel).trim();
+    return [
+      {
+        _key: logic(item._key) || title,
+        title,
+        text,
+        imageUrl: image.url,
+        imageAlt: image.alt || title,
+        icon: featureIcons.has(icon) ? icon : null,
+        containerBg: featureGrounds.has(ground) ? ground : null,
+        buttonLabel: href && label ? label : null,
+        buttonHref: href && label ? href : null,
+      },
+    ];
+  });
+}
+
+export function mapRange(value: unknown): Range | null {
+  const card = mapRangeCard(value);
+  if (!card || !isRecord(value)) return null;
+  const grinders = mapCards(value.grinders);
+  const ids = new Set(grinders.map((grinder) => grinder.id));
+  const collections = list(value.collections).filter(
+    (item) => isRecord(item) && list(item.grinderIds).some((id) => ids.has(logic(id))),
+  );
+  return {
+    ...card,
+    answerFirst: display(value.answerFirst),
+    story: richText(value.story),
+    features: mapRangeFeatures(value.features),
+    grinders,
+    // A collection with the range's own slug is shadowed by the range, so it is not offered as a link.
+    collections: mapCollectionCards(collections).filter((item) => item.slug !== card.slug),
+    seo: mapSeo(value),
+  };
 }
 
 function richText(value: unknown): RichText {
@@ -416,6 +501,9 @@ function mapSection(value: unknown): Section | null {
   if (type === "contactBlock") {
     return { _key: key, _type: "contactBlock", heading, text: display(value.text) || undefined };
   }
+  if (type === "rangeGrid" || type === "collectionModels") {
+    return { _key: key, _type: type, heading: heading || (type === "rangeGrid" ? "Ranges" : "The models"), intro: display(value.intro) || undefined };
+  }
   return null;
 }
 
@@ -479,10 +567,17 @@ export function mapShell(value: unknown, fallback: Shell): Shell | null {
     const title = display(item.title).trim();
     return slug && title ? [{ title, slug }] : [];
   });
+  const ranges = list(value.ranges).flatMap((item) => {
+    if (!isRecord(item)) return [];
+    const slug = logic(item.slug);
+    const name = display(item.name).trim();
+    return slug && name ? [{ name, slug }] : [];
+  });
   return {
     sample: false,
     settings: mapped,
     collections: collections.length ? collections : fallback.collections,
+    ranges: ranges.length ? ranges : fallback.ranges,
     legal: legal.length ? legal : fallback.legal,
   };
 }
@@ -503,6 +598,8 @@ export function mapCollection(value: unknown): Collection | null {
     summary: display(value.summary),
     audience: audienceFilter(value.audience),
     answerFirst: display(value.answerFirst),
+    imageUrl: picture(value.image, 1200).url,
+    imageAlt: picture(value.image, 1200).alt,
     grinders: mapCards(value.grinders),
     sections: mapSections(value.sections),
     seo: mapSeo(value),
@@ -561,18 +658,19 @@ export function mapLegal(value: unknown): LegalPage | null {
   };
 }
 
-export type SitemapEntry = { slug: string; updatedAt: string; image?: string | null };
+export type SitemapEntry = { slug: string; updatedAt: string; image?: string | null; groupSlug?: string | null };
 export type SitemapPage = { path: string; updatedAt: string };
 
 export function mapSitemap(value: unknown): {
   pages: SitemapPage[];
   grinders: SitemapEntry[];
+  ranges: SitemapEntry[];
   collections: SitemapEntry[];
   posts: SitemapEntry[];
   topics: SitemapEntry[];
   legal: SitemapEntry[];
 } {
-  const empty = { pages: [], grinders: [], collections: [], posts: [], topics: [], legal: [] };
+  const empty = { pages: [], grinders: [], ranges: [], collections: [], posts: [], topics: [], legal: [] };
   if (!isRecord(value)) return empty;
   const read = (key: string): SitemapEntry[] =>
     list(value[key]).flatMap((item) => {
@@ -580,7 +678,14 @@ export function mapSitemap(value: unknown): {
       const slug = logic(item.slug);
       if (!slug) return [];
       const image = logic(item.image);
-      return [{ slug, updatedAt: logic(item._updatedAt), image: image.startsWith("https://") ? image : null }];
+      return [
+        {
+          slug,
+          updatedAt: logic(item._updatedAt),
+          image: image.startsWith("https://") ? image : null,
+          groupSlug: logic(item.groupSlug) || null,
+        },
+      ];
     });
   const pages = list(value.pages).flatMap((item) => {
     if (!isRecord(item)) return [];
@@ -591,6 +696,7 @@ export function mapSitemap(value: unknown): {
   return {
     pages,
     grinders: read("grinders"),
+    ranges: read("ranges"),
     collections: read("collections"),
     posts: read("posts"),
     topics: read("topics"),

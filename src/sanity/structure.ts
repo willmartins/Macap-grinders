@@ -31,25 +31,6 @@ export const structure: StructureResolver = (S) =>
         .icon(HomeIcon)
         .child(S.document().schemaType("homePage").documentId("homePage").title("Front page")),
       S.listItem()
-        .title("Home grinders journey")
-        .icon(HomeIcon)
-        .child(
-          S.documentList()
-            .title("Home grinders")
-            .filter('_type == "journeyPage" && slug.current == "home-grinders"')
-            .apiVersion("2026-02-01"),
-        ),
-      S.listItem()
-        .title("Professional journey")
-        .icon(TransferIcon)
-        .child(
-          S.documentList()
-            .title("Professional")
-            .filter('_type == "journeyPage" && slug.current == "professional"')
-            .apiVersion("2026-02-01"),
-        ),
-      S.documentTypeListItem("journeyPage").title("All journeys"),
-      S.listItem()
         .title("About")
         .icon(DocumentIcon)
         .child(S.document().schemaType("aboutPage").documentId("aboutPage").title("About")),
@@ -67,6 +48,25 @@ export const structure: StructureResolver = (S) =>
             .title("Grinders")
             .items([
               S.listItem()
+                .title("Home grinders page")
+                .icon(HomeIcon)
+                .child(
+                  S.documentList()
+                    .title("Home grinders")
+                    .filter('_type == "journeyPage" && slug.current == "home-grinders"')
+                    .apiVersion("2026-02-01"),
+                ),
+              S.listItem()
+                .title("Professional grinders page")
+                .icon(TransferIcon)
+                .child(
+                  S.documentList()
+                    .title("Professional grinders")
+                    .filter('_type == "journeyPage" && slug.current == "professional"')
+                    .apiVersion("2026-02-01"),
+                ),
+              S.divider(),
+              S.listItem()
                 .title("Grinders index")
                 .icon(OlistIcon)
                 .child(
@@ -75,8 +75,8 @@ export const structure: StructureResolver = (S) =>
                     .documentId("grindersIndexPage")
                     .title("Grinders index"),
                 ),
+              S.documentTypeListItem("grinderGroup").title("Ranges"),
               S.documentTypeListItem("grinder").title("All grinders"),
-              S.documentTypeListItem("grinderGroup").title("Groups"),
               S.documentTypeListItem("grinderCollection").title("Collections"),
             ]),
         ),

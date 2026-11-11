@@ -6,6 +6,22 @@ import { useEffect, useLayoutEffect, useState } from "react";
 
 import { MacapLogo } from "@/components/brand/marks";
 import type { LinkItem } from "@/lib/content/types";
+import { audiencePages } from "@/lib/paths";
+
+type NavItem = { href: string; label: string; current: (pathname: string) => boolean };
+
+const within = (path: string) => (pathname: string) => pathname === path || pathname.startsWith(`${path}/`);
+
+/** The primary navigation: the two audience pages first, then Knowledge and About. Contact is the button. */
+const primary: NavItem[] = [
+  { href: audiencePages.home.path, label: audiencePages.home.label, current: within(audiencePages.home.path) },
+  { href: audiencePages.business.path, label: audiencePages.business.label, current: within(audiencePages.business.path) },
+];
+
+const secondary: NavItem[] = [
+  { href: "/knowledge", label: "Knowledge", current: within("/knowledge") },
+  { href: "/about", label: "About", current: within("/about") },
+];
 
 export function Header({ links: _links }: { links?: LinkItem[] }) {
   void _links;
@@ -60,43 +76,29 @@ export function Header({ links: _links }: { links?: LinkItem[] }) {
           </summary>
           <nav aria-label="Primary" className="menu-panel p-5">
             <ul className="grid gap-1">
-              <li>
-                <Link
-                  href="/home-grinders"
-                  aria-current={pathname === "/home-grinders" || pathname.startsWith("/home-grinders/") ? "page" : undefined}
-                  className="nav-link block py-2.5 aria-[current=page]:shadow-[inset_0_-2px_0_var(--yellow)]"
-                >
-                  Home
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/professional"
-                  aria-current={pathname === "/professional" || pathname.startsWith("/professional/") ? "page" : undefined}
-                  className="nav-link block py-2.5 aria-[current=page]:shadow-[inset_0_-2px_0_var(--yellow)]"
-                >
-                  Professional
-                </Link>
-              </li>
+              {primary.map((item) => (
+                <li key={item.href}>
+                  <Link
+                    href={item.href}
+                    aria-current={item.current(pathname) ? "page" : undefined}
+                    className="nav-link block py-2.5 aria-[current=page]:shadow-[inset_0_-2px_0_var(--yellow)]"
+                  >
+                    {item.label}
+                  </Link>
+                </li>
+              ))}
               <li className="my-2 border-t border-silver" aria-hidden="true" />
-              <li>
-                <Link
-                  href="/about"
-                  aria-current={pathname === "/about" || pathname.startsWith("/about/") ? "page" : undefined}
-                  className="nav-link block py-2.5 aria-[current=page]:shadow-[inset_0_-2px_0_var(--yellow)]"
-                >
-                  About
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/knowledge"
-                  aria-current={pathname.startsWith("/knowledge") ? "page" : undefined}
-                  className="nav-link block py-2.5 aria-[current=page]:shadow-[inset_0_-2px_0_var(--yellow)]"
-                >
-                  Knowledge hub
-                </Link>
-              </li>
+              {secondary.map((item) => (
+                <li key={item.href}>
+                  <Link
+                    href={item.href}
+                    aria-current={item.current(pathname) ? "page" : undefined}
+                    className="nav-link block py-2.5 aria-[current=page]:shadow-[inset_0_-2px_0_var(--yellow)]"
+                  >
+                    {item.label}
+                  </Link>
+                </li>
+              ))}
               <li className="mt-4 pt-2">
                 <Link href="/contact" className="btn w-full justify-center">
                   Contact
@@ -106,55 +108,40 @@ export function Header({ links: _links }: { links?: LinkItem[] }) {
           </nav>
         </details>
 
-        {/* Desktop Primary Nav Bar */}
-        <nav aria-label="Primary" className="hidden lg:flex items-center gap-6 lg:gap-8">
-          {/* Primary Journey links */}
-          <div className="flex items-center gap-6 lg:gap-8">
-            <Link
-              href="/home-grinders"
-              aria-current={pathname === "/home-grinders" || pathname.startsWith("/home-grinders/") ? "page" : undefined}
-              className="nav-link aria-[current=page]:shadow-[inset_0_-2px_0_var(--yellow)] hover:shadow-[inset_0_-2px_0_var(--yellow)]"
-            >
-              Home
-            </Link>
-            <Link
-              href="/professional"
-              aria-current={pathname === "/professional" || pathname.startsWith("/professional/") ? "page" : undefined}
-              className="nav-link aria-[current=page]:shadow-[inset_0_-2px_0_var(--yellow)] hover:shadow-[inset_0_-2px_0_var(--yellow)]"
-            >
-              Professional
-            </Link>
+        {/* Desktop: the two audience pages, a divider, then Knowledge and About, then Contact. */}
+        <nav aria-label="Primary" className="hidden lg:flex items-center gap-6 xl:gap-8">
+          <div className="flex items-center gap-6 xl:gap-8">
+            {primary.map((item) => (
+              <Link
+                key={item.href}
+                href={item.href}
+                aria-current={item.current(pathname) ? "page" : undefined}
+                className="nav-link whitespace-nowrap aria-[current=page]:shadow-[inset_0_-2px_0_var(--yellow)] hover:shadow-[inset_0_-2px_0_var(--yellow)]"
+              >
+                {item.label}
+              </Link>
+            ))}
           </div>
 
-          {/* Vertical Divider Pipe */}
           <span className="text-grey/40 font-light select-none text-base" aria-hidden="true">
             |
           </span>
 
-          {/* Secondary links */}
-          <div className="flex items-center gap-6 lg:gap-8">
-            <Link
-              href="/about"
-              aria-current={pathname === "/about" || pathname.startsWith("/about/") ? "page" : undefined}
-              className="nav-link aria-[current=page]:shadow-[inset_0_-2px_0_var(--yellow)] hover:shadow-[inset_0_-2px_0_var(--yellow)]"
-            >
-              About
-            </Link>
-            <Link
-              href="/knowledge"
-              aria-current={pathname.startsWith("/knowledge") ? "page" : undefined}
-              className="nav-link aria-[current=page]:shadow-[inset_0_-2px_0_var(--yellow)] hover:shadow-[inset_0_-2px_0_var(--yellow)]"
-            >
-              Knowledge hub
-            </Link>
+          <div className="flex items-center gap-6 xl:gap-8">
+            {secondary.map((item) => (
+              <Link
+                key={item.href}
+                href={item.href}
+                aria-current={item.current(pathname) ? "page" : undefined}
+                className="nav-link whitespace-nowrap aria-[current=page]:shadow-[inset_0_-2px_0_var(--yellow)] hover:shadow-[inset_0_-2px_0_var(--yellow)]"
+              >
+                {item.label}
+              </Link>
+            ))}
           </div>
 
-          {/* Primary CTA button */}
           <div className="ml-1">
-            <Link
-              href="/contact"
-              className="btn text-sm py-2 px-5 min-h-[2.5rem]"
-            >
+            <Link href="/contact" className="btn text-sm py-2 px-5 min-h-[2.5rem]">
               Contact
             </Link>
           </div>

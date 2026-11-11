@@ -1,4 +1,4 @@
-import { articleShots, grinderMedia, pageShots } from "@/lib/imagery";
+import { articleShots, collectionShot, grinderMedia, pageShots } from "@/lib/imagery";
 import type {
   ArticleCard,
   Author,
@@ -11,6 +11,8 @@ import type {
   LegalPage,
   PageDocument,
   Post,
+  Range,
+  RangeCard,
   RichText,
   Shell,
   Specs,
@@ -729,7 +731,7 @@ export const samplePosts: Post[] = [
         _type: "block",
         _key: "c2",
         style: "normal",
-        markDefs: [{ _key: "g", _type: "link", href: "/grinders/supra-68-g-series" }],
+        markDefs: [{ _key: "g", _type: "link", href: "/grinders/supra-g-series/supra-68-g-series" }],
         children: [
           {
             _type: "span",
@@ -762,87 +764,105 @@ export const samplePosts: Post[] = [
   },
 ];
 
-const homeCards = sampleGrinderCards().filter((item) => item.audience === "home");
-const businessCards = sampleGrinderCards().filter((item) => item.audience === "business");
 
+/**
+ * Sample collection. A collection gathers models that share something across ranges.
+ * Sample content: the copy and the model list are not final.
+ */
 export const sampleCollections: Collection[] = [
-  {
-    id: "col-home",
-    name: "Home espresso",
-    slug: "home-espresso",
-    summary: "Studio grinders for a domestic counter.",
-    audience: "home",
-    answerFirst: "Home espresso brings together the Studio grinders: compact machines for a kitchen, not a service counter.",
-    grinders: homeCards,
-    sections: [],
-    seo: {
-      title: "Home espresso grinders",
-      description: "Macap Studio grinders for home espresso.",
-    },
-  },
-  {
-    id: "col-pro",
-    name: "Professional espresso",
-    slug: "professional-espresso",
-    summary: "Supra, Leo and Pro grinders for the bar.",
-    audience: "business",
-    answerFirst: "Professional espresso is the working range: Supra, Leo and Pro, for bars that grind through a service.",
-    grinders: businessCards,
-    sections: [],
-    seo: {
-      title: "Professional espresso grinders",
-      description: "Macap grinders for commercial espresso service.",
-    },
-  },
   {
     id: "col-gbw",
     name: "Grind by weight",
     slug: "grind-by-weight",
-    summary: "Supra G grinders that dose by weight.",
+    summary: "Grinders that dose by weight. Sample collection.",
     audience: "business",
     answerFirst: "Grind by weight is for bars that want each dose measured in grams rather than timed.",
+    imageUrl: collectionShot("grind-by-weight")?.src ?? null,
+    imageAlt: collectionShot("grind-by-weight")?.alt ?? "",
     grinders: sampleGrinderCards().filter((item) => item.slug.includes("g-series")),
-    sections: [],
+    sections: [
+      {
+        _key: "gbw-why",
+        _type: "featureList",
+        heading: "Why weigh the dose",
+        intro: "Sample copy.",
+        features: [
+          { _key: "w1", title: "Grams, not seconds", text: "The grinder stops at the set weight, so the dose holds as the beans change." },
+          { _key: "w2", title: "Less waste", text: "Each dose is the dose you set. There is less to sweep from the counter." },
+          { _key: "w3", title: "One setting per recipe", text: "Set the weight once for each recipe on the bar." },
+        ],
+      },
+      { _key: "gbw-models", _type: "collectionModels", heading: "The models" },
+    ],
     seo: {
       title: "Grind by weight",
-      description: "Macap Supra G grinders with grind-by-weight dosing.",
-    },
-  },
-  {
-    id: "col-supra",
-    name: "Supra",
-    slug: "supra",
-    summary: "The Supra 68 and Supra 83.",
-    audience: "business",
-    answerFirst: "The Supra collection is Macap's commercial flat-burr line for espresso, in 68 mm and 83 mm.",
-    grinders: sampleGrinderCards().filter((item) => item.groupSlug === "supra"),
-    sections: [],
-    seo: {
-      title: "Supra grinders",
-      description: "Macap Supra 68 and Supra 83 commercial espresso grinders.",
-    },
-  },
-  {
-    id: "col-studio",
-    name: "Studio",
-    slug: "studio",
-    summary: "The home line: Domus and Silent.",
-    audience: "home",
-    answerFirst: "Studio is Macap's home grinder line, including Domus and Silent.",
-    grinders: homeCards,
-    sections: [],
-    seo: {
-      title: "Studio home grinders",
-      description: "Macap Studio grinders for the home.",
+      description: "Macap grinders with grind-by-weight dosing.",
     },
   },
 ];
 
-const collectionCards = sampleCollections.map(({ name, slug, summary, audience }) => ({
+/** Sample ranges, used only when Sanity cannot be reached. */
+const rangeIntros: Record<string, string> = {
+  supra: "Supra is Macap's commercial flat-burr range for espresso, in 68 mm and 83 mm.",
+  "supra-g-series": "Supra G is the Supra range with grind-by-weight dosing.",
+  pro: "Pro is Macap's professional range of doser, on-demand and shop grinders.",
+  leo: "Leo is the compact professional range, for bars with less counter space.",
+  studio: "Studio is Macap's home range, for a domestic counter.",
+};
+
+function rangeModels(slug: string): GrinderCard[] {
+  return sampleGrinderCards().filter((item) => item.groupSlug === slug);
+}
+
+export const sampleRanges: RangeCard[] = sampleGroups.map((group, index) => {
+  const models = rangeModels(group.slug);
+  const first = models.find((item) => item.status !== "discontinued" && item.imageUrl);
+  return {
+    id: group.id,
+    name: group.name,
+    slug: group.slug,
+    summary: group.summary,
+    audience: group.audience,
+    position: index,
+    imageUrl: first?.imageUrl ?? null,
+    imageAlt: first?.imageAlt || group.name,
+    imageKind: "cutout",
+    modelCount: models.filter((item) => item.status !== "discontinued").length,
+  };
+});
+
+export function sampleRange(slug: string): Range | null {
+  const card = sampleRanges.find((item) => item.slug === slug);
+  if (!card) return null;
+  const grinders = rangeModels(slug);
+  const ids = new Set(grinders.map((grinder) => grinder.slug));
+  return {
+    ...card,
+    answerFirst: rangeIntros[slug] || card.summary,
+    story: [],
+    features: [],
+    grinders,
+    collections: sampleCollections
+      .filter((collection) => collection.grinders.some((grinder) => ids.has(grinder.slug)))
+      .map(({ name, slug: collectionSlug, summary, audience, imageUrl, imageAlt }) => ({
+        name,
+        slug: collectionSlug,
+        summary,
+        audience,
+        imageUrl,
+        imageAlt,
+      })),
+    seo: { title: `${card.name} grinders`, description: card.summary },
+  };
+}
+
+const collectionCards = sampleCollections.map(({ name, slug, summary, audience, imageUrl, imageAlt }) => ({
   name,
   slug,
   summary,
   audience,
+  imageUrl,
+  imageAlt,
 }));
 
 const homeFaqs: FaqItem[] = [
@@ -855,7 +875,7 @@ const homeFaqs: FaqItem[] = [
   {
     _key: "hf2",
     question: "Are these for a bar?",
-    answer: "No. The home journey is for a domestic counter. Professional grinders are on the Professional page.",
+    answer: "No. These are for a domestic counter. Grinders for the bar are on the Professional grinders page.",
   },
 ];
 
@@ -894,7 +914,7 @@ export const sampleHomeJourney: Journey = {
       imageUrl: pageShots.homeJourney.src,
       imageAlt: pageShots.homeJourney.alt,
       links: [
-        { _key: "h1", label: "See home grinders", href: "#home-grinders" },
+        { _key: "h1", label: "See the ranges", href: "#home-grinders" },
         { _key: "h2", label: "Compare two models", href: "/compare?m=m2m-domus,m2e-domus" },
       ],
     },
@@ -918,17 +938,9 @@ export const sampleHomeJourney: Journey = {
     },
     {
       _key: "home-grinders",
-      _type: "grinderGrid",
-      heading: "Find your grinder",
-      intro: "Three Studio grinders. Choose by burr, brew and noise.",
-      grinders: homeCards,
-    },
-    {
-      _key: "h-cols",
-      _type: "collectionCarousel",
-      heading: "Collections",
-      intro: "Sets grouped by use.",
-      collections: collectionCards.filter((item) => item.audience === "home"),
+      _type: "rangeGrid",
+      heading: "Ranges",
+      intro: "Choose a range, then the model.",
     },
     {
       _key: "h-compare",
@@ -965,7 +977,7 @@ export const sampleHomeJourney: Journey = {
 
 export const sampleProfessionalJourney: Journey = {
   sample: true,
-  title: "Professional",
+  title: "Professional grinders",
   slug: "professional",
   audience: "business",
   introduction:
@@ -984,7 +996,7 @@ export const sampleProfessionalJourney: Journey = {
       imageUrl: pageShots.professionalJourney.src,
       imageAlt: pageShots.professionalJourney.alt,
       links: [
-        { _key: "p1", label: "See professional grinders", href: "#professional-grinders" },
+        { _key: "p1", label: "See the ranges", href: "#professional-grinders" },
         { _key: "p2", label: "Compare Supra 68 and 83", href: "/compare?m=supra-68,supra-83" },
       ],
     },
@@ -1008,16 +1020,9 @@ export const sampleProfessionalJourney: Journey = {
     },
     {
       _key: "professional-grinders",
-      _type: "grinderGrid",
-      heading: "Find your grinder",
-      intro: "Supra, Supra G, Pro and Leo.",
-      grinders: businessCards,
-    },
-    {
-      _key: "p-cols",
-      _type: "collectionCarousel",
-      heading: "Collections",
-      collections: collectionCards.filter((item) => item.audience === "business"),
+      _type: "rangeGrid",
+      heading: "Ranges",
+      intro: "Choose a range by output and dosing, then the model.",
     },
     {
       _key: "p-compare",
@@ -1074,8 +1079,8 @@ export const sampleHomePage: PageDocument = {
       imageUrl: pageShots.homeHero.src,
       imageAlt: pageShots.homeHero.alt,
       links: [
-        { _key: "a", label: "Home grinders", href: "/home-grinders" },
-        { _key: "b", label: "Professional", href: "/professional" },
+        { _key: "a", label: "Home grinders", href: "/grinders/home" },
+        { _key: "b", label: "Professional grinders", href: "/grinders/professional" },
       ],
     },
     {
@@ -1086,7 +1091,7 @@ export const sampleHomePage: PageDocument = {
       imageUrl: pageShots.homeJourney.src,
       imageAlt: pageShots.homeJourney.alt,
       imagePosition: "right",
-      link: { _key: "go-home", label: "Start the home journey", href: "/home-grinders" },
+      link: { _key: "go-home", label: "See home grinders", href: "/grinders/home" },
     },
     {
       _key: "home-pro",
@@ -1096,7 +1101,7 @@ export const sampleHomePage: PageDocument = {
       imageUrl: pageShots.professionalJourney.src,
       imageAlt: pageShots.professionalJourney.alt,
       imagePosition: "left",
-      link: { _key: "go-pro", label: "Start the professional journey", href: "/professional" },
+      link: { _key: "go-pro", label: "See professional grinders", href: "/grinders/professional" },
     },
     {
       _key: "home-quote",
@@ -1201,7 +1206,7 @@ export const sampleGrindersIndex: PageDocument = {
   sample: true,
   title: "Grinders",
   introduction:
-    "All Macap coffee grinders on this site. Filter by use, line, burr size and grind.",
+    "Macap coffee grinders for the home and for the bar. Choose where it will work, then the range and the model.",
   seo: {
     title: "Macap coffee grinders",
     description: "Browse Macap coffee grinders and filter by audience, line, burr size and grind type.",
@@ -1289,10 +1294,10 @@ export const sampleShell: Shell = {
   settings: {
     siteName: "Macap",
     navigation: [
-      { _key: "nav-home", label: "Home", href: "/home-grinders" },
-      { _key: "nav-pro", label: "Professional", href: "/professional" },
+      { _key: "nav-home", label: "Home grinders", href: "/grinders/home" },
+      { _key: "nav-pro", label: "Professional grinders", href: "/grinders/professional" },
+      { _key: "nav-knowledge", label: "Knowledge", href: "/knowledge" },
       { _key: "nav-about", label: "About", href: "/about" },
-      { _key: "nav-knowledge", label: "Knowledge hub", href: "/knowledge" },
       { _key: "nav-contact", label: "Contact", href: "/contact" },
     ],
     footerNavigation: [
@@ -1322,6 +1327,7 @@ export const sampleShell: Shell = {
     },
   },
   collections: collectionCards,
+  ranges: sampleGroups.map(({ name, slug }) => ({ name, slug })),
   legal: sampleLegal.map((page) => ({ title: page.title, slug: page.slug })),
 };
 

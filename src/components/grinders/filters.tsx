@@ -38,11 +38,12 @@ export function FilterBar({
       },
     });
     const query = next.toString();
-    router.push(query ? `/grinders?${query}` : "/grinders");
+    // Stay on the list of models, below the doors and the ranges.
+    router.push(query ? `/grinders?${query}#all-models` : "/grinders#all-models", { scroll: false });
   }
 
   return (
-    <form action="/grinders" method="get" onSubmit={onSubmit} className="grid grid-cols-2 gap-x-3 gap-y-4 sm:gap-x-[var(--gap-inner)] md:grid-cols-5">
+    <form action="/grinders#all-models" method="get" onSubmit={onSubmit} className="grid grid-cols-2 gap-x-3 gap-y-4 sm:gap-x-[var(--gap-inner)] md:grid-cols-5">
       <label className="grid gap-2">
         <span className="type-eyebrow text-grey">Use</span>
         <select name="audience" className="field" defaultValue={filters.audience}>
@@ -52,7 +53,7 @@ export function FilterBar({
         </select>
       </label>
       <label className="grid gap-2">
-        <span className="type-eyebrow text-grey">Line</span>
+        <span className="type-eyebrow text-grey">Range</span>
         <select name="group" className="field" defaultValue={filters.group}>
           <option value="">All</option>
           {groups.map((group) => (
