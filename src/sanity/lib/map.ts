@@ -533,9 +533,14 @@ export function mapJourney(value: unknown): Journey | null {
   return { ...page, slug, audience: audience(value.audience) };
 }
 
+/**
+ * The site shell. Without a Site settings document, the settings fall back to the sample,
+ * but ranges and collections still come from Sanity, so the footer never links to sample pages.
+ */
 export function mapShell(value: unknown, fallback: Shell): Shell | null {
-  if (!isRecord(value) || !isRecord(value.settings)) return null;
-  const settings = value.settings;
+  if (!isRecord(value)) return null;
+  const hasSettings = isRecord(value.settings);
+  const settings = isRecord(value.settings) ? value.settings : {};
   const organisation = isRecord(settings.organisation) ? settings.organisation : {};
   const navigation = mapLinks(settings.navigation);
   const mapped: SiteSettings = {
@@ -574,9 +579,10 @@ export function mapShell(value: unknown, fallback: Shell): Shell | null {
     return slug && name ? [{ name, slug }] : [];
   });
   return {
-    sample: false,
-    settings: mapped,
-    collections: collections.length ? collections : fallback.collections,
+    sample: !hasSettings,
+    settings: hasSettings ? mapped : fallback.settings,
+    // An empty list is a real answer: there are no collections yet.
+    collections,
     ranges: ranges.length ? ranges : fallback.ranges,
     legal: legal.length ? legal : fallback.legal,
   };
