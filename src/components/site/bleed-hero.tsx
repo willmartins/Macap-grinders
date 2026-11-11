@@ -137,7 +137,7 @@ export function SplitHero({
       <div className="frame mt-[var(--gap-block)] grid items-stretch gap-px border border-silver bg-silver md:grid-cols-2">
         <a href={audiencePages.home.path} className="choice-card">
           <p className="type-h2 max-w-[10ch] text-black">For the home.</p>
-          <p className="type-lead max-w-[22rem] text-grey md:min-h-[3.4rem]">Studio grinders for a domestic counter.</p>
+          <p className="type-lead max-w-[22rem] text-grey md:min-h-[3.4rem]">Studio and Leo, for a domestic counter.</p>
           <p className="btn w-fit">Home grinders</p>
           <figure className="choice-frame">
             <Image
@@ -153,7 +153,7 @@ export function SplitHero({
         </a>
         <a href={audiencePages.business.path} className="choice-card">
           <p className="type-h2 max-w-[10ch] text-black">For the bar.</p>
-          <p className="type-lead max-w-[22rem] text-grey md:min-h-[3.4rem]">Supra, Supra G, Pro and Leo.</p>
+          <p className="type-lead max-w-[22rem] text-grey md:min-h-[3.4rem]">Supra, Supra G Series and Pro, for the bar.</p>
           <p className="btn btn-secondary w-fit">Professional grinders</p>
           <figure className="choice-frame">
             <Image

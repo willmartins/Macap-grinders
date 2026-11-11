@@ -129,3 +129,21 @@
 .machine-shot img {
   object-fit: contain;
 }
+
+/*
+ * Photographs keep a real proportion at every width. A fixed height cropped them into
+ * thin strips on a wide screen, which showed too little of the picture.
+ * Set here, last, so it wins over the fixed heights above and in globals.css.
+ */
+.stage-media,
+.editorial-media {
+  height: auto;
+  min-height: 0;
+  aspect-ratio: 4 / 3;
+}
+
+.choice-frame {
+  height: auto;
+  min-height: 0;
+  aspect-ratio: 3 / 2;
+}

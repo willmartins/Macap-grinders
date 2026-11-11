@@ -25,7 +25,9 @@ const articleCard = `{
   excerpt,
   publishedAt,
   "topicTitle": topic->title,
-  "topicSlug": topic->slug.current
+  "topicSlug": topic->slug.current,
+  "imageAlt": image.alt,
+  "image": image${sanityImage}
 }`;
 
 const specs = `{

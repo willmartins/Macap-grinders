@@ -99,6 +99,9 @@ export type ArticleCard = {
   publishedAt: string;
   topicTitle: string | null;
   topicSlug: string | null;
+  /** The post's own photograph. Sample posts fall back to the shots in src/lib/imagery.ts. */
+  imageUrl?: string | null;
+  imageAlt?: string;
 };
 
 export type Grinder = GrinderCard & {

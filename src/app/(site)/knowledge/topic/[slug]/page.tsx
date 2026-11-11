@@ -1,10 +1,10 @@
 import { notFound } from "next/navigation";
 import { Suspense } from "react";
 
+import { ArticleGrid } from "@/components/knowledge/article-card";
 import { Breadcrumbs } from "@/components/site/breadcrumbs";
 import { TextLink } from "@/components/site/text-link";
 import { SampleBanner } from "@/components/site/sample-banner";
-import { formatDate } from "@/lib/format";
 import { buildMetadata } from "@/lib/metadata";
 import { draftPerspective } from "@/sanity/lib/draft";
 import { loadPosts, loadTopics } from "@/sanity/lib/load";
@@ -50,27 +50,18 @@ async function TopicContent({ params }: { params: Promise<{ slug: string }> }) {
           <p className="type-lead mt-5 max-w-2xl text-grey">{topic.description}</p>
         </div>
       </header>
-      <div className="section border-b border-silver">
+      <div className="section">
         <div className="frame">
-          <ul className="divide-y divide-silver border-y border-silver">
-            {related.length ? (
-              related.map((post) => (
-                <li key={post.slug} className="grid items-baseline gap-2 py-6 md:grid-cols-12">
-                  <div className="md:col-span-9">
-                    <h2 className="type-h3 text-black">
-                      <TextLink href={`/knowledge/${post.slug}`} className="link-underline">
-                        {post.title}
-                      </TextLink>
-                    </h2>
-                    <p className="type-body mt-2 max-w-xl text-grey">{post.excerpt}</p>
-                  </div>
-                  <p className="type-eyebrow text-grey md:col-span-3 md:text-right">{formatDate(post.publishedAt)}</p>
-                </li>
-              ))
-            ) : (
-              <li className="type-body py-6 text-grey">No articles in this topic yet.</li>
-            )}
-          </ul>
+          {related.length ? (
+            <ArticleGrid posts={related} priorityFirst />
+          ) : (
+            <p className="type-body text-grey">No articles in this topic yet.</p>
+          )}
+          <p className="mt-10">
+            <TextLink href="/knowledge" className="tap type-body font-semibold text-black link-underline">
+              All articles
+            </TextLink>
+          </p>
         </div>
       </div>
     </article>

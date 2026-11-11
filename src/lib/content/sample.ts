@@ -981,10 +981,10 @@ export const sampleProfessionalJourney: Journey = {
   slug: "professional",
   audience: "business",
   introduction:
-    "Supra, Supra G, Pro and Leo. For espresso service.",
+    "Supra, Supra G Series and Pro. For espresso service.",
   seo: {
     title: "Professional coffee grinders",
-    description: "Macap grinders for the bar: Supra, Supra G, Pro and Leo.",
+    description: "Macap grinders for the bar: Supra, Supra G Series and Pro.",
   },
   sections: [
     {
@@ -1087,7 +1087,7 @@ export const sampleHomePage: PageDocument = {
       _key: "home-split",
       _type: "imageText",
       heading: "Home grinders",
-      text: "Studio grinders for a domestic counter. Domus and Silent.",
+      text: "Studio and Leo, for a domestic counter.",
       imageUrl: pageShots.homeJourney.src,
       imageAlt: pageShots.homeJourney.alt,
       imagePosition: "right",
@@ -1097,7 +1097,7 @@ export const sampleHomePage: PageDocument = {
       _key: "home-pro",
       _type: "imageText",
       heading: "Professional grinders",
-      text: "Supra, Supra G, Pro and Leo. Built for espresso service.",
+      text: "Supra, Supra G Series and Pro. Built for espresso service.",
       imageUrl: pageShots.professionalJourney.src,
       imageAlt: pageShots.professionalJourney.alt,
       imagePosition: "left",
@@ -1145,7 +1145,7 @@ export const sampleAbout: PageDocument = {
         text(
           "ab2",
           "normal",
-          "The range here is for the home and for the bar. Studio for a domestic counter. Supra, Supra G, Pro and Leo for service.",
+          "The range here is for the home and for the bar. Studio and Leo for a domestic counter. Supra, Supra G Series and Pro for service.",
         ),
       ],
     },

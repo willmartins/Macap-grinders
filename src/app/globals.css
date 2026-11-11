@@ -233,60 +233,66 @@ section[id],
   font-weight: 600;
 }
 
-.display,
-.type-display {
-  font-size: var(--type-7);
-  font-weight: 600;
-  letter-spacing: -0.04em;
-  line-height: 0.92;
-}
+/*
+ * The type scale sits in the components layer, so a Tailwind utility on the same element wins:
+ * `type-body font-semibold` is semibold, `type-lead text-grey` is grey.
+ */
+@layer components {
+  .display,
+  .type-display {
+    font-size: var(--type-7);
+    font-weight: 600;
+    letter-spacing: -0.04em;
+    line-height: 0.92;
+  }
 
-.type-h1 {
-  font-size: var(--type-5);
-  font-weight: 600;
-  letter-spacing: -0.035em;
-  line-height: 0.98;
-}
+  .type-h1 {
+    font-size: var(--type-5);
+    font-weight: 600;
+    letter-spacing: -0.035em;
+    line-height: 0.98;
+  }
 
-.display-sm,
-.type-h2 {
-  font-size: var(--type-4);
-  font-weight: 600;
-  letter-spacing: -0.03em;
-  line-height: 1.06;
-}
+  .display-sm,
+  .type-h2 {
+    font-size: var(--type-4);
+    font-weight: 600;
+    letter-spacing: -0.03em;
+    line-height: 1.06;
+  }
 
-.type-h3 {
-  font-size: var(--type-2);
-  font-weight: 600;
-  letter-spacing: -0.02em;
-  line-height: 1.2;
-}
+  .type-h3 {
+    font-size: var(--type-2);
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    line-height: 1.2;
+  }
 
-.type-lead {
-  font-size: var(--type-1);
-  font-weight: 400;
-  letter-spacing: -0.005em;
-  line-height: 1.55;
-}
+  .type-lead {
+    font-size: var(--type-1);
+    font-weight: 400;
+    letter-spacing: -0.005em;
+    line-height: 1.55;
+  }
 
-.type-body {
-  font-size: var(--type-0);
-  font-weight: 400;
-  line-height: 1.6;
-}
+  .type-body {
+    font-size: var(--type-0);
+    font-weight: 400;
+    line-height: 1.6;
+  }
 
-.type-mono {
-  font-family: var(--font-mono);
-  font-size: 0.8125rem;
-  font-weight: 400;
-  letter-spacing: -0.01em;
-  line-height: 1.45;
-}
-
-@media (min-width: 640px) {
   .type-mono {
-    font-size: 0.875rem;
+    font-family: var(--font-mono);
+    font-size: 0.8125rem;
+    font-weight: 400;
+    letter-spacing: -0.01em;
+    line-height: 1.45;
+  }
+
+  @media (min-width: 640px) {
+    .type-mono {
+      font-size: 0.875rem;
+    }
   }
 }
 

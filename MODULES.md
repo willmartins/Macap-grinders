@@ -54,7 +54,7 @@ Colours are named for what they look like: `black`, `off-black`, `grey`, `silver
 
 Special colours sit outside that palette: `sky`, `emerald` and `violet`, each with a `light-` fill and a `dark-` text tone. They are for special circumstances and for tools and apps, such as telling models apart in the compare tool. Do not use them in general page design.
 
-Type sizes sit on one scale that starts from the 15px body size: a minor third (1.2) on a phone and a perfect fourth (1.333) on a desktop, set as `--type-0` to `--type-7` in `src/app/globals.css`. Display is step 7, Heading 1 step 5, Heading 2 step 4, Heading 3 step 2, Lead step 1 and Body step 0. Steps 3 and 6 are spare. Navigation, mono and eyebrow are fixed label sizes off the scale. A new size takes a spare step. Do not set a font size by hand.
+Type sizes sit on one scale that starts from the 15px body size: a minor third (1.2) on a phone and a perfect fourth (1.333) on a desktop, set as `--type-0` to `--type-7` in `src/app/globals.css`. Display is step 7, Heading 1 step 5, Heading 2 step 4, Heading 3 step 2, Lead step 1 and Body step 0. Steps 3 and 6 are spare. The type classes sit in Tailwind's components layer, so a utility on the same element wins, such as `type-body font-semibold`. Navigation, mono and eyebrow are fixed label sizes off the scale. A new size takes a spare step. Do not set a font size by hand.
 
 Buttons use `.btn`, with `.btn-secondary`, `.btn-on-photo` and `.btn-yellow`. An icon is an `svg` inside the button, from `src/components/site/icons.tsx`. `.btn-no-arrow` removes the arrow when a trailing icon takes its place. A text link that stands on its own can add `.link-underline`.
 
@@ -82,13 +82,19 @@ Leave these without `TextLink`: buttons (`.btn` already has an arrow), the heade
 
 ## Grinder cards
 
-`GrinderCardView` in `src/components/grinders/grinder-card.tsx` is the shared card for the catalogue, collections, ranges, audience pages, related models, and knowledge articles. `RangeCardView` and `CollectionCardView` in `src/components/grinders/range-card.tsx` use the same frame, plinth and foot, with `View range` and `View collection`. A range's own picture is a photograph and fills the plinth. Without one, the first current model's cut-out stands in.
+`GrinderCardView` in `src/components/grinders/grinder-card.tsx` is the shared card for the catalogue, collections, ranges, audience pages, related models, and knowledge articles. `RangeCardView` and `CollectionCardView` in `src/components/grinders/range-card.tsx` use the same frame, plinth and foot, with `View range` and `View collection`. A range's own picture is a photograph and fills the plinth. Without one, the first current model's cut-out stands in. `ArticleCardView` in `src/components/knowledge/article-card.tsx` is the same card for a knowledge article: its photograph, the topic and date, the title, the excerpt and `Read article`. The knowledge hub, topic pages and the end of each article use it.
 
 The whole card is one link to the model. There is no second link inside it. The photograph sits on a neutral plinth inside a hairline frame. The footer shows the line, the model name, up to two figures from that grinder (burr size, then motor power, or grind type when the motor is not set), and `View model` with the button arrow. That arrow is the card's arrow.
 
 On a pointer that can hover, the border and surface change, the photograph scales slightly inside the plinth, and the arrow nudges. Keyboard focus uses the same arrow nudge and the yellow focus ring. Reduced motion turns the scale and the nudge off. On a touch screen the frame, plinth, and `View model` are enough to show that the card is clickable.
 
 Cards stretch to one height in a grid and in a mobile swipe row. A missing figure is left out. Nothing is invented.
+
+## Knowledge articles
+
+An article page opens with the answer-first introduction under "In short", then the author and date. A body with three or more Heading 2 sections gets a contents list: beside the text on a wide screen, and a closed list above it on a narrow one. Heading 2 has an anchor from its text. Consecutive images in the body sit side by side, up to three. The page ends with questions, related grinders and up to three more articles from the same topic.
+
+Body headings: Heading 2 for a section, Heading 3 for a step or a sub-point. Do not set a heading as a bold paragraph.
 
 ## Grinder questions
 

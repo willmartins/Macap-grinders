@@ -259,6 +259,8 @@ export function mapArticleCard(value: unknown): ArticleCard | null {
     publishedAt: logic(value.publishedAt),
     topicTitle: display(value.topicTitle).trim() || null,
     topicSlug: logic(value.topicSlug) || null,
+    imageUrl: picture(value.image, 1200).url,
+    imageAlt: picture(value.image, 1200).alt,
   };
 }
 
