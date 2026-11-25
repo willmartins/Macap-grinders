@@ -3,12 +3,15 @@ import Image from "next/image";
 import { ContactForm } from "@/components/contact/contact-form";
 import { GrinderGrid } from "@/components/grinders/grinder-card";
 import { CollectionGrid, RangeGrid } from "@/components/grinders/range-card";
+import { FeaturedGrinder } from "@/components/grinders/featured-grinder";
 import { CompareTable, SpecTable } from "@/components/grinders/spec-table";
+import { ArticleGrid } from "@/components/knowledge/article-card";
 import { BleedHero, SplitHero } from "@/components/site/bleed-hero";
 import { PhotoSlot } from "@/components/site/photo-slot";
 import { RichTextBody } from "@/components/site/rich-text";
 import { SectionHeader } from "@/components/site/section-header";
 import { TextLink } from "@/components/site/text-link";
+import { WorldDots } from "@/components/site/world-dots";
 import { explainDifferences } from "@/lib/compare";
 import type { CollectionCard, GrinderCard, RangeCard, Section } from "@/lib/content/types";
 import { collectionShot, focusFor, pageShots } from "@/lib/imagery";
@@ -25,7 +28,7 @@ export type PageBuilderContext = {
   grinders?: GrinderCard[];
 };
 
-function youtubeId(url: string): string | null {
+export function youtubeId(url: string): string | null {
   try {
     const parsed = new URL(url);
     if (parsed.hostname === "youtu.be") return parsed.pathname.split("/").filter(Boolean)[0] || null;
@@ -82,6 +85,7 @@ function SectionIntro({ heading, intro, step }: { heading?: string; intro?: stri
  */
 function groundFor(section: Section, isLast: boolean): string {
   if (section._type === "specTable" || section._type === "comparisonTable") return "bg-light-grey";
+  if (section._type === "featuredGrinder") return "bg-off-black text-white";
   if (section._type === "ctaBanner" && isLast) return "bg-off-black text-white";
   return "bg-white";
 }
@@ -109,6 +113,12 @@ export function PageBuilder({
             return (
               <SplitHero
                 key={section._key}
+                eyebrow={section.eyebrow || undefined}
+                title={section.heading || undefined}
+                text={section.text || undefined}
+                heroImage={section.imageUrl || pageShots.homeHero.src}
+                heroAlt={section.imageAlt || pageShots.homeHero.alt}
+                heroFocus={focusFor(section.imageUrl || pageShots.homeHero.src)}
                 homeImage={pageShots.homeSplit.src}
                 homeAlt={pageShots.homeSplit.alt}
                 homeFocus={pageShots.homeSplit.focus}
@@ -214,7 +224,9 @@ export function PageBuilder({
           <section
             key={section._key}
             id={section._key}
-            className={`section ${groundFor(section, isLast)} ${rule(sectionIndex)}`.trim()}
+            className={`section ${groundFor(section, isLast)} ${rule(sectionIndex)} ${
+              section._type === "distributorLocator" ? "overflow-hidden" : ""
+            }`.trim()}
           >
             <div className="frame">
               {section._type === "richText" ? (
@@ -311,6 +323,40 @@ export function PageBuilder({
                 </>
               ) : null}
 
+              {section._type === "featuredGrinder" && section.grinder ? (
+                <FeaturedGrinder
+                  grinder={section.grinder}
+                  eyebrow={section.eyebrow}
+                  heading={section.heading}
+                  text={section.text}
+                  videoUrl={section.videoUrl}
+                  link={section.link}
+                />
+              ) : null}
+
+              {section._type === "distributorLocator" ? (
+                <div className="relative">
+                  {/*
+                    The map is oversized and runs off the left of the section, fading out
+                    before the copy. On a phone it sits above the words at its own size.
+                  */}
+                  <div
+                    aria-hidden="true"
+                    className="pointer-events-none mb-10 text-black md:absolute md:top-1/2 md:-left-[14%] md:mb-0 md:w-[112%] md:-translate-y-1/2 md:[-webkit-mask-image:linear-gradient(to_right,#000_40%,transparent_86%)] md:[mask-image:linear-gradient(to_right,#000_40%,transparent_86%)]"
+                  >
+                    <WorldDots className="w-full" />
+                  </div>
+                  <div className="relative md:ml-auto md:w-[42%]">
+                    {section.eyebrow ? <p className="type-eyebrow mb-3 text-grey">{section.eyebrow}</p> : null}
+                    <h2 className="type-h2 text-black">{section.heading}</h2>
+                    {section.text ? <p className="type-lead mt-5 text-grey">{section.text}</p> : null}
+                    <p className="mt-8">
+                      <ButtonLink href={section.link.href} label={section.link.label} journey={journey} />
+                    </p>
+                  </div>
+                </div>
+              ) : null}
+
               {section._type === "specTable" && section.grinder ? (
                 <>
                   {section.heading ? <SectionHeader title={section.heading} className="mb-8" /> : null}
@@ -375,20 +421,8 @@ export function PageBuilder({
               {section._type === "kbPostGrid" ? (
                 <>
                   <SectionIntro heading={section.heading} intro={section.intro} />
-                  <ul className="divide-y divide-silver border-y border-silver">
-                    {section.posts.map((post) => (
-                      <li key={post.slug} className="grid gap-2 py-6">
-                        <div>
-                          <h3 className="type-h3 text-black">
-                            <TextLink href={`/knowledge/${post.slug}`} className="link-underline">
-                              {post.title}
-                            </TextLink>
-                          </h3>
-                          <p className="type-body mt-2 max-w-xl text-grey">{post.excerpt}</p>
-                        </div>
-                      </li>
-                    ))}
-                  </ul>
+                  {/* The same card as the knowledge index, so an article reads the same everywhere. */}
+                  <ArticleGrid posts={section.posts} />
                 </>
               ) : null}
 

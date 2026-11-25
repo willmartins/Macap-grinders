@@ -23,7 +23,7 @@ function shot(file: string, alt: string, width: number, height: number, focus = 
 export const pageShots = {
   homeHero: shot(
     "7846d779f999f9987ae2da6aa43bdf47cf9a254f-1400x1050.jpg",
-    "Macap coffee grinder on a stone counter, seen from above.",
+    "Close up of a Macap Supra 68 G Series grinder, with its touchscreen and grind adjustment collar.",
     1400,
     1050,
     "center 42%",
@@ -51,7 +51,7 @@ export const pageShots = {
   ),
   professionalJourney: shot(
     "5377a00cd68e1c49e83dba59066f00c125505062-1800x1200.jpg",
-    "Macap grinder in use on a bar counter.",
+    "Black and white photograph of a Macap grinder on a counter, with a blurred crowd behind it.",
     1800,
     1200,
     "center 40%",
@@ -78,13 +78,13 @@ export const pageShots = {
   ),
   aboutDetail: shot(
     "38eec291fa9c0f96986b4316c5d9c0aad3a99479-1920x1920.webp",
-    "Hands setting a Macap grinder, with the hopper open.",
+    "Black and white photograph of a child between two vintage Doge grinders.",
     1920,
     1920,
   ),
   knowledgeHero: shot(
     "bb5042c0c71080c2e889bf03e789f096ac62b5ef-2400x1600.jpg",
-    "Hands holding coffee grounds beside a Macap grinder.",
+    "Macap grinder on a cafe counter, with a barista at the espresso machine behind it.",
     2400,
     1600,
   ),
@@ -99,15 +99,9 @@ export const articleShots: Record<string, Shot> = {
   ),
   "dialling-in-with-less-waste": shot(
     "f08ef94a4a52d60e578e06d20f2f32be54d7e087-1200x1500.jpg",
-    "Espresso pouring into a cup, with a Macap grinder behind it.",
+    "Two people adjusting a white Macap Supra 68 grinder at an exhibition stand.",
     1200,
     1500,
-  ),
-  "supra-68-and-supra-83": shot(
-    "d1b07964c5a3ee07e8a1a95a38e4ea5c94df387b-2092x1408.png",
-    "Macap Supra 83 grinder in a dark studio.",
-    2092,
-    1408,
   ),
 };
 
@@ -175,20 +169,8 @@ export const grinderMedia: Record<string, { hero: Shot; gallery: Shot[] }> = {
       1200,
       800,
     ),
-    gallery: [
-      shot(
-        "d1b07964c5a3ee07e8a1a95a38e4ea5c94df387b-2092x1408.png",
-        "Macap Supra 83 grinder in a dark studio.",
-        2092,
-        1408,
-      ),
-      shot(
-        "6a420798ee0a8426a9eb854c64916e321ec28446-2096x1404.png",
-        "Macap Supra 83 grinder, three-quarter view.",
-        2096,
-        1404,
-      ),
-    ],
+    /** No gallery yet. The two frames here were particle size charts, not photographs. */
+    gallery: [],
   },
   "supra-68-g-series": {
     hero: shot(
@@ -197,14 +179,8 @@ export const grinderMedia: Record<string, { hero: Shot; gallery: Shot[] }> = {
       1334,
       890,
     ),
-    gallery: [
-      shot(
-        "36cf16176051ba67af2149a923334f09e275ae4d-997x998.jpg",
-        "Macap Supra 68 G grinder, detail.",
-        997,
-        998,
-      ),
-    ],
+    /** No gallery yet. The frame here was a photograph of people, not of the grinder. */
+    gallery: [],
   },
   "leo-55": {
     hero: shot(

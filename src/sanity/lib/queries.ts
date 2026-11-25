@@ -88,14 +88,18 @@ export const HOME_QUERY = defineQuery(`*[_id == "homePage"][0]{
   sections[]{
     _key,
     _type,
-    eyebrow, heading, text, intro, quote, attribution, role, caption, url, step,
+    eyebrow, heading, text, intro, quote, attribution, role, caption, url, step, videoUrl,
     "imageAlt": image.alt,
     "imagePosition": imagePosition,
     "image": image${sanityImage},
     links[]${link},
     link${link},
     body,
-    features[]{ _key, title, text },
+    features[]{
+      _key, title, text, icon, ground,
+      "imageAlt": image.alt, "image": image${sanityImage},
+      "linkLabel": link.label, "linkHref": link.href
+    },
     faqs[]{ _key, question, answer },
     grinders[]->${card},
     "detailGrinders": grinders[]->{
@@ -131,14 +135,18 @@ export const JOURNEY_QUERY = defineQuery(`*[_type == "journeyPage" && slug.curre
   sections[]{
     _key,
     _type,
-    eyebrow, heading, text, intro, quote, attribution, role, caption, url, step,
+    eyebrow, heading, text, intro, quote, attribution, role, caption, url, step, videoUrl,
     "imageAlt": image.alt,
     imagePosition,
     "image": image${sanityImage},
     links[]${link},
     link${link},
     body,
-    features[]{ _key, title, text },
+    features[]{
+      _key, title, text, icon, ground,
+      "imageAlt": image.alt, "image": image${sanityImage},
+      "linkLabel": link.label, "linkHref": link.href
+    },
     faqs[]{ _key, question, answer },
     grinders[]->${card},
     "detailGrinders": grinders[]->{
@@ -170,10 +178,14 @@ export const SIMPLE_PAGE_QUERY = defineQuery(`*[_id == $id][0]{
   title,
   introduction,
   sections[]{
-    _key, _type, eyebrow, heading, text, intro, quote, attribution, role, caption, url, step,
+    _key, _type, eyebrow, heading, text, intro, quote, attribution, role, caption, url, step, videoUrl,
     "imageAlt": image.alt, imagePosition, "image": image${sanityImage},
     links[]${link}, link${link}, body,
-    features[]{ _key, title, text },
+    features[]{
+      _key, title, text, icon, ground,
+      "imageAlt": image.alt, "image": image${sanityImage},
+      "linkLabel": link.label, "linkHref": link.href
+    },
     faqs[]{ _key, question, answer },
     grinders[]->${card},
     "detailGrinders": grinders[]->{
@@ -222,10 +234,14 @@ export const COLLECTION_QUERY = defineQuery(`*[_type == "grinderCollection" && s
   _id, name, "slug": slug.current, summary, answerFirst, audience, "imageAlt": image.alt, "image": image${sanityImage},
   grinders[]->${card},
   sections[]{
-    _key, _type, eyebrow, heading, text, intro, quote, attribution, role, caption, url, step,
+    _key, _type, eyebrow, heading, text, intro, quote, attribution, role, caption, url, step, videoUrl,
     "imageAlt": image.alt, imagePosition, "image": image${sanityImage},
     links[]${link}, link${link}, body,
-    features[]{ _key, title, text },
+    features[]{
+      _key, title, text, icon, ground,
+      "imageAlt": image.alt, "image": image${sanityImage},
+      "linkLabel": link.label, "linkHref": link.href
+    },
     faqs[]{ _key, question, answer },
     grinders[]->${card},
     "detailGrinders": grinders[]->{

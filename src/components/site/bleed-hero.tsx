@@ -108,16 +108,25 @@ export function SplitHero({
   proImage,
   proAlt,
   proFocus,
+  heroImage,
+  heroAlt,
+  heroFocus = "center",
   eyebrow = "Macap, since 1930",
   title = "Coffee grinders for the counter and the bar.",
+  text,
   crumbs,
   headingLevel = "h1",
 }: {
   eyebrow?: string;
   title?: string;
+  text?: string;
   crumbs?: ReactNode;
   /** The front page and the grinders index both open with this. Each has one h1. */
   headingLevel?: "h1" | "h2";
+  /** The opening photograph. Without one the page opens on the two choices alone. */
+  heroImage?: string | null;
+  heroAlt?: string;
+  heroFocus?: string;
   homeImage: string;
   homeAlt: string;
   homeFocus: string;
@@ -127,14 +136,40 @@ export function SplitHero({
 }) {
   const Heading = headingLevel;
   return (
-    <header className="home-choice border-b border-silver">
-      <div className="frame">
-        {crumbs ? <div className="mb-6">{crumbs}</div> : null}
-        <p className="type-eyebrow text-grey">{eyebrow}</p>
-        <Heading className="type-h1 mt-3 max-w-3xl text-black">{title}</Heading>
-      </div>
+    <header className="border-b border-silver">
+      {/* The same full-bleed opening as a grinder page, so the front page sets the tone. */}
+      {heroImage ? (
+        <div className="model-hero">
+          <div className="model-hero-media">
+            <Image
+              src={heroImage}
+              alt={heroAlt || ""}
+              fill
+              priority
+              sizes="100vw"
+              className="object-cover"
+              style={{ objectPosition: heroFocus }}
+            />
+          </div>
+          <div className="model-hero-scrim" aria-hidden="true" />
+          <div className="model-hero-copy frame">
+            {crumbs ? <div className="mb-6">{crumbs}</div> : null}
+            <p className="type-eyebrow text-white/80">{eyebrow}</p>
+            <Heading className="type-display mt-3 max-w-5xl text-white">{title}</Heading>
+            {text ? <p className="model-hero-lead">{text}</p> : null}
+          </div>
+        </div>
+      ) : null}
       {/* Two choices on one hairline grid. The silver gap draws the rule between them. */}
-      <div className="frame mt-[var(--gap-block)] grid items-stretch gap-px border border-silver bg-silver md:grid-cols-2">
+      <div className="home-choice">
+        {heroImage ? null : (
+          <div className="frame mb-[var(--gap-block)]">
+            {crumbs ? <div className="mb-6">{crumbs}</div> : null}
+            <p className="type-eyebrow text-grey">{eyebrow}</p>
+            <Heading className="type-h1 mt-3 max-w-3xl text-black">{title}</Heading>
+          </div>
+        )}
+        <div className="frame grid items-stretch gap-px border border-silver bg-silver md:grid-cols-2">
         <a href={audiencePages.home.path} className="choice-card">
           <p className="type-h2 max-w-[10ch] text-black">For the home.</p>
           <p className="type-lead max-w-[22rem] text-grey md:min-h-[3.4rem]">Studio and Leo, for a domestic counter.</p>
@@ -165,8 +200,9 @@ export function SplitHero({
               className="object-cover"
               style={{ objectPosition: proFocus }}
             />
-          </figure>
-        </a>
+            </figure>
+          </a>
+        </div>
       </div>
     </header>
   );

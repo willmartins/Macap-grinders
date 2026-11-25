@@ -292,6 +292,12 @@ export type GrinderCollection = {
       } & FeatureList)
     | ({
         _key: string;
+      } & FeaturedGrinder)
+    | ({
+        _key: string;
+      } & DistributorLocator)
+    | ({
+        _key: string;
       } & SpecTable)
     | ({
         _key: string;
@@ -353,6 +359,12 @@ export type JourneyPage = {
       } & FeatureList)
     | ({
         _key: string;
+      } & FeaturedGrinder)
+    | ({
+        _key: string;
+      } & DistributorLocator)
+    | ({
+        _key: string;
       } & SpecTable)
     | ({
         _key: string;
@@ -411,6 +423,12 @@ export type GrindersIndexPage = {
       } & FeatureList)
     | ({
         _key: string;
+      } & FeaturedGrinder)
+    | ({
+        _key: string;
+      } & DistributorLocator)
+    | ({
+        _key: string;
       } & SpecTable)
     | ({
         _key: string;
@@ -464,6 +482,12 @@ export type KnowledgeHubPage = {
     | ({
         _key: string;
       } & FeatureList)
+    | ({
+        _key: string;
+      } & FeaturedGrinder)
+    | ({
+        _key: string;
+      } & DistributorLocator)
     | ({
         _key: string;
       } & SpecTable)
@@ -521,6 +545,12 @@ export type ContactPage = {
       } & FeatureList)
     | ({
         _key: string;
+      } & FeaturedGrinder)
+    | ({
+        _key: string;
+      } & DistributorLocator)
+    | ({
+        _key: string;
       } & SpecTable)
     | ({
         _key: string;
@@ -576,6 +606,12 @@ export type AboutPage = {
       } & FeatureList)
     | ({
         _key: string;
+      } & FeaturedGrinder)
+    | ({
+        _key: string;
+      } & DistributorLocator)
+    | ({
+        _key: string;
       } & SpecTable)
     | ({
         _key: string;
@@ -629,6 +665,12 @@ export type HomePage = {
     | ({
         _key: string;
       } & FeatureList)
+    | ({
+        _key: string;
+      } & FeaturedGrinder)
+    | ({
+        _key: string;
+      } & DistributorLocator)
     | ({
         _key: string;
       } & SpecTable)
@@ -791,6 +833,24 @@ export type SpecTable = {
   _type: "specTable";
   heading?: string;
   grinder: GrinderReference;
+};
+
+export type DistributorLocator = {
+  _type: "distributorLocator";
+  eyebrow?: string;
+  heading: string;
+  text?: string;
+  link: Link;
+};
+
+export type FeaturedGrinder = {
+  _type: "featuredGrinder";
+  eyebrow?: string;
+  heading: string;
+  text?: string;
+  grinder: GrinderReference;
+  videoUrl?: string;
+  link: Link;
 };
 
 export type GrinderGroupReference = {
@@ -1150,6 +1210,8 @@ export type AllSanitySchemaTypes =
   | FaqAccordion
   | ComparisonTable
   | SpecTable
+  | DistributorLocator
+  | FeaturedGrinder
   | GrinderGroupReference
   | SanityFileAssetReference
   | Grinder
@@ -1174,7 +1236,7 @@ export type AllSanitySchemaTypes =
 
 // Source: src/sanity/lib/queries.ts
 // Variable: SHELL_QUERY
-// Query: {  "settings": *[_id == "siteSettings"][0]{    siteName,    navigation[]{ _key, label, href },    footerNavigation[]{ _key, label, href },    socials[]{ _key, label, href },    email,    phone,    address,    organisation{ name, legalName, url, email, telephone, address, sameAs },    "seoTitle": seo.title,    "seoDescription": seo.description  },  "collections": *[_type == "grinderCollection" && language == "en-GB"]|order(name asc){    name, "slug": slug.current, summary, audience, "imageAlt": image.alt, "image": image{ alt, asset, crop, hotspot, "lqip": asset->metadata.lqip }  },  "legal": *[_type == "legalPage" && language == "en-GB"]|order(title asc){    title, "slug": slug.current  }}
+// Query: {  "settings": *[_id == "siteSettings"][0]{    siteName,    navigation[]{ _key, label, href },    footerNavigation[]{ _key, label, href },    socials[]{ _key, label, href },    email,    phone,    address,    organisation{ name, legalName, url, email, telephone, address, sameAs },    "seoTitle": seo.title,    "seoDescription": seo.description  },  "collections": *[_type == "grinderCollection" && language == "en-GB"]|order(name asc){    name, "slug": slug.current, summary, audience, "imageAlt": image.alt, "image": image{ alt, asset, crop, hotspot, "lqip": asset->metadata.lqip }  },  "ranges": *[_type == "grinderGroup" && language == "en-GB"]|order(coalesce(position, 999) asc, name asc){    name, "slug": slug.current  },  "legal": *[_type == "legalPage" && language == "en-GB"]|order(title asc){    title, "slug": slug.current  }}
 export type SHELL_QUERY_RESULT = {
   settings:
     | {
@@ -1248,6 +1310,10 @@ export type SHELL_QUERY_RESULT = {
       lqip: string | null;
     } | null;
   }>;
+  ranges: Array<{
+    name: string;
+    slug: string;
+  }>;
   legal: Array<{
     title: string;
     slug: string;
@@ -1256,7 +1322,7 @@ export type SHELL_QUERY_RESULT = {
 
 // Source: src/sanity/lib/queries.ts
 // Variable: HOME_QUERY
-// Query: *[_id == "homePage"][0]{  title,  introduction,  sections[]{    _key,    _type,    eyebrow, heading, text, intro, quote, attribution, role, caption, url, step,    "imageAlt": image.alt,    "imagePosition": imagePosition,    "image": image{ alt, asset, crop, hotspot, "lqip": asset->metadata.lqip },    links[]{ _key, label, href },    link{ _key, label, href },    body,    features[]{ _key, title, text },    faqs[]{ _key, question, answer },    grinders[]->{  _id,  name,  "slug": slug.current,  audience,  status,  shortDescription,  "groupName": group->name,  "groupSlug": group->slug.current,  "burrDiameterMm": specs.burrDiameterMm,  "burrType": specs.burrType,  "grindType": specs.grindType,  "motorPowerW": specs.motorPowerW,  "imageAlt": heroImage.alt,  "heroImage": heroImage{ alt, asset, crop, hotspot, "lqip": asset->metadata.lqip }},    "detailGrinders": grinders[]->{      _id, name, "slug": slug.current, audience, status, shortDescription,      "groupName": group->name, "groupSlug": group->slug.current,      "burrDiameterMm": specs.burrDiameterMm, "burrType": specs.burrType, "grindType": specs.grindType,      "imageAlt": heroImage.alt, "heroImage": heroImage{ alt, asset, crop, hotspot, "lqip": asset->metadata.lqip },      answerFirst,      specs{  burrType,  burrDiameterMm,  grindType,  motorPowerW,  rpm,  hopperCapacityG,  outputGPerS,  adjustment,  "widthMm": dimensions.widthMm,  "depthMm": dimensions.depthMm,  "heightMm": dimensions.heightMm,  weightKg,  voltage,  display,  features},      extraSpecs[]{ _key, label, value },      faqs[]{ _key, question, answer }    },    "specGrinder": grinder->{      _id, name, "slug": slug.current, audience, status, shortDescription,      "groupName": group->name, "groupSlug": group->slug.current,      "burrDiameterMm": specs.burrDiameterMm, "burrType": specs.burrType, "grindType": specs.grindType,      "imageAlt": heroImage.alt, "heroImage": heroImage{ alt, asset, crop, hotspot, "lqip": asset->metadata.lqip },      answerFirst,      specs{  burrType,  burrDiameterMm,  grindType,  motorPowerW,  rpm,  hopperCapacityG,  outputGPerS,  adjustment,  "widthMm": dimensions.widthMm,  "depthMm": dimensions.depthMm,  "heightMm": dimensions.heightMm,  weightKg,  voltage,  display,  features},      extraSpecs[]{ _key, label, value }    },    collections[]->{ name, "slug": slug.current, summary, audience },    posts[]->{  title,  "slug": slug.current,  excerpt,  publishedAt,  "topicTitle": topic->title,  "topicSlug": topic->slug.current}  },    "seoTitle": seo.title,  "seoDescription": seo.description,  "noIndex": seo.noIndex == true,  "canonical": seo.canonical,  "seoImage": seo.image{ alt, asset, crop, hotspot, "lqip": asset->metadata.lqip }}
+// Query: *[_id == "homePage"][0]{  title,  introduction,  sections[]{    _key,    _type,    eyebrow, heading, text, intro, quote, attribution, role, caption, url, step, videoUrl,    "imageAlt": image.alt,    "imagePosition": imagePosition,    "image": image{ alt, asset, crop, hotspot, "lqip": asset->metadata.lqip },    links[]{ _key, label, href },    link{ _key, label, href },    body,    features[]{      _key, title, text, icon, ground,      "imageAlt": image.alt, "image": image{ alt, asset, crop, hotspot, "lqip": asset->metadata.lqip },      "linkLabel": link.label, "linkHref": link.href    },    faqs[]{ _key, question, answer },    grinders[]->{  _id,  name,  "slug": slug.current,  audience,  status,  shortDescription,  "groupName": group->name,  "groupSlug": group->slug.current,  "burrDiameterMm": specs.burrDiameterMm,  "burrType": specs.burrType,  "grindType": specs.grindType,  "motorPowerW": specs.motorPowerW,  "imageAlt": heroImage.alt,  "heroImage": heroImage{ alt, asset, crop, hotspot, "lqip": asset->metadata.lqip }},    "detailGrinders": grinders[]->{      _id, name, "slug": slug.current, audience, status, shortDescription,      "groupName": group->name, "groupSlug": group->slug.current,      "burrDiameterMm": specs.burrDiameterMm, "burrType": specs.burrType, "grindType": specs.grindType,      "imageAlt": heroImage.alt, "heroImage": heroImage{ alt, asset, crop, hotspot, "lqip": asset->metadata.lqip },      answerFirst,      specs{  burrType,  burrDiameterMm,  grindType,  motorPowerW,  rpm,  hopperCapacityG,  outputGPerS,  adjustment,  "widthMm": dimensions.widthMm,  "depthMm": dimensions.depthMm,  "heightMm": dimensions.heightMm,  weightKg,  voltage,  display,  features},      extraSpecs[]{ _key, label, value },      faqs[]{ _key, question, answer }    },    "specGrinder": grinder->{      _id, name, "slug": slug.current, audience, status, shortDescription,      "groupName": group->name, "groupSlug": group->slug.current,      "burrDiameterMm": specs.burrDiameterMm, "burrType": specs.burrType, "grindType": specs.grindType,      "imageAlt": heroImage.alt, "heroImage": heroImage{ alt, asset, crop, hotspot, "lqip": asset->metadata.lqip },      answerFirst,      specs{  burrType,  burrDiameterMm,  grindType,  motorPowerW,  rpm,  hopperCapacityG,  outputGPerS,  adjustment,  "widthMm": dimensions.widthMm,  "depthMm": dimensions.depthMm,  "heightMm": dimensions.heightMm,  weightKg,  voltage,  display,  features},      extraSpecs[]{ _key, label, value }    },    collections[]->{ name, "slug": slug.current, summary, audience },    posts[]->{  title,  "slug": slug.current,  excerpt,  publishedAt,  "topicTitle": topic->title,  "topicSlug": topic->slug.current,  "imageAlt": image.alt,  "image": image{ alt, asset, crop, hotspot, "lqip": asset->metadata.lqip }}  },    "seoTitle": seo.title,  "seoDescription": seo.description,  "noIndex": seo.noIndex == true,  "canonical": seo.canonical,  "seoImage": seo.image{ alt, asset, crop, hotspot, "lqip": asset->metadata.lqip }}
 export type HOME_QUERY_RESULT =
   | {
       title: null;
@@ -1327,6 +1393,7 @@ export type HOME_QUERY_RESULT =
             caption: null;
             url: null;
             step: null;
+            videoUrl: null;
             imageAlt: null;
             imagePosition: null;
             image: null;
@@ -1359,6 +1426,7 @@ export type HOME_QUERY_RESULT =
             caption: null;
             url: null;
             step: null;
+            videoUrl: null;
             imageAlt: null;
             imagePosition: null;
             image: null;
@@ -1386,6 +1454,7 @@ export type HOME_QUERY_RESULT =
             caption: null;
             url: null;
             step: null;
+            videoUrl: null;
             imageAlt: null;
             imagePosition: null;
             image: null;
@@ -1482,6 +1551,7 @@ export type HOME_QUERY_RESULT =
             caption: null;
             url: null;
             step: null;
+            videoUrl: null;
             imageAlt: null;
             imagePosition: null;
             image: null;
@@ -1509,6 +1579,39 @@ export type HOME_QUERY_RESULT =
             caption: null;
             url: null;
             step: string | null;
+            videoUrl: null;
+            imageAlt: null;
+            imagePosition: null;
+            image: null;
+            links: null;
+            link: {
+              _key: null;
+              label: string;
+              href: string;
+            };
+            body: null;
+            features: null;
+            faqs: null;
+            grinders: null;
+            detailGrinders: null;
+            specGrinder: null;
+            collections: null;
+            posts: null;
+          }
+        | {
+            _key: string;
+            _type: "distributorLocator";
+            eyebrow: string | null;
+            heading: string;
+            text: string | null;
+            intro: null;
+            quote: null;
+            attribution: null;
+            role: null;
+            caption: null;
+            url: null;
+            step: null;
+            videoUrl: null;
             imageAlt: null;
             imagePosition: null;
             image: null;
@@ -1540,6 +1643,7 @@ export type HOME_QUERY_RESULT =
             caption: null;
             url: null;
             step: null;
+            videoUrl: null;
             imageAlt: null;
             imagePosition: null;
             image: null;
@@ -1560,6 +1664,81 @@ export type HOME_QUERY_RESULT =
           }
         | {
             _key: string;
+            _type: "featuredGrinder";
+            eyebrow: string | null;
+            heading: string;
+            text: string | null;
+            intro: null;
+            quote: null;
+            attribution: null;
+            role: null;
+            caption: null;
+            url: null;
+            step: null;
+            videoUrl: string | null;
+            imageAlt: null;
+            imagePosition: null;
+            image: null;
+            links: null;
+            link: {
+              _key: null;
+              label: string;
+              href: string;
+            };
+            body: null;
+            features: null;
+            faqs: null;
+            grinders: null;
+            detailGrinders: null;
+            specGrinder: {
+              _id: string;
+              name: string;
+              slug: string;
+              audience: "business" | "home";
+              status: "current" | "discontinued" | "new";
+              shortDescription: string;
+              groupName: string;
+              groupSlug: string;
+              burrDiameterMm: number | null;
+              burrType: "conical" | "flat" | null;
+              grindType: "both" | "espresso" | "filter" | null;
+              imageAlt: string | null;
+              heroImage: {
+                alt: string | null;
+                asset: SanityImageAssetReference | null;
+                crop: SanityImageCrop | null;
+                hotspot: SanityImageHotspot | null;
+                lqip: string | null;
+              } | null;
+              answerFirst: string;
+              specs: {
+                burrType: "conical" | "flat" | null;
+                burrDiameterMm: number | null;
+                grindType: "both" | "espresso" | "filter" | null;
+                motorPowerW: number | null;
+                rpm: number | null;
+                hopperCapacityG: number | null;
+                outputGPerS: number | null;
+                adjustment: string | null;
+                widthMm: number | null;
+                depthMm: number | null;
+                heightMm: number | null;
+                weightKg: number | null;
+                voltage: string | null;
+                display: string | null;
+                features: Array<string> | null;
+              } | null;
+              extraSpecs: Array<{
+                _key: string;
+                label: string;
+                value: string;
+              }> | null;
+            };
+            collections: null;
+            posts: null;
+          }
+        | {
+            _key: string;
             _type: "featureList";
             eyebrow: null;
             heading: string;
@@ -1571,6 +1750,7 @@ export type HOME_QUERY_RESULT =
             caption: null;
             url: null;
             step: null;
+            videoUrl: null;
             imageAlt: null;
             imagePosition: null;
             image: null;
@@ -1581,6 +1761,12 @@ export type HOME_QUERY_RESULT =
               _key: string;
               title: string;
               text: string;
+              icon: null;
+              ground: null;
+              imageAlt: null;
+              image: null;
+              linkLabel: null;
+              linkHref: null;
             }>;
             faqs: null;
             grinders: null;
@@ -1602,6 +1788,7 @@ export type HOME_QUERY_RESULT =
             caption: null;
             url: null;
             step: null;
+            videoUrl: null;
             imageAlt: null;
             imagePosition: null;
             image: null;
@@ -1698,6 +1885,7 @@ export type HOME_QUERY_RESULT =
             caption: null;
             url: null;
             step: null;
+            videoUrl: null;
             imageAlt: string | null;
             imagePosition: null;
             image: {
@@ -1735,6 +1923,7 @@ export type HOME_QUERY_RESULT =
             caption: null;
             url: null;
             step: null;
+            videoUrl: null;
             imageAlt: string;
             imagePosition: "left" | "right" | null;
             image: {
@@ -1772,6 +1961,7 @@ export type HOME_QUERY_RESULT =
             caption: null;
             url: null;
             step: null;
+            videoUrl: null;
             imageAlt: null;
             imagePosition: null;
             image: null;
@@ -1791,6 +1981,14 @@ export type HOME_QUERY_RESULT =
               publishedAt: string;
               topicTitle: string;
               topicSlug: string;
+              imageAlt: string | null;
+              image: {
+                alt: string | null;
+                asset: SanityImageAssetReference | null;
+                crop: SanityImageCrop | null;
+                hotspot: SanityImageHotspot | null;
+                lqip: string | null;
+              } | null;
             }>;
           }
         | {
@@ -1806,6 +2004,7 @@ export type HOME_QUERY_RESULT =
             caption: null;
             url: null;
             step: null;
+            videoUrl: null;
             imageAlt: null;
             imagePosition: null;
             image: null;
@@ -1833,6 +2032,7 @@ export type HOME_QUERY_RESULT =
             caption: null;
             url: null;
             step: null;
+            videoUrl: null;
             imageAlt: null;
             imagePosition: null;
             image: null;
@@ -1860,6 +2060,7 @@ export type HOME_QUERY_RESULT =
             caption: null;
             url: null;
             step: null;
+            videoUrl: null;
             imageAlt: null;
             imagePosition: null;
             image: null;
@@ -1930,6 +2131,7 @@ export type HOME_QUERY_RESULT =
             caption: string | null;
             url: string;
             step: null;
+            videoUrl: null;
             imageAlt: null;
             imagePosition: null;
             image: null;
@@ -1974,6 +2176,7 @@ export type HOME_QUERY_RESULT =
             caption: null;
             url: null;
             step: null;
+            videoUrl: null;
             imageAlt: null;
             imagePosition: null;
             image: null;
@@ -2006,6 +2209,7 @@ export type HOME_QUERY_RESULT =
             caption: null;
             url: null;
             step: null;
+            videoUrl: null;
             imageAlt: null;
             imagePosition: null;
             image: null;
@@ -2102,6 +2306,7 @@ export type HOME_QUERY_RESULT =
             caption: null;
             url: null;
             step: null;
+            videoUrl: null;
             imageAlt: null;
             imagePosition: null;
             image: null;
@@ -2129,6 +2334,39 @@ export type HOME_QUERY_RESULT =
             caption: null;
             url: null;
             step: string | null;
+            videoUrl: null;
+            imageAlt: null;
+            imagePosition: null;
+            image: null;
+            links: null;
+            link: {
+              _key: null;
+              label: string;
+              href: string;
+            };
+            body: null;
+            features: null;
+            faqs: null;
+            grinders: null;
+            detailGrinders: null;
+            specGrinder: null;
+            collections: null;
+            posts: null;
+          }
+        | {
+            _key: string;
+            _type: "distributorLocator";
+            eyebrow: string | null;
+            heading: string;
+            text: string | null;
+            intro: null;
+            quote: null;
+            attribution: null;
+            role: null;
+            caption: null;
+            url: null;
+            step: null;
+            videoUrl: null;
             imageAlt: null;
             imagePosition: null;
             image: null;
@@ -2160,6 +2398,7 @@ export type HOME_QUERY_RESULT =
             caption: null;
             url: null;
             step: null;
+            videoUrl: null;
             imageAlt: null;
             imagePosition: null;
             image: null;
@@ -2180,6 +2419,81 @@ export type HOME_QUERY_RESULT =
           }
         | {
             _key: string;
+            _type: "featuredGrinder";
+            eyebrow: string | null;
+            heading: string;
+            text: string | null;
+            intro: null;
+            quote: null;
+            attribution: null;
+            role: null;
+            caption: null;
+            url: null;
+            step: null;
+            videoUrl: string | null;
+            imageAlt: null;
+            imagePosition: null;
+            image: null;
+            links: null;
+            link: {
+              _key: null;
+              label: string;
+              href: string;
+            };
+            body: null;
+            features: null;
+            faqs: null;
+            grinders: null;
+            detailGrinders: null;
+            specGrinder: {
+              _id: string;
+              name: string;
+              slug: string;
+              audience: "business" | "home";
+              status: "current" | "discontinued" | "new";
+              shortDescription: string;
+              groupName: string;
+              groupSlug: string;
+              burrDiameterMm: number | null;
+              burrType: "conical" | "flat" | null;
+              grindType: "both" | "espresso" | "filter" | null;
+              imageAlt: string | null;
+              heroImage: {
+                alt: string | null;
+                asset: SanityImageAssetReference | null;
+                crop: SanityImageCrop | null;
+                hotspot: SanityImageHotspot | null;
+                lqip: string | null;
+              } | null;
+              answerFirst: string;
+              specs: {
+                burrType: "conical" | "flat" | null;
+                burrDiameterMm: number | null;
+                grindType: "both" | "espresso" | "filter" | null;
+                motorPowerW: number | null;
+                rpm: number | null;
+                hopperCapacityG: number | null;
+                outputGPerS: number | null;
+                adjustment: string | null;
+                widthMm: number | null;
+                depthMm: number | null;
+                heightMm: number | null;
+                weightKg: number | null;
+                voltage: string | null;
+                display: string | null;
+                features: Array<string> | null;
+              } | null;
+              extraSpecs: Array<{
+                _key: string;
+                label: string;
+                value: string;
+              }> | null;
+            };
+            collections: null;
+            posts: null;
+          }
+        | {
+            _key: string;
             _type: "featureList";
             eyebrow: null;
             heading: string;
@@ -2191,6 +2505,7 @@ export type HOME_QUERY_RESULT =
             caption: null;
             url: null;
             step: null;
+            videoUrl: null;
             imageAlt: null;
             imagePosition: null;
             image: null;
@@ -2201,6 +2516,12 @@ export type HOME_QUERY_RESULT =
               _key: string;
               title: string;
               text: string;
+              icon: null;
+              ground: null;
+              imageAlt: null;
+              image: null;
+              linkLabel: null;
+              linkHref: null;
             }>;
             faqs: null;
             grinders: null;
@@ -2222,6 +2543,7 @@ export type HOME_QUERY_RESULT =
             caption: null;
             url: null;
             step: null;
+            videoUrl: null;
             imageAlt: null;
             imagePosition: null;
             image: null;
@@ -2318,6 +2640,7 @@ export type HOME_QUERY_RESULT =
             caption: null;
             url: null;
             step: null;
+            videoUrl: null;
             imageAlt: string | null;
             imagePosition: null;
             image: {
@@ -2355,6 +2678,7 @@ export type HOME_QUERY_RESULT =
             caption: null;
             url: null;
             step: null;
+            videoUrl: null;
             imageAlt: string;
             imagePosition: "left" | "right" | null;
             image: {
@@ -2392,6 +2716,7 @@ export type HOME_QUERY_RESULT =
             caption: null;
             url: null;
             step: null;
+            videoUrl: null;
             imageAlt: null;
             imagePosition: null;
             image: null;
@@ -2411,6 +2736,14 @@ export type HOME_QUERY_RESULT =
               publishedAt: string;
               topicTitle: string;
               topicSlug: string;
+              imageAlt: string | null;
+              image: {
+                alt: string | null;
+                asset: SanityImageAssetReference | null;
+                crop: SanityImageCrop | null;
+                hotspot: SanityImageHotspot | null;
+                lqip: string | null;
+              } | null;
             }>;
           }
         | {
@@ -2426,6 +2759,7 @@ export type HOME_QUERY_RESULT =
             caption: null;
             url: null;
             step: null;
+            videoUrl: null;
             imageAlt: null;
             imagePosition: null;
             image: null;
@@ -2453,6 +2787,7 @@ export type HOME_QUERY_RESULT =
             caption: null;
             url: null;
             step: null;
+            videoUrl: null;
             imageAlt: null;
             imagePosition: null;
             image: null;
@@ -2480,6 +2815,7 @@ export type HOME_QUERY_RESULT =
             caption: null;
             url: null;
             step: null;
+            videoUrl: null;
             imageAlt: null;
             imagePosition: null;
             image: null;
@@ -2507,6 +2843,7 @@ export type HOME_QUERY_RESULT =
             caption: null;
             url: null;
             step: null;
+            videoUrl: null;
             imageAlt: null;
             imagePosition: null;
             image: null;
@@ -2577,6 +2914,7 @@ export type HOME_QUERY_RESULT =
             caption: string | null;
             url: string;
             step: null;
+            videoUrl: null;
             imageAlt: null;
             imagePosition: null;
             image: null;
@@ -2621,6 +2959,7 @@ export type HOME_QUERY_RESULT =
             caption: null;
             url: null;
             step: null;
+            videoUrl: null;
             imageAlt: null;
             imagePosition: null;
             image: null;
@@ -2653,6 +2992,7 @@ export type HOME_QUERY_RESULT =
             caption: null;
             url: null;
             step: null;
+            videoUrl: null;
             imageAlt: null;
             imagePosition: null;
             image: null;
@@ -2749,6 +3089,7 @@ export type HOME_QUERY_RESULT =
             caption: null;
             url: null;
             step: null;
+            videoUrl: null;
             imageAlt: null;
             imagePosition: null;
             image: null;
@@ -2776,6 +3117,39 @@ export type HOME_QUERY_RESULT =
             caption: null;
             url: null;
             step: string | null;
+            videoUrl: null;
+            imageAlt: null;
+            imagePosition: null;
+            image: null;
+            links: null;
+            link: {
+              _key: null;
+              label: string;
+              href: string;
+            };
+            body: null;
+            features: null;
+            faqs: null;
+            grinders: null;
+            detailGrinders: null;
+            specGrinder: null;
+            collections: null;
+            posts: null;
+          }
+        | {
+            _key: string;
+            _type: "distributorLocator";
+            eyebrow: string | null;
+            heading: string;
+            text: string | null;
+            intro: null;
+            quote: null;
+            attribution: null;
+            role: null;
+            caption: null;
+            url: null;
+            step: null;
+            videoUrl: null;
             imageAlt: null;
             imagePosition: null;
             image: null;
@@ -2807,6 +3181,7 @@ export type HOME_QUERY_RESULT =
             caption: null;
             url: null;
             step: null;
+            videoUrl: null;
             imageAlt: null;
             imagePosition: null;
             image: null;
@@ -2827,6 +3202,81 @@ export type HOME_QUERY_RESULT =
           }
         | {
             _key: string;
+            _type: "featuredGrinder";
+            eyebrow: string | null;
+            heading: string;
+            text: string | null;
+            intro: null;
+            quote: null;
+            attribution: null;
+            role: null;
+            caption: null;
+            url: null;
+            step: null;
+            videoUrl: string | null;
+            imageAlt: null;
+            imagePosition: null;
+            image: null;
+            links: null;
+            link: {
+              _key: null;
+              label: string;
+              href: string;
+            };
+            body: null;
+            features: null;
+            faqs: null;
+            grinders: null;
+            detailGrinders: null;
+            specGrinder: {
+              _id: string;
+              name: string;
+              slug: string;
+              audience: "business" | "home";
+              status: "current" | "discontinued" | "new";
+              shortDescription: string;
+              groupName: string;
+              groupSlug: string;
+              burrDiameterMm: number | null;
+              burrType: "conical" | "flat" | null;
+              grindType: "both" | "espresso" | "filter" | null;
+              imageAlt: string | null;
+              heroImage: {
+                alt: string | null;
+                asset: SanityImageAssetReference | null;
+                crop: SanityImageCrop | null;
+                hotspot: SanityImageHotspot | null;
+                lqip: string | null;
+              } | null;
+              answerFirst: string;
+              specs: {
+                burrType: "conical" | "flat" | null;
+                burrDiameterMm: number | null;
+                grindType: "both" | "espresso" | "filter" | null;
+                motorPowerW: number | null;
+                rpm: number | null;
+                hopperCapacityG: number | null;
+                outputGPerS: number | null;
+                adjustment: string | null;
+                widthMm: number | null;
+                depthMm: number | null;
+                heightMm: number | null;
+                weightKg: number | null;
+                voltage: string | null;
+                display: string | null;
+                features: Array<string> | null;
+              } | null;
+              extraSpecs: Array<{
+                _key: string;
+                label: string;
+                value: string;
+              }> | null;
+            };
+            collections: null;
+            posts: null;
+          }
+        | {
+            _key: string;
             _type: "featureList";
             eyebrow: null;
             heading: string;
@@ -2838,6 +3288,7 @@ export type HOME_QUERY_RESULT =
             caption: null;
             url: null;
             step: null;
+            videoUrl: null;
             imageAlt: null;
             imagePosition: null;
             image: null;
@@ -2848,6 +3299,12 @@ export type HOME_QUERY_RESULT =
               _key: string;
               title: string;
               text: string;
+              icon: null;
+              ground: null;
+              imageAlt: null;
+              image: null;
+              linkLabel: null;
+              linkHref: null;
             }>;
             faqs: null;
             grinders: null;
@@ -2869,6 +3326,7 @@ export type HOME_QUERY_RESULT =
             caption: null;
             url: null;
             step: null;
+            videoUrl: null;
             imageAlt: null;
             imagePosition: null;
             image: null;
@@ -2965,6 +3423,7 @@ export type HOME_QUERY_RESULT =
             caption: null;
             url: null;
             step: null;
+            videoUrl: null;
             imageAlt: string | null;
             imagePosition: null;
             image: {
@@ -3002,6 +3461,7 @@ export type HOME_QUERY_RESULT =
             caption: null;
             url: null;
             step: null;
+            videoUrl: null;
             imageAlt: string;
             imagePosition: "left" | "right" | null;
             image: {
@@ -3039,6 +3499,7 @@ export type HOME_QUERY_RESULT =
             caption: null;
             url: null;
             step: null;
+            videoUrl: null;
             imageAlt: null;
             imagePosition: null;
             image: null;
@@ -3058,6 +3519,14 @@ export type HOME_QUERY_RESULT =
               publishedAt: string;
               topicTitle: string;
               topicSlug: string;
+              imageAlt: string | null;
+              image: {
+                alt: string | null;
+                asset: SanityImageAssetReference | null;
+                crop: SanityImageCrop | null;
+                hotspot: SanityImageHotspot | null;
+                lqip: string | null;
+              } | null;
             }>;
           }
         | {
@@ -3073,6 +3542,7 @@ export type HOME_QUERY_RESULT =
             caption: null;
             url: null;
             step: null;
+            videoUrl: null;
             imageAlt: null;
             imagePosition: null;
             image: null;
@@ -3100,6 +3570,7 @@ export type HOME_QUERY_RESULT =
             caption: null;
             url: null;
             step: null;
+            videoUrl: null;
             imageAlt: null;
             imagePosition: null;
             image: null;
@@ -3127,6 +3598,7 @@ export type HOME_QUERY_RESULT =
             caption: null;
             url: null;
             step: null;
+            videoUrl: null;
             imageAlt: null;
             imagePosition: null;
             image: null;
@@ -3197,6 +3669,7 @@ export type HOME_QUERY_RESULT =
             caption: string | null;
             url: string;
             step: null;
+            videoUrl: null;
             imageAlt: null;
             imagePosition: null;
             image: null;
@@ -3228,7 +3701,7 @@ export type HOME_QUERY_RESULT =
 
 // Source: src/sanity/lib/queries.ts
 // Variable: JOURNEY_QUERY
-// Query: *[_type == "journeyPage" && slug.current == $slug && language == "en-GB"][0]{  title,  "slug": slug.current,  audience,  introduction,  sections[]{    _key,    _type,    eyebrow, heading, text, intro, quote, attribution, role, caption, url, step,    "imageAlt": image.alt,    imagePosition,    "image": image{ alt, asset, crop, hotspot, "lqip": asset->metadata.lqip },    links[]{ _key, label, href },    link{ _key, label, href },    body,    features[]{ _key, title, text },    faqs[]{ _key, question, answer },    grinders[]->{  _id,  name,  "slug": slug.current,  audience,  status,  shortDescription,  "groupName": group->name,  "groupSlug": group->slug.current,  "burrDiameterMm": specs.burrDiameterMm,  "burrType": specs.burrType,  "grindType": specs.grindType,  "motorPowerW": specs.motorPowerW,  "imageAlt": heroImage.alt,  "heroImage": heroImage{ alt, asset, crop, hotspot, "lqip": asset->metadata.lqip }},    "detailGrinders": grinders[]->{      _id, name, "slug": slug.current, audience, status, shortDescription,      "groupName": group->name, "groupSlug": group->slug.current,      "burrDiameterMm": specs.burrDiameterMm, "burrType": specs.burrType, "grindType": specs.grindType,      "imageAlt": heroImage.alt, "heroImage": heroImage{ alt, asset, crop, hotspot, "lqip": asset->metadata.lqip },      answerFirst,      specs{  burrType,  burrDiameterMm,  grindType,  motorPowerW,  rpm,  hopperCapacityG,  outputGPerS,  adjustment,  "widthMm": dimensions.widthMm,  "depthMm": dimensions.depthMm,  "heightMm": dimensions.heightMm,  weightKg,  voltage,  display,  features},      extraSpecs[]{ _key, label, value },      faqs[]{ _key, question, answer }    },    "specGrinder": grinder->{      _id, name, "slug": slug.current, audience, status, shortDescription,      "groupName": group->name, "groupSlug": group->slug.current,      "burrDiameterMm": specs.burrDiameterMm, "burrType": specs.burrType, "grindType": specs.grindType,      "imageAlt": heroImage.alt, "heroImage": heroImage{ alt, asset, crop, hotspot, "lqip": asset->metadata.lqip },      answerFirst,      specs{  burrType,  burrDiameterMm,  grindType,  motorPowerW,  rpm,  hopperCapacityG,  outputGPerS,  adjustment,  "widthMm": dimensions.widthMm,  "depthMm": dimensions.depthMm,  "heightMm": dimensions.heightMm,  weightKg,  voltage,  display,  features},      extraSpecs[]{ _key, label, value }    },    collections[]->{ name, "slug": slug.current, summary, audience },    posts[]->{  title,  "slug": slug.current,  excerpt,  publishedAt,  "topicTitle": topic->title,  "topicSlug": topic->slug.current}  },    "seoTitle": seo.title,  "seoDescription": seo.description,  "noIndex": seo.noIndex == true,  "canonical": seo.canonical,  "seoImage": seo.image{ alt, asset, crop, hotspot, "lqip": asset->metadata.lqip }}
+// Query: *[_type == "journeyPage" && slug.current == $slug && language == "en-GB"][0]{  title,  "slug": slug.current,  audience,  introduction,  sections[]{    _key,    _type,    eyebrow, heading, text, intro, quote, attribution, role, caption, url, step, videoUrl,    "imageAlt": image.alt,    imagePosition,    "image": image{ alt, asset, crop, hotspot, "lqip": asset->metadata.lqip },    links[]{ _key, label, href },    link{ _key, label, href },    body,    features[]{      _key, title, text, icon, ground,      "imageAlt": image.alt, "image": image{ alt, asset, crop, hotspot, "lqip": asset->metadata.lqip },      "linkLabel": link.label, "linkHref": link.href    },    faqs[]{ _key, question, answer },    grinders[]->{  _id,  name,  "slug": slug.current,  audience,  status,  shortDescription,  "groupName": group->name,  "groupSlug": group->slug.current,  "burrDiameterMm": specs.burrDiameterMm,  "burrType": specs.burrType,  "grindType": specs.grindType,  "motorPowerW": specs.motorPowerW,  "imageAlt": heroImage.alt,  "heroImage": heroImage{ alt, asset, crop, hotspot, "lqip": asset->metadata.lqip }},    "detailGrinders": grinders[]->{      _id, name, "slug": slug.current, audience, status, shortDescription,      "groupName": group->name, "groupSlug": group->slug.current,      "burrDiameterMm": specs.burrDiameterMm, "burrType": specs.burrType, "grindType": specs.grindType,      "imageAlt": heroImage.alt, "heroImage": heroImage{ alt, asset, crop, hotspot, "lqip": asset->metadata.lqip },      answerFirst,      specs{  burrType,  burrDiameterMm,  grindType,  motorPowerW,  rpm,  hopperCapacityG,  outputGPerS,  adjustment,  "widthMm": dimensions.widthMm,  "depthMm": dimensions.depthMm,  "heightMm": dimensions.heightMm,  weightKg,  voltage,  display,  features},      extraSpecs[]{ _key, label, value },      faqs[]{ _key, question, answer }    },    "specGrinder": grinder->{      _id, name, "slug": slug.current, audience, status, shortDescription,      "groupName": group->name, "groupSlug": group->slug.current,      "burrDiameterMm": specs.burrDiameterMm, "burrType": specs.burrType, "grindType": specs.grindType,      "imageAlt": heroImage.alt, "heroImage": heroImage{ alt, asset, crop, hotspot, "lqip": asset->metadata.lqip },      answerFirst,      specs{  burrType,  burrDiameterMm,  grindType,  motorPowerW,  rpm,  hopperCapacityG,  outputGPerS,  adjustment,  "widthMm": dimensions.widthMm,  "depthMm": dimensions.depthMm,  "heightMm": dimensions.heightMm,  weightKg,  voltage,  display,  features},      extraSpecs[]{ _key, label, value }    },    collections[]->{ name, "slug": slug.current, summary, audience },    posts[]->{  title,  "slug": slug.current,  excerpt,  publishedAt,  "topicTitle": topic->title,  "topicSlug": topic->slug.current,  "imageAlt": image.alt,  "image": image{ alt, asset, crop, hotspot, "lqip": asset->metadata.lqip }}  },    "seoTitle": seo.title,  "seoDescription": seo.description,  "noIndex": seo.noIndex == true,  "canonical": seo.canonical,  "seoImage": seo.image{ alt, asset, crop, hotspot, "lqip": asset->metadata.lqip }}
 export type JOURNEY_QUERY_RESULT = {
   title: string;
   slug: string;
@@ -3248,6 +3721,7 @@ export type JOURNEY_QUERY_RESULT = {
         caption: null;
         url: null;
         step: null;
+        videoUrl: null;
         imageAlt: null;
         imagePosition: null;
         image: null;
@@ -3280,6 +3754,7 @@ export type JOURNEY_QUERY_RESULT = {
         caption: null;
         url: null;
         step: null;
+        videoUrl: null;
         imageAlt: null;
         imagePosition: null;
         image: null;
@@ -3376,6 +3851,7 @@ export type JOURNEY_QUERY_RESULT = {
         caption: null;
         url: null;
         step: null;
+        videoUrl: null;
         imageAlt: null;
         imagePosition: null;
         image: null;
@@ -3403,6 +3879,39 @@ export type JOURNEY_QUERY_RESULT = {
         caption: null;
         url: null;
         step: string | null;
+        videoUrl: null;
+        imageAlt: null;
+        imagePosition: null;
+        image: null;
+        links: null;
+        link: {
+          _key: null;
+          label: string;
+          href: string;
+        };
+        body: null;
+        features: null;
+        faqs: null;
+        grinders: null;
+        detailGrinders: null;
+        specGrinder: null;
+        collections: null;
+        posts: null;
+      }
+    | {
+        _key: string;
+        _type: "distributorLocator";
+        eyebrow: string | null;
+        heading: string;
+        text: string | null;
+        intro: null;
+        quote: null;
+        attribution: null;
+        role: null;
+        caption: null;
+        url: null;
+        step: null;
+        videoUrl: null;
         imageAlt: null;
         imagePosition: null;
         image: null;
@@ -3434,6 +3943,7 @@ export type JOURNEY_QUERY_RESULT = {
         caption: null;
         url: null;
         step: null;
+        videoUrl: null;
         imageAlt: null;
         imagePosition: null;
         image: null;
@@ -3454,6 +3964,81 @@ export type JOURNEY_QUERY_RESULT = {
       }
     | {
         _key: string;
+        _type: "featuredGrinder";
+        eyebrow: string | null;
+        heading: string;
+        text: string | null;
+        intro: null;
+        quote: null;
+        attribution: null;
+        role: null;
+        caption: null;
+        url: null;
+        step: null;
+        videoUrl: string | null;
+        imageAlt: null;
+        imagePosition: null;
+        image: null;
+        links: null;
+        link: {
+          _key: null;
+          label: string;
+          href: string;
+        };
+        body: null;
+        features: null;
+        faqs: null;
+        grinders: null;
+        detailGrinders: null;
+        specGrinder: {
+          _id: string;
+          name: string;
+          slug: string;
+          audience: "business" | "home";
+          status: "current" | "discontinued" | "new";
+          shortDescription: string;
+          groupName: string;
+          groupSlug: string;
+          burrDiameterMm: number | null;
+          burrType: "conical" | "flat" | null;
+          grindType: "both" | "espresso" | "filter" | null;
+          imageAlt: string | null;
+          heroImage: {
+            alt: string | null;
+            asset: SanityImageAssetReference | null;
+            crop: SanityImageCrop | null;
+            hotspot: SanityImageHotspot | null;
+            lqip: string | null;
+          } | null;
+          answerFirst: string;
+          specs: {
+            burrType: "conical" | "flat" | null;
+            burrDiameterMm: number | null;
+            grindType: "both" | "espresso" | "filter" | null;
+            motorPowerW: number | null;
+            rpm: number | null;
+            hopperCapacityG: number | null;
+            outputGPerS: number | null;
+            adjustment: string | null;
+            widthMm: number | null;
+            depthMm: number | null;
+            heightMm: number | null;
+            weightKg: number | null;
+            voltage: string | null;
+            display: string | null;
+            features: Array<string> | null;
+          } | null;
+          extraSpecs: Array<{
+            _key: string;
+            label: string;
+            value: string;
+          }> | null;
+        };
+        collections: null;
+        posts: null;
+      }
+    | {
+        _key: string;
         _type: "featureList";
         eyebrow: null;
         heading: string;
@@ -3465,6 +4050,7 @@ export type JOURNEY_QUERY_RESULT = {
         caption: null;
         url: null;
         step: null;
+        videoUrl: null;
         imageAlt: null;
         imagePosition: null;
         image: null;
@@ -3475,6 +4061,12 @@ export type JOURNEY_QUERY_RESULT = {
           _key: string;
           title: string;
           text: string;
+          icon: null;
+          ground: null;
+          imageAlt: null;
+          image: null;
+          linkLabel: null;
+          linkHref: null;
         }>;
         faqs: null;
         grinders: null;
@@ -3496,6 +4088,7 @@ export type JOURNEY_QUERY_RESULT = {
         caption: null;
         url: null;
         step: null;
+        videoUrl: null;
         imageAlt: null;
         imagePosition: null;
         image: null;
@@ -3592,6 +4185,7 @@ export type JOURNEY_QUERY_RESULT = {
         caption: null;
         url: null;
         step: null;
+        videoUrl: null;
         imageAlt: string | null;
         imagePosition: null;
         image: {
@@ -3629,6 +4223,7 @@ export type JOURNEY_QUERY_RESULT = {
         caption: null;
         url: null;
         step: null;
+        videoUrl: null;
         imageAlt: string;
         imagePosition: "left" | "right" | null;
         image: {
@@ -3666,6 +4261,7 @@ export type JOURNEY_QUERY_RESULT = {
         caption: null;
         url: null;
         step: null;
+        videoUrl: null;
         imageAlt: null;
         imagePosition: null;
         image: null;
@@ -3685,6 +4281,14 @@ export type JOURNEY_QUERY_RESULT = {
           publishedAt: string;
           topicTitle: string;
           topicSlug: string;
+          imageAlt: string | null;
+          image: {
+            alt: string | null;
+            asset: SanityImageAssetReference | null;
+            crop: SanityImageCrop | null;
+            hotspot: SanityImageHotspot | null;
+            lqip: string | null;
+          } | null;
         }>;
       }
     | {
@@ -3700,6 +4304,7 @@ export type JOURNEY_QUERY_RESULT = {
         caption: null;
         url: null;
         step: null;
+        videoUrl: null;
         imageAlt: null;
         imagePosition: null;
         image: null;
@@ -3727,6 +4332,7 @@ export type JOURNEY_QUERY_RESULT = {
         caption: null;
         url: null;
         step: null;
+        videoUrl: null;
         imageAlt: null;
         imagePosition: null;
         image: null;
@@ -3754,6 +4360,7 @@ export type JOURNEY_QUERY_RESULT = {
         caption: null;
         url: null;
         step: null;
+        videoUrl: null;
         imageAlt: null;
         imagePosition: null;
         image: null;
@@ -3781,6 +4388,7 @@ export type JOURNEY_QUERY_RESULT = {
         caption: null;
         url: null;
         step: null;
+        videoUrl: null;
         imageAlt: null;
         imagePosition: null;
         image: null;
@@ -3851,6 +4459,7 @@ export type JOURNEY_QUERY_RESULT = {
         caption: string | null;
         url: string;
         step: null;
+        videoUrl: null;
         imageAlt: null;
         imagePosition: null;
         image: null;
@@ -3881,7 +4490,7 @@ export type JOURNEY_QUERY_RESULT = {
 
 // Source: src/sanity/lib/queries.ts
 // Variable: SIMPLE_PAGE_QUERY
-// Query: *[_id == $id][0]{  title,  introduction,  sections[]{    _key, _type, eyebrow, heading, text, intro, quote, attribution, role, caption, url, step,    "imageAlt": image.alt, imagePosition, "image": image{ alt, asset, crop, hotspot, "lqip": asset->metadata.lqip },    links[]{ _key, label, href }, link{ _key, label, href }, body,    features[]{ _key, title, text },    faqs[]{ _key, question, answer },    grinders[]->{  _id,  name,  "slug": slug.current,  audience,  status,  shortDescription,  "groupName": group->name,  "groupSlug": group->slug.current,  "burrDiameterMm": specs.burrDiameterMm,  "burrType": specs.burrType,  "grindType": specs.grindType,  "motorPowerW": specs.motorPowerW,  "imageAlt": heroImage.alt,  "heroImage": heroImage{ alt, asset, crop, hotspot, "lqip": asset->metadata.lqip }},    "detailGrinders": grinders[]->{      _id, name, "slug": slug.current, audience, status, shortDescription, answerFirst,      "groupName": group->name, "groupSlug": group->slug.current,      "burrDiameterMm": specs.burrDiameterMm, "burrType": specs.burrType, "grindType": specs.grindType,      "imageAlt": heroImage.alt, "heroImage": heroImage{ alt, asset, crop, hotspot, "lqip": asset->metadata.lqip },      specs{  burrType,  burrDiameterMm,  grindType,  motorPowerW,  rpm,  hopperCapacityG,  outputGPerS,  adjustment,  "widthMm": dimensions.widthMm,  "depthMm": dimensions.depthMm,  "heightMm": dimensions.heightMm,  weightKg,  voltage,  display,  features},      extraSpecs[]{ _key, label, value },      faqs[]{ _key, question, answer }    },    "specGrinder": grinder->{      _id, name, "slug": slug.current, audience, status, shortDescription, answerFirst,      "groupName": group->name, "groupSlug": group->slug.current,      "burrDiameterMm": specs.burrDiameterMm, "burrType": specs.burrType, "grindType": specs.grindType,      "imageAlt": heroImage.alt, "heroImage": heroImage{ alt, asset, crop, hotspot, "lqip": asset->metadata.lqip },      specs{  burrType,  burrDiameterMm,  grindType,  motorPowerW,  rpm,  hopperCapacityG,  outputGPerS,  adjustment,  "widthMm": dimensions.widthMm,  "depthMm": dimensions.depthMm,  "heightMm": dimensions.heightMm,  weightKg,  voltage,  display,  features},      extraSpecs[]{ _key, label, value },      faqs[]{ _key, question, answer }    },    collections[]->{ name, "slug": slug.current, summary, audience },    posts[]->{  title,  "slug": slug.current,  excerpt,  publishedAt,  "topicTitle": topic->title,  "topicSlug": topic->slug.current}  },    "seoTitle": seo.title,  "seoDescription": seo.description,  "noIndex": seo.noIndex == true,  "canonical": seo.canonical,  "seoImage": seo.image{ alt, asset, crop, hotspot, "lqip": asset->metadata.lqip }}
+// Query: *[_id == $id][0]{  title,  introduction,  sections[]{    _key, _type, eyebrow, heading, text, intro, quote, attribution, role, caption, url, step, videoUrl,    "imageAlt": image.alt, imagePosition, "image": image{ alt, asset, crop, hotspot, "lqip": asset->metadata.lqip },    links[]{ _key, label, href }, link{ _key, label, href }, body,    features[]{      _key, title, text, icon, ground,      "imageAlt": image.alt, "image": image{ alt, asset, crop, hotspot, "lqip": asset->metadata.lqip },      "linkLabel": link.label, "linkHref": link.href    },    faqs[]{ _key, question, answer },    grinders[]->{  _id,  name,  "slug": slug.current,  audience,  status,  shortDescription,  "groupName": group->name,  "groupSlug": group->slug.current,  "burrDiameterMm": specs.burrDiameterMm,  "burrType": specs.burrType,  "grindType": specs.grindType,  "motorPowerW": specs.motorPowerW,  "imageAlt": heroImage.alt,  "heroImage": heroImage{ alt, asset, crop, hotspot, "lqip": asset->metadata.lqip }},    "detailGrinders": grinders[]->{      _id, name, "slug": slug.current, audience, status, shortDescription, answerFirst,      "groupName": group->name, "groupSlug": group->slug.current,      "burrDiameterMm": specs.burrDiameterMm, "burrType": specs.burrType, "grindType": specs.grindType,      "imageAlt": heroImage.alt, "heroImage": heroImage{ alt, asset, crop, hotspot, "lqip": asset->metadata.lqip },      specs{  burrType,  burrDiameterMm,  grindType,  motorPowerW,  rpm,  hopperCapacityG,  outputGPerS,  adjustment,  "widthMm": dimensions.widthMm,  "depthMm": dimensions.depthMm,  "heightMm": dimensions.heightMm,  weightKg,  voltage,  display,  features},      extraSpecs[]{ _key, label, value },      faqs[]{ _key, question, answer }    },    "specGrinder": grinder->{      _id, name, "slug": slug.current, audience, status, shortDescription, answerFirst,      "groupName": group->name, "groupSlug": group->slug.current,      "burrDiameterMm": specs.burrDiameterMm, "burrType": specs.burrType, "grindType": specs.grindType,      "imageAlt": heroImage.alt, "heroImage": heroImage{ alt, asset, crop, hotspot, "lqip": asset->metadata.lqip },      specs{  burrType,  burrDiameterMm,  grindType,  motorPowerW,  rpm,  hopperCapacityG,  outputGPerS,  adjustment,  "widthMm": dimensions.widthMm,  "depthMm": dimensions.depthMm,  "heightMm": dimensions.heightMm,  weightKg,  voltage,  display,  features},      extraSpecs[]{ _key, label, value },      faqs[]{ _key, question, answer }    },    collections[]->{ name, "slug": slug.current, summary, audience },    posts[]->{  title,  "slug": slug.current,  excerpt,  publishedAt,  "topicTitle": topic->title,  "topicSlug": topic->slug.current,  "imageAlt": image.alt,  "image": image{ alt, asset, crop, hotspot, "lqip": asset->metadata.lqip }}  },    "seoTitle": seo.title,  "seoDescription": seo.description,  "noIndex": seo.noIndex == true,  "canonical": seo.canonical,  "seoImage": seo.image{ alt, asset, crop, hotspot, "lqip": asset->metadata.lqip }}
 export type SIMPLE_PAGE_QUERY_RESULT =
   | {
       title: null;
@@ -3952,6 +4561,7 @@ export type SIMPLE_PAGE_QUERY_RESULT =
             caption: null;
             url: null;
             step: null;
+            videoUrl: null;
             imageAlt: null;
             imagePosition: null;
             image: null;
@@ -3984,6 +4594,7 @@ export type SIMPLE_PAGE_QUERY_RESULT =
             caption: null;
             url: null;
             step: null;
+            videoUrl: null;
             imageAlt: null;
             imagePosition: null;
             image: null;
@@ -4011,6 +4622,7 @@ export type SIMPLE_PAGE_QUERY_RESULT =
             caption: null;
             url: null;
             step: null;
+            videoUrl: null;
             imageAlt: null;
             imagePosition: null;
             image: null;
@@ -4107,6 +4719,7 @@ export type SIMPLE_PAGE_QUERY_RESULT =
             caption: null;
             url: null;
             step: null;
+            videoUrl: null;
             imageAlt: null;
             imagePosition: null;
             image: null;
@@ -4134,6 +4747,39 @@ export type SIMPLE_PAGE_QUERY_RESULT =
             caption: null;
             url: null;
             step: string | null;
+            videoUrl: null;
+            imageAlt: null;
+            imagePosition: null;
+            image: null;
+            links: null;
+            link: {
+              _key: null;
+              label: string;
+              href: string;
+            };
+            body: null;
+            features: null;
+            faqs: null;
+            grinders: null;
+            detailGrinders: null;
+            specGrinder: null;
+            collections: null;
+            posts: null;
+          }
+        | {
+            _key: string;
+            _type: "distributorLocator";
+            eyebrow: string | null;
+            heading: string;
+            text: string | null;
+            intro: null;
+            quote: null;
+            attribution: null;
+            role: null;
+            caption: null;
+            url: null;
+            step: null;
+            videoUrl: null;
             imageAlt: null;
             imagePosition: null;
             image: null;
@@ -4165,6 +4811,7 @@ export type SIMPLE_PAGE_QUERY_RESULT =
             caption: null;
             url: null;
             step: null;
+            videoUrl: null;
             imageAlt: null;
             imagePosition: null;
             image: null;
@@ -4185,6 +4832,86 @@ export type SIMPLE_PAGE_QUERY_RESULT =
           }
         | {
             _key: string;
+            _type: "featuredGrinder";
+            eyebrow: string | null;
+            heading: string;
+            text: string | null;
+            intro: null;
+            quote: null;
+            attribution: null;
+            role: null;
+            caption: null;
+            url: null;
+            step: null;
+            videoUrl: string | null;
+            imageAlt: null;
+            imagePosition: null;
+            image: null;
+            links: null;
+            link: {
+              _key: null;
+              label: string;
+              href: string;
+            };
+            body: null;
+            features: null;
+            faqs: null;
+            grinders: null;
+            detailGrinders: null;
+            specGrinder: {
+              _id: string;
+              name: string;
+              slug: string;
+              audience: "business" | "home";
+              status: "current" | "discontinued" | "new";
+              shortDescription: string;
+              answerFirst: string;
+              groupName: string;
+              groupSlug: string;
+              burrDiameterMm: number | null;
+              burrType: "conical" | "flat" | null;
+              grindType: "both" | "espresso" | "filter" | null;
+              imageAlt: string | null;
+              heroImage: {
+                alt: string | null;
+                asset: SanityImageAssetReference | null;
+                crop: SanityImageCrop | null;
+                hotspot: SanityImageHotspot | null;
+                lqip: string | null;
+              } | null;
+              specs: {
+                burrType: "conical" | "flat" | null;
+                burrDiameterMm: number | null;
+                grindType: "both" | "espresso" | "filter" | null;
+                motorPowerW: number | null;
+                rpm: number | null;
+                hopperCapacityG: number | null;
+                outputGPerS: number | null;
+                adjustment: string | null;
+                widthMm: number | null;
+                depthMm: number | null;
+                heightMm: number | null;
+                weightKg: number | null;
+                voltage: string | null;
+                display: string | null;
+                features: Array<string> | null;
+              } | null;
+              extraSpecs: Array<{
+                _key: string;
+                label: string;
+                value: string;
+              }> | null;
+              faqs: Array<{
+                _key: string;
+                question: string;
+                answer: string;
+              }> | null;
+            };
+            collections: null;
+            posts: null;
+          }
+        | {
+            _key: string;
             _type: "featureList";
             eyebrow: null;
             heading: string;
@@ -4196,6 +4923,7 @@ export type SIMPLE_PAGE_QUERY_RESULT =
             caption: null;
             url: null;
             step: null;
+            videoUrl: null;
             imageAlt: null;
             imagePosition: null;
             image: null;
@@ -4206,6 +4934,12 @@ export type SIMPLE_PAGE_QUERY_RESULT =
               _key: string;
               title: string;
               text: string;
+              icon: null;
+              ground: null;
+              imageAlt: null;
+              image: null;
+              linkLabel: null;
+              linkHref: null;
             }>;
             faqs: null;
             grinders: null;
@@ -4227,6 +4961,7 @@ export type SIMPLE_PAGE_QUERY_RESULT =
             caption: null;
             url: null;
             step: null;
+            videoUrl: null;
             imageAlt: null;
             imagePosition: null;
             image: null;
@@ -4323,6 +5058,7 @@ export type SIMPLE_PAGE_QUERY_RESULT =
             caption: null;
             url: null;
             step: null;
+            videoUrl: null;
             imageAlt: string | null;
             imagePosition: null;
             image: {
@@ -4360,6 +5096,7 @@ export type SIMPLE_PAGE_QUERY_RESULT =
             caption: null;
             url: null;
             step: null;
+            videoUrl: null;
             imageAlt: string;
             imagePosition: "left" | "right" | null;
             image: {
@@ -4397,6 +5134,7 @@ export type SIMPLE_PAGE_QUERY_RESULT =
             caption: null;
             url: null;
             step: null;
+            videoUrl: null;
             imageAlt: null;
             imagePosition: null;
             image: null;
@@ -4416,6 +5154,14 @@ export type SIMPLE_PAGE_QUERY_RESULT =
               publishedAt: string;
               topicTitle: string;
               topicSlug: string;
+              imageAlt: string | null;
+              image: {
+                alt: string | null;
+                asset: SanityImageAssetReference | null;
+                crop: SanityImageCrop | null;
+                hotspot: SanityImageHotspot | null;
+                lqip: string | null;
+              } | null;
             }>;
           }
         | {
@@ -4431,6 +5177,7 @@ export type SIMPLE_PAGE_QUERY_RESULT =
             caption: null;
             url: null;
             step: null;
+            videoUrl: null;
             imageAlt: null;
             imagePosition: null;
             image: null;
@@ -4458,6 +5205,7 @@ export type SIMPLE_PAGE_QUERY_RESULT =
             caption: null;
             url: null;
             step: null;
+            videoUrl: null;
             imageAlt: null;
             imagePosition: null;
             image: null;
@@ -4485,6 +5233,7 @@ export type SIMPLE_PAGE_QUERY_RESULT =
             caption: null;
             url: null;
             step: null;
+            videoUrl: null;
             imageAlt: null;
             imagePosition: null;
             image: null;
@@ -4560,6 +5309,7 @@ export type SIMPLE_PAGE_QUERY_RESULT =
             caption: string | null;
             url: string;
             step: null;
+            videoUrl: null;
             imageAlt: null;
             imagePosition: null;
             image: null;
@@ -4604,6 +5354,7 @@ export type SIMPLE_PAGE_QUERY_RESULT =
             caption: null;
             url: null;
             step: null;
+            videoUrl: null;
             imageAlt: null;
             imagePosition: null;
             image: null;
@@ -4636,6 +5387,7 @@ export type SIMPLE_PAGE_QUERY_RESULT =
             caption: null;
             url: null;
             step: null;
+            videoUrl: null;
             imageAlt: null;
             imagePosition: null;
             image: null;
@@ -4732,6 +5484,7 @@ export type SIMPLE_PAGE_QUERY_RESULT =
             caption: null;
             url: null;
             step: null;
+            videoUrl: null;
             imageAlt: null;
             imagePosition: null;
             image: null;
@@ -4759,6 +5512,39 @@ export type SIMPLE_PAGE_QUERY_RESULT =
             caption: null;
             url: null;
             step: string | null;
+            videoUrl: null;
+            imageAlt: null;
+            imagePosition: null;
+            image: null;
+            links: null;
+            link: {
+              _key: null;
+              label: string;
+              href: string;
+            };
+            body: null;
+            features: null;
+            faqs: null;
+            grinders: null;
+            detailGrinders: null;
+            specGrinder: null;
+            collections: null;
+            posts: null;
+          }
+        | {
+            _key: string;
+            _type: "distributorLocator";
+            eyebrow: string | null;
+            heading: string;
+            text: string | null;
+            intro: null;
+            quote: null;
+            attribution: null;
+            role: null;
+            caption: null;
+            url: null;
+            step: null;
+            videoUrl: null;
             imageAlt: null;
             imagePosition: null;
             image: null;
@@ -4790,6 +5576,7 @@ export type SIMPLE_PAGE_QUERY_RESULT =
             caption: null;
             url: null;
             step: null;
+            videoUrl: null;
             imageAlt: null;
             imagePosition: null;
             image: null;
@@ -4810,6 +5597,86 @@ export type SIMPLE_PAGE_QUERY_RESULT =
           }
         | {
             _key: string;
+            _type: "featuredGrinder";
+            eyebrow: string | null;
+            heading: string;
+            text: string | null;
+            intro: null;
+            quote: null;
+            attribution: null;
+            role: null;
+            caption: null;
+            url: null;
+            step: null;
+            videoUrl: string | null;
+            imageAlt: null;
+            imagePosition: null;
+            image: null;
+            links: null;
+            link: {
+              _key: null;
+              label: string;
+              href: string;
+            };
+            body: null;
+            features: null;
+            faqs: null;
+            grinders: null;
+            detailGrinders: null;
+            specGrinder: {
+              _id: string;
+              name: string;
+              slug: string;
+              audience: "business" | "home";
+              status: "current" | "discontinued" | "new";
+              shortDescription: string;
+              answerFirst: string;
+              groupName: string;
+              groupSlug: string;
+              burrDiameterMm: number | null;
+              burrType: "conical" | "flat" | null;
+              grindType: "both" | "espresso" | "filter" | null;
+              imageAlt: string | null;
+              heroImage: {
+                alt: string | null;
+                asset: SanityImageAssetReference | null;
+                crop: SanityImageCrop | null;
+                hotspot: SanityImageHotspot | null;
+                lqip: string | null;
+              } | null;
+              specs: {
+                burrType: "conical" | "flat" | null;
+                burrDiameterMm: number | null;
+                grindType: "both" | "espresso" | "filter" | null;
+                motorPowerW: number | null;
+                rpm: number | null;
+                hopperCapacityG: number | null;
+                outputGPerS: number | null;
+                adjustment: string | null;
+                widthMm: number | null;
+                depthMm: number | null;
+                heightMm: number | null;
+                weightKg: number | null;
+                voltage: string | null;
+                display: string | null;
+                features: Array<string> | null;
+              } | null;
+              extraSpecs: Array<{
+                _key: string;
+                label: string;
+                value: string;
+              }> | null;
+              faqs: Array<{
+                _key: string;
+                question: string;
+                answer: string;
+              }> | null;
+            };
+            collections: null;
+            posts: null;
+          }
+        | {
+            _key: string;
             _type: "featureList";
             eyebrow: null;
             heading: string;
@@ -4821,6 +5688,7 @@ export type SIMPLE_PAGE_QUERY_RESULT =
             caption: null;
             url: null;
             step: null;
+            videoUrl: null;
             imageAlt: null;
             imagePosition: null;
             image: null;
@@ -4831,6 +5699,12 @@ export type SIMPLE_PAGE_QUERY_RESULT =
               _key: string;
               title: string;
               text: string;
+              icon: null;
+              ground: null;
+              imageAlt: null;
+              image: null;
+              linkLabel: null;
+              linkHref: null;
             }>;
             faqs: null;
             grinders: null;
@@ -4852,6 +5726,7 @@ export type SIMPLE_PAGE_QUERY_RESULT =
             caption: null;
             url: null;
             step: null;
+            videoUrl: null;
             imageAlt: null;
             imagePosition: null;
             image: null;
@@ -4948,6 +5823,7 @@ export type SIMPLE_PAGE_QUERY_RESULT =
             caption: null;
             url: null;
             step: null;
+            videoUrl: null;
             imageAlt: string | null;
             imagePosition: null;
             image: {
@@ -4985,6 +5861,7 @@ export type SIMPLE_PAGE_QUERY_RESULT =
             caption: null;
             url: null;
             step: null;
+            videoUrl: null;
             imageAlt: string;
             imagePosition: "left" | "right" | null;
             image: {
@@ -5022,6 +5899,7 @@ export type SIMPLE_PAGE_QUERY_RESULT =
             caption: null;
             url: null;
             step: null;
+            videoUrl: null;
             imageAlt: null;
             imagePosition: null;
             image: null;
@@ -5041,6 +5919,14 @@ export type SIMPLE_PAGE_QUERY_RESULT =
               publishedAt: string;
               topicTitle: string;
               topicSlug: string;
+              imageAlt: string | null;
+              image: {
+                alt: string | null;
+                asset: SanityImageAssetReference | null;
+                crop: SanityImageCrop | null;
+                hotspot: SanityImageHotspot | null;
+                lqip: string | null;
+              } | null;
             }>;
           }
         | {
@@ -5056,6 +5942,7 @@ export type SIMPLE_PAGE_QUERY_RESULT =
             caption: null;
             url: null;
             step: null;
+            videoUrl: null;
             imageAlt: null;
             imagePosition: null;
             image: null;
@@ -5083,6 +5970,7 @@ export type SIMPLE_PAGE_QUERY_RESULT =
             caption: null;
             url: null;
             step: null;
+            videoUrl: null;
             imageAlt: null;
             imagePosition: null;
             image: null;
@@ -5110,6 +5998,7 @@ export type SIMPLE_PAGE_QUERY_RESULT =
             caption: null;
             url: null;
             step: null;
+            videoUrl: null;
             imageAlt: null;
             imagePosition: null;
             image: null;
@@ -5137,6 +6026,7 @@ export type SIMPLE_PAGE_QUERY_RESULT =
             caption: null;
             url: null;
             step: null;
+            videoUrl: null;
             imageAlt: null;
             imagePosition: null;
             image: null;
@@ -5212,6 +6102,7 @@ export type SIMPLE_PAGE_QUERY_RESULT =
             caption: string | null;
             url: string;
             step: null;
+            videoUrl: null;
             imageAlt: null;
             imagePosition: null;
             image: null;
@@ -5256,6 +6147,7 @@ export type SIMPLE_PAGE_QUERY_RESULT =
             caption: null;
             url: null;
             step: null;
+            videoUrl: null;
             imageAlt: null;
             imagePosition: null;
             image: null;
@@ -5288,6 +6180,7 @@ export type SIMPLE_PAGE_QUERY_RESULT =
             caption: null;
             url: null;
             step: null;
+            videoUrl: null;
             imageAlt: null;
             imagePosition: null;
             image: null;
@@ -5384,6 +6277,7 @@ export type SIMPLE_PAGE_QUERY_RESULT =
             caption: null;
             url: null;
             step: null;
+            videoUrl: null;
             imageAlt: null;
             imagePosition: null;
             image: null;
@@ -5411,6 +6305,39 @@ export type SIMPLE_PAGE_QUERY_RESULT =
             caption: null;
             url: null;
             step: string | null;
+            videoUrl: null;
+            imageAlt: null;
+            imagePosition: null;
+            image: null;
+            links: null;
+            link: {
+              _key: null;
+              label: string;
+              href: string;
+            };
+            body: null;
+            features: null;
+            faqs: null;
+            grinders: null;
+            detailGrinders: null;
+            specGrinder: null;
+            collections: null;
+            posts: null;
+          }
+        | {
+            _key: string;
+            _type: "distributorLocator";
+            eyebrow: string | null;
+            heading: string;
+            text: string | null;
+            intro: null;
+            quote: null;
+            attribution: null;
+            role: null;
+            caption: null;
+            url: null;
+            step: null;
+            videoUrl: null;
             imageAlt: null;
             imagePosition: null;
             image: null;
@@ -5442,6 +6369,7 @@ export type SIMPLE_PAGE_QUERY_RESULT =
             caption: null;
             url: null;
             step: null;
+            videoUrl: null;
             imageAlt: null;
             imagePosition: null;
             image: null;
@@ -5462,6 +6390,86 @@ export type SIMPLE_PAGE_QUERY_RESULT =
           }
         | {
             _key: string;
+            _type: "featuredGrinder";
+            eyebrow: string | null;
+            heading: string;
+            text: string | null;
+            intro: null;
+            quote: null;
+            attribution: null;
+            role: null;
+            caption: null;
+            url: null;
+            step: null;
+            videoUrl: string | null;
+            imageAlt: null;
+            imagePosition: null;
+            image: null;
+            links: null;
+            link: {
+              _key: null;
+              label: string;
+              href: string;
+            };
+            body: null;
+            features: null;
+            faqs: null;
+            grinders: null;
+            detailGrinders: null;
+            specGrinder: {
+              _id: string;
+              name: string;
+              slug: string;
+              audience: "business" | "home";
+              status: "current" | "discontinued" | "new";
+              shortDescription: string;
+              answerFirst: string;
+              groupName: string;
+              groupSlug: string;
+              burrDiameterMm: number | null;
+              burrType: "conical" | "flat" | null;
+              grindType: "both" | "espresso" | "filter" | null;
+              imageAlt: string | null;
+              heroImage: {
+                alt: string | null;
+                asset: SanityImageAssetReference | null;
+                crop: SanityImageCrop | null;
+                hotspot: SanityImageHotspot | null;
+                lqip: string | null;
+              } | null;
+              specs: {
+                burrType: "conical" | "flat" | null;
+                burrDiameterMm: number | null;
+                grindType: "both" | "espresso" | "filter" | null;
+                motorPowerW: number | null;
+                rpm: number | null;
+                hopperCapacityG: number | null;
+                outputGPerS: number | null;
+                adjustment: string | null;
+                widthMm: number | null;
+                depthMm: number | null;
+                heightMm: number | null;
+                weightKg: number | null;
+                voltage: string | null;
+                display: string | null;
+                features: Array<string> | null;
+              } | null;
+              extraSpecs: Array<{
+                _key: string;
+                label: string;
+                value: string;
+              }> | null;
+              faqs: Array<{
+                _key: string;
+                question: string;
+                answer: string;
+              }> | null;
+            };
+            collections: null;
+            posts: null;
+          }
+        | {
+            _key: string;
             _type: "featureList";
             eyebrow: null;
             heading: string;
@@ -5473,6 +6481,7 @@ export type SIMPLE_PAGE_QUERY_RESULT =
             caption: null;
             url: null;
             step: null;
+            videoUrl: null;
             imageAlt: null;
             imagePosition: null;
             image: null;
@@ -5483,6 +6492,12 @@ export type SIMPLE_PAGE_QUERY_RESULT =
               _key: string;
               title: string;
               text: string;
+              icon: null;
+              ground: null;
+              imageAlt: null;
+              image: null;
+              linkLabel: null;
+              linkHref: null;
             }>;
             faqs: null;
             grinders: null;
@@ -5504,6 +6519,7 @@ export type SIMPLE_PAGE_QUERY_RESULT =
             caption: null;
             url: null;
             step: null;
+            videoUrl: null;
             imageAlt: null;
             imagePosition: null;
             image: null;
@@ -5600,6 +6616,7 @@ export type SIMPLE_PAGE_QUERY_RESULT =
             caption: null;
             url: null;
             step: null;
+            videoUrl: null;
             imageAlt: string | null;
             imagePosition: null;
             image: {
@@ -5637,6 +6654,7 @@ export type SIMPLE_PAGE_QUERY_RESULT =
             caption: null;
             url: null;
             step: null;
+            videoUrl: null;
             imageAlt: string;
             imagePosition: "left" | "right" | null;
             image: {
@@ -5674,6 +6692,7 @@ export type SIMPLE_PAGE_QUERY_RESULT =
             caption: null;
             url: null;
             step: null;
+            videoUrl: null;
             imageAlt: null;
             imagePosition: null;
             image: null;
@@ -5693,6 +6712,14 @@ export type SIMPLE_PAGE_QUERY_RESULT =
               publishedAt: string;
               topicTitle: string;
               topicSlug: string;
+              imageAlt: string | null;
+              image: {
+                alt: string | null;
+                asset: SanityImageAssetReference | null;
+                crop: SanityImageCrop | null;
+                hotspot: SanityImageHotspot | null;
+                lqip: string | null;
+              } | null;
             }>;
           }
         | {
@@ -5708,6 +6735,7 @@ export type SIMPLE_PAGE_QUERY_RESULT =
             caption: null;
             url: null;
             step: null;
+            videoUrl: null;
             imageAlt: null;
             imagePosition: null;
             image: null;
@@ -5735,6 +6763,7 @@ export type SIMPLE_PAGE_QUERY_RESULT =
             caption: null;
             url: null;
             step: null;
+            videoUrl: null;
             imageAlt: null;
             imagePosition: null;
             image: null;
@@ -5762,6 +6791,7 @@ export type SIMPLE_PAGE_QUERY_RESULT =
             caption: null;
             url: null;
             step: null;
+            videoUrl: null;
             imageAlt: null;
             imagePosition: null;
             image: null;
@@ -5837,6 +6867,7 @@ export type SIMPLE_PAGE_QUERY_RESULT =
             caption: string | null;
             url: string;
             step: null;
+            videoUrl: null;
             imageAlt: null;
             imagePosition: null;
             image: null;
@@ -5894,7 +6925,7 @@ export type GRINDERS_QUERY_RESULT = Array<{
 
 // Source: src/sanity/lib/queries.ts
 // Variable: GRINDER_QUERY
-// Query: *[_type == "grinder" && slug.current == $slug && language == "en-GB"][0]{  _id, name, "slug": slug.current, audience, status, shortDescription, answerFirst,  "groupName": group->name, "groupSlug": group->slug.current,  "burrDiameterMm": specs.burrDiameterMm, "burrType": specs.burrType, "grindType": specs.grindType,  "imageAlt": heroImage.alt, "heroImage": heroImage{ alt, asset, crop, hotspot, "lqip": asset->metadata.lqip },  gallery[]{ _key, alt, asset, crop, hotspot, "lqip": asset->metadata.lqip },  specs{  burrType,  burrDiameterMm,  grindType,  motorPowerW,  rpm,  hopperCapacityG,  outputGPerS,  adjustment,  "widthMm": dimensions.widthMm,  "depthMm": dimensions.depthMm,  "heightMm": dimensions.heightMm,  weightKg,  voltage,  display,  features},  extraSpecs[]{ _key, label, value },  faqs[]{ _key, question, answer },  relatedGrinders[]->{  _id,  name,  "slug": slug.current,  audience,  status,  shortDescription,  "groupName": group->name,  "groupSlug": group->slug.current,  "burrDiameterMm": specs.burrDiameterMm,  "burrType": specs.burrType,  "grindType": specs.grindType,  "motorPowerW": specs.motorPowerW,  "imageAlt": heroImage.alt,  "heroImage": heroImage{ alt, asset, crop, hotspot, "lqip": asset->metadata.lqip }},  relatedArticles[]->{  title,  "slug": slug.current,  excerpt,  publishedAt,  "topicTitle": topic->title,  "topicSlug": topic->slug.current},  "catalogueUrl": catalogue.asset->url,  "catalogueLabel": catalogue.label,    "seoTitle": seo.title,  "seoDescription": seo.description,  "noIndex": seo.noIndex == true,  "canonical": seo.canonical,  "seoImage": seo.image{ alt, asset, crop, hotspot, "lqip": asset->metadata.lqip }}
+// Query: *[_type == "grinder" && slug.current == $slug && language == "en-GB"][0]{  _id, name, "slug": slug.current, audience, status, shortDescription, answerFirst,  "groupName": group->name, "groupSlug": group->slug.current,  "burrDiameterMm": specs.burrDiameterMm, "burrType": specs.burrType, "grindType": specs.grindType,  "imageAlt": heroImage.alt, "heroImage": heroImage{ alt, asset, crop, hotspot, "lqip": asset->metadata.lqip },  gallery[]{ _key, alt, asset, crop, hotspot, "lqip": asset->metadata.lqip },  specs{  burrType,  burrDiameterMm,  grindType,  motorPowerW,  rpm,  hopperCapacityG,  outputGPerS,  adjustment,  "widthMm": dimensions.widthMm,  "depthMm": dimensions.depthMm,  "heightMm": dimensions.heightMm,  weightKg,  voltage,  display,  features},  extraSpecs[]{ _key, label, value },  faqs[]{ _key, question, answer },  relatedGrinders[]->{  _id,  name,  "slug": slug.current,  audience,  status,  shortDescription,  "groupName": group->name,  "groupSlug": group->slug.current,  "burrDiameterMm": specs.burrDiameterMm,  "burrType": specs.burrType,  "grindType": specs.grindType,  "motorPowerW": specs.motorPowerW,  "imageAlt": heroImage.alt,  "heroImage": heroImage{ alt, asset, crop, hotspot, "lqip": asset->metadata.lqip }},  relatedArticles[]->{  title,  "slug": slug.current,  excerpt,  publishedAt,  "topicTitle": topic->title,  "topicSlug": topic->slug.current,  "imageAlt": image.alt,  "image": image{ alt, asset, crop, hotspot, "lqip": asset->metadata.lqip }},  "catalogueUrl": catalogue.asset->url,  "catalogueLabel": catalogue.label,    "seoTitle": seo.title,  "seoDescription": seo.description,  "noIndex": seo.noIndex == true,  "canonical": seo.canonical,  "seoImage": seo.image{ alt, asset, crop, hotspot, "lqip": asset->metadata.lqip }}
 export type GRINDER_QUERY_RESULT = {
   _id: string;
   name: string;
@@ -5980,6 +7011,14 @@ export type GRINDER_QUERY_RESULT = {
     publishedAt: string;
     topicTitle: string;
     topicSlug: string;
+    imageAlt: string | null;
+    image: {
+      alt: string | null;
+      asset: SanityImageAssetReference | null;
+      crop: SanityImageCrop | null;
+      hotspot: SanityImageHotspot | null;
+      lqip: string | null;
+    } | null;
   }> | null;
   catalogueUrl: string | null;
   catalogueLabel: string | null;
@@ -5998,7 +7037,7 @@ export type GRINDER_QUERY_RESULT = {
 
 // Source: src/sanity/lib/queries.ts
 // Variable: COLLECTION_QUERY
-// Query: *[_type == "grinderCollection" && slug.current == $slug && language == "en-GB"][0]{  _id, name, "slug": slug.current, summary, answerFirst, audience, "imageAlt": image.alt, "image": image{ alt, asset, crop, hotspot, "lqip": asset->metadata.lqip },  grinders[]->{  _id,  name,  "slug": slug.current,  audience,  status,  shortDescription,  "groupName": group->name,  "groupSlug": group->slug.current,  "burrDiameterMm": specs.burrDiameterMm,  "burrType": specs.burrType,  "grindType": specs.grindType,  "motorPowerW": specs.motorPowerW,  "imageAlt": heroImage.alt,  "heroImage": heroImage{ alt, asset, crop, hotspot, "lqip": asset->metadata.lqip }},  sections[]{    _key, _type, eyebrow, heading, text, intro, quote, attribution, role, caption, url, step,    "imageAlt": image.alt, imagePosition, "image": image{ alt, asset, crop, hotspot, "lqip": asset->metadata.lqip },    links[]{ _key, label, href }, link{ _key, label, href }, body,    features[]{ _key, title, text },    faqs[]{ _key, question, answer },    grinders[]->{  _id,  name,  "slug": slug.current,  audience,  status,  shortDescription,  "groupName": group->name,  "groupSlug": group->slug.current,  "burrDiameterMm": specs.burrDiameterMm,  "burrType": specs.burrType,  "grindType": specs.grindType,  "motorPowerW": specs.motorPowerW,  "imageAlt": heroImage.alt,  "heroImage": heroImage{ alt, asset, crop, hotspot, "lqip": asset->metadata.lqip }},    "detailGrinders": grinders[]->{      _id, name, "slug": slug.current, audience, status, shortDescription, answerFirst,      "groupName": group->name, "groupSlug": group->slug.current,      "burrDiameterMm": specs.burrDiameterMm, "burrType": specs.burrType, "grindType": specs.grindType,      "imageAlt": heroImage.alt, "heroImage": heroImage{ alt, asset, crop, hotspot, "lqip": asset->metadata.lqip },      specs{  burrType,  burrDiameterMm,  grindType,  motorPowerW,  rpm,  hopperCapacityG,  outputGPerS,  adjustment,  "widthMm": dimensions.widthMm,  "depthMm": dimensions.depthMm,  "heightMm": dimensions.heightMm,  weightKg,  voltage,  display,  features},      extraSpecs[]{ _key, label, value },      faqs[]{ _key, question, answer }    },    "specGrinder": grinder->{      _id, name, "slug": slug.current, audience, status, shortDescription, answerFirst,      "groupName": group->name, "groupSlug": group->slug.current,      "burrDiameterMm": specs.burrDiameterMm, "burrType": specs.burrType, "grindType": specs.grindType,      "imageAlt": heroImage.alt, "heroImage": heroImage{ alt, asset, crop, hotspot, "lqip": asset->metadata.lqip },      specs{  burrType,  burrDiameterMm,  grindType,  motorPowerW,  rpm,  hopperCapacityG,  outputGPerS,  adjustment,  "widthMm": dimensions.widthMm,  "depthMm": dimensions.depthMm,  "heightMm": dimensions.heightMm,  weightKg,  voltage,  display,  features},      extraSpecs[]{ _key, label, value },      faqs[]{ _key, question, answer }    },    collections[]->{ name, "slug": slug.current, summary, audience },    posts[]->{  title,  "slug": slug.current,  excerpt,  publishedAt,  "topicTitle": topic->title,  "topicSlug": topic->slug.current}  },    "seoTitle": seo.title,  "seoDescription": seo.description,  "noIndex": seo.noIndex == true,  "canonical": seo.canonical,  "seoImage": seo.image{ alt, asset, crop, hotspot, "lqip": asset->metadata.lqip }}
+// Query: *[_type == "grinderCollection" && slug.current == $slug && language == "en-GB"][0]{  _id, name, "slug": slug.current, summary, answerFirst, audience, "imageAlt": image.alt, "image": image{ alt, asset, crop, hotspot, "lqip": asset->metadata.lqip },  grinders[]->{  _id,  name,  "slug": slug.current,  audience,  status,  shortDescription,  "groupName": group->name,  "groupSlug": group->slug.current,  "burrDiameterMm": specs.burrDiameterMm,  "burrType": specs.burrType,  "grindType": specs.grindType,  "motorPowerW": specs.motorPowerW,  "imageAlt": heroImage.alt,  "heroImage": heroImage{ alt, asset, crop, hotspot, "lqip": asset->metadata.lqip }},  sections[]{    _key, _type, eyebrow, heading, text, intro, quote, attribution, role, caption, url, step, videoUrl,    "imageAlt": image.alt, imagePosition, "image": image{ alt, asset, crop, hotspot, "lqip": asset->metadata.lqip },    links[]{ _key, label, href }, link{ _key, label, href }, body,    features[]{      _key, title, text, icon, ground,      "imageAlt": image.alt, "image": image{ alt, asset, crop, hotspot, "lqip": asset->metadata.lqip },      "linkLabel": link.label, "linkHref": link.href    },    faqs[]{ _key, question, answer },    grinders[]->{  _id,  name,  "slug": slug.current,  audience,  status,  shortDescription,  "groupName": group->name,  "groupSlug": group->slug.current,  "burrDiameterMm": specs.burrDiameterMm,  "burrType": specs.burrType,  "grindType": specs.grindType,  "motorPowerW": specs.motorPowerW,  "imageAlt": heroImage.alt,  "heroImage": heroImage{ alt, asset, crop, hotspot, "lqip": asset->metadata.lqip }},    "detailGrinders": grinders[]->{      _id, name, "slug": slug.current, audience, status, shortDescription, answerFirst,      "groupName": group->name, "groupSlug": group->slug.current,      "burrDiameterMm": specs.burrDiameterMm, "burrType": specs.burrType, "grindType": specs.grindType,      "imageAlt": heroImage.alt, "heroImage": heroImage{ alt, asset, crop, hotspot, "lqip": asset->metadata.lqip },      specs{  burrType,  burrDiameterMm,  grindType,  motorPowerW,  rpm,  hopperCapacityG,  outputGPerS,  adjustment,  "widthMm": dimensions.widthMm,  "depthMm": dimensions.depthMm,  "heightMm": dimensions.heightMm,  weightKg,  voltage,  display,  features},      extraSpecs[]{ _key, label, value },      faqs[]{ _key, question, answer }    },    "specGrinder": grinder->{      _id, name, "slug": slug.current, audience, status, shortDescription, answerFirst,      "groupName": group->name, "groupSlug": group->slug.current,      "burrDiameterMm": specs.burrDiameterMm, "burrType": specs.burrType, "grindType": specs.grindType,      "imageAlt": heroImage.alt, "heroImage": heroImage{ alt, asset, crop, hotspot, "lqip": asset->metadata.lqip },      specs{  burrType,  burrDiameterMm,  grindType,  motorPowerW,  rpm,  hopperCapacityG,  outputGPerS,  adjustment,  "widthMm": dimensions.widthMm,  "depthMm": dimensions.depthMm,  "heightMm": dimensions.heightMm,  weightKg,  voltage,  display,  features},      extraSpecs[]{ _key, label, value },      faqs[]{ _key, question, answer }    },    collections[]->{ name, "slug": slug.current, summary, audience },    posts[]->{  title,  "slug": slug.current,  excerpt,  publishedAt,  "topicTitle": topic->title,  "topicSlug": topic->slug.current,  "imageAlt": image.alt,  "image": image{ alt, asset, crop, hotspot, "lqip": asset->metadata.lqip }}  },    "seoTitle": seo.title,  "seoDescription": seo.description,  "noIndex": seo.noIndex == true,  "canonical": seo.canonical,  "seoImage": seo.image{ alt, asset, crop, hotspot, "lqip": asset->metadata.lqip }}
 export type COLLECTION_QUERY_RESULT = {
   _id: string;
   name: string;
@@ -6050,6 +7089,7 @@ export type COLLECTION_QUERY_RESULT = {
         caption: null;
         url: null;
         step: null;
+        videoUrl: null;
         imageAlt: null;
         imagePosition: null;
         image: null;
@@ -6082,6 +7122,7 @@ export type COLLECTION_QUERY_RESULT = {
         caption: null;
         url: null;
         step: null;
+        videoUrl: null;
         imageAlt: null;
         imagePosition: null;
         image: null;
@@ -6109,6 +7150,7 @@ export type COLLECTION_QUERY_RESULT = {
         caption: null;
         url: null;
         step: null;
+        videoUrl: null;
         imageAlt: null;
         imagePosition: null;
         image: null;
@@ -6205,6 +7247,7 @@ export type COLLECTION_QUERY_RESULT = {
         caption: null;
         url: null;
         step: null;
+        videoUrl: null;
         imageAlt: null;
         imagePosition: null;
         image: null;
@@ -6232,6 +7275,39 @@ export type COLLECTION_QUERY_RESULT = {
         caption: null;
         url: null;
         step: string | null;
+        videoUrl: null;
+        imageAlt: null;
+        imagePosition: null;
+        image: null;
+        links: null;
+        link: {
+          _key: null;
+          label: string;
+          href: string;
+        };
+        body: null;
+        features: null;
+        faqs: null;
+        grinders: null;
+        detailGrinders: null;
+        specGrinder: null;
+        collections: null;
+        posts: null;
+      }
+    | {
+        _key: string;
+        _type: "distributorLocator";
+        eyebrow: string | null;
+        heading: string;
+        text: string | null;
+        intro: null;
+        quote: null;
+        attribution: null;
+        role: null;
+        caption: null;
+        url: null;
+        step: null;
+        videoUrl: null;
         imageAlt: null;
         imagePosition: null;
         image: null;
@@ -6263,6 +7339,7 @@ export type COLLECTION_QUERY_RESULT = {
         caption: null;
         url: null;
         step: null;
+        videoUrl: null;
         imageAlt: null;
         imagePosition: null;
         image: null;
@@ -6283,6 +7360,86 @@ export type COLLECTION_QUERY_RESULT = {
       }
     | {
         _key: string;
+        _type: "featuredGrinder";
+        eyebrow: string | null;
+        heading: string;
+        text: string | null;
+        intro: null;
+        quote: null;
+        attribution: null;
+        role: null;
+        caption: null;
+        url: null;
+        step: null;
+        videoUrl: string | null;
+        imageAlt: null;
+        imagePosition: null;
+        image: null;
+        links: null;
+        link: {
+          _key: null;
+          label: string;
+          href: string;
+        };
+        body: null;
+        features: null;
+        faqs: null;
+        grinders: null;
+        detailGrinders: null;
+        specGrinder: {
+          _id: string;
+          name: string;
+          slug: string;
+          audience: "business" | "home";
+          status: "current" | "discontinued" | "new";
+          shortDescription: string;
+          answerFirst: string;
+          groupName: string;
+          groupSlug: string;
+          burrDiameterMm: number | null;
+          burrType: "conical" | "flat" | null;
+          grindType: "both" | "espresso" | "filter" | null;
+          imageAlt: string | null;
+          heroImage: {
+            alt: string | null;
+            asset: SanityImageAssetReference | null;
+            crop: SanityImageCrop | null;
+            hotspot: SanityImageHotspot | null;
+            lqip: string | null;
+          } | null;
+          specs: {
+            burrType: "conical" | "flat" | null;
+            burrDiameterMm: number | null;
+            grindType: "both" | "espresso" | "filter" | null;
+            motorPowerW: number | null;
+            rpm: number | null;
+            hopperCapacityG: number | null;
+            outputGPerS: number | null;
+            adjustment: string | null;
+            widthMm: number | null;
+            depthMm: number | null;
+            heightMm: number | null;
+            weightKg: number | null;
+            voltage: string | null;
+            display: string | null;
+            features: Array<string> | null;
+          } | null;
+          extraSpecs: Array<{
+            _key: string;
+            label: string;
+            value: string;
+          }> | null;
+          faqs: Array<{
+            _key: string;
+            question: string;
+            answer: string;
+          }> | null;
+        };
+        collections: null;
+        posts: null;
+      }
+    | {
+        _key: string;
         _type: "featureList";
         eyebrow: null;
         heading: string;
@@ -6294,6 +7451,7 @@ export type COLLECTION_QUERY_RESULT = {
         caption: null;
         url: null;
         step: null;
+        videoUrl: null;
         imageAlt: null;
         imagePosition: null;
         image: null;
@@ -6304,6 +7462,12 @@ export type COLLECTION_QUERY_RESULT = {
           _key: string;
           title: string;
           text: string;
+          icon: null;
+          ground: null;
+          imageAlt: null;
+          image: null;
+          linkLabel: null;
+          linkHref: null;
         }>;
         faqs: null;
         grinders: null;
@@ -6325,6 +7489,7 @@ export type COLLECTION_QUERY_RESULT = {
         caption: null;
         url: null;
         step: null;
+        videoUrl: null;
         imageAlt: null;
         imagePosition: null;
         image: null;
@@ -6421,6 +7586,7 @@ export type COLLECTION_QUERY_RESULT = {
         caption: null;
         url: null;
         step: null;
+        videoUrl: null;
         imageAlt: string | null;
         imagePosition: null;
         image: {
@@ -6458,6 +7624,7 @@ export type COLLECTION_QUERY_RESULT = {
         caption: null;
         url: null;
         step: null;
+        videoUrl: null;
         imageAlt: string;
         imagePosition: "left" | "right" | null;
         image: {
@@ -6495,6 +7662,7 @@ export type COLLECTION_QUERY_RESULT = {
         caption: null;
         url: null;
         step: null;
+        videoUrl: null;
         imageAlt: null;
         imagePosition: null;
         image: null;
@@ -6514,6 +7682,14 @@ export type COLLECTION_QUERY_RESULT = {
           publishedAt: string;
           topicTitle: string;
           topicSlug: string;
+          imageAlt: string | null;
+          image: {
+            alt: string | null;
+            asset: SanityImageAssetReference | null;
+            crop: SanityImageCrop | null;
+            hotspot: SanityImageHotspot | null;
+            lqip: string | null;
+          } | null;
         }>;
       }
     | {
@@ -6529,6 +7705,7 @@ export type COLLECTION_QUERY_RESULT = {
         caption: null;
         url: null;
         step: null;
+        videoUrl: null;
         imageAlt: null;
         imagePosition: null;
         image: null;
@@ -6556,6 +7733,7 @@ export type COLLECTION_QUERY_RESULT = {
         caption: null;
         url: null;
         step: null;
+        videoUrl: null;
         imageAlt: null;
         imagePosition: null;
         image: null;
@@ -6583,6 +7761,7 @@ export type COLLECTION_QUERY_RESULT = {
         caption: null;
         url: null;
         step: null;
+        videoUrl: null;
         imageAlt: null;
         imagePosition: null;
         image: null;
@@ -6658,6 +7837,7 @@ export type COLLECTION_QUERY_RESULT = {
         caption: string | null;
         url: string;
         step: null;
+        videoUrl: null;
         imageAlt: null;
         imagePosition: null;
         image: null;
@@ -6827,7 +8007,7 @@ export type GRINDER_PATH_QUERY_RESULT = {
 
 // Source: src/sanity/lib/queries.ts
 // Variable: POSTS_QUERY
-// Query: *[_type == "kbPost" && language == "en-GB"]|order(publishedAt desc){  title,  "slug": slug.current,  excerpt,  publishedAt,  "topicTitle": topic->title,  "topicSlug": topic->slug.current}
+// Query: *[_type == "kbPost" && language == "en-GB"]|order(publishedAt desc){  title,  "slug": slug.current,  excerpt,  publishedAt,  "topicTitle": topic->title,  "topicSlug": topic->slug.current,  "imageAlt": image.alt,  "image": image{ alt, asset, crop, hotspot, "lqip": asset->metadata.lqip }}
 export type POSTS_QUERY_RESULT = Array<{
   title: string;
   slug: string;
@@ -6835,6 +8015,14 @@ export type POSTS_QUERY_RESULT = Array<{
   publishedAt: string;
   topicTitle: string;
   topicSlug: string;
+  imageAlt: string | null;
+  image: {
+    alt: string | null;
+    asset: SanityImageAssetReference | null;
+    crop: SanityImageCrop | null;
+    hotspot: SanityImageHotspot | null;
+    lqip: string | null;
+  } | null;
 }>;
 
 // Source: src/sanity/lib/queries.ts

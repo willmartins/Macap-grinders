@@ -255,6 +255,24 @@ export type Section =
       intro?: string;
       features: FeatureItem[];
     }
+  | {
+      _key: string;
+      _type: "featuredGrinder";
+      eyebrow?: string;
+      heading: string;
+      text?: string;
+      grinder: Grinder | null;
+      videoUrl?: string | null;
+      link: LinkItem;
+    }
+  | {
+      _key: string;
+      _type: "distributorLocator";
+      eyebrow?: string;
+      heading: string;
+      text?: string;
+      link: LinkItem;
+    }
   | { _key: string; _type: "specTable"; heading?: string; grinder: Grinder | null }
   | {
       _key: string;
