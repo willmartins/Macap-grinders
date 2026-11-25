@@ -28,17 +28,27 @@ export function ArticleCardView({ post, priority = false }: { post: ArticleCard;
               className="object-cover"
             />
           </div>
-        ) : null}
+        ) : (
+          <p className="type-eyebrow text-grey">Photography to follow</p>
+        )}
       </div>
       <div className="machine-foot">
-        <p className="type-eyebrow text-grey">
-          {post.topicTitle ? <span>{post.topicTitle}</span> : null}
-          {post.topicTitle && date ? <span aria-hidden="true"> · </span> : null}
-          {date ? <span>{date}</span> : null}
-        </p>
+        {/* Topic alone. With the date beside it the label wrapped, which pushed the titles out of line. */}
+        <p className="type-eyebrow text-grey">{post.topicTitle}</p>
         <h3 className="machine-name">{post.title}</h3>
-        {post.excerpt ? <p className="type-body text-grey">{post.excerpt}</p> : null}
+        {post.excerpt ? <p className="type-body line-clamp-2 text-grey">{post.excerpt}</p> : null}
+        {/* The same foot as a grinder card: a figure on the left, the way in on the right. */}
         <div className="machine-end">
+          {date ? (
+            <dl className="machine-specs">
+              <div>
+                <dt>Published</dt>
+                <dd className="type-mono">{date}</dd>
+              </div>
+            </dl>
+          ) : (
+            <p className="machine-specs" />
+          )}
           <p className="machine-go">
             <ArrowText>Read article</ArrowText>
           </p>

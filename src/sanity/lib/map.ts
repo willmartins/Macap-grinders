@@ -439,6 +439,35 @@ function mapSection(value: unknown): Section | null {
       features: mapFeatures(value.features),
     };
   }
+  if (type === "featuredGrinder") {
+    const link = mapLink(value.link);
+    const grinder = mapDetail(value.specGrinder);
+    // Without a grinder or a way through there is nothing to feature, so the band is left out.
+    if (!link || !grinder) return null;
+    return {
+      _key: key,
+      _type: "featuredGrinder",
+      eyebrow: display(value.eyebrow) || undefined,
+      heading,
+      text: display(value.text) || undefined,
+      grinder,
+      videoUrl: safeHref(logic(value.videoUrl)) || null,
+      link,
+    };
+  }
+  if (type === "distributorLocator") {
+    const link = mapLink(value.link);
+    // Without a way through, the band is only a picture, so it is left out.
+    if (!link) return null;
+    return {
+      _key: key,
+      _type: "distributorLocator",
+      eyebrow: display(value.eyebrow) || undefined,
+      heading,
+      text: display(value.text) || undefined,
+      link,
+    };
+  }
   if (type === "specTable") {
     return { _key: key, _type: "specTable", heading: heading || undefined, grinder: mapDetail(value.specGrinder) };
   }

@@ -6,6 +6,7 @@ import {
   HelpCircleIcon,
   ImageIcon,
   InlineIcon,
+  PinIcon,
   PlayIcon,
   StackCompactIcon,
   ThListIcon,
@@ -484,6 +485,63 @@ function requiresSection(type: string, message: string) {
   };
 }
 
+/**
+ * One grinder, featured. A film and a photograph beside the copy, with the way through
+ * to its range. The grinder is a reference, so the name, photograph and figures stay in
+ * one place.
+ */
+export const featuredGrinder = defineType({
+  name: "featuredGrinder",
+  title: "Featured grinder",
+  type: "object",
+  icon: BoltIcon,
+  fields: [
+    defineField({ name: "eyebrow", title: "Eyebrow", type: "string" }),
+    defineField({ name: "heading", title: "Heading", type: "string", validation: (rule) => rule.required() }),
+    defineField({
+      name: "text",
+      title: "Text",
+      type: "text",
+      rows: 4,
+      description: "What the grinder is and what it does.",
+    }),
+    defineField({
+      name: "grinder",
+      title: "Grinder",
+      type: "reference",
+      to: [{ type: "grinder" }],
+      description: "The photograph and the figures come from this grinder.",
+      validation: (rule) => rule.required(),
+    }),
+    defineField({
+      name: "videoUrl",
+      title: "Film",
+      type: "url",
+      description: "Optional. A YouTube address. Without one the photograph stands alone.",
+    }),
+    defineField({ name: "link", title: "Link", type: "link", validation: (rule) => rule.required() }),
+  ],
+  preview: previewText("Featured grinder"),
+});
+
+/**
+ * Two columns: a drawn map of where Macap sells, and the way to a distributor.
+ * The map is a graphic, not a plotted list, so it shows no coverage Macap cannot back up.
+ */
+export const distributorLocator = defineType({
+  name: "distributorLocator",
+  title: "Distributor locator",
+  type: "object",
+  icon: PinIcon,
+  fields: [
+    defineField({ name: "eyebrow", title: "Eyebrow", type: "string" }),
+    defineField({ name: "heading", title: "Heading", type: "string", validation: (rule) => rule.required() }),
+    defineField({ name: "text", title: "Text", type: "text", rows: 3 }),
+    defineField({ name: "link", title: "Link", type: "link", validation: (rule) => rule.required() }),
+  ],
+  preview: previewText("Distributor locator"),
+});
+
 export const pageBuilderMembers = [
   defineArrayMember({ type: "heroBanner" }),
   defineArrayMember({ type: "richText" }),
@@ -491,6 +549,8 @@ export const pageBuilderMembers = [
   defineArrayMember({ type: "grinderGrid" }),
   defineArrayMember({ type: "collectionCarousel" }),
   defineArrayMember({ type: "featureList" }),
+  defineArrayMember({ type: "featuredGrinder" }),
+  defineArrayMember({ type: "distributorLocator" }),
   defineArrayMember({ type: "specTable" }),
   defineArrayMember({ type: "comparisonTable" }),
   defineArrayMember({ type: "faqAccordion" }),
@@ -537,6 +597,8 @@ export const blockTypes = [
   grinderGrid,
   collectionCarousel,
   featureList,
+  featuredGrinder,
+  distributorLocator,
   specTable,
   comparisonTable,
   faqAccordion,

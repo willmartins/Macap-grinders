@@ -4,21 +4,23 @@ Page sections share one name in code and in Sanity Studio. They are rendered by 
 
 | Name | Component file | Sanity schema type | Where used | Description |
 | --- | --- | --- | --- | --- |
-| heroBanner | src/components/modules/page-builder.tsx | heroBanner | Home, journeys, about, knowledge | Full-bleed photograph, large headline, short line, up to two links. |
+| heroBanner | src/components/modules/page-builder.tsx | heroBanner | Home, journeys, about, knowledge | Full-bleed photograph, large headline, short line, up to two links. Linking to both audience pages makes the front page's opening: the photograph full height, then the two choice cards. |
 | richText | src/components/modules/page-builder.tsx | richText | About, legal, any page | Heading plus portable text. |
-| imageText | src/components/modules/page-builder.tsx | imageText | Home, about | Full-width photograph beside a short explanation and an optional link. |
-| grinderGrid | src/components/modules/page-builder.tsx | grinderGrid | Audience pages, collections, related models | A grid of grinder cards. Each card is one link. |
+| imageText | src/components/modules/page-builder.tsx | imageText | About | Full-width photograph beside a short explanation and an optional link. |
+| grinderGrid | src/components/modules/page-builder.tsx | grinderGrid | Home, audience pages, collections, related models | A grid of grinder cards. Each card is one link. |
 | collectionCarousel | src/components/modules/page-builder.tsx | collectionCarousel | Audience pages | A sideways list of collections. |
 | rangeGrid | src/components/modules/page-builder.tsx | rangeGrid | Home grinders and Professional grinders only, required | The page audience's ranges as cards, then its collections. Filled from the ranges, so it has no list to pick. |
 | collectionModels | src/components/modules/page-builder.tsx | collectionModels | Collections only, required | The collection's grinders as cards, in the collection's order. |
-| featureList | src/components/modules/page-builder.tsx | featureList | Journeys | Three or more short points, such as brew, burr and noise. |
+| featureList | src/components/modules/page-builder.tsx | featureList | Journeys, collections | Three or more short points, such as brew, burr and noise. |
+| featuredGrinder | src/components/grinders/featured-grinder.tsx | featuredGrinder | Home | One grinder on the dark ground: an optional film, its photograph, copy, its figures and the way through to its range. The grinder is a reference. |
+| distributorLocator | src/components/modules/page-builder.tsx | distributorLocator | Home | Two columns: a drawn map of the world and the way to a distributor. The map plots nothing, so it claims no coverage. |
 | specTable | src/components/modules/page-builder.tsx | specTable | Any page section | A real HTML specification table for one grinder. |
 | comparisonTable | src/components/modules/page-builder.tsx | comparisonTable | Journeys | Side-by-side specifications and plain-language differences. |
 | faqAccordion | src/components/modules/page-builder.tsx | faqAccordion | Journeys, grinders, articles | Questions and answers, using disclosure elements. |
-| ctaBanner | src/components/modules/page-builder.tsx | ctaBanner | Journeys | A next step, such as compare or contact. |
+| ctaBanner | src/components/modules/page-builder.tsx | ctaBanner | Home, journeys | A next step, such as compare or contact. |
 | videoEmbed | src/components/modules/page-builder.tsx | videoEmbed | Any page section | A YouTube film. Other addresses are shown as links. |
-| kbPostGrid | src/components/modules/page-builder.tsx | kbPostGrid | Journeys, knowledge | A short list of knowledge articles. |
-| quote | src/components/modules/page-builder.tsx | quote | Home | A short quotation with an attribution. |
+| kbPostGrid | src/components/modules/page-builder.tsx | kbPostGrid | Home, journeys, knowledge | A short list of knowledge articles. |
+| quote | src/components/modules/page-builder.tsx | quote | Any page section | A short quotation with an attribution. |
 | contactBlock | src/components/modules/page-builder.tsx | contactBlock | Contact, professional journey | The enquiry form, inline. |
 
 Document types that are not page sections: `siteSettings`, `homePage`, `aboutPage`, `contactPage`, `knowledgeHubPage`, `grindersIndexPage`, `journeyPage` (Audience page), `grinderGroup` (Range), `grinder`, `grinderCollection`, `author`, `kbTopic`, `kbPost`, `legalPage`, `redirect`, `distributor`. Shared objects: `seo`, `link`, `faq`, `blockContent`, `grinderSpecs`.
@@ -29,6 +31,7 @@ Addresses are built in `src/lib/paths.ts`. Do not write a grinder, range or coll
 
 | Address | Page | Content | Layout |
 | --- | --- | --- | --- |
+| `/distributors` | Distributors | `distributor` documents | Fixed: a header with the drawn map, then every active partner by country. Name, countries and website only. |
 | `/grinders` | Grinders index | `grindersIndexPage` | Two doors to the audience pages, every range by audience, every model with filters. |
 | `/grinders/home` | Home grinders | `journeyPage` with slug `home-grinders` | Page builder. A `rangeGrid` is required. |
 | `/grinders/professional` | Professional grinders | `journeyPage` with slug `professional` | Page builder. A `rangeGrid` is required. |

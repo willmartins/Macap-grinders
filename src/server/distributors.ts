@@ -29,6 +29,32 @@ const query = `*[_type == "distributor" && active == true]{
   "email": enquiryEmail
 }`;
 
+/** The public list. Name, countries and website only: the enquiry email stays off the website. */
+const listQuery = `*[_type == "distributor" && active == true]|order(name asc){
+  name,
+  countries,
+  website
+}`;
+
+export type DistributorListing = {
+  name: string;
+  countries: string[];
+  website: string | null;
+};
+
+export async function listDistributors(): Promise<DistributorListing[]> {
+  try {
+    const rows = await client
+      .withConfig({ useCdn: false, token: readToken || undefined, perspective: "published", stega: false })
+      .fetch<DistributorListing[]>(listQuery);
+    if (!Array.isArray(rows)) return [];
+    return rows.filter((row) => row.name && Array.isArray(row.countries) && row.countries.length > 0);
+  } catch {
+    console.error("Distributor list failed.");
+    return [];
+  }
+}
+
 export function pickDistributor(records: DistributorRecord[], country: string): DistributorRecord | null {
   const matches = records.filter(
     (record) => record.name && record.email && record.countries.includes(country),

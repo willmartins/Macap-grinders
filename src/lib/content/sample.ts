@@ -723,8 +723,9 @@ export const samplePosts: Post[] = [
     answerFirst:
       "Choose the Supra 68 when the bar is steady and the counter is tight. Choose the Supra 83 when you need the larger burr and higher output.",
     author,
-    imageUrl: articleShots["supra-68-and-supra-83"].src,
-    imageAlt: articleShots["supra-68-and-supra-83"].alt,
+    // No photograph chosen yet for this article.
+    imageUrl: null,
+    imageAlt: "",
     body: [
       text("c1", "normal", "Both grinders are professional flat-burr espresso grinders in the Supra line. The useful difference is burr diameter, output and the space the machine takes."),
       {
@@ -1073,9 +1074,9 @@ export const sampleHomePage: PageDocument = {
     {
       _key: "home-hero",
       _type: "heroBanner",
-      eyebrow: "",
-      heading: "For the home. For the bar.",
-      text: "Macap has made coffee grinders in the Venice area since 1930.",
+      eyebrow: "Macap, since 1930",
+      heading: "Coffee grinders for the counter and the bar.",
+      text: "",
       imageUrl: pageShots.homeHero.src,
       imageAlt: pageShots.homeHero.alt,
       links: [
@@ -1084,30 +1085,38 @@ export const sampleHomePage: PageDocument = {
       ],
     },
     {
-      _key: "home-split",
-      _type: "imageText",
-      heading: "Home grinders",
-      text: "Studio and Leo, for a domestic counter.",
-      imageUrl: pageShots.homeJourney.src,
-      imageAlt: pageShots.homeJourney.alt,
-      imagePosition: "right",
-      link: { _key: "go-home", label: "See home grinders", href: "/grinders/home" },
+      _key: "home-grinder",
+      _type: "featuredGrinder",
+      eyebrow: "Supra G Series",
+      heading: "The Supra 68 G Series.",
+      text:
+        "A commercial espresso grinder that doses to a set weight instead of a set time. The burr set of the Supra 68, with grind-by-weight dosing on top. Sample figures.",
+      grinder: supra68g,
+      // No Macap film yet. An editor adds the address in Studio and it appears here.
+      videoUrl: null,
+      link: { _key: "grinder-go", label: "See the Supra G Series", href: "/grinders/supra-g-series" },
     },
     {
-      _key: "home-pro",
-      _type: "imageText",
-      heading: "Professional grinders",
-      text: "Supra, Supra G Series and Pro. Built for espresso service.",
-      imageUrl: pageShots.professionalJourney.src,
-      imageAlt: pageShots.professionalJourney.alt,
-      imagePosition: "left",
-      link: { _key: "go-pro", label: "See professional grinders", href: "/grinders/professional" },
+      _key: "home-distributors",
+      _type: "distributorLocator",
+      eyebrow: "Distributors",
+      heading: "Find your local distributor.",
+      text: "Macap grinders are sold and serviced through distributors. Find the partner for your country.",
+      link: { _key: "dist-go", label: "Find a distributor", href: "/distributors" },
     },
     {
-      _key: "home-quote",
-      _type: "quote",
-      quote: "Match the grinder to the counter, then to the coffee.",
-      attribution: "Macap",
+      _key: "home-knowledge",
+      _type: "kbPostGrid",
+      heading: "Learn about coffee grinding technology",
+      intro: "Choosing a grinder, dialling in, and burr care. Each article answers the question first.",
+      posts: [postCards[0], postCards[1], postCards[2]],
+    },
+    {
+      _key: "home-contact",
+      _type: "ctaBanner",
+      heading: "Contact Macap",
+      text: "Ask about a grinder, a part, or the range.",
+      link: { _key: "hc", label: "Contact us", href: "/contact" },
     },
   ],
 };
